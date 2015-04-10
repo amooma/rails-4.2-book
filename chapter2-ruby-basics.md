@@ -38,14 +38,12 @@ update your current Ruby if you are running older versions. The command
 
 > **Warning**
 >
-> The beginning of this chaper is going to be a bit boring. Bear with
+> The beginning of this chapter is going to be a bit boring. Bear with
 > me. It is worth it.
 
 Hello World
 -----------
 
-Hello World
-Ruby
 Ruby is a scripting language. So it is not compiled and then executed,
 but read by an interpreter and then processed line by line.
 
@@ -57,7 +55,7 @@ Use your favorite editor to open a new file with the filename
 `hello-world.rb` and insert the above line into it. You can then execute
 this Ruby program in the command line as follows:
 
-    $  
+    $ ruby hello-world.rb
     Hello World!
     $
 
