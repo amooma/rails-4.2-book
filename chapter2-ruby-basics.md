@@ -16,7 +16,7 @@ instead. One can only feel the magic of Rails after understanding the
 basics of Ruby.
 
 The inventor of Ruby, Yukihiro Matsumoto, states in his book “The Ruby
-Programming Language”[^1] that:
+Programming Language” that:
 
 “It is easy to program in Ruby, but Ruby is not a simple language.”
 
@@ -28,13 +28,16 @@ up to you. If you would like to know more about Ruby, then I recommend
 the book "The Ruby Programming Language" by David Flanagan and Yukihiro
 Matsumoto.
 
-Because Ruby version 2.0 is the way to go we use it. Please take care to
-update your current Ruby if you are running older versions. The command
-`ruby -v` will print the current running Ruby version:
+Because Ruby version 2.2 is the way to go we use it. Please take care to
+update your current Ruby if you are running older versions. Truth be told: For most part of this book you'll be fine with versions 2.0 and 2.1 too - but we tested everything with version 2.2.
 
-    $
-    ruby 2.0.0p247 (2013-06-27 revision 41674) [x86_64-darwin12.4.0]
-    $
+The command `ruby -v` will print the current running Ruby version:
+
+```bash
+$ ruby -v
+ruby 2.2.1p85 (2015-02-26 revision 49769) [x86_64-darwin14]
+$
+```
 
 > **Warning**
 >
@@ -49,15 +52,19 @@ but read by an interpreter and then processed line by line.
 
 A simple Ruby program `hello-world.rb` consist of the following line:
 
-    puts 'Hello World!'
+```ruby
+puts 'Hello World!'
+```
 
 Use your favorite editor to open a new file with the filename
 `hello-world.rb` and insert the above line into it. You can then execute
 this Ruby program in the command line as follows:
 
-    $ ruby hello-world.rb
-    Hello World!
-    $
+```bash
+$ ruby hello-world.rb
+Hello World!
+$
+```
 
 A program line in a Ruby program does not have to end with a semicolon.
 The Ruby interpreter is even so intelligent that is recognizes if a
@@ -70,8 +77,6 @@ read for human beings!
 
 ### puts and print
 
-puts
-print
 If you go looking for examples on Ruby on the Internet, you will find
 two typical ways of printing text on the screen:
 
@@ -86,21 +91,25 @@ two typical ways of printing text on the screen:
 
 Example program (an extension of the program `hello-world.rb`):
 
-    puts 'Hello World!'
-    puts
-    puts '------------'
-    print 'Hello World!'
-    print
-    puts '------------'
+```ruby
+puts 'Hello World!'
+puts
+puts '------------'
+print 'Hello World!'
+print
+puts '------------'
+```
 
 On the screen, you will see this:
 
-    $
-    Hello World!
+```bash
+$ ruby hello-world.rb
+Hello World!
 
-    ------------
-    Hello World!------------
-    $
+------------
+Hello World!------------
+$
+```
 
 ### Comments
 
@@ -110,37 +119,45 @@ A comment in a Ruby program starts with a `#`-sign and ends with a
 newline. As an example, I can add a comment to the `hello-world.rb`
 above:
 
-    # Program for displaying "Hello World!"
-    # by Stefan Wintermeyer
+```ruby
+# Program for displaying "Hello World!"
+# by Stefan Wintermeyer
 
-    puts 'Hello World!'
+puts 'Hello World!'
+```
 
 A comment can also follow a program line:
 
-    # Program for displaying "Hello World!"
-    # by Stefan Wintermeyer
+```ruby
+# Program for displaying "Hello World!"
+# by Stefan Wintermeyer
 
-    puts 'Hello World!'  # output
+puts 'Hello World!'  # output
+```
 
 A `#`-sign within strings in inverted commas is not treated as the start
 of a comment. Example program:
 
-    # Example program
-    # by Stefan Wintermeyer
+```ruby
+# Example program
+# by Stefan Wintermeyer
 
-    puts 'Hello World!'
-    puts '############'
-    puts
-    puts '1#2#3#4#5#6#'  # Comment on this
+puts 'Hello World!'
+puts '############'
+puts
+puts '1#2#3#4#5#6#'  # Comment on this
+```
 
 On the screen, you will see this:
 
-    $  
-    Hello World!
-    ############
+```bash
+$ ruby hello-world.rb
+Hello World!
+############
 
-    1#2#3#4#5#6#
-    $
+1#2#3#4#5#6#
+$
+```
 
 ### Help via ri
 
