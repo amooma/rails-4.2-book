@@ -488,7 +488,7 @@ Hello World!
 $
 ```
 
-I will explain the difference between instance and class methods in more detail in [the section called "Class Methods and Instance Methods"](http://www.xyzpub.com/en/ruby-on-rails/4.0/ruby-ist-objekt-orientiert.html#class_methods_vs_instance_methods). Another chicken and egg problem.
+I will explain the difference between instance and class methods in more detail in [the section called "Class Methods and Instance Methods"](#class-methods-and-instance-methods). Another chicken and egg problem.
 
 #### Private Methods
 
@@ -681,10 +681,9 @@ $
 >
 > It is important to read the Error-Messages. They tell you what happend
 > and where to search for the problem. In this example Ruby said that
-> there is an `` undefined method `d' for
->             #<Abc:0x007fb463023928> ``. With that information you know
-> that the Class Abc is missing the method d which you were trying to
-> use.
+> there is an `undefined method` for `#<Abc:0x007fb463023928>`. 
+> With that information you know that the Class Abc is missing the method 
+> which you were trying to use.
 
 #### Class Methods and Instance Methods
 
@@ -2036,7 +2035,7 @@ $
 
 Of course, hashes can store not just strings as objects in the values, 
 but - as with arrays - also classes that you define yourself 
-(see [the section called "Arrays"](http://www.xyzpub.com/en/ruby-on-rails/4.0/ruby-array-und-hash.html#ruby_array)).
+(see [the section called "Arrays"](#arrays)).
 
 #### Symbols
 
