@@ -1427,7 +1427,7 @@ $ irb --simple-prompt
 $
 ```
 
-### Method to\_s for Your Own Classes
+### Method to_s for Your Own Classes
 
 You should always integrate a method `to_s` for your own custom classes, even if it is 
 just for the sake of easier debugging. Then you can simply output a corresponding 

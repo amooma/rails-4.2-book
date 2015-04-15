@@ -2,9 +2,9 @@ First Steps with Rails
 ======================
 ### Introduction
 
-Now that you have painstakingly read your way through >>LINK<< we can move on
-to a more exciting bit. In this chapter, we will start our first Ruby on
-Rails project and find our way into the topic step by step.
+Now that you have painstakingly read your way through [Chapter 2 - Ruby Basics](chapter02-ruby-basics.html) we 
+can move on to a more exciting bit. In this chapter, we will start our first 
+Ruby on Rails project and find our way into the topic step by step.
 
 We will use Ruby on Rails version 4.2.1. Please update to this version in
 case have installed an older one.
@@ -246,7 +246,7 @@ Rails is not currently working, for example because of an update. In a
 production environment, you would usually put a classic web server such
 as Apache or Nginx infront of the Rails server. Which is capable of
 autonomously delivering static files from the `public` directory. You'll
-learn how to set up a production webserver in >>>Link<<<.
+learn how to set up a production webserver in [Chapter 15, Web Server in Production Mode](chapter15-production-webserver.html).
 
 With Ctrl+C you can stop the Rails server.
 
@@ -339,14 +339,14 @@ Phew... that's a lot of stuff being created. Amongst others, the file
 `app/views/example/test.html.erb`. Let's have a closer look at it:
 
 ```erb
-$ cat app/views/example/test.html.erb
+$ cat app/views/example/test.html.erb>
 <h1>Example#test</h1>
 <p>Find me in app/views/example/test.html.erb</p>
 $
 ```
 
 It's HTML, but for it to be a valid HTML page, something is “missing” at
-the top and bottom (the missing HTML "rest" will be explained in >>>LINK<<<). We
+the top and bottom (the missing HTML "rest" will be explained in [the section called "Layouts"](#layouts)). We
 launch the web server to test it:
 
 ```bash
@@ -453,7 +453,7 @@ $
 ```
 
 The `config/routes.rb` file includes a lot of examples. Give it a read
-when you have time. We'll dive into that later (>>>LINK<<<).
+when you have time. We'll dive into that later [Chapter 6, Routes](chapter06-routing.html).
 
 > **Important**
 >
@@ -519,7 +519,7 @@ Yes, both the number 1 and the result of 1 + 1 is a `Fixnum`. What
 happened? Rails is so intelligent that it automatically calls all
 objects in a viewview (that is the file `test.html.erb`) that are not
 already a string via the method `.to_s`, which always converts the
-content of the object to a string (>>>LINK<<<). Once more, a brief trip to `irb`:
+content of the object to a string ([the section called “Method to_s for Your Own Classes”](chapter02-ruby-basics.html#method-to_s-for-your-own-classes)). Once more, a brief trip to `irb`:
 
 ```bash
 >> (1 + 1).to_s
@@ -650,8 +650,8 @@ The interesting bit is the line
 
 With `<%= yield %>` the View file is included here. The lines
 with the stylesheets, the JavaScript and the csrf\_meta\_tags can stay
-as they are for now. They integrate default CSS and JavaScript files.
-We'll have a look into that in >>>LINK<<<. No need to bother with that right now.
+as they are for now. They integrate <
+We'll have a look into that in [chapter12 Asset pipeline](chapter12-asset-pipeline.html). No need to bother with that right now.
 
 The file `app/views/layouts/application.html.erb` enables you to
 determine the basic layout for the entire Rails application. If you want
@@ -693,7 +693,8 @@ was always that easy. But let's just play it through in our minds: if I
 have a value in the controller that I want to display in the view, then
 I need a mechanism for this. This is referred to as *instance variable*
 and always starts with a `@`. If you are not 100 % sure any more which
-variable has which *scope*, then please have another quick look at >>>LINK<<<.
+variable has which *scope*, then please have another quick look at 
+[the section called “Scope of Variables”](chapter02-ruby-basics.html#scope-of-variables).
 
 In the following example, we insert an instance variable for the current
 time in the controller and then insert it in the view. So we are taking
@@ -858,8 +859,8 @@ You can call this partial with `<%= render 'footer',
 
 #### Alternative Notation
 
-In >>>Link<<< we only use the short form for rendering partials. Often, you will
-also see this long version:
+In [the section called “Passing Variables to a Partial”](#passing-variables-to-a-partial) we only use the short 
+form for rendering partials. Often, you will also see this long version:
 
 ```erb
 <%= render :partial => "footer", :locals => { :start_year => '2000' } %>
@@ -1007,7 +1008,7 @@ anyone would associate the term “*Flash*” with more or less colorful web
 pages that were implemented with the Adobe Shockwave Flash Plug-in. But
 in Ruby on Rails, flash messages are something completely different.
 They are messages that are displayed, for example on the new page after
-a redirect (see >>>LINK<<<).
+a redirect (see [Section 3.4, “Redirects”](#redirects)).
 
 Flash messages are good friends with redirects. The two often work
 together in a team to give the user feedback on an action he just
@@ -1015,7 +1016,8 @@ carried out. A typical example of a flash message is the system feedback
 when a user has logged in. Often the user is redirected back to the
 original page and gets the message “You are now logged in.”
 
-As an example, we are once more constructing the ping pong scenario from >>>LINK<<<:
+As an example, we are once more constructing the ping pong scenario 
+from [Section 3.4, “Redirects”](#redirects):
 
 ```bash
 $ rails new pingpong
@@ -1117,13 +1119,13 @@ every single time you need one.
 The Rails Console
 -----------------
 
-The *console* in Rails is nothing more than an `irb` (see >>>LINK<<<) built
+The *console* in Rails is nothing more than an `irb` (see [Section 2.3, “irb”](chapter02-ruby-basics.html#irb)) built
 around the Rails environment. The console is very useful both for
 developing and for administration purposes, because the whole Rails
 environment is represented and available.
 
 For our working environment, we again use a variation of the ping pong
-scenario from >>>LINK<<<:
+scenario from [Section 3.4, “Redirects”](#redirects):
 
 ```bash
 $ rails new pingpong
@@ -1187,7 +1189,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-Already in >>>LINK<<< we are going to be working lots with the console and will
+Already in [Chapter 4, ActiveRecord](chapter04-activerecord.html) we are going to be working lots with the console and will
 soon begin to appreciate the possibilities it offers.
 
 > **Tip**
@@ -1253,7 +1255,7 @@ certain functionaity in a Rails project.
 #### Model
 
 "Model" in this case means data model. By default, Rails applications
-are an ActiveRecord data model (see >>>LINK<<<).
+are an ActiveRecord data model (see [Chapter 4, AktiveRecord](chapter04-activerecord.html)).
 
 All models can be found in the directory `app/models/.`
 
@@ -1268,7 +1270,7 @@ You will find all the views in the directory `app/views/.`
 
 #### Controller
 
-Once a web page call has ended up in a route (see >>>LINK<<<), it goes from there
+Once a web page call has ended up in a route (see [Chapter 6, Routes](chapter06-routing.html)), it goes from there
 to the controller. The route specifies a certain method (action) as
 target. This method can then fulfil the desired tasks (such as finding a
 specific set of data and saving it in an instance variable) and then
