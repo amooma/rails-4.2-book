@@ -226,7 +226,7 @@ $ rails server
 ```
 
 We can have a look at this web page at the URL
-<http://0.0.0.0:3000/hello-world>:
+<http://localhost:3000/hello-world>:
 
 ![Hello Word Html](images/screenshots/hello-world-html.jpg "Hallo Word Html")
 
@@ -236,7 +236,7 @@ framework. It was delivered directly from the webserver.
 > **Note**
 >
 > We can of course also use the URL
-> <http://0.0.0.0:3000/hello-world.html>. But Rails regards HTML and
+> <http://localhost:3000/hello-world.html>. But Rails regards HTML and
 > therefore the file ending `.html` as standard output format, so you
 > can omit the “`.html`” here.
 
@@ -354,7 +354,7 @@ $ rails server
 ```
 
 and have a look at the web page in the browser at the URL
-<http://0.0.0.0:3000/example/test>:
+<http://localhost:3000/example/test>:
 
 In the log `log/development.log` we find the following lines:
 
@@ -493,7 +493,7 @@ Then use `rails server` to launch the web server.
 $ rails server
 ```
 
-Visit that page with the URL <http://0.0.0.0:3000/example/test>
+Visit that page with the URL <http://localhost:3000/example/test>
 
 ![erb einfache addition](images/screenshots/erb_einfache_addition.jpg "ERB einfache addition")
 
@@ -830,7 +830,7 @@ follows:
 <%= render "footer", :start_year => '2000' %>
 ```
 
-If we now go to the URL <http://0.0.0.0:3000/example/test>, we see the 2000:
+If we now go to the URL <http://localhost:3000/example/test>, we see the 2000:
 
 ![partials start year 2000](images/screenshots/partial_start_year_2000.jpg "Partial start year 2000")
 
@@ -933,7 +933,7 @@ end
 
 Now for the redirect: how can we achieve that we get immediately
 redirected to the method pong when we go to
-<http://0.0.0.0:3000/game/ping>? Easy, you will say, we just change the
+<http://localhost:3000/game/ping>? Easy, you will say, we just change the
 route in `config/routes.rb`. And you are right. So we don't
 necessarily need a redirect. But if we want to process something else in
 the method ping before redirecting, then this is only possible by using
@@ -975,15 +975,15 @@ later in the context of each specific case. For now, you just need to
 know that you can redirect not just to another method, but also to
 another controller or an entirely different web page.
 
-When we try to go to <http://0.0.0.0:3000/game/ping> we are
-automatically redirected to <http://0.0.0.0:3000/game/pong> and in the
+When we try to go to <http://localhost:3000/game/ping> we are
+automatically redirected to <http://localhost:3000/game/pong> and in the
 log output we see this:
 
 ```bash
 Started GET "/game/ping" for 127.0.0.1 at 2015-04-15 17:50:04 +0200
 Processing by GameController#ping as HTML
 +++  Example  +++
-Redirected to http://0.0.0.0:3000/game/pong
+Redirected to http://localhost:3000/game/pong
 Completed 302 Found in 14ms (ActiveRecord: 0.0ms)
 
 
@@ -1044,7 +1044,7 @@ end
 
 Now we start the Rails web server with `rails
     server` and use the browser to go to
-<http://0.0.0.0:3000/game/ping>. We are redirected from ping to pong.
+<http://localhost:3000/game/ping>. We are redirected from ping to pong.
 But the flash message "Ping-Pong!" is nowhere to be seen. We first need
 to expand `app/views/layouts/application.html.erb`:
 
@@ -1070,12 +1070,12 @@ to expand `app/views/layouts/application.html.erb`:
 ```
 
 Now we see the flash message at the top of the page when we go to
-<http://0.0.0.0:3000/game/ping> in the browser:
+<http://localhost:3000/game/ping> in the browser:
 
 ![flash pong notice](images/screenshots/flash_pong_notice.jpg "Flash Pong notice")
 
-If we go to <http://0.0.0.0:3000/game/pong> we still see the normal Pong
-page. But if we go to <http://0.0.0.0:3000/game/ping> we are redirected
+If we go to <http://localhost:3000/game/pong> we still see the normal Pong
+page. But if we go to <http://localhost:3000/game/ping> we are redirected
 to the Pong page and then the flash message is displayed at the top.
 
 > **Tip**
