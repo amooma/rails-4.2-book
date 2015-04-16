@@ -139,7 +139,7 @@ is working by launching the integrated web server.
 
 ```bash
 $ cd testproject/
-MAC-00020:testproject richertd$ rails server
+$ rails server
 => Booting WEBrick
 => Rails 4.2.1 application starting in development on http://localhost:3000
 => Run `rails server -h` for more startup options
@@ -406,9 +406,9 @@ you go, we indeed find the corresponding file
 ```bash
 $ ls -l app/controllers/
 total 16
--rw-r--r--  1 richertd  EVS\Helpdesk  204 14 Apr 19:04 application_controller.rb
-drwxr-xr-x  3 richertd  EVS\Helpdesk  102 14 Apr 19:04 concerns
--rw-r--r--  1 richertd  EVS\Helpdesk   69 14 Apr 19:26 example_controller.rb
+-rw-r--r--  1 xyz  EVS\Helpdesk  204 14 Apr 19:04 application_controller.rb
+drwxr-xr-x  3 xyz  EVS\Helpdesk  102 14 Apr 19:04 concerns
+-rw-r--r--  1 xyz  EVS\Helpdesk   69 14 Apr 19:26 example_controller.rb
 $
 ```
 
