@@ -1,24 +1,12 @@
 ActiveRecord
 ============
 
-ActiveRecord
-Active Record (pattern)
-ActiveRecord
-database
-ActiveRecord
-ActiveRecord
-database
-ORM
-database
-`ActiveRecord` is a level of abstraction that offers access to a SQL
-database databasedatabase relational (SQL)relational database
-databaseSQL database. `ActiveRecord` implements the architectural
-pattern *Active Record* [^9].
+`ActiveRecord` is a level of abstraction that offers access to a SQL database. 
+`ActiveRecord` implements the architectural pattern *Active Record*.
 
 > **Note**
 >
-> This is referred to as object-relational mapping ORM*object-relational
-> mapping*, ORM (object-relational mapping)*ORM*. I find it rather dry
+> This is referred to as *object-relational-mapping*, *ORM*. I find it rather dry
 > and boring, but in case you have trouble going to sleep tonight, have
 > a look at <http://en.wikipedia.org/wiki/Object_relational_mapping>.
 
@@ -36,9 +24,9 @@ developers.
 Howto for this Chapter
 ----------------------
 
-This chapter is a self-contained unit. But the knowledge provided in ?
-and ? is required. Without these basics, you will not have any fun with
-this chapter!
+This chapter is a self-contained unit. But the knowledge provided in 
+[Chapter 2, Ruby basics](chapter02-ruby-basics.html) and [Chapter 3, First steps with rails](chapter03-first-steps-with-rails.html) is required. 
+Without these basics, you will not have any fun with this chapter!
 
 Rails newbies should read this chapter once from beginning to end.
 Please take your time. This chapter is important!
@@ -46,7 +34,7 @@ Please take your time. This chapter is important!
 > **Note**
 >
 > This chapter is only about ActiveRecord. So I am not going to
-> integrate any tests (see ?), to keep the examples as simple as
+> integrate any tests (see [Chapter 7, Tests](chapter07-test-driven-development.html)), to keep the examples as simple as
 > possible.
 
 ### Not in the Mood for SQL?
@@ -60,159 +48,164 @@ optimization processes going on in the background.
 Creating Database/“Model”
 -------------------------
 
-database
-model
 > **Note**
 >
-> Model–View–Controller
-> MVC
-> MVC
-> *Model* in this context refers to the data model of
-> *Model-View-Controller* (MVC).
+> Model in this context refers to the data model of Model-View-Controller (MVC).
 
 As a first example, let's take a list of countries in Europe. First, we
 create a new Rails project:
 
-    $
-      [...]
-    $
-    $
+```bash
+$ rails new europe
+  [...]
+$ cd europe
+$
+```
 
-Next, let's have a look at the help page for `rails generate
-  model`:
+Next, let's have a look at the help page for `rails generate model`:
 
-    $
-    Usage:
-      rails generate model NAME [field[:type][:index] field[:type][:index]] [options]
+```bash
+$ rails generate model
+Usage:
+  rails generate model NAME [field[:type][:index] field[:type][:index]] [options]
 
-    Options:
-          [--skip-namespace]  # Skip namespace (affects only isolated applications)
-      -o, --orm=NAME          # Orm to be invoked
-                              # Default: active_record
+Options:
+      [--skip-namespace], [--no-skip-namespace]  # Skip namespace (affects only isolated applications)
+      [--force-plural], [--no-force-plural]      # Forces the use of the given model name
+  -o, --orm=NAME                                 # Orm to be invoked
+                                                 # Default: active_record
 
-    ActiveRecord options:
-          [--migration]            # Indicates when to generate migration
-                                   # Default: true
-          [--timestamps]           # Indicates when to generate timestamps
-                                   # Default: true
-          [--parent=PARENT]        # The parent class for the generated model
-          [--indexes]              # Add indexes for references and belongs_to columns
-                                   # Default: true
-      -t, [--test-framework=NAME]  # Test framework to be invoked
-                                   # Default: test_unit
+ActiveRecord options:
+      [--migration], [--no-migration]    # Indicates when to generate migration
+                                         # Default: true
+      [--timestamps], [--no-timestamps]  # Indicates when to generate timestamps
+                                         # Default: true
+      [--parent=PARENT]                  # The parent class for the generated model
+      [--indexes], [--no-indexes]        # Add indexes for references and belongs_to columns
+                                         # Default: true
+  -t, [--test-framework=NAME]            # Test framework to be invoked
+                                         # Default: test_unit
 
-    TestUnit options:
-          [--fixture]                   # Indicates when to generate fixture
-                                        # Default: true
-      -r, [--fixture-replacement=NAME]  # Fixture replacement to be invoked
+TestUnit options:
+      [--fixture], [--no-fixture]   # Indicates when to generate fixture
+                                    # Default: true
+  -r, [--fixture-replacement=NAME]  # Fixture replacement to be invoked
 
-    Runtime options:
-      -f, [--force]    # Overwrite files that already exist
-      -p, [--pretend]  # Run but do not make any changes
-      -q, [--quiet]    # Suppress status output
-      -s, [--skip]     # Skip files that already exist
+Runtime options:
+  -f, [--force]                    # Overwrite files that already exist
+  -p, [--pretend], [--no-pretend]  # Run but do not make any changes
+  -q, [--quiet], [--no-quiet]      # Suppress status output
+  -s, [--skip], [--no-skip]        # Skip files that already exist
 
-    Description:
-        Stubs out a new model. Pass the model name, either CamelCased or
-        under_scored, and an optional list of attribute pairs as arguments.
+Description:
+    Stubs out a new model. Pass the model name, either CamelCased or
+    under_scored, and an optional list of attribute pairs as arguments.
 
-        Attribute pairs are field:type arguments specifying the
-        model's attributes. Timestamps are added by default, so you don't have to
-        specify them by hand as 'created_at:datetime updated_at:datetime'.
+    Attribute pairs are field:type arguments specifying the
+    model's attributes. Timestamps are added by default, so you don't have to
+    specify them by hand as 'created_at:datetime updated_at:datetime'.
 
-        You don't have to think up every attribute up front, but it helps to
-        sketch out a few so you can start working with the model immediately.
+    As a special case, specifying 'password:digest' will generate a
+    password_digest field of string type, and configure your generated model and
+    tests for use with ActiveModel has_secure_password (assuming the default ORM
+    and test framework are being used).
 
-        This generator invokes your configured ORM and test framework, which
-        defaults to ActiveRecord and TestUnit.
+    You don't have to think up every attribute up front, but it helps to
+    sketch out a few so you can start working with the model immediately.
 
-        Finally, if --parent option is given, it's used as superclass of the
-        created model. This allows you create Single Table Inheritance models.
+    This generator invokes your configured ORM and test framework, which
+    defaults to ActiveRecord and TestUnit.
 
-        If you pass a namespaced model name (e.g. admin/account or Admin::Account)
-        then the generator will create a module with a table_name_prefix method
-        to prefix the model's table name with the module name (e.g. admin_account)
+    Finally, if --parent option is given, it's used as superclass of the
+    created model. This allows you create Single Table Inheritance models.
 
-    Available field types:
+    If you pass a namespaced model name (e.g. admin/account or Admin::Account)
+    then the generator will create a module with a table_name_prefix method
+    to prefix the model's table name with the module name (e.g. admin_accounts)
 
-        Just after the field name you can specify a type like text or boolean.
-        It will generate the column with the associated SQL type. For instance:
+Available field types:
 
-            `rails generate model post title:string body:text`
+    Just after the field name you can specify a type like text or boolean.
+    It will generate the column with the associated SQL type. For instance:
 
-        will generate a title column with a varchar type and a body column with a text
-        type. You can use the following types:
+        `rails generate model post title:string body:text`
 
-            integer
-            primary_key
-            decimal
-            float
-            boolean
-            binary
-            string
-            text
-            date
-            time
-            datetime
-            timestamp
+    will generate a title column with a varchar type and a body column with a text
+    type. If no type is specified the string type will be used by default.
+    You can use the following types:
 
-        You can also consider `references` as a kind of type. For instance, if you run:
+        integer
+        primary_key
+        decimal
+        float
+        boolean
+        binary
+        string
+        text
+        date
+        time
+        datetime
 
-            `rails generate model photo title:string album:references`
+    You can also consider `references` as a kind of type. For instance, if you run:
 
-        It will generate an album_id column. You should generate this kind of fields when
-        you will use a `belongs_to` association for instance. `references` also support
-        the polymorphism, you could enable the polymorphism like this:
+        `rails generate model photo title:string album:references`
 
-            `rails generate model product supplier:references{polymorphic}`
+    It will generate an `album_id` column. You should generate these kinds of fields when
+    you will use a `belongs_to` association, for instance. `references` also supports
+    polymorphism, you can enable polymorphism like this:
 
-        For integer, string, text and binary fields an integer in curly braces will
-        be set as the limit:
+        `rails generate model product supplier:references{polymorphic}`
 
-            `rails generate model user pseudo:string{30}`
+    For integer, string, text and binary fields, an integer in curly braces will
+    be set as the limit:
 
-        For decimal two integers separated by a comma in curly braces will be used
-        for precision and scale:
+        `rails generate model user pseudo:string{30}`
 
-            `rails generate model product price:decimal{10,2}`
+    For decimal, two integers separated by a comma in curly braces will be used
+    for precision and scale:
 
-        You can add a `:uniq` or `:index` suffix for unique or standard indexes
-        respectively:
+        `rails generate model product 'price:decimal{10,2}'`
 
-            `rails generate model user pseudo:string:uniq`
-            `rails generate model user pseudo:string:index`
+    You can add a `:uniq` or `:index` suffix for unique or standard indexes
+    respectively:
 
-        You can combine any single curly brace option with the index options:
+        `rails generate model user pseudo:string:uniq`
+        `rails generate model user pseudo:string:index`
 
-            `rails generate model user username:string{30}:uniq`
-            `rails generate model product supplier:references{polymorphic}:index`
+    You can combine any single curly brace option with the index options:
 
+        `rails generate model user username:string{30}:uniq`
+        `rails generate model product supplier:references{polymorphic}:index`
 
-    Examples:
-        `rails generate model account`
+    If you require a `password_digest` string column for use with
+    has_secure_password, you should specify `password:digest`:
 
-            For ActiveRecord and TestUnit it creates:
+        `rails generate model user password:digest`
 
-                Model:      app/models/account.rb
-                Test:       test/models/account_test.rb
-                Fixtures:   test/fixtures/accounts.yml
-                Migration:  db/migrate/XXX_create_accounts.rb
+Examples:
+    `rails generate model account`
 
-        `rails generate model post title:string body:text published:boolean`
+        For ActiveRecord and TestUnit it creates:
 
-            Creates a Post model with a string title, text body, and published flag.
+            Model:      app/models/account.rb
+            Test:       test/models/account_test.rb
+            Fixtures:   test/fixtures/accounts.yml
+            Migration:  db/migrate/XXX_create_accounts.rb
 
-        `rails generate model admin/account`
+    `rails generate model post title:string body:text published:boolean`
 
-            For ActiveRecord and TestUnit it creates:
+        Creates a Post model with a string title, text body, and published flag.
 
-                Module:     app/models/admin.rb
-                Model:      app/models/admin/account.rb
-                Test:       test/models/admin/account_test.rb
-                Fixtures:   test/fixtures/admin/accounts.yml
-                Migration:  db/migrate/XXX_create_admin_accounts.rb
+    `rails generate model admin/account`
 
-    $
+        For ActiveRecord and TestUnit it creates:
+
+            Module:     app/models/admin.rb
+            Model:      app/models/admin/account.rb
+            Test:       test/models/admin/account_test.rb
+            Fixtures:   test/fixtures/admin/accounts.yml
+            Migration:  db/migrate/XXX_create_admin_accounts.rb
+```
 
 The usage description `rails generate model NAME
   [field[:type][:index] field[:type][:index]] [options]` tells us that
@@ -220,36 +213,33 @@ after `rails generate model` comes the name of the model and then the
 table fields. If you do not put `:type` after a table field name, it is
 assumed to be a string by default. Let's create the *model* `country`:
 
-    $
-          invoke  active_record
-          create    db/migrate/20130715174248_create_countries.rb
-          create    app/models/country.rb
-          invoke    test_unit
-          create      test/models/country_test.rb
-          create      test/fixtures/countries.yml
-    $
+```bash
+$ rails generate model Country name population:integer
+      invoke  active_record
+      create    db/migrate/20150415194714_create_countries.rb
+      create    app/models/country.rb
+      invoke    test_unit
+      create      test/models/country_test.rb
+      create      test/fixtures/countries.yml
+      $
+```
 
-migrations
-database
-migrations
-migrations
-ActiveRecord
-migrations
-migrations
 The generator has created a database migration file with the name
-`db/migrate/20130715174248_create_countries.rb`. It provides the
+`db/migrate/20150415194714_create_countries.rb`. It provides the
 following code:
 
-    class CreateCountries < ActiveRecord::Migration
-      def change
-        create_table :countries do |t|
-          t.string :name
-          t.integer :population
+```ruby
+class CreateCountries < ActiveRecord::Migration
+  def change
+    create_table :countries do |t|
+      t.string :name
+      t.integer :population
 
-          t.timestamps
-        end
-      end
+      t.timestamps null: false
     end
+  end
+end
+```
 
 A migration contains database changes. In this migration, a class
 CreateCountries is defined as a child of ActiveRecord::Migration. The
@@ -259,45 +249,45 @@ roll-back.
 With `rake db:migrate` we can apply the migrations, in other words,
 create the corresponding database table:
 
-    $
-    ==  CreateCountries: migrating ================================================
-    -- create_table(:countries)
-       -> 0.0010s
-    ==  CreateCountries: migrated (0.0011s) =======================================
+```bash
+$ rake db:migrate
+== 20150415194714 CreateCountries: migrating ==================================
+-- create_table(:countries)
+   -> 0.0013s
+== 20150415194714 CreateCountries: migrated (0.0014s) =========================
 
-    $
+$
+```
 
 > **Note**
 >
-> You will find more details on migrations in ?.
+> You will find more details on migrations in [the section Migrations](#migrations).
 
 Let's have a look at the file `app/models/country.rb`:
 
-    class Country < ActiveRecord::Base
-    end
+```ruby
+class Country < ActiveRecord::Base
+end
+```
 
 Hmmm … the class Country is a child of ActiveRecord::Base. Makes sense,
 as we are discussing ActiveRecord in this chapter. ;-)
 
 ### The Attributes id, created\_at and updated\_at
 
-id
-ActiveRecord
-created\_at
-ActiveRecord
-updated\_at
-ActiveRecord
 Even if you cannot see it in the migration, we also get the attributes
-id, created\_at und updated\_at by default for each ActiveRecord model.
-In the Rails console, we can output the attributes of the class Country
+`id`, `created_at` und `updated_at` by default for each ActiveRecord model.
+In the Rails console, we can output the attributes of the class `Country`
 by entering the class name:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    => Country(id: integer, name: string, population: integer, created_at: datetime, updated_at: datetime)
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Country
+=> Country(id: integer, name: string, population: integer, created_at: datetime, updated_at: datetime)
+>> exit
+$
+```
 
 The attribute created\_at stores the time when the record was initially
 created. updated\_at shows the time of the last update for this record.
@@ -308,14 +298,13 @@ is automatically incremented by 1 for each record.
 ### Getters and Setters
 
 To read and write values of a SQL table row you can use by ActiveRecord
-provided getters and setters (?). These attr\_accessors are
-automatically created. The getter of the field updated\_at for a given
-Country with the name `germany` would be `germany.updated_at`.
+provided getters and setters [the section called "Getters and Setters"](#getters-and-setters). 
+These attr\_accessors are automatically created. The getter of the field 
+`updated_at` for a given `Country` with the name `germany` would 
+be `germany.updated_at`.
 
 ### Possible Data Types in ActiveRecord
 
-data types
-ActiveRecord
 ActiveRecord is a *layer* between Ruby and various relational databases.
 Unfortunately, many SQL databases have different perspectives regarding
 the definition of columns and their content. But you do not need to
@@ -334,54 +323,40 @@ for you.
 
 To generate a *model*, you can use the following field types:
 
--   binary
-    ActiveRecord
-    `binary`
+-   `binary`
 
     This is a BLOB (*Binary Large Object*) in the classical sense. Never
     heard of it? Then you probably won't need it.
 
     See also <http://en.wikipedia.org/wiki/Binary_large_object>
 
--   boolean
-    ActiveRecord
-    `boolean`
+-   `boolean`
 
     A Boolean value. Can be either `true` or `false`.
 
     See also <http://en.wikipedia.org/wiki/Boolean_data_type>
 
--   date
-    ActiveRecord
-    `date`
+-   `date`
 
     You can store a date here.
 
--   datetime
-    ActiveRecord
-    `datetime`
+-   `datetime`
 
     Here you can store a date including a time.
 
--   float
-    ActiveRecord
-    `float`
+-   `float`
 
     For storing a floating point number.
 
     See also <http://en.wikipedia.org/wiki/Floating_point>
 
--   integer
-    ActiveRecord
-    `integer`
+-   `integer`
 
     For storing an integer.
 
     See also <http://en.wikipedia.org/wiki/Integer_(computer_science)>
 
--   decimal
-    ActiveRecord
-    `decimal`
+-   `decimal`
 
     For storing a decimal number.
 
@@ -391,14 +366,14 @@ To generate a *model*, you can use the following field types:
     > But you need to observe the special syntax. Example for creating a
     > price with a decimal:
     >
-    >     $
-    >           invoke  active_record
-    >           create    db/migrate/20121114110808_create_products.rb
-    >           create    app/models/product.rb
-    >           invoke    test_unit
-    >           create      test/unit/product_test.rb
-    >           create      test/fixtures/products.yml
-    >     $
+    >     $ rails generate model product name 'price:decimal{7,2}'
+    >          invoke  active_record
+    >          create    db/migrate/20150416120946_create_products.rb
+    >          create    app/models/product.rb
+    >          invoke    test_unit
+    >          create      test/models/product_test.rb
+    >          create      test/fixtures/products.yml
+    >      $
     >
     > That would generate the following migration
     > (`db/migrate/20121114110808_create_products.rb`):
@@ -414,9 +389,7 @@ To generate a *model*, you can use the following field types:
     >       end
     >     end
 
--   primary\_key
-    ActiveRecord
-    `primary_key`
+-   `primary_key`
 
     This is an integer that is automatically incremented by 1 by the
     database for each new entry. This field type is often used as key
@@ -424,54 +397,40 @@ To generate a *model*, you can use the following field types:
 
     See also <http://en.wikipedia.org/wiki/Unique_key>
 
--   string
-    ActiveRecord
-    `string`
+-   `string`
 
     A string, in other words a sequence of any characters, up to a
-    maximum of 2^8^-1 (= 255) characters.
+    maximum of 2^8 -1 (= 255) characters.
 
     See also <http://en.wikipedia.org/wiki/String_(computer_science)>
 
--   text
-    ActiveRecord
-    `text`
+-   `text`
 
     Also a string - but considerably bigger. By default, up to 2^16^ (=
     65536) characters can be saved here.
 
--   time
-    ActiveRecord
-    `time`
+-   `time`
 
     A time.
 
--   timestamp
-    ActiveRecord
-    `timestamp`
+-   `timestamp`
 
     A time with date, filled in automatically by the database.
 
-In ? we will provide more information on the individual data types and
+In [the section "Migrations"](#migrations) we will provide more information on the individual data types and
 discuss available options. Don't forget, this is a book for beginners,
-so this section just gives a brief overview. If you want to find out
-more about the various datatypes, please refer to the documentation
-listed in ?.
+so this section just gives a brief overview.
 
 ### Naming Conventions (Country vs. country vs. countries)
 
-inflections
-ActiveRecord
-inflections
-inflections
-ActiveSupport
 Rails newbies often find it hard to figure out when to use upper and
 lower case, for example, `Country` or `country` (one is a class, the
 other one a model). The problem is usually not the class itself, but
 purely the spelling or wording. For now, let's just say: it's all very
 logical and you will quickly get the hang of it. The important thing is
 that you keep using English words, even if you would normally be
-programming in another language (see ?).
+programming in another language (see [the section called "Why is it 
+all in english?"](chapter03-first-steps-with-rails.html#why-is-it-all-in-english)).
 
 Originally, my plan was to now start philosophizing at great length on
 naming conventions. But then I thought: “Jeez, the readers want to get
@@ -479,26 +438,30 @@ going and not sit here for ages reading about theory.” So I am now going
 to introduce the methods with which you can find out the naming
 conventions yourself in the Rails *console*:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    => "Country"
-    >>
-    => "countries"
-    >>
-    => "country_id"
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> 'country'.classify
+=> "Country"
+>> 'country'.tableize
+=> "countries"
+>> 'country'.foreign_key
+=> "country_id"
+>>
+```
 
 ActiveRecord automatically uses the English plural forms. So for the
 class Country, it's countries. If you are not sure about a term, you can
 also work with the class and method name.
 
-    >>
-    => "countries"
-    >>
-    => "country_id"
-    >>
-    $
+```bash
+>> Country.name.tableize
+=> "countries"
+>> Country.name.foreign_key
+=> "country_id"
+>> exit
+$
+```
 
 You will find a complete list of the corresponding methods at
 <http://rails.rubyonrails.org/classes/ActiveSupport/CoreExtensions/String/Inflections.html>.
@@ -508,35 +471,36 @@ shown above.
 
 ### Database Configuration
 
-database.yml
 Which database is used by default? Let's have a quick look at the
 configuration file for the database (`config/database.yml`):
 
-    # SQLite version 3.x
-    #   gem install sqlite3
-    #
-    #   Ensure the SQLite 3 gem is defined in your Gemfile
-    #   gem 'sqlite3'
-    development:
-      adapter: sqlite3
-      database: db/development.sqlite3
-      pool: 5
-      timeout: 5000
+```yml
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+#
+default: &default
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
 
-    # Warning: The database defined as "test" will be erased and
-    # re-generated from your development database when you run "rake".
-    # Do not set this db to the same as development or production.
-    test:
-      adapter: sqlite3
-      database: db/test.sqlite3
-      pool: 5
-      timeout: 5000
+development:
+  <<: *default
+  database: db/development.sqlite3
 
-    production:
-      adapter: sqlite3
-      database: db/production.sqlite3
-      pool: 5
-      timeout: 5000
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: db/test.sqlite3
+
+production:
+  <<: *default
+  database: db/production.sqlite3
+```
 
 As we are working in `development` mode, Rails has created a new SQLite3
 database `db/development.sqlite3` as a result of `rake db:migrate` and
@@ -545,60 +509,65 @@ saved all data there.
 Fans of command line clients can use `sqlite3` for viewing this
 database:
 
-    $  
-    SQLite version 3.7.12 2012-04-03 19:43:07
-    Enter ".help" for instructions
-    Enter SQL statements terminated with a ";"
-    sqlite>
-    countries          schema_migrations
-    sqlite>
-    CREATE TABLE "countries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "population" integer, "created_at" datetime, "updated_at" datetime);
-    sqlite>
-    $
+```bash
+$ sqlite3 db/development.sqlite3
+SQLite version 3.8.5 2014-08-15 22:37:57
+Enter ".help" for usage hints.
+sqlite> .tables
+countries          schema_migrations
+sqlite> .schema countries
+CREATE TABLE "countries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, 
+"population" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
+sqlite> .exit
+$
+```
 
 Adding Records
 --------------
 
 Actually, I would like to show you first how to view records, but there
 we have another chicken and egg problem. So first, here is how you can
-create a new record with ActiveRecord.
+create a new record with `ActiveRecord`.
 
 ### create
 
-ActiveRecord
-methods
-create()
-The most frequently used method for creating a new record is create.
+The most frequently used method for creating a new record is `create`.
 Let's try creating a country in the console with the command
-`Country.create(name: 'Germany',
-    population: 81831000)`
+`Country.create(name: 'Germany', population: 81831000)`
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (5.8ms)  INSERT INTO "countries" ("created_at", "name", "population", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Mon, 15 Jul 2013 17:58:19 UTC +00:00], ["name", "Germany"], ["population", 81831000], ["updated_at", Mon, 15 Jul 2013 17:58:19 UTC +00:00]]
-       (1.0ms)  commit transaction
-    => #<Country id: 1, name: "Germany", population: 81831000, created_at: "2013-07-15 17:58:19", updated_at: "2013-07-15 17:58:19">
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Country.create(name: 'Germany', population: 81831000)
+   (0.3ms)  begin transaction
+  SQL (1.3ms)  INSERT INTO "countries" ("name", "population",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Germany"], 
+  ["population", 81831000], ["created_at", "2015-04-16 13:32:37.748459"], 
+  ["updated_at", "2015-04-16 13:32:37.748459"]]
+   (0.7ms)  commit transaction
+=> #<Country id: 1, name: "Germany", population: 81831000, 
+created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
+>> exit
+$
+```
 
 ActiveRecord saves the new record and outputs the executed SQL command
 in the development environment. But to make absolutely sure it works,
 let's have a quick look with the command line client `sqlite3`:
 
-    $  
-    SQLite version 3.7.12 2012-04-03 19:43:07
-    Enter ".help" for instructions
-    Enter SQL statements terminated with a ";"
-    sqlite>
-    1|Germany|81831000|2013-07-15 17:58:19.600948|2013-07-15 17:58:19.600948
-    sqlite>
-    $
+```bash
+$ sqlite3 db/development.sqlite3
+SQLite version 3.8.5 2014-08-15 22:37:57
+Enter ".help" for usage hints.
+sqlite> SELECT * FROM countries;
+1|Germany|81831000|2015-04-16 13:32:37.748459|2015-04-16 13:32:37.748459
+sqlite> .exit
+$
+```
 
 #### Syntax
 
-The method create can handle a number of different syntax constructs. If
+The method `create` can handle a number of different syntax constructs. If
 you want to create a single record, you can do this with or without
 {}-brackets within the the ()-brackets:
 
@@ -622,199 +591,201 @@ Similarly, you can describe the attributes differently:
 You can also pass an array of hashes to create and use this approach to
 create several records at once:
 
-    Country.create([{name: 'Germany'}, {name: 'France'}])
+```bash
+Country.create([{name: 'Germany'}, {name: 'France'}])
+```
 
 ### new
 
-ActiveRecord
-methods
-new()
-ActiveRecord
-methods
-save()
 In addition to create there is also new. But you have to use save to
 save an object created with new (which has both advantages and
 disadvantages):
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    => #<Country id: nil, name: nil, population: nil, created_at: nil, updated_at: nil>
-    >>
-    => "France"
-    >>
-    => 65447374
-    >>
-       (0.2ms)  begin transaction
-      SQL (2.3ms)  INSERT INTO "countries" ("created_at", "name", "population", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Mon, 15 Jul 2013 18:07:03 UTC +00:00], ["name", "France"], ["population", 65447374], ["updated_at", Mon, 15 Jul 2013 18:07:03 UTC +00:00]]
-       (3.0ms)  commit transaction
-    => true
-    >>
-    => #<Country id: 2, name: "France", population: 65447374, created_at: "2013-07-15 18:07:03", updated_at: "2013-07-15 18:07:03">
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> france = Country.new
+=> #<Country id: nil, name: nil, population: nil, created_at: nil, updated_at: nil>
+>> france.name = 'France'
+=> "France"
+>> france.population = 65447374
+=> 65447374
+>> france.save
+   (0.2ms)  begin transaction
+  SQL (0.9ms)  INSERT INTO "countries" ("name", "population", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "France"], ["population", 65447374], ["created_at", "2015-04-16 13:40:07.608858"], ["updated_at", "2015-04-16 13:40:07.608858"]]
+   (9.4ms)  commit transaction
+=> true
+>> france
+=> #<Country id: 2, name: "France", population: 65447374, created_at: "2015-04-16 13:40:07", updated_at: "2015-04-16 13:40:07">
+>>
+```
 
 You can also pass parameters for the new record directly to the method
-new, just as with create:
+`new`, just as with `create`:
 
-    >>
-    => #<Country id: nil, name: "Belgium", population: 10839905, created_at: nil, updated_at: nil>
-    >>
-       (0.2ms)  begin transaction
-      SQL (1.3ms)  INSERT INTO "countries" ("created_at", "name", "population", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Mon, 15 Jul 2013 18:08:07 UTC +00:00], ["name", "Belgium"], ["population", 10839905], ["updated_at", Mon, 15 Jul 2013 18:08:07 UTC +00:00]]
-       (2.1ms)  commit transaction
-    => true
-    >>
-    $
+```bash
+>> belgium = Country.new(name: 'Belgium', population: 10839905)
+=> #<Country id: nil, name: "Belgium", population: 10839905, created_at: nil, updated_at: nil>
+>> belgium.save
+   (0.2ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "countries" ("name", "population", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Belgium"], ["population", 10839905], ["created_at", "2015-04-16 13:42:04.580377"], ["updated_at", "2015-04-16 13:42:04.580377"]]
+   (9.3ms)  commit transaction
+=> true
+>> exit
+$
+```
 
 ### new\_record?
 
-ActiveRecord
-methods
-new\_record?()
-With the method new\_record? you can find out if a record has already
-been saved or not. If a new object has been created with new and not yet
-been saved, then the result of new\_record? is `true`. After a save it
+With the method `new_record?` you can find out if a record has already
+been saved or not. If a `new` object has been created with new and not yet
+been saved, then the result of `new_record?` is `true`. After a `save` it
 is `false`.
 
 Example:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    => #<Country id: nil, name: "Netherlands", population: nil, created_at: nil, updated_at: nil>
-    >>
-    => true
-    >>
-       (0.2ms)  begin transaction
-      SQL (2.3ms)  INSERT INTO "countries" ("created_at", "name", "updated_at") VALUES (?, ?, ?)  [["created_at", Mon, 15 Jul 2013 18:08:52 UTC +00:00], ["name", "Netherlands"], ["updated_at", Mon, 15 Jul 2013 18:08:52 UTC +00:00]]
-       (3.1ms)  commit transaction
-    => true
-    >>
-    => false
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> netherlands = Country.new(name: 'Netherlands')
+=> #<Country id: nil, name: "Netherlands", population: nil, created_at: nil, updated_at: nil>
+>> netherlands.new_record?
+=> true
+>> netherlands.save
+   (0.2ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "countries" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "Netherlands"], ["created_at", "2015-04-16 13:48:03.114012"], ["updated_at", "2015-04-16 13:48:03.114012"]]
+   (0.8ms)  commit transaction
+=> true
+>> netherlands.new_record?
+=> false
+>> exit
+$
+```
 
 > **Tip**
 >
 > For already existing records, you can also check for changes with the
-> method changed? (see ?).
+> method `changed?` (see [the section called "changed?"](#changed)).
 
 first, last and all
 -------------------
 
-ActiveRecord
-methods
-first()
-ActiveRecord
-methods
-last()
-ActiveRecord
-methods
-all()
 In certain cases, you may need the first record, or the last one, or
 perhaps even all records. Conveniently, there is a ready-made method for
-each case. Let's start with the easiest ones: first and last.
+each case. Let's start with the easiest ones: `first` and `last`.
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Country Load (0.1ms)  SELECT "countries".* FROM "countries" ORDER BY "countries"."id" ASC LIMIT 1
-    => #<Country id: 1, name: "Germany", population: 81831000, created_at: "2013-07-15 18:03:20", updated_at: "2013-07-15 18:03:20">
-    >>
-      Country Load (0.3ms)  SELECT "countries".* FROM "countries" ORDER BY "countries"."id" DESC LIMIT 1
-    => #<Country id: 4, name: "Netherlands", population: nil, created_at: "2013-07-15 18:08:52", updated_at: "2013-07-15 18:08:52">
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Country.first
+  Country Load (0.8ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" ASC LIMIT 1
+=> #<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
+>> Country.last
+  Country Load (0.4ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" DESC LIMIT 1
+=> #<Country id: 4, name: "Netherlands", population: nil, created_at: "2015-04-16 13:48:03", updated_at: "2015-04-16 13:48:03">
+>>
+```
 
-And now all at once with all:
+And now all at once with `all`:
 
-    >>
-      Country Load (0.2ms)  SELECT "countries".* FROM "countries"
-    => #<ActiveRecord::Relation [#<Country id: 1, name: "Germany", population: 81831000, created_at: "2013-07-15 18:03:20", updated_at: "2013-07-15 18:03:20">, #<Country id: 2, name: "France", population: 65447374, created_at: "2013-07-15 18:07:03", updated_at: "2013-07-15 18:07:03">, #<Country id: 3, name: "Belgium", population: 10839905, created_at: "2013-07-15 18:08:07", updated_at: "2013-07-15 18:08:07">, #<Country id: 4, name: "Netherlands", population: nil, created_at: "2013-07-15 18:08:52", updated_at: "2013-07-15 18:08:52">]>
-    >>
+```bash
+>> Country.all
+  Country Load (0.3ms)  SELECT "countries".* FROM "countries"
+=> #<ActiveRecord::Relation [#<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">, #<Country id: 2, name: "France", population: 65447374, created_at: "2015-04-16 13:40:07", updated_at: "2015-04-16 13:40:07">, #<Country id: 3, name: "Belgium", population: 10839905, created_at: "2015-04-16 13:42:04", updated_at: "2015-04-16 13:42:04">, #<Country id: 4, name: "Netherlands", population: nil, created_at: "2015-04-16 13:48:03", updated_at: "2015-04-16 13:48:03">]>
+>>
+```
 
-But the objects created by first, last and all are different. first and
-last return an object of the class Country and all of course returns an
+But the objects created by `first`, `last` and `all` are different. `first` and
+`last` return an object of the class `Country` and `all` of course returns an
 array of such objects:
 
-    >>
-      Country Load (0.3ms)  SELECT "countries".* FROM "countries" ORDER BY "countries"."id" ASC LIMIT 1
-    => Country(id: integer, name: string, population: integer, created_at: datetime, updated_at: datetime)
-    >>
-    => ActiveRecord::Relation::ActiveRecord_Relation_Country
-    >>
+```bash
+>> Country.first.class
+  Country Load (0.2ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" ASC LIMIT 1
+=> Country(id: integer, name: string, population: integer, created_at: datetime, updated_at: datetime)
+>> Country.all.class
+=> Country::ActiveRecord_Relation
+>>
+```
 
 So `Country.first` is a Country which makes sense. But `Country.all` is
 something we haven't had yet. Let's use the console to get a better idea
 of it:
 
-    >>
-      Country Load (0.4ms)  SELECT "countries".* FROM "countries"
-    ---
-    - !ruby/object:Country
-      attributes:
-        id: 1
-        name: Germany
-        population: 81831000
-        created_at: 2013-07-15 18:03:20.814776000 Z
-        updated_at: 2013-07-15 18:03:20.814776000 Z
-    - !ruby/object:Country
-      attributes:
-        id: 2
-        name: France
-        population: 65447374
-        created_at: 2013-07-15 18:07:03.227571000 Z
-        updated_at: 2013-07-15 18:07:03.227571000 Z
-    - !ruby/object:Country
-      attributes:
-        id: 3
-        name: Belgium
-        population: 10839905
-        created_at: 2013-07-15 18:08:07.125974000 Z
-        updated_at: 2013-07-15 18:08:07.125974000 Z
-    - !ruby/object:Country
-      attributes:
-        id: 4
-        name: Netherlands
-        population:
-        created_at: 2013-07-15 18:08:52.736007000 Z
-        updated_at: 2013-07-15 18:08:52.736007000 Z
-    => nil
-    >>
+```bash
+>> puts Country.all.to_yaml
+  Country Load (0.4ms)  SELECT "countries".* FROM "countries"
+---
+- !ruby/object:Country
+  attributes:
+    id: 1
+    name: Germany
+    population: 81831000
+    created_at: 2015-04-16 13:32:37.748459 Z
+    updated_at: 2015-04-16 13:32:37.748459 Z
+- !ruby/object:Country
+  attributes:
+    id: 2
+    name: France
+    population: 65447374
+    created_at: 2015-04-16 13:40:07.608858 Z
+    updated_at: 2015-04-16 13:40:07.608858 Z
+- !ruby/object:Country
+  attributes:
+    id: 3
+    name: Belgium
+    population: 10839905
+    created_at: 2015-04-16 13:42:04.580377 Z
+    updated_at: 2015-04-16 13:42:04.580377 Z
+- !ruby/object:Country
+  attributes:
+    id: 4
+    name: Netherlands
+    population: 
+    created_at: 2015-04-16 13:48:03.114012 Z
+    updated_at: 2015-04-16 13:48:03.114012 Z
+=> nil
+>>
+```
 
-hmmm... by using the to\_yaml method suddenly the database has work to
+hmmm... by using the `to_yaml` method suddenly the database has work to
 do. The reason for this behavior is optimization. Let's assume that you
 want to chain a couple of methods. Than it might be better for
 ActiveRecord to wait till the very last second which it does. It only
 requests the data from the SQL database when it has to do it. Until than
-it stores the request in a ActiveRecord::Relation.
+it stores the request in a `ActiveRecord::Relation`.
 
-The result of `Country.all` is actually an Array of Country.
+The result of `Country.all` is actually an `Array` of `Country`.
 
-If Country.all returns an array, then we should also be able to use
-iterators (see ? and ?), right? Yes, of course! That is the beauty of
-it. Here is a little experiment with each:
+If `Country.all` returns an array, then we should also be able to use
+iterators (see [the section called "Iterators"](chapter02.ruby-basics.html#iterators) and [the section called "Iterator each"](chapter02-ruby-basics.html#iterator-each)), 
+right? Yes, of course! That is the beauty of it. Here is a little experiment with each:
 
-    >>
-    ?>
-    >>
-      Country Load (0.3ms)  SELECT "countries".* FROM "countries"
-    Germany
-    France
-    Belgium
-    Netherlands
-    => [#<Country id: 1, name: "Germany", population: 81831000, created_at: "2013-07-15 18:03:20", updated_at: "2013-07-15 18:03:20">, #<Country id: 2, name: "France", population: 65447374, created_at: "2013-07-15 18:07:03", updated_at: "2013-07-15 18:07:03">, #<Country id: 3, name: "Belgium", population: 10839905, created_at: "2013-07-15 18:08:07", updated_at: "2013-07-15 18:08:07">, #<Country id: 4, name: "Netherlands", population: nil, created_at: "2013-07-15 18:08:52", updated_at: "2013-07-15 18:08:52">]
-    >>
+```bash
+>> Country.all.each do |country|
+?>   puts country.name
+>> end
+  Country Load (0.3ms)  SELECT "countries".* FROM "countries"
+Germany
+France
+Belgium
+Netherlands
+=> [#<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">, #<Country id: 2, name: "France", population: 65447374, created_at: "2015-04-16 13:40:07", updated_at: "2015-04-16 13:40:07">, #<Country id: 3, name: "Belgium", population: 10839905, created_at: "2015-04-16 13:42:04", updated_at: "2015-04-16 13:42:04">, #<Country id: 4, name: "Netherlands", population: nil, created_at: "2015-04-16 13:48:03", updated_at: "2015-04-16 13:48:03">]
+>>
+```
 
 So can we also use `.all.first` as an alternative for `.first`? Yes, but
 it does not make much sense. Have a look for yourself:
 
-    >>
-      Country Load (0.3ms)  SELECT "countries".* FROM "countries" ORDER BY "countries"."id" ASC LIMIT 1
-    => #<Country id: 1, name: "Germany", population: 81831000, created_at: "2013-07-15 18:03:20", updated_at: "2013-07-15 18:03:20">
-    >>
-      Country Load (0.4ms)  SELECT "countries".* FROM "countries" ORDER BY "countries"."id" ASC LIMIT 1
-    => #<Country id: 1, name: "Germany", population: 81831000, created_at: "2013-07-15 18:03:20", updated_at: "2013-07-15 18:03:20">
-    >>
+```bash
+>> Country.first
+  Country Load (0.3ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" ASC LIMIT 1
+=> #<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
+>> Country.all.first
+  Country Load (0.2ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" ASC LIMIT 1
+=> #<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
+>>
+```
 
 `Country.first` and `Country.all.first` result in exact the same SQL
 query.
@@ -822,36 +793,46 @@ query.
 Populating the Database with seeds.rb
 -------------------------------------
 
-seeds.rb
 With the file `db/seeds.rb`, the Rails gods have given us a way of
 feeding default values easily and quickly to a fresh installation. This
 is a normal Ruby program within the Rails environment. You have full
 access to all classes and methods of your application.
 
 So you do not need to enter everything manually with `rails
-  console` in order to make the records created in ? available in a new
+  console` in order to make the records created in [the section called "create"](#create) available in a new
 Rails application, but you can simply use the following file
 `db/seeds.rb`:
 
-    Country.create(name: 'Germany', population: 81831000)
-    Country.create(name: 'France', population: 65447374)
-    Country.create(name: 'Belgium', population: 10839905)
-    Country.create(name: 'Netherlands', population: 16680000)
+```ruby
+Country.create(name: 'Germany', population: 81831000)
+Country.create(name: 'France', population: 65447374)
+Country.create(name: 'Belgium', population: 10839905)
+Country.create(name: 'Netherlands', population: 16680000)
+```
 
 You then populate it with data via `rake db:seed`. To be on the safe
 side, you should always set up the database from scratch with
 `rake db:setup` in the context of this book and then automatically
 populate it with the file `db/seeds.rb`. Here is what is looks like:
 
-    $
-    db/development.sqlite3 already exists
-    -- create_table("countries", {:force=>true})
-       -> 0.0101s
-    -- create_table("products", {:force=>true})
-       -> 0.0030s
-    -- initialize_schema_migrations_table()
-       -> 0.0010s
-    $
+```bash
+$ rake db:setup
+db/development.sqlite3 already exists
+db/test.sqlite3 already exists
+-- create_table("countries", {:force=>:cascade})
+   -> 0.0148s
+-- create_table("products", {:force=>:cascade})
+   -> 0.0041s
+-- initialize_schema_migrations_table()
+   -> 0.0203s
+-- create_table("countries", {:force=>:cascade})
+   -> 0.0036s
+-- create_table("products", {:force=>:cascade})
+   -> 0.0036s
+-- initialize_schema_migrations_table()
+   -> 0.0008s
+$
+```
 
 I use the file `db/seeds.rb` at this point because it offers a simple
 mechanism for filling an empty database with default values. In the
@@ -860,27 +841,27 @@ example scenarios.
 
 ### It's all just Ruby code
 
-seeds.rb
 The `db/seeds.rb` is a Ruby program. Correspondingly, we can also use
 the following approach as an alternative:
 
-    country_list = [
-      [ "Germany", 81831000 ],
-      [ "France", 65447374 ],
-      [ "Belgium", 10839905 ],
-      [ "Netherlands", 16680000 ]
-    ]
+```ruby
+country_list = [
+  [ "Germany", 81831000 ],
+  [ "France", 65447374 ],
+  [ "Belgium", 10839905 ],
+  [ "Netherlands", 16680000 ]
+]
 
-    country_list.each do |name, population|
-      Country.create( name: name, population: population )
-    end
+country_list.each do |name, population|
+  Country.create( name: name, population: population )
+end
+```
 
 The result is the same. I am showing you this example to make it clear
 that you can program completely normally within the file `db/seeds.rb`.
 
 ### Generating seeds.rb From Existing Data
 
-seeds.rb, generate from existing data
 Sometimes it can be useful to export the current data pool of a Rails
 application into a `db/seeds.rb`. While writing this book, I encountered
 this problem in almost every chapter. Unfortunately, there is no
@@ -891,166 +872,189 @@ my approach.
 We create our own little rake task for that. That can be done by
 creating the file `lib/tasks/export.rake` with the following content:
 
-    namespace :export do
-      desc "Prints Country.all in a seeds.rb way."
-      task :seeds_format => :environment do
-        Country.order(:id).all.each do |country|
-          puts "Country.create(#{country.serializable_hash.delete_if {|key, value| ['created_at','updated_at','id'].include?(key)}.to_s.gsub(/[{}]/,'')})"
-        end
-      end
+```ruby
+namespace :export do
+  desc "Prints Country.all in a seeds.rb way."
+  task :seeds_format => :environment do
+    Country.order(:id).all.each do |country|
+      puts "Country.create(#{country.serializable_hash.delete_if {|key, value| ['created_at','updated_at','id'].include?(key)}.to_s.gsub(/[{}]/,'')})"
     end
+  end
+end
+```
 
 Then you can call the corresponding rake task with the command
 `rake export:seeds_format`:
 
-    $
-    Country.create("name"=>"Germany", "population"=>81831000)
-    Country.create("name"=>"France", "population"=>65447374)
-    Country.create("name"=>"Belgium", "population"=>10839905)
-    Country.create("name"=>"Netherlands", "population"=>16680000)
-    $
+```bash
+$ rake export:seeds_format
+Country.create("name"=>"Germany", "population"=>81831000)
+Country.create("name"=>"France", "population"=>65447374)
+Country.create("name"=>"Belgium", "population"=>10839905)
+Country.create("name"=>"Netherlands", "population"=>16680000)
+$
+```
 
 You can either expand this program so that the output is written
 directly into the `db/seeds.rb` or you can simply use the shell:
 
-    $
-    $
+```bash
+$ rake export:seeds_format > db/seeds.rb
+$
+```
 
 Searching and Finding with Queries
 ----------------------------------
 
-The methods first and all are already quite nice, but usually you want
+The methods `first` and `all` are already quite nice, but usually you want
 to search for something specific with a query.
 
 For describing queries, we create a new Rails project:
 
-    $
-      [...]
-    $  
-    $
-      [...]
-    $
-      [...]
-    $
+```bash
+$ rails new jukebox
+  [...]
+$  cd jukebox
+$ rails generate model Album name release_year:integer
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
 For the examples uses here, use a `db/seeds.rb` with the following
 content:
 
-    Album.create(name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967)
-    Album.create(name: "Pet Sounds", release_year: 1966)
-    Album.create(name: "Revolver", release_year: 1966)
-    Album.create(name: "Highway 61 Revisited", release_year: 1965)
-    Album.create(name: "Rubber Soul", release_year: 1965)
-    Album.create(name: "What's Going On", release_year: 1971)
-    Album.create(name: "Exile on Main St.", release_year: 1972)
-    Album.create(name: "London Calling", release_year: 1979)
-    Album.create(name: "Blonde on Blonde", release_year: 1966)
-    Album.create(name: "The Beatles", release_year: 1968)
+```ruby
+Album.create(name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967)
+Album.create(name: "Pet Sounds", release_year: 1966)
+Album.create(name: "Revolver", release_year: 1966)
+Album.create(name: "Highway 61 Revisited", release_year: 1965)
+Album.create(name: "Rubber Soul", release_year: 1965)
+Album.create(name: "What's Going On", release_year: 1971)
+Album.create(name: "Exile on Main St.", release_year: 1972)
+Album.create(name: "London Calling", release_year: 1979)
+Album.create(name: "Blonde on Blonde", release_year: 1966)
+Album.create(name: "The Beatles", release_year: 1968)
+```
 
-Then, set up the new database with `rake
-  db:setup`:
+Then, set up the new database with `rake db:setup`:
 
-    $
-    db/development.sqlite3 already exists
-    -- create_table("albums", {:force=>true})
-       -> 0.0085s
-    -- initialize_schema_migrations_table()
-       -> 0.0010s
-    $
+```bash
+$ rake db:setup
+db/development.sqlite3 already exists
+-- create_table("albums", {:force=>:cascade})
+   -> 0.0135s
+-- initialize_schema_migrations_table()
+   -> 0.0226s
+-- create_table("albums", {:force=>:cascade})
+   -> 0.0022s
+-- initialize_schema_migrations_table()
+   -> 0.0037s
+$
+```
 
 ### find
 
-ActiveRecord
-methods
-find()
 The simplest case is searching for a record via a primary key (by
 default, the `id` field in the database table). If I know the ID of an
 object (here: a record line), then I can search for the individual
 object or several objects at once via the ID:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (1.7ms)  SELECT "albums".* FROM "albums" WHERE "albums"."id" = ? LIMIT 1  [["id", 2]]
-    => #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">
-    >>
-      Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."id" IN (1, 3, 7)
-    => [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]
-    >>  
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.find(2)
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ? LIMIT 1  [["id", 2]]
+=> #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">
+>> Album.find([1,3,7])
+  Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."id" IN (1, 3, 7)
+=> [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]
+>>
+```
 
 If you always want to have an array as result, you also always have to
 pass an array as parameter:
 
-    >>
-      Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."id" = ? LIMIT 1  [["id", 5]]
-    => Album(id: integer, name: string, release_year: integer, created_at: datetime, updated_at: datetime)
-    >>
-      Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE "albums"."id" = ? LIMIT 1  [["id", 5]]
-    => Array
-    >>
-    $
+```bash
+>> Album.find(5).class
+  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ? LIMIT 1  [["id", 5]]
+=> Album(id: integer, name: string, release_year: integer, created_at: datetime, updated_at: datetime)
+>> Album.find([5]).class
+  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ? LIMIT 1  [["id", 5]]
+=> Array
+>> exit
+$
+```
 
 > **Warning**
 >
-> The methodfind generates an exception if the ID you are searching for
+> The method `find` generates an exception if the ID you are searching for
 > does not have a record in the database. If in doubt, you should use
-> where (see ?).
+> `where` (see [the section called "where"](#where)).
 
 ### where
 
-ActiveRecord
-methods
-where()
-With the method where, you can search for specific values in the
+With the method `where`, you can search for specific values in the
 database. Let's search for all albums from the year 1966:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.1ms)  SELECT "albums".* FROM "albums" WHERE "albums"."release_year" = 1966
-    => #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-       (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE "albums"."release_year" = 1966
-    => 3
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where(release_year: 1966)
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE "albums"."release_year" = ?  [["release_year", 1966]]
+=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> Album.where(release_year: 1966).count
+   (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE "albums"."release_year" = ?  [["release_year", 1966]]
+=> 3
+>>
+```
 
-You can also use where to search for *ranges* (see ?):
+You can also use where to search for *ranges* (see [the section called "Range"](chapter02-ruby-basics.html#range)):
 
-    >>
-      Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966)
-    => #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-       (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966)
-    => 5
-    >>
+```bash
+>> Album.where(release_year: 1960..1966)
+  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966)
+=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> Album.where(release_year: 1960..1966).count
+   (0.2ms)  SELECT COUNT(*) FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966)
+=> 5
+>>
+```
 
 And you can also specify several search factors simultaneously,
 separated by commas:
 
-    >>
-      Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966) AND ("albums"."id" BETWEEN 1 AND 5)
-    => #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
+```bash
+>> Album.where(release_year: 1960..1966, id: 1..5)
+  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966) AND ("albums"."id" BETWEEN 1 AND 5)
+=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>>
+```
 
 Or an array of parameters:
 
-    >>
-      Album Load (0.5ms)  SELECT "albums".* FROM "albums" WHERE "albums"."release_year" IN (1966, 1968)
-    => #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
+```bash
+>> Album.where(release_year: [1966, 1968])
+  Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."release_year" IN (1966, 1968)
+=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>>
+```
 
-The result of where is always an array. Even if it only contains one hit
+The result of `where` is always an array. Even if it only contains one hit
 or if no hits are returned. If you are looking for the first hit, you
-need to combine the method where with the method first:
+need to combine the method `where` with the method `first`:
 
-    >>
-      Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."release_year" IN (1966, 1968) ORDER BY "albums"."id" ASC LIMIT 1
-    => #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">
-    >>
-      Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."release_year" IN (1966, 1968) ORDER BY "albums"."id" ASC LIMIT 1
-    => Album(id: integer, name: string, release_year: integer, created_at: datetime, updated_at: datetime)
-    >>
-    $
+```bash
+>> Album.where(release_year: [1966, 1968]).first
+  Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."release_year" IN (1966, 1968)  ORDER BY "albums"."id" ASC LIMIT 1
+=> #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">
+>> Album.where(release_year: [1966, 1968]).first.class
+  Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."release_year" IN (1966, 1968)  ORDER BY "albums"."id" ASC LIMIT 1
+=> Album(id: integer, name: string, release_year: integer, created_at: datetime, updated_at: datetime)
+>> exit
+$
+```
 
 #### SQL Queries with where
 
@@ -1073,38 +1077,45 @@ mark as placeholder and only listed as parameters after the SQL string.
 In this example, we are searching for all albums whose name contains the
 string “on”:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.1ms)  SELECT "albums".* FROM "albums" WHERE (name like '%on%')
-    => #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 6, name: "What's Going On", release_year: 1971, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 8, name: "London Calling", release_year: 1979, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where( 'name like ?', '%on%')
+  Album Load (1.1ms)  SELECT "albums".* FROM "albums" WHERE (name like '%on%')
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 6, name: "What's Going On", release_year: 1971, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 8, name: "London Calling", release_year: 1979, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>>
+```
 Now the number of albums that were published from 1965 onwards:
 
-    >>
-       (0.2ms)  SELECT COUNT(*) FROM "albums" WHERE (release_year > 1964)
-    => 10
-    >>
+```bash
+>> Album.where( 'release_year > ?', 1964 ).count
+   (0.2ms)  SELECT COUNT(*) FROM "albums" WHERE (release_year > 1964)
+=> 10
+>>
+```
 
 The number of albums that are more recent than 1970 and whose name
 contains the string “on”:
 
-    >>
-       (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE (name like '%on%' AND release_year > 1970)
-    => 3
-    >>
+```bash
+>> Album.where( 'name like ? AND release_year > ?', '%on%', 1970 ).count
+   (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE (name like '%on%' AND release_year > 1970)
+=> 3
+>>
+```
 
 If the variable `search_string` contains the desired string, you can
 search for it as follows:
 
-    >>
-    => "ing"
-    >>
-       (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE (name like '%ing%')
-    => 2
-    >>
-    $
+```bash
+>> search_string = 'ing'
+=> "ing"
+>> Album.where( 'name like ?', "%#{search_string}%").count
+   (0.2ms)  SELECT COUNT(*) FROM "albums" WHERE (name like '%ing%')
+=> 2
+>> exit
+$
+```
 
 ##### “Dangerous” SQL Queries
 
@@ -1113,13 +1124,15 @@ SQL query completely and forego the *sanitizing* of the query.
 
 Let's count all albums whose name contain the string “on”:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT COUNT(*) FROM "albums" WHERE (name like '%on%')
-    => 5
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where( "name like '%on%'" ).count
+   (0.2ms)  SELECT COUNT(*) FROM "albums" WHERE (name like '%on%')
+=> 5
+>> exit
+$
+```
 
 Please only use this variation if you know exactly what you are doing
 and once you have familiarized yourself with the topic SQL injections
@@ -1127,38 +1140,36 @@ and once you have familiarized yourself with the topic SQL injections
 
 #### Lazy Loading
 
-ActiveRecord
-lazy loading
-lazy loading
-ActiveRecord, lazy loading
 Lazy Loading is a mechanism that only carries out a database query if
 the program flow cannot be realised without the result of this query.
-Until then, the query is saved as ActiveRecord::Relation. (Incidentally,
+Until then, the query is saved as `ActiveRecord::Relation`. (Incidentally,
 the opposite of *lazy loading* is referred to as *eager loading*.)
 
 Does it make sense in principle, but you are not sure what the point of
 it all is? Then let's cobble together a query where we nest several
 methods. In the following example, `a` is defined more and more closely
-and only at the end (when calling the method all) the database query
+and only at the end (when calling the method `all`) the database query
 would really be executed in a production system. With the method
-ActiveRecord methods to\_sql()to\_sql you can display the current SQL
+ActiveRecord methods `to_sql` you can display the current SQL
 query.
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1965 AND 1968)
-    => #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-    => ActiveRecord::Relation::ActiveRecord_Relation_Album
-    >>
-      Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1965 AND 1968) ORDER BY "albums".release_year ASC
-    => #<ActiveRecord::Relation [#<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-      Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1965 AND 1968) ORDER BY "albums".release_year ASC LIMIT 3
-    => #<ActiveRecord::Relation [#<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> a = Album.where(release_year: 1965..1968)
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1965 AND 1968)
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> a.class
+=> Album::ActiveRecord_Relation
+>> a = a.order(:release_year)
+  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1965 AND 1968)  ORDER BY "albums"."release_year" ASC
+=> #<ActiveRecord::Relation [#<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> a = a.limit(3)
+  Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1965 AND 1968)  ORDER BY "albums"."release_year" ASC LIMIT 3
+=> #<ActiveRecord::Relation [#<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> exit
+$
+```
 
 The console can be a bit tricky about this. It tries to help the
 developer by actually showing the result but in a non-console
@@ -1173,306 +1184,284 @@ Let's take the sum of all release years of the albums that came out in
 the 70s. Then we sort the albums alphabetically and then calculate the
 sum.
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (2.7ms)  SELECT SUM("albums"."release_year") AS sum_id FROM "albums" WHERE ("albums"."release_year" BETWEEN 1970 AND 1979)
-    => 5922
-    >>
-       (0.2ms)  SELECT SUM("albums"."release_year") AS sum_id FROM "albums" WHERE ("albums"."release_year" BETWEEN 1970 AND 1979)
-    => 5922
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where(release_year: 1970..1979).sum(:release_year)
+   (1.5ms)  SELECT SUM("albums"."release_year") FROM "albums" WHERE ("albums"."release_year" BETWEEN 1970 AND 1979)
+=> 5922
+>> Album.where(release_year: 1970..1979).order(:name).sum(:release_year)
+   (0.3ms)  SELECT SUM("albums"."release_year") FROM "albums" WHERE ("albums"."release_year" BETWEEN 1970 AND 1979)
+=> 5922
+>> exit
+$
+```
 
 Logically, the result is the same for both queries. But the interesting
 thing is that ActiveRecord uses the same SQL code for both queries. It
-has detected that order is completely irrelevant for sum and therefore
+has detected that `order` is completely irrelevant for `sum` and therefore
 taken it out altogether.
 
 > **Note**
 >
-> In case you are asking yourself why the first query took 2.7ms and the
-> second 0.2ms: ActiveRecord cached the results of the first SQL
+> In case you are asking yourself why the first query took 1.5ms and the
+> second 0.3ms: ActiveRecord cached the results of the first SQL
 > request.
 
 ### order and reverse\_order
 
-ActiveRecord
-methods
-order()
-ActiveRecord
-methods
-reverse\_order
-To sort a database query, you can use the method order. Example: all
+To sort a database query, you can use the method `order`. Example: all
 albums from the 60s, sorted by name:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969) ORDER BY "albums".name ASC
-    => #<ActiveRecord::Relation [#<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where(release_year: 1960..1969).order(:name)
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)  ORDER BY "albums"."name" ASC
+=> #<ActiveRecord::Relation [#<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>>
+```
 
 With the method reverse\_order you can reverse an order previously
-defined via order:
+defined via `order`:
 
-    >>
-      Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969) ORDER BY "albums".name DESC
-    => #<ActiveRecord::Relation [#<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-    $
+```bash
+>> Album.where(release_year: 1960..1969).order(:name).reverse_order
+  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)  ORDER BY "albums"."name" DESC
+=> #<ActiveRecord::Relation [#<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> exit
+$
+```
 
 ### limit
 
-ActiveRecord
-methods
-limit()
 The result of any search can be limited to a certain range via the
-method limit.
+method `limit`.
 
 The first 5 albums from the 60s:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.1ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969) LIMIT 5
-    => #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
+```bash
+>> Album.where(release_year: 1960..1969).limit(5)
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969) LIMIT 5
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>>
+```
 
 All albums sorted by name, then the first 5 of those:
 
-    >>
-      Album Load (0.4ms)  SELECT "albums".* FROM "albums" ORDER BY "albums".name ASC LIMIT 5
-    => #<ActiveRecord::Relation [#<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 8, name: "London Calling", release_year: 1979, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-    $
+```bash
+>> Album.order(:name).limit(5)
+  Album Load (0.4ms)  SELECT  "albums".* FROM "albums"  ORDER BY "albums"."name" ASC LIMIT 5
+=> #<ActiveRecord::Relation [#<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 8, name: "London Calling", release_year: 1979, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> exit
+$
+```
 
 #### offset
 
-ActiveRecord
-methods
-offset()
-With the method offset, you can define the starting position of the
+With the method `offset`, you can define the starting position of the
 method limit.
 
 First, we return the first two records and then the first two records
 with an offset of 5:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.1ms)  SELECT "albums".* FROM "albums" LIMIT 2
-    => #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-      Album Load (0.3ms)  SELECT "albums".* FROM "albums" LIMIT 2 OFFSET 5
-    => #<ActiveRecord::Relation [#<Album id: 6, name: "What's Going On", release_year: 1971, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.limit(2)
+  Album Load (1.0ms)  SELECT  "albums".* FROM "albums" LIMIT 2
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> Album.limit(2).offset(5)
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" LIMIT 2 OFFSET 5
+=> #<ActiveRecord::Relation [#<Album id: 6, name: "What's Going On", release_year: 1971, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> exit
+$
+```
 
 ### group
 
-ActiveRecord
-methods
-group()
-With the method group, you can return the result of a query in grouped
+With the method `group`, you can return the result of a query in grouped
 form.
 
 Let's return all albums, grouped by their release year:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.1ms)  SELECT "albums".* FROM "albums" GROUP BY release_year
-    => #<ActiveRecord::Relation [#<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 6, name: "What's Going On", release_year: 1971, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 8, name: "London Calling", release_year: 1979, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.group(:release_year)
+  Album Load (0.3ms)  SELECT "albums".* FROM "albums" GROUP BY "albums"."release_year"
+=> #<ActiveRecord::Relation [#<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 6, name: "What's Going On", release_year: 1971, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 8, name: "London Calling", release_year: 1979, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> exit
+$
+```
 
 ### pluck
 
-ActiveRecord
-methods
-pluck()
 Normally, ActiveRecord pulls all table columns from the database and
 leaves it up to the programmer to later pick out the components he is
 interested in. But in case of large amounts of data, it can be useful
 and above all much quicker to define a specific database field directly
-for the query. You can do this via the method pluck.
+for the query. You can do this via the method `pluck`.
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT "albums"."name" FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-    => ["Sgt. Pepper's Lonely Hearts Club Band", "Pet Sounds", "Revolver", "Highway 61 Revisited", "Rubber Soul", "Blonde on Blonde", "The Beatles"]
-    >>
-       (0.1ms)  SELECT "albums"."name", "albums"."release_year" FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-    => [["Sgt. Pepper's Lonely Hearts Club Band", 1967], ["Pet Sounds", 1966], ["Revolver", 1966], ["Highway 61 Revisited", 1965], ["Rubber Soul", 1965], ["Blonde on Blonde", 1966], ["The Beatles", 1968]]
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where(release_year: 1960..1969).pluck(:name)
+   (0.1ms)  SELECT "albums"."name" FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> ["Sgt. Pepper's Lonely Hearts Club Band", "Pet Sounds", "Revolver", "Highway 61 Revisited", "Rubber Soul", "Blonde on Blonde", "The Beatles"]
+>> Album.where(release_year: 1960..1969).pluck(:name, :release_year)
+   (0.3ms)  SELECT "albums"."name", "albums"."release_year" FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> [["Sgt. Pepper's Lonely Hearts Club Band", 1967], ["Pet Sounds", 1966], ["Revolver", 1966], ["Highway 61 Revisited", 1965], ["Rubber Soul", 1965], ["Blonde on Blonde", 1966], ["The Beatles", 1968]]
+>> exit
+$
+```
 
-As a result, pluck returns an array.
+As a result, `pluck` returns an array.
 
 ### first\_or\_create and first\_or\_initialize
 
-ActiveRecord
-methods
-first\_or\_create
-ActiveRecord
-methods
-first\_or\_initialize
-The methods first\_or\_create and first\_or\_initialize are create ways
+The methods `first_or_create` and `first_or_initialize` are create ways
 to search for a specific entry in your database or create one if the
 entry doesn't exist already. Both can be chained to a where search.
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.5ms)  SELECT "albums".* FROM "albums" WHERE "albums"."name" = 'Test'
-    => #<ActiveRecord::Relation []>
-    >>
-      Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE "albums"."name" = 'Test' ORDER BY "albums"."id" ASC LIMIT 1
-       (0.1ms)  begin transaction
-      SQL (5.0ms)  INSERT INTO "albums" ("created_at", "name", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 08:00:59 UTC +00:00], ["name", "Test"], ["updated_at", Tue, 16 Jul 2013 08:00:59 UTC +00:00]]
-       (3.7ms)  commit transaction
-    => #<Album id: 11, name: "Test", release_year: nil, created_at: "2013-07-16 08:00:59", updated_at: "2013-07-16 08:00:59">
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where(name: 'Test')
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE "albums"."name" = ?  [["name", "Test"]]
+=> #<ActiveRecord::Relation []>
+>> test = Album.where(name: 'Test').first_or_create
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."name" = ?  ORDER BY "albums"."id" ASC LIMIT 1  [["name", "Test"]]
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "albums" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "Test"], ["created_at", "2015-04-16 18:34:35.775645"], ["updated_at", "2015-04-16 18:34:35.775645"]]
+   (9.2ms)  commit transaction
+=> #<Album id: 11, name: "Test", release_year: nil, created_at: "2015-04-16 18:34:35", updated_at: "2015-04-16 18:34:35">
+>> exit
+$
+```
 
 ### Calculations
 
-ActiveRecord
-calculations
 #### average
 
-ActiveRecord
-methods
-average()
-With the method average, you can calculate the average of the values in
+With the method `average`, you can calculate the average of the values in
 a particular column of the table. Our data material is of course not
 really suited to this. But as an example, let's calculate the average
 release year of all albums and then the same for albums from the 60s:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT AVG("albums"."release_year") AS avg_id FROM "albums"
-    => #<BigDecimal:7fbf9bbe1fb0,'0.19685E4',18(45)>
-    >>
-       (0.4ms)  SELECT AVG("albums"."release_year") AS avg_id FROM "albums"
-    => "1968.5"
-    >>
-       (0.2ms)  SELECT AVG("albums"."release_year") AS avg_id FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-    => #<BigDecimal:7fbf9f002510,'0.1966142857 142857E4',27(45)>
-    >>
-       (0.3ms)  SELECT AVG("albums"."release_year") AS avg_id FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-    => "1966.142857142857"
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.average(:release_year)
+   (0.3ms)  SELECT AVG("albums"."release_year") FROM "albums"
+=> #<BigDecimal:7fd76fd027a0,'0.19685E4',18(36)>
+>> Album.average(:release_year).to_s
+   (0.2ms)  SELECT AVG("albums"."release_year") FROM "albums"
+=> "1968.5"
+>> Album.where( :release_year => 1960..1969 ).average(:release_year)
+   (0.1ms)  SELECT AVG("albums"."release_year") FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> #<BigDecimal:7fd76fc908d0,'0.1966142857 14286E4',27(36)>
+>> Album.where( :release_year => 1960..1969 ).average(:release_year).to_s
+   (0.3ms)  SELECT AVG("albums"."release_year") FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> "1966.14285714286"
+>> exit
+$
+```
 
 #### count
 
-ActiveRecord
-methods
-count()
-The name says it all: the method count counts the number of records.
+The name says it all: the method `count` counts the number of records.
 
 First, we return the number of all albums in the database and then the
 number of albums from the 60s:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT COUNT(*) FROM "albums"
-    => 10
-    >>
-       (0.2ms)  SELECT COUNT(*) FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-    => 7
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.count
+   (0.1ms)  SELECT COUNT(*) FROM "albums"
+=> 11
+>> exit
+$
+```
 
 #### maximum
 
-ActiveRecord
-methods
-maximum()
-With the method maximum, you can output the item with the highest value
+With the method `maximum`, you can output the item with the highest value
 within a query.
 
 Let's look for the highest release year:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT MAX("albums"."release_year") AS max_id FROM "albums"
-    => 1979
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.maximum(:release_year)
+   (0.2ms)  SELECT MAX("albums"."release_year") FROM "albums"
+=> 1979
+>> exit
+$
+```
 
 #### minimum
 
-ActiveRecord
-methods
-minimum()
-With the method minimum, you can output the item with the lowest value
+With the method `minimum`, you can output the item with the lowest value
 within a query.
 
 Let's find the lowest release year:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT MIN("albums"."release_year") AS min_id FROM "albums"
-    => 1965
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.minimum(:release_year)
+   (0.2ms)  SELECT MIN("albums"."release_year") FROM "albums"
+=> 1965
+>> exit
+$
+```
 
 #### sum
 
-ActiveRecord
-methods
-sum()
-With the method sum, you can calculate the sum of all items in a
+With the method `sum`, you can calculate the sum of all items in a
 specific column of the database query.
 
 Let's find the sum of all release years:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT SUM("albums"."release_year") AS sum_id FROM "albums"
-    => 19685
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.sum(:release_year)
+   (0.2ms)  SELECT SUM("albums"."release_year") FROM "albums"
+=> 19685
+>> exit
+$
+```
 
 ### SQL EXPLAIN
 
-ActiveRecord
-methods
-explain
 Most SQL databases can provide detailled information on a SQL query with
 the command EXPLAIN. This does not make much sense for our mini
 application, but if you are working with a large database one day, then
 EXPLAIN is a good debugging method, for example to find out where to
-place an index. SQL EXPLAIN can be called with the method explain (it
+place an index. SQL EXPLAIN can be called with the method `explain` (it
 will be displayed in prettier form if you add a `puts`):
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.1ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-    => #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">]>
-    >>
-      Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-    => EXPLAIN for: SELECT "albums".* FROM "albums"  WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-    0|0|0|SCAN TABLE albums (~500000 rows)
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where(release_year: 1960..1969)
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+>> Album.where(release_year: 1960..1969).explain
+  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> EXPLAIN for: SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+0|0|0|SCAN TABLE albums
 
-    >>
-    $
+>> exit
+$
+```
 
 ### Batches
 
-ActiveRecord
-methods
-find\_each
 ActiveRecord stores the results of a query in Memory. With very large
 tables and results that can become a performance issue. To address this
 you can use the find\_each method which splits up the query into batches
@@ -1480,28 +1469,30 @@ with the size of 1,000 (can be configured with the `:batch_size`
 option). Our example Album table is too small to show the effect but the
 method would be used like this:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    ?>
-    >>
-      Album Load (0.1ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969) ORDER BY "albums"."id" ASC LIMIT 1000
-    SGT. PEPPER'S LONELY HEARTS CLUB BAND
-    PET SOUNDS
-    REVOLVER
-    HIGHWAY 61 REVISITED
-    RUBBER SOUL
-    BLONDE ON BLONDE
-    THE BEATLES
-    => nil
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where(release_year: 1960..1969).find_each do |album|
+?>   puts album.name.upcase
+>> end
+  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)  ORDER BY "albums"."id" ASC LIMIT 1000
+SGT. PEPPER'S LONELY HEARTS CLUB BAND
+PET SOUNDS
+REVOLVER
+HIGHWAY 61 REVISITED
+RUBBER SOUL
+BLONDE ON BLONDE
+THE BEATLES
+=> nil
+>> exit
+$
+```
 
 Editing a Record
 ----------------
 
 Adding data is quite nice, but often you want to edit a record. To show
-how that's done I use the album database from ?.
+how that's done I use the album database from [Section "Searching and Finding with Queries"](#searching-and-finding-with-queries).
 
 ### Simple Editing
 
@@ -1511,152 +1502,155 @@ Simple editing of a record takes place in the following steps:
 
 2.  Changing the attribute
 
-3.  Saving the record via the method ActiveRecord methods save()save
+3.  Saving the record via the method ActiveRecord methods `save`
 
 We are now searching for the album “The Beatles” and changing its name
 to “A Test”:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE "albums"."name" = 'The Beatles' ORDER BY "albums"."id" ASC LIMIT 1
-    => #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">
-    >>
-    => "The Beatles"
-    >>
-    => "A Test"
-    >>
-       (0.2ms)  begin transaction
-      SQL (2.1ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = 10  [["name", "A Test"], ["updated_at", Tue, 16 Jul 2013 08:08:00 UTC +00:00]]
-       (2.6ms)  commit transaction
-    =>
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> beatles_album = Album.where(name: 'The Beatles').first
+  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."name" = ?  ORDER BY "albums"."id" ASC LIMIT 1  [["name", "The Beatles"]]
+=> #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">
+>> beatles_album.name
+=> "The Beatles"
+>> beatles_album.name = 'A Test'
+=> "A Test"
+>> beatles_album.save
+   (0.1ms)  begin transaction
+  SQL (0.6ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = ?  [["name", "A Test"], ["updated_at", "2015-04-16 18:46:03.851575"], ["id", 10]]
+   (9.2ms)  commit transaction
+=> true
+>> exit
+$
+```
 
 ### changed?
 
-ActiveRecord
-methods
-changed?()
 If you are not sure if a record has been changed and not yet saved, you
-can check via the method changed?:
+can check via the method `changed?`:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.1ms)  SELECT "albums".* FROM "albums" WHERE "albums"."id" = 10 ORDER BY "albums"."id" ASC LIMIT 1
-    => #<Album id: 10, name: "A Test", release_year: 1968, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-16 08:08:00">
-    >>
-    => false
-    >>
-    => "The Beatles"
-    >>
-    => true
-    >>
-       (0.2ms)  begin transaction
-      SQL (2.3ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = 10  [["name", "The Beatles"], ["updated_at", Tue, 16 Jul 2013 08:23:52 UTC +00:00]]
-       (2.9ms)  commit transaction
-    => true
-    >>
-    => false
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> beatles_album = Album.where(id: 10).first
+  Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ?  ORDER BY "albums"."id" ASC LIMIT 1  [["id", 10]]
+=> #<Album id: 10, name: "A Test", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 18:46:03">
+>> beatles_album.changed?
+=> false
+>> beatles_album.name = 'The Beatles'
+=> "The Beatles"
+>> beatles_album.changed?
+=> true
+>> beatles_album.save
+   (0.1ms)  begin transaction
+  SQL (0.6ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = ?  [["name", "The Beatles"], ["updated_at", "2015-04-16 18:47:26.794527"], ["id", 10]]
+   (9.2ms)  commit transaction
+=> true
+>> beatles_album.changed?
+=> false
+>> exit
+$
+```
 
 ### update\_attributes
 
-ActiveRecord
-methods
-update\_attributes()
-With the method update\_attributes you can change several attributes of
+With the method `update_attributes` you can change several attributes of
 an object in one go and then immediately save them automatically.
 
-Let's use this method within the example used in ?:
+Let's use this method within the example used in [the section called "Simple Editing"](#simple-editing):
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Album Load (0.1ms)  SELECT "albums".* FROM "albums" ORDER BY "albums"."id" ASC LIMIT 1
-    => #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-15 18:59:50">
-    >>
-    => false
-    >>
-       (0.2ms)  begin transaction
-      SQL (2.2ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = 1  [["name", "Another Test"], ["updated_at", Tue, 16 Jul 2013 08:25:24 UTC +00:00]]
-       (3.0ms)  commit transaction
-    => true
-    >>
-    => false
-    >>
-      Album Load (0.5ms)  SELECT "albums".* FROM "albums" ORDER BY "albums"."id" ASC LIMIT 1
-    => #<Album id: 1, name: "Another Test", release_year: 1967, created_at: "2013-07-15 18:59:50", updated_at: "2013-07-16 08:25:24">
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> first_album = Album.first
+  Album Load (0.2ms)  SELECT  "albums".* FROM "albums"  ORDER BY "albums"."id" ASC LIMIT 1
+=> #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">
+>> first_album.changed?
+=> false
+>> first_album.update_attributes(name: 'Another Test')
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = ?  [["name", "Another Test"], ["updated_at", "2015-04-16 18:57:08.054247"], ["id", 1]]
+   (9.2ms)  commit transaction
+=> true
+>> first_album.changed?
+=> false
+>> Album.first
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums"  ORDER BY "albums"."id" ASC LIMIT 1
+=> #<Album id: 1, name: "Another Test", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 18:57:08">
+>>
+```
 
-This kind of update can also be chained with a where method:
+This kind of update can also be chained with a `where` method:
 
-    >>
-      Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE "albums"."name" = 'Another Test' ORDER BY "albums"."id" ASC LIMIT 1
-       (0.1ms)  begin transaction
-      SQL (0.9ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = 1  [["name", "Sgt. Pepper's Lonely Hearts Club Band"], ["updated_at", Tue, 16 Jul 2013 08:27:25 UTC +00:00]]
-       (3.0ms)  commit transaction
-    =>
-    >>
-    $
+```bash
+>> Album.where(name: 'Another Test').first.update_attributes(name: "Sgt. Pepper's Lonely Hearts Club Band")
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."name" = ?  ORDER BY "albums"."id" ASC LIMIT 1  [["name", "Another Test"]]
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = ?  [["name", "Sgt. Pepper's Lonely Hearts Club Band"], ["updated_at", "2015-04-16 18:58:00.268375"], ["id", 1]]
+   (9.0ms)  commit transaction
+=> true
+>> exit
+```
 
 ### Locking
 
-ActiveRecord
-locking
 There are many ways of locking a database. By default, Rails uses
 “optimistic locking” of records. To activate locking you need to have an
 attribute with the name `lock_version` which has to be an integer. To
-show how it works I'll create a new Rails project with a Product model.
-Than I'll try to change the price of the first Product on two different
+show how it works I'll create a new Rails project with a `Product` model.
+Than I'll try to change the price of the first `Product` on two different
 instances. The second change will raise an
 ActiveRecord::StaleObjectError.
 
 Example setup:
 
-    $
-      [...]
-    $
-    $  
-      [...]
-    $
-      [...]
-    $
+```bash
+$ rails new shop
+  [...]
+$ cd shop
+$ rails generate model Product name 'price:decimal{8,2}' lock_version:integer
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
 Raising an ActiveRecord::StaleObjectError:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (4.7ms)  INSERT INTO "products" ("created_at", "lock_version", "name", "price", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 11:24:56 UTC +00:00], ["lock_version", 0], ["name", "Orange"], ["price", #<BigDecimal:7f958e0f5de0,'0.5E0',9(45)>], ["updated_at", Tue, 16 Jul 2013 11:24:56 UTC +00:00]]
-       (3.2ms)  commit transaction
-    => #<Product id: 1, name: "Orange", price: #<BigDecimal:7f958e0f5de0,'0.5E0',9(45)>, lock_version: 0, created_at: "2013-07-16 11:24:56", updated_at: "2013-07-16 11:24:56">
-    >>
-      Product Load (0.3ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" ASC LIMIT 1
-    => #<Product id: 1, name: "Orange", price: #<BigDecimal:7f958d098768,'0.5E0',9(45)>, lock_version: 0, created_at: "2013-07-16 11:24:56", updated_at: "2013-07-16 11:24:56">
-    >>
-      Product Load (0.4ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" ASC LIMIT 1
-    => #<Product id: 1, name: "Orange", price: #<BigDecimal:7f958e1268a0,'0.5E0',9(45)>, lock_version: 0, created_at: "2013-07-16 11:24:56", updated_at: "2013-07-16 11:24:56">
-    >>
-    => 0.6
-    >>
-       (0.2ms)  begin transaction
-       (0.5ms)  UPDATE "products" SET "price" = 0.6, "updated_at" = '2013-07-16 11:25:41.931401', "lock_version" = 1 WHERE ("products"."id" = 1 AND "products"."lock_version" = 0)
-       (2.0ms)  commit transaction
-    => true
-    >>
-    => 0.7
-    >>
-       (0.1ms)  begin transaction
-       (0.2ms)  UPDATE "products" SET "price" = 0.7, "updated_at" = '2013-07-16 11:25:49.170722', "lock_version" = 1 WHERE ("products"."id" = 1 AND "products"."lock_version" = 0)
-       (0.1ms)  rollback transaction
-    ActiveRecord::StaleObjectError: Attempted to update a stale object: Product
-    [...]
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Product.create(name: 'Orange', price: 0.5)
+   (0.1ms)  begin transaction
+  SQL (0.7ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at", "lock_version") VALUES (?, ?, ?, ?, ?)  [["name", "Orange"], ["price", 0.5], ["created_at", "2015-04-16 19:02:17.338531"], ["updated_at", "2015-04-16 19:02:17.338531"], ["lock_version", 0]]
+   (1.0ms)  commit transaction
+=> #<Product id: 1, name: "Orange", price: #<BigDecimal:7feb59231198,'0.5E0',9(27)>, lock_version: 0, created_at: "2015-04-16 19:02:17", updated_at: "2015-04-16 19:02:17">
+>> a = Product.first
+  Product Load (0.4ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" ASC LIMIT 1
+=> #<Product id: 1, name: "Orange", price: #<BigDecimal:7feb5918a870,'0.5E0',9(27)>, lock_version: 0, created_at: "2015-04-16 19:02:17", updated_at: "2015-04-16 19:02:17">
+>> b = Product.first
+  Product Load (0.3ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" ASC LIMIT 1
+=> #<Product id: 1, name: "Orange", price: #<BigDecimal:7feb59172d60,'0.5E0',9(27)>, lock_version: 0, created_at: "2015-04-16 19:02:17", updated_at: "2015-04-16 19:02:17">
+>> a.price = 0.6
+=> 0.6
+>> a.save
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  UPDATE "products" SET "price" = 0.6, "updated_at" = '2015-04-16 19:02:59.514736', "lock_version" = 1 WHERE "products"."id" = ? AND "products"."lock_version" = ?  [["id", 1], ["lock_version", 0]]
+   (9.1ms)  commit transaction
+=> true
+>> b.price = 0.7
+=> 0.7
+>> b.save
+   (0.1ms)  begin transaction
+  SQL (0.3ms)  UPDATE "products" SET "price" = 0.7, "updated_at" = '2015-04-16 19:03:08.408511', "lock_version" = 1 WHERE "products"."id" = ? AND "products"."lock_version" = ?  [["id", 1], ["lock_version", 0]]
+   (0.1ms)  rollback transaction
+ActiveRecord::StaleObjectError: Attempted to update a stale object: Product
+[...]
+>> exit
+$
+```
 
 You have to deal with the conflict by rescuing the exception and fix the
 conflict depending on your business logic. Please make sure to add a
@@ -1666,16 +1660,7 @@ with a WebGUI.
 has\_many – 1:n Association
 ---------------------------
 
-ActiveRecord
-relations
-has\_many()
-ActiveRecord
-relations
-belongs\_to()
-ActiveRecord
-associations
-ActiveRecord, relations
-In order to explain has\_many, let's create a bookshelf application. In
+In order to explain `has_many`, let's create a bookshelf application. In
 this database, there is a model with books and a model with authors. As
 a book can have multiple authors, we need a 1:n association
 (*one-to-many association*) to represent it.
@@ -1687,43 +1672,53 @@ a book can have multiple authors, we need a 1:n association
 
 First, we create a Rails application:
 
-    $
-      [...]
-    $  
-    $
+```bash
+$ rails new bookshelf
+  [...]
+$ cd bookshelf
+$
+```
 
 Now we create the model for the books:
 
-    $
-      [...]
-    $
+```bash
+$ rails generate model book title
+  [...]
+$
+```
 
 And finally, we create the database table for the authors. In this, we
 need an assignment field to the books table. This *foreign key* is
 always set by default as name of the referenced object (here: `book`)
 with an attached `_id`:
 
-    $
-      [...]
-    $
+```bash
+$ rails generate model author book_id:integer first_name last_name
+  [...]
+$
+```
 
 Then execute a `rake db:migrate` so that the database tables are
 actually created:
 
-    $
-      [...]
-    $
+```bash
+$ rake db:migrate
+  [...]
+$
+```
 
 Let's have a look at this on the *console*:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    => Book(id: integer, title: string, created_at: datetime, updated_at: datetime)
-    >>
-    => Author(id: integer, book_id: integer, first_name: string, last_name: string, created_at: datetime, updated_at: datetime)
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Book
+=> Book(id: integer, title: string, created_at: datetime, updated_at: datetime)
+>> Author
+=> Author(id: integer, book_id: integer, first_name: string, last_name: string, created_at: datetime, updated_at: datetime)
+>> exit
+$
+```
 
 The two database tables are set up and can be used with ActiveRecord.
 But ActiveRecord does not yet know anything of the 1:n relation between
