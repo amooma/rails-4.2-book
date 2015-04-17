@@ -98,7 +98,7 @@ $
 ```
 
 That's looking good. If you have an older version of Ruby or Rails
-installed, please install the 4.4.1 version before you read any further.
+installed, please install the 4.2.1 version before you read any further.
 
 Now we start by creating a new Rails project with the name
 `testproject`. Ruby on Rails is a framework, so we first need to set up
