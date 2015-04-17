@@ -1712,12 +1712,11 @@ Let's have a look at this on the *console*:
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
->> Book
-=> Book(id: integer, title: string, created_at: datetime, updated_at: datetime)
->> Author
-=> Author(id: integer, book_id: integer, first_name: string, last_name: string, created_at: datetime, updated_at: datetime)
+>> Book.column_names
+=> ["id", "title", "created_at", "updated_at"]
+>> Author.column_names
+=> ["id", "book_id", "first_name", "last_name", "created_at", "updated_at"]
 >> exit
-$
 ```
 
 The two database tables are set up and can be used with ActiveRecord.
