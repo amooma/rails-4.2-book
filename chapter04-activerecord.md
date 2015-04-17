@@ -1,7 +1,7 @@
 ActiveRecord
 ============
 
-`ActiveRecord` is a level of abstraction that offers access to a SQL database. 
+`ActiveRecord` is a level of abstraction that offers access to a SQL database.
 `ActiveRecord` implements the architectural pattern *Active Record*.
 
 > **Note**
@@ -24,8 +24,8 @@ developers.
 Howto for this Chapter
 ----------------------
 
-This chapter is a self-contained unit. But the knowledge provided in 
-[Chapter 2, Ruby basics](chapter02-ruby-basics.html) and [Chapter 3, First steps with rails](chapter03-first-steps-with-rails.html) is required. 
+This chapter is a self-contained unit. But the knowledge provided in
+[Chapter 2, Ruby basics](chapter02-ruby-basics.html) and [Chapter 3, First steps with rails](chapter03-first-steps-with-rails.html) is required.
 Without these basics, you will not have any fun with this chapter!
 
 Rails newbies should read this chapter once from beginning to end.
@@ -278,13 +278,13 @@ as we are discussing ActiveRecord in this chapter. ;-)
 Even if you cannot see it in the migration, we also get the attributes
 `id`, `created_at` und `updated_at` by default for each ActiveRecord model.
 In the Rails console, we can output the attributes of the class `Country`
-by entering the class name:
+by using the class method `column_names`:
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
->> Country
-=> Country(id: integer, name: string, population: integer, created_at: datetime, updated_at: datetime)
+>> Country.column_names
+=> ["id", "name", "population", "created_at", "updated_at"]
 >> exit
 $
 ```
@@ -298,9 +298,9 @@ is automatically incremented by 1 for each record.
 ### Getters and Setters
 
 To read and write values of a SQL table row you can use by ActiveRecord
-provided getters and setters [the section called "Getters and Setters"](#getters-and-setters). 
-These attr\_accessors are automatically created. The getter of the field 
-`updated_at` for a given `Country` with the name `germany` would 
+provided getters and setters [the section called "Getters and Setters"](#getters-and-setters).
+These attr\_accessors are automatically created. The getter of the field
+`updated_at` for a given `Country` with the name `germany` would
 be `germany.updated_at`.
 
 ### Possible Data Types in ActiveRecord
@@ -429,7 +429,7 @@ other one a model). The problem is usually not the class itself, but
 purely the spelling or wording. For now, let's just say: it's all very
 logical and you will quickly get the hang of it. The important thing is
 that you keep using English words, even if you would normally be
-programming in another language (see [the section called "Why is it 
+programming in another language (see [the section called "Why is it
 all in english?"](chapter03-first-steps-with-rails.html#why-is-it-all-in-english)).
 
 Originally, my plan was to now start philosophizing at great length on
@@ -516,7 +516,7 @@ Enter ".help" for usage hints.
 sqlite> .tables
 countries          schema_migrations
 sqlite> .schema countries
-CREATE TABLE "countries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, 
+CREATE TABLE "countries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar,
 "population" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
 sqlite> .exit
 $
@@ -541,11 +541,11 @@ Loading development environment (Rails 4.2.1)
 >> Country.create(name: 'Germany', population: 81831000)
    (0.3ms)  begin transaction
   SQL (1.3ms)  INSERT INTO "countries" ("name", "population",
-  "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Germany"], 
-  ["population", 81831000], ["created_at", "2015-04-16 13:32:37.748459"], 
+  "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Germany"],
+  ["population", 81831000], ["created_at", "2015-04-16 13:32:37.748459"],
   ["updated_at", "2015-04-16 13:32:37.748459"]]
    (0.7ms)  commit transaction
-=> #<Country id: 1, name: "Germany", population: 81831000, 
+=> #<Country id: 1, name: "Germany", population: 81831000,
 created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
 >> exit
 $
@@ -741,7 +741,7 @@ of it:
   attributes:
     id: 4
     name: Netherlands
-    population: 
+    population:
     created_at: 2015-04-16 13:48:03.114012 Z
     updated_at: 2015-04-16 13:48:03.114012 Z
 => nil
@@ -758,7 +758,7 @@ it stores the request in a `ActiveRecord::Relation`.
 The result of `Country.all` is actually an `Array` of `Country`.
 
 If `Country.all` returns an array, then we should also be able to use
-iterators (see [the section called "Iterators"](chapter02.ruby-basics.html#iterators) and [the section called "Iterator each"](chapter02-ruby-basics.html#iterator-each)), 
+iterators (see [the section called "Iterators"](chapter02.ruby-basics.html#iterators) and [the section called "Iterator each"](chapter02-ruby-basics.html#iterator-each)),
 right? Yes, of course! That is the beauty of it. Here is a little experiment with each:
 
 ```bash
