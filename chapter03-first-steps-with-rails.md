@@ -98,7 +98,7 @@ $
 ```
 
 That's looking good. If you have an older version of Ruby or Rails
-installed, please install the 4.4.1 version before you read any further.
+installed, please install the 4.2.1 version before you read any further.
 
 Now we start by creating a new Rails project with the name
 `testproject`. Ruby on Rails is a framework, so we first need to set up
@@ -517,7 +517,7 @@ $ irb --simple-prompt
 
 Yes, both the number 1 and the result of 1 + 1 is a `Fixnum`. What
 happened? Rails is so intelligent that it automatically calls all
-objects in a viewview (that is the file `test.html.erb`) that are not
+objects in a view (that is the file `test.html.erb`) that are not
 already a string via the method `.to_s`, which always converts the
 content of the object to a string ([the section called “Method to_s for Your Own Classes”](chapter02-ruby-basics.html#method-to-s-for-your-own-classes)). Once more, a brief trip to `irb`:
 
