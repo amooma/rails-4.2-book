@@ -1727,17 +1727,21 @@ them. But this can be done in two small steps.
 First we add the line `has_many :authors` in the `app/models/book.rb`
 file to set the 1:n relationship:
 
-    class Book < ActiveRecord::Base
-      has_many :authors
-    end
+```ruby
+class Book < ActiveRecord::Base
+  has_many :authors
+end
+```
 
 Than we add `belongs_to :book` in the `app/models/author.rb` file to get
 the other way around configured (this is not always needed but often
 comes in handy):
 
-    class Author < ActiveRecord::Base
-      belongs_to :book
-    end
+```ruby
+class Author < ActiveRecord::Base
+  belongs_to :book
+end
+```
 
 These two simple definitions form the basis for a good deal of
 ActiveRecord magic. It will generate a bunch of cool new methods for us
@@ -1752,144 +1756,149 @@ Max Frisch.
 
 We drop the database with `rake db:reset`
 
-    $
-      [...]
-    $  
+```bash
+$ rake db:reset
+  [...]
+$
+```  
 
 Befor using the magic we'll insert a book with an author manually. For
 that we have to use the book's id in the `book_id` attribute to create
 the author.
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.3ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 11:58:17 UTC +00:00], ["title", "Homo faber"], ["updated_at", Tue, 16 Jul 2013 11:58:17 UTC +00:00]]
-       (3.0ms)  commit transaction
-    => #<Book id: 1, title: "Homo faber", created_at: "2013-07-16 11:58:17", updated_at: "2013-07-16 11:58:17">
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.5ms)  INSERT INTO "authors" ("book_id", "created_at", "first_name", "last_name", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 1], ["created_at", Tue, 16 Jul 2013 11:58:21 UTC +00:00], ["first_name", "Max"], ["last_name", "Frisch"], ["updated_at", Tue, 16 Jul 2013 11:58:21 UTC +00:00]]
-       (3.1ms)  commit transaction
-    => #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2013-07-16 11:58:21", updated_at: "2013-07-16 11:58:21">
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> book = Book.create(title: 'Homo faber')
+   (0.1ms)  begin transaction
+  SQL (0.7ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 08:55:01.961855"], ["updated_at", "2015-04-17 08:55:01.961855"]]
+   (0.9ms)  commit transaction
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 08:55:01", updated_at: "2015-04-17 08:55:01">
+>> author = Author.create(book_id: book.id, first_name: 'Max', last_name: 'Frisch')
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "authors" ("book_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 1], ["first_name", "Max"], ["last_name", "Frisch"], ["created_at", "2015-04-17 08:56:04.847540"], ["updated_at", "2015-04-17 08:56:04.847540"]]
+   (1.0ms)  commit transaction
+=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 08:56:04", updated_at: "2015-04-17 08:56:04">
+>> exit
+$
+```
 
-ActiveRecord
-methods
-id()
 Entering the `book_id` manually in this way is of course not very
-practical and susceptible to errors. That's why there is the method ?.
+practical and susceptible to errors. That's why there is the method
+[the section called "create"](#create).
 
 #### create
 
-ActiveRecord
-methods
-create()
-Now we try doing the same as in ?, but this time we use a bit of
-ActiveRecord magic. We can use the method create of `authors` to add new
-authors to each Book object. These automatically get the correct
+Now we try doing the same as in [the section called "Manually"](#manually), but this time we use a bit of
+ActiveRecord magic. We can use the method `create` of `authors` to add new
+authors to each `Book` object. These automatically get the correct
 `book_id`:
 
-    $
-      [...]
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.2ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:01:01 UTC +00:00], ["title", "Homo faber"], ["updated_at", Tue, 16 Jul 2013 12:01:01 UTC +00:00]]
-       (3.1ms)  commit transaction
-    => #<Book id: 1, title: "Homo faber", created_at: "2013-07-16 12:01:01", updated_at: "2013-07-16 12:01:01">
-    >>
-       (0.0ms)  begin transaction
-      SQL (0.4ms)  INSERT INTO "authors" ("book_id", "created_at", "first_name", "last_name", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 1], ["created_at", Tue, 16 Jul 2013 12:01:23 UTC +00:00], ["first_name", "Max"], ["last_name", "Frisch"], ["updated_at", Tue, 16 Jul 2013 12:01:23 UTC +00:00]]
-       (0.8ms)  commit transaction
-    => #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2013-07-16 12:01:23", updated_at: "2013-07-16 12:01:23">
-    >>
-    $
+```bash
+$ rake 
+  [...]
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> book = Book.create(title: 'Homo faber')
+   (0.1ms)  begin transaction
+  SQL (0.6ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 09:00:37.707093"], ["updated_at", "2015-04-17 09:00:37.707093"]]
+   (8.5ms)  commit transaction
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:00:37", updated_at: "2015-04-17 09:00:37">
+>> author = book.authors.create(first_name: 'Max', last_name: 'Frisch')
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17 09:00:44.616235"], ["updated_at", "2015-04-17 09:00:44.616235"]]
+   (1.1ms)  commit transaction
+=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:00:44", updated_at: "2015-04-17 09:00:44">
+>> exit
+$
+```
+    
 
-You could also place the authors.create() directly behind the
-Book.create():
+You could also place the `authors.create()` directly behind the
+`Book.create()`:
 
-    $
-      [...]
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.2ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:02:36 UTC +00:00], ["title", "Homo faber"], ["updated_at", Tue, 16 Jul 2013 12:02:36 UTC +00:00]]
-       (2.6ms)  commit transaction
-       (0.0ms)  begin transaction
-      SQL (0.4ms)  INSERT INTO "authors" ("book_id", "created_at", "first_name", "last_name", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 1], ["created_at", Tue, 16 Jul 2013 12:02:36 UTC +00:00], ["first_name", "Max"], ["last_name", "Frisch"], ["updated_at", Tue, 16 Jul 2013 12:02:36 UTC +00:00]]
-       (0.9ms)  commit transaction
-    => #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2013-07-16 12:02:36", updated_at: "2013-07-16 12:02:36">
-    >>
-    $
+```bash
+$ rake 
+  [...]
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 09:02:22.917846"], ["updated_at", "2015-04-17 09:02:22.917846"]]
+   (8.9ms)  commit transaction
+   (0.0ms)  begin transaction
+  SQL (0.3ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17 09:02:22.956936"], ["updated_at", "2015-04-17 09:02:22.956936"]]
+   (0.9ms)  commit transaction
+=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:02:22", updated_at: "2015-04-17 09:02:22">
+>> exit
+$
+```
 
 As create also accepts an array of hashes as an alternative to a single
 hash, you can also create multiple authors for a book in one go:
 
-    $
-      [...]
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.1ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:03:30 UTC +00:00], ["title", "Example"], ["updated_at", Tue, 16 Jul 2013 12:03:30 UTC +00:00]]
-       (3.0ms)  commit transaction
-       (0.0ms)  begin transaction
-      SQL (0.4ms)  INSERT INTO "authors" ("book_id", "created_at", "last_name", "updated_at") VALUES (?, ?, ?, ?)  [["book_id", 1], ["created_at", Tue, 16 Jul 2013 12:03:30 UTC +00:00], ["last_name", "A"], ["updated_at", Tue, 16 Jul 2013 12:03:30 UTC +00:00]]
-       (0.8ms)  commit transaction
-       (0.0ms)  begin transaction
-      SQL (0.3ms)  INSERT INTO "authors" ("book_id", "created_at", "last_name", "updated_at") VALUES (?, ?, ?, ?)  [["book_id", 1], ["created_at", Tue, 16 Jul 2013 12:03:30 UTC +00:00], ["last_name", "B"], ["updated_at", Tue, 16 Jul 2013 12:03:30 UTC +00:00]]
-       (0.8ms)  commit transaction
-    => [#<Author id: 1, book_id: 1, first_name: nil, last_name: "A", created_at: "2013-07-16 12:03:30", updated_at: "2013-07-16 12:03:30">, #<Author id: 2, book_id: 1, first_name: nil, last_name: "B", created_at: "2013-07-16 12:03:30", updated_at: "2013-07-16 12:03:30">]
-    >>
-    $
+```bash
+$ rake 
+  [...]
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Book.create(title: 'Example').authors.create([{last_name: 'A'}, {last_name: 'B'}])
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Example"], ["created_at", "2015-04-17 09:04:01.548882"], ["updated_at", "2015-04-17 09:04:01.548882"]]
+   (8.4ms)  commit transaction
+   (0.0ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "authors" ("last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["last_name", "A"], ["book_id", 1], ["created_at", "2015-04-17 09:04:01.581035"], ["updated_at", "2015-04-17 09:04:01.581035"]]
+   (1.0ms)  commit transaction
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "authors" ("last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["last_name", "B"], ["book_id", 1], ["created_at", "2015-04-17 09:04:01.585728"], ["updated_at", "2015-04-17 09:04:01.585728"]]
+   (0.8ms)  commit transaction
+=> [#<Author id: 1, book_id: 1, first_name: nil, last_name: "A", created_at: "2015-04-17 09:04:01", updated_at: "2015-04-17 09:04:01">, #<Author id: 2, book_id: 1, first_name: nil, last_name: "B", created_at: "2015-04-17 09:04:01", updated_at: "2015-04-17 09:04:01">]
+>> exit
+$
+```
 
 #### build
 
-ActiveRecord
-methods
-build()
-The method build resembles create. But the record is not saved. This
-only happens after a save:
+The method `build` resembles `create`. But the record is not saved. This
+only happens after a `save`:
 
-    $
-      [...]
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (24.5ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Sun, 18 Nov 2012 11:35:35 UTC +00:00], ["title", "Homo faber"], ["updated_at", Sun, 18 Nov 2012 11:35:35 UTC +00:00]]
-       (3.0ms)  commit transaction
-    => #<Book id: 1, title: "Homo faber", created_at: "2012-11-18 11:35:35", updated_at: "2012-11-18 11:35:35">
-    >>
-    => #<Author id: nil, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: nil, updated_at: nil>
-    >>
-    => true
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.7ms)  INSERT INTO "authors" ("book_id", "created_at", "first_name", "last_name", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 1], ["created_at", Sun, 18 Nov 2012 11:36:12 UTC +00:00], ["first_name", "Max"], ["last_name", "Frisch"], ["updated_at", Sun, 18 Nov 2012 11:36:12 UTC +00:00]]
-       (2.5ms)  commit transaction
-    => true
-    >>
-    => false
-    >>
-    $
+```bash
+$ rake 
+  [...]
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> book = Book.create(title: 'Homo faber')
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 09:05:25.850233"], ["updated_at", "2015-04-17 09:05:25.850233"]]
+   (9.0ms)  commit transaction
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:05:25", updated_at: "2015-04-17 09:05:25">
+>> author = book.authors.build(first_name: 'Max', last_name: 'Frisch')
+=> #<Author id: nil, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: nil, updated_at: nil>
+>> author.new_record?
+=> true
+>> author.save
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17 09:05:52.439983"], ["updated_at", "2015-04-17 09:05:52.439983"]]
+   (9.2ms)  commit transaction
+=> true
+>> author.new_record?
+=> false
+>> exit
+$
+```
 
 > **Warning**
 >
-> When using create and build, you of course have to observe logical
+> When using `create` and `build`, you of course have to observe logical
 > dependencies, otherwise there will be an error. For example, you
-> cannot chain two build methods. Example:
+> cannot chain two `build` methods. Example:
 >
->     $
->     Loading development environment (Rails 4.0.0)
->     >>
->     NoMethodError: undefined method `build' for #<Class:0x007fcc6ce71ab8>
+>     $ rails console
+>     Loading development environment (Rails 4.2.1)
+>     >> Book.build(title: 'Example').authors.build(last_name: 'A')
+>     NoMethodError: undefined method `build' for #<Class:0x007f9e10059050>
 >     [...]
->     >>
+>     >> exit
 >     $
 
 ### Accessing Records
@@ -1897,221 +1906,222 @@ only happens after a save:
 First we need example data. Please populate the file `db/seeds.rb` with
 the following content:
 
-    Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
-    Book.create(title: 'Der Besuch der alten Dame').authors.create(first_name: 'Friedrich', last_name: 'Dürrenmatt')
-    Book.create(title: 'Julius Shulman: The Last Decade').authors.create([
-      {first_name: 'Thomas', last_name: 'Schirmbock'},
-      {first_name: 'Julius', last_name: 'Shulman'},
-      {first_name: 'Jürgen', last_name: 'Nogai'}
-      ])
-    Book.create(title: 'Julius Shulman: Palm Springs').authors.create([
-      {first_name: 'Michael', last_name: 'Stern'},
-      {first_name: 'Alan', last_name: 'Hess'}
-      ])
-    Book.create(title: 'Photographing Architecture and Interiors').authors.create([
-      {first_name: 'Julius', last_name: 'Shulman'},
-      {first_name: 'Richard', last_name: 'Neutra'}
-      ])
-    Book.create(title: 'Der Zauberberg').authors.create(first_name: 'Thomas', last_name: 'Mann')
-    Book.create(title: 'In einer Familie').authors.create(first_name: 'Heinrich', last_name: 'Mann')
+```ruby
+Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
+Book.create(title: 'Der Besuch der alten Dame').authors.create(first_name: 'Friedrich', last_name: 'Dürrenmatt')
+Book.create(title: 'Julius Shulman: The Last Decade').authors.create([
+  {first_name: 'Thomas', last_name: 'Schirmbock'},
+  {first_name: 'Julius', last_name: 'Shulman'},
+  {first_name: 'Jürgen', last_name: 'Nogai'}
+  ])
+Book.create(title: 'Julius Shulman: Palm Springs').authors.create([
+  {first_name: 'Michael', last_name: 'Stern'},
+  {first_name: 'Alan', last_name: 'Hess'}
+  ])
+Book.create(title: 'Photographing Architecture and Interiors').authors.create([
+  {first_name: 'Julius', last_name: 'Shulman'},
+  {first_name: 'Richard', last_name: 'Neutra'}
+  ])
+Book.create(title: 'Der Zauberberg').authors.create(first_name: 'Thomas', last_name: 'Mann')
+Book.create(title: 'In einer Familie').authors.create(first_name: 'Heinrich', last_name: 'Mann')
+```
 
 Now drop the database and refill it with the `db/seeds.rb`:
 
-    $
-      [...]
-    $
+```bash
+$ rake db:reset
+  [...]
+$
+```
 
 The convenient feature of the 1:n assignment in ActiveRecord is the
 particularly easy access to the n instances. Let's look at the first
 record:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Book Load (0.1ms)  SELECT "books".* FROM "books" ORDER BY "books"."id" ASC LIMIT 1
-    => #<Book id: 1, title: "Homo faber", created_at: "2013-07-16 12:05:49", updated_at: "2013-07-16 12:05:49">
-    >>
-      Book Load (0.3ms)  SELECT "books".* FROM "books" ORDER BY "books"."id" ASC LIMIT 1
-      Author Load (1.4ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
-    => #<ActiveRecord::Associations::CollectionProxy [#<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">]>
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Book.first
+  Book Load (0.1ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:08:49", updated_at: "2015-04-17 09:08:49">
+>> Book.first.authors
+  Book Load (0.3ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
+  Author Load (0.3ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:08:49", updated_at: "2015-04-17 09:08:49">]>
+>>
+```
 
 Isn't that cool?! You can access the records simply via the plural form
 of the n model. The result is returned as array. Hm, maybe it also works
 the other way round?
 
-    >>
-      Author Load (0.4ms)  SELECT "authors".* FROM "authors" ORDER BY "authors"."id" ASC LIMIT 1
-      Book Load (0.2ms)  SELECT "books".* FROM "books" WHERE "books"."id" = ? ORDER BY "books"."id" ASC LIMIT 1  [["id", 1]]
-    => #<Book id: 1, title: "Homo faber", created_at: "2013-07-16 12:05:49", updated_at: "2013-07-16 12:05:49">
-    >>
-    $
+```bash
+>> Author.first.book
+  Author Load (0.3ms)  SELECT  "authors".* FROM "authors"  ORDER BY "authors"."id" ASC LIMIT 1
+  Book Load (0.2ms)  SELECT  "books".* FROM "books" WHERE "books"."id" = ? LIMIT 1  [["id", 1]]
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:08:49", updated_at: "2015-04-17 09:08:49">
+>> exit
+$
+```
 
-Bingo! Accessing the associated Book class is also very easy. And as
-it's only a single record (belongs\_to), the singular form is used in
+Bingo! Accessing the associated `Book` class is also very easy. And as
+it's only a single record (`belongs_to`), the singular form is used in
 this case.
 
 > **Note**
 >
 > If there was no author for this book, the result would be an empty
 > array. If no book is associated with an author, then ActiveRecord
-> outputs the value `nil` as Book.
+> outputs the value `nil` as `Book`.
 
 ### Searching For Records
 
 Before we can start searching, we again need defined example data.
 Please fill the file `db/seeds.rb` with the following content (its the
-same as we used in ?):
+same as we used in [the section called "Accesing Records"](##accessing-records)):
 
-    Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
-    Book.create(title: 'Der Besuch der alten Dame').authors.create(first_name: 'Friedrich', last_name: 'Dürrenmatt')
-    Book.create(title: 'Julius Shulman: The Last Decade').authors.create([
-      {first_name: 'Thomas', last_name: 'Schirmbock'},
-      {first_name: 'Julius', last_name: 'Shulman'},
-      {first_name: 'Jürgen', last_name: 'Nogai'}
-      ])
-    Book.create(title: 'Julius Shulman: Palm Springs').authors.create([
-      {first_name: 'Michael', last_name: 'Stern'},
-      {first_name: 'Alan', last_name: 'Hess'}
-      ])
-    Book.create(title: 'Photographing Architecture and Interiors').authors.create([
-      {first_name: 'Julius', last_name: 'Shulman'},
-      {first_name: 'Richard', last_name: 'Neutra'}
-      ])
-    Book.create(title: 'Der Zauberberg').authors.create(first_name: 'Thomas', last_name: 'Mann')
-    Book.create(title: 'In einer Familie').authors.create(first_name: 'Heinrich', last_name: 'Mann')
+```ruby
+Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
+Book.create(title: 'Der Besuch der alten Dame').authors.create(first_name: 'Friedrich', last_name: 'Dürrenmatt')
+Book.create(title: 'Julius Shulman: The Last Decade').authors.create([
+  {first_name: 'Thomas', last_name: 'Schirmbock'},
+  {first_name: 'Julius', last_name: 'Shulman'},
+  {first_name: 'Jürgen', last_name: 'Nogai'}
+  ])
+Book.create(title: 'Julius Shulman: Palm Springs').authors.create([
+  {first_name: 'Michael', last_name: 'Stern'},
+  {first_name: 'Alan', last_name: 'Hess'}
+  ])
+Book.create(title: 'Photographing Architecture and Interiors').authors.create([
+  {first_name: 'Julius', last_name: 'Shulman'},
+  {first_name: 'Richard', last_name: 'Neutra'}
+  ])
+Book.create(title: 'Der Zauberberg').authors.create(first_name: 'Thomas', last_name: 'Mann')
+Book.create(title: 'In einer Familie').authors.create(first_name: 'Heinrich', last_name: 'Mann')
+```
 
 Now drop the database and refill it with the `db/seeds.rb`:
 
-    $
-      [...]
-    $
+```bash
+$ rake db:reset
+  [...]
+$
+```
 
 And off we go. First we check how many books are in the database:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT COUNT(*) FROM "books"
-    => 7
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Book.count
+   (0.1ms)  SELECT COUNT(*) FROM "books"
+=> 7
+>>
+```
 
 And how many authors?
 
-    >>
-       (0.1ms)  SELECT COUNT(*) FROM "authors"
-    => 11
-    >>
-    $
+```bash
+>> Author.count
+   (0.2ms)  SELECT COUNT(*) FROM "authors"
+=> 11
+>> exit
+$
+```
 
 #### joins
 
-ActiveRecord
-methods
-joins()
 To find all books that have at least one author with the surname 'Mann'
 we use a *join*.
 
-[^10]
-
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Book Load (0.5ms)  SELECT "books".* FROM "books" INNER JOIN "authors" ON "authors"."book_id" = "books"."id" WHERE "authors"."last_name" = 'Mann'
-    => #<ActiveRecord::Relation [#<Book id: 6, title: "Der Zauberberg", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">, #<Book id: 7, title: "In einer Familie", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">]>
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Book.joins(:authors).where(:authors => {last_name: 'Mann'})
+  Book Load (0.2ms)  SELECT "books".* FROM "books" INNER JOIN "authors" ON "authors"."book_id" = "books"."id" WHERE "authors"."last_name" = ?  [["last_name", "Mann"]]
+=> #<ActiveRecord::Relation [#<Book id: 6, title: "Der Zauberberg", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Book id: 7, title: "In einer Familie", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]>
+>>
+```
 
 The database contains two books with the author 'Mann'. In the SQL, you
-can see that the method joins executes an `INNER JOIN`.
+can see that the method `joins` executes an `INNER JOIN`.
 
 Of course, we can also do it the other way round. We could search for
 the author of the book 'Homo faber':
 
-    >>
-      Author Load (0.3ms)  SELECT "authors".* FROM "authors" INNER JOIN "books" ON "books"."id" = "authors"."book_id" WHERE "books"."title" = 'Homo faber'
-    => #<ActiveRecord::Relation [#<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">]>
-    >>
-    $
+```bash
+>> Author.joins(:book).where(:books => {title: 'Homo faber'})
+  Author Load (0.3ms)  SELECT "authors".* FROM "authors" INNER JOIN "books" ON "books"."id" = "authors"."book_id" WHERE "books"."title" = ?  [["title", "Homo faber"]]
+=> #<ActiveRecord::Relation [#<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]>
+>> exit
+$
+```
 
 #### includes
 
-ActiveRecord
-methods
-includes()
-ActiveRecord
-methods
-joins()
-includes is very similar to the method joins (see ?). Again, you can use
+`includes` is very similar to the method `joins` (see [the section called "joins"](#joins)). Again, you can use
 it to search within a 1:n association. Let's once more search for all
 books with an author whose surname is 'Mann':
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      SQL (0.3ms)  SELECT "books"."id" AS t0_r0, "books"."title" AS t0_r1, "books"."created_at" AS t0_r2, "books"."updated_at" AS t0_r3, "authors"."id" AS t1_r0, "authors"."book_id" AS t1_r1, "authors"."first_name" AS t1_r2, "authors"."last_name" AS t1_r3, "authors"."created_at" AS t1_r4, "authors"."updated_at" AS t1_r5 FROM "books" LEFT OUTER JOIN "authors" ON "authors"."book_id" = "books"."id" WHERE "authors"."last_name" = 'Mann'
-    => #<ActiveRecord::Relation [#<Book id: 6, title: "Der Zauberberg", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">, #<Book id: 7, title: "In einer Familie", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">]>
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Book.includes(:authors).where(:authors => {last_name: 'Mann'})
+  SQL (1.1ms)  SELECT "books"."id" AS t0_r0, "books"."title" AS t0_r1, "books"."created_at" AS t0_r2, "books"."updated_at" AS t0_r3, "authors"."id" AS t1_r0, "authors"."book_id" AS t1_r1, "authors"."first_name" AS t1_r2, "authors"."last_name" AS t1_r3, "authors"."created_at" AS t1_r4, "authors"."updated_at" AS t1_r5 FROM "books" LEFT OUTER JOIN "authors" ON "authors"."book_id" = "books"."id" WHERE "authors"."last_name" = ?  [["last_name", "Mann"]]
+=> #<ActiveRecord::Relation [#<Book id: 6, title: "Der Zauberberg", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Book id: 7, title: "In einer Familie", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]>
+>> exit
+$
+```
 
 In the console output, you can see that the SQL code is different from
 the joins query.
 
-joins only reads in the `Book` records and includes also reads the
+`joins` only reads in the `Book` records and `includes` also reads the
 associated `Authors`. As you can see even in our little example, this
-obviously takes longer (0.2 ms vs. 0.3 ms).
+obviously takes longer (0.2 ms vs. 1.1 ms).
 
 #### join vs. includes
 
-Why would you want to use includes at all? Well, if you already know
+Why would you want to use `includes` at all? Well, if you already know
 before the query that you will later need all author data, then it makes
-sense to use includes, because then you only need one database query.
+sense to use `includes`, because then you only need one database query.
 That is a lot faster than starting a seperate query for each n.
 
-In that case, would it not be better to always work with includes? No,
-it depends on the specific case. When you are using includes, a lot more
+In that case, would it not be better to always work with `includes`? No,
+it depends on the specific case. When you are using `includes`, a lot more
 data is transported initially. This has to be cached and processed by
 ActiveRecord, which takes longer and requires more resources.
 
 ### delete and destroy
 
-ActiveRecord
-methods
-delete()
-ActiveRecord
-methods
-delete\_all()
-ActiveRecord
-methods
-destroy()
-ActiveRecord
-methods
-destroy\_all()
-With the methods destroy, destroy\_all, delete and delete\_all you can
-delete records, as described in ?. In the context of has\_many, this
-means that you can delete the Author records associated with a Book in
+With the methods `destroy`, `destroy_all`, `delete` and `delete_all` you can
+delete records, as described in [Section "Delete/Destroy a Record"](#deletedestroy-a-record). In the context of `has_many`, this
+means that you can delete the `Author` records associated with a `Book` in
 one go:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Book Load (0.1ms)  SELECT "books".* FROM "books" WHERE "books"."title" = 'Julius Shulman: The Last Decade' ORDER BY "books"."id" ASC LIMIT 1
-    => #<Book id: 3, title: "Julius Shulman: The Last Decade", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">
-    >>
-       (1.7ms)  SELECT COUNT(*) FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
-    => 3
-    >>
-      Author Load (0.4ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
-       (0.1ms)  begin transaction
-      SQL (0.5ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 3]]
-      SQL (0.1ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 4]]
-      SQL (0.0ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 5]]
-       (2.4ms)  commit transaction
-    => [#<Author id: 3, book_id: 3, first_name: "Thomas", last_name: "Schirmbock", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">, #<Author id: 4, book_id: 3, first_name: "Julius", last_name: "Shulman", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">, #<Author id: 5, book_id: 3, first_name: "Jürgen", last_name: "Nogai", created_at: "2013-07-16 12:05:50", updated_at: "2013-07-16 12:05:50">]
-    >>
-       (0.2ms)  SELECT COUNT(*) FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
-    => 0
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> book = Book.where(title: 'Julius Shulman: The Last Decade').first
+  Book Load (0.2ms)  SELECT  "books".* FROM "books" WHERE "books"."title" = ?  ORDER BY "books"."id" ASC LIMIT 1  [["title", "Julius Shulman: The Last Decade"]]
+=> #<Book id: 3, title: "Julius Shulman: The Last Decade", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">
+>> book.authors.count
+   (0.3ms)  SELECT COUNT(*) FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
+=> 3
+>> book.authors.destroy_all
+  Author Load (0.3ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 3]]
+  SQL (0.1ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 4]]
+  SQL (0.1ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 5]]
+   (9.3ms)  commit transaction
+=> [#<Author id: 3, book_id: 3, first_name: "Thomas", last_name: "Schirmbock", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Author id: 4, book_id: 3, first_name: "Julius", last_name: "Shulman", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Author id: 5, book_id: 3, first_name: "Jürgen", last_name: "Nogai", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]
+>> book.authors.count
+   (0.2ms)  SELECT COUNT(*) FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
+=> 0
+>> exit
+$
+```
 
 ### Options
 
@@ -2122,63 +2132,24 @@ Ruby on Rails documentation that you can find on the Internet at
 
 #### belongs\_to
 
-ActiveRecord
-relations
-belongs\_to()
-The most important option for belongs\_to is.
+The most important option for `belongs_to` is.
 
 ##### touch: true
 
 It automatically sets the field `updated_at` of the entry in the table
-Book to the current time when an Author is edited. In the
+`Book` to the current time when an `Author` is edited. In the
 `app/models/author.rb`, it would look like this:
 
-    class Author < ActiveRecord::Base
-      belongs_to :book, touch: true
-    end
+```ruby
+class Author < ActiveRecord::Base
+  belongs_to :book, touch: true
+end
+```
 
 #### has\_many
 
-ActiveRecord
-relations
-has\_many()
-The most important options for `has_many are`.
+The most important options for `has_many` are.
 
-##### order: :last\_name
-
-If you want to sort the authors by surname, you can do this via the
-following `app/models/book.rb`:
-
-    class Book < ActiveRecord::Base
-      has_many :authors, order: :last_name
-    end
-
-As an example, let's create a new book with new authors and see how
-ActiveRecord sorts them:
-
-    $
-    Loading development environment (Rails 4.0.0)
-    >>  
-       (0.1ms)  begin transaction
-      SQL (23.5ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Sun, 18 Nov 2012 12:04:31 UTC +00:00], ["title", "Test"], ["updated_at", Sun, 18 Nov 2012 12:04:31 UTC +00:00]]
-       (2.6ms)  commit transaction
-       (0.1ms)  begin transaction
-      SQL (0.6ms)  INSERT INTO "authors" ("book_id", "created_at", "first_name", "last_name", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 8], ["created_at", Sun, 18 Nov 2012 12:04:31 UTC +00:00], ["first_name", nil], ["last_name", "Z"], ["updated_at", Sun, 18 Nov 2012 12:04:31 UTC +00:00]]
-       (0.8ms)  commit transaction
-       (0.1ms)  begin transaction
-      SQL (0.4ms)  INSERT INTO "authors" ("book_id", "created_at", "first_name", "last_name", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 8], ["created_at", Sun, 18 Nov 2012 12:04:31 UTC +00:00], ["first_name", nil], ["last_name", "A"], ["updated_at", Sun, 18 Nov 2012 12:04:31 UTC +00:00]]
-       (0.8ms)  commit transaction
-    => [#<Author id: 12, book_id: 8, first_name: nil, last_name: "Z", created_at: "2012-11-18 12:04:31", updated_at: "2012-11-18 12:04:31">, #<Author id: 13, book_id: 8, first_name: nil, last_name: "A", created_at: "2012-11-18 12:04:31", updated_at: "2012-11-18 12:04:31">]
-    >>
-      Book Load (0.3ms)  SELECT "books".* FROM "books" ORDER BY "books"."id" DESC LIMIT 1
-      Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = 8 ORDER BY last_name
-    => [#<Author id: 13, book_id: 8, first_name: nil, last_name: "A", created_at: "2012-11-18 12:04:31", updated_at: "2012-11-18 12:04:31">, #<Author id: 12, book_id: 8, first_name: nil, last_name: "Z", created_at: "2012-11-18 12:04:31", updated_at: "2012-11-18 12:04:31">]
-    >>
-    $
-
-And if we want to sort in descending order for a change:
-
-    has_many :authors, :order => 'title DESC'
 
 ##### dependent: :destroy
 
@@ -2186,47 +2157,43 @@ If a book is removed, then it usually makes sense to also automatically
 remove all authors dependent on this book. This can be done via
 `:dependent => :destroy` in the `app/models/book.rb`:
 
-    class Book < ActiveRecord::Base
-      has_many :authors, dependent: :destroy
-    end
+```ruby
+class Book < ActiveRecord::Base
+  has_many :authors, dependent: :destroy
+end
+```
 
 In the following example, we destroy the first book in the database
 table. All authors of this book are also automatically destroyed:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Book Load (0.1ms)  SELECT "books".* FROM "books" LIMIT 1
-    => #<Book id: 1, title: "Homo faber", created_at: "2012-11-18 11:46:29", updated_at: "2012-11-18 11:46:29">
-    >>
-      Book Load (0.3ms)  SELECT "books".* FROM "books" LIMIT 1
-      Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = 1
-    => [#<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2012-11-18 11:46:29", updated_at: "2012-11-18 11:46:29">]
-    >>
-      Book Load (0.3ms)  SELECT "books".* FROM "books" LIMIT 1
-       (0.1ms)  begin transaction
-      Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = 1
-      SQL (4.8ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 1]]
-      SQL (0.1ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 1]]
-       (3.0ms)  commit transaction
-    => #<Book id: 1, title: "Homo faber", created_at: "2012-11-18 11:46:29", updated_at: "2012-11-18 11:46:29">
-    >>
-      Author Exists (0.2ms)  SELECT 1 AS one FROM "authors" WHERE "authors"."id" = 1 LIMIT 1
-    => false
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Book.first
+  Book Load (0.2ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">
+>> Book.first.authors
+  Book Load (0.2ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
+  Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]>
+>> Book.first.destroy
+  Book Load (0.3ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
+   (0.1ms)  begin transaction
+  Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
+  SQL (1.6ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 1]]
+  SQL (0.1ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 1]]
+   (9.1ms)  commit transaction
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">
+>> Author.exists?(1)
+>> exit
+$
+```
 
 > **Important**
 >
-> ActiveRecord
-> methods
-> destroy()
-> ActiveRecord
-> methods
-> delete()
-> Please always remember the difference between the methods destroy (see
-> ?) and delete (see ?). This association only works with the method
-> destroy.
+> Please always remember the difference between the methods `destroy` (see
+> [the section called "destroy"](#destroy)) and `delete` (see [the section called "delete"](#delete)). This association only works with the method
+> `destroy`.
 
 ##### has\_many .., through: ..
 
@@ -2235,29 +2202,19 @@ our book-author example we have sometimes been entering authors several
 times in the `authors` table. Normally, you would of course not do this.
 It would be better to enter each author only once in the authors table
 and take care of the association with the books via an intermediary
-table. For this purpose, there is `has_many ,
-        through: => `.
+table. For this purpose, there is `has_many ..., through:  :...`.
 
 This kind of association is called Many-to-Many (n:n) and we'll discuss
-it in detail in ?.
+it in detail in [Section "Many-to-Many - n:n Association"](#many-to-many-nn-association).
 
 Many-to-Many – n:n Association
 ------------------------------
 
-ActiveRecord
-relations
-has\_many()
-ActiveRecord
-relations
-belongs\_to()
-ActiveRecord
-associations
-ActiveRecord, relations
 Up to now, we have always associated a database table directly with
 another table. For many-to-many, we will associate two tables via a
 third table. As example for this kind of relation, we use an order in a
-very basic online shop. In this type of shop system, a Product can
-appear in several orders (Order) and at the same time an order can
+very basic online shop. In this type of shop system, a `Product` can
+appear in several orders (`Order`) and at the same time an order can
 contain several products. This is referred to as many-to-many. Let's
 recreate this scenario with code.
 
@@ -2265,143 +2222,172 @@ recreate this scenario with code.
 
 Create the shop application:
 
-    $
-      [...]
-    $
+```bash
+$ rails new shop
+  [...]
+$ cd shop
+```
 
 A model for products:
 
-    $
-      [...]
-    $
+```bash
+$ rails generate model product name 'price:decimal{7,2}'
+  [...]
+$
+```
 
 A model for an order:
 
-    $
-      [...]
-    $
+```bash
+$ rails generate model order delivery_address
+  [...]
+$
+```
 
 And a model for individual items of an order:
 
-    $
-      [...]
-    $
+```bash
+$ rails generate model line_item order_id:integer product_id:integer quantity:integer
+  [...]
+$ 
+```
 
 Then, create the database:
 
-    $
-      [...]
-    $
+```bash
+$ rake db:migrate
+  [...]
+$
+```
 
 ### The Association
 
-An order (Order) consists of one or several items (LineItem). This
+An order (`Order`) consists of one or several items (`LineItem`). This
 LineItem consists of the `order_id`, a `product_id` and the number of
 items ordered (`quantity`). The individual product is defined in the
-product database (Product).
+product database (`Product`).
 
 Associating the models happens as always in the directory `app/models`.
 First, in the file `app/models/order.rb:`
 
-    class Order < ActiveRecord::Base
-      has_many :line_items
-      has_many :products, :through => :line_items
-    end
+```ruby
+class Order < ActiveRecord::Base
+  has_many :line_items
+  has_many :products, through: :line_items
+end
+```
 
 Then in the counterpart in the file `app/models/product.rb:`
 
-    class Product < ActiveRecord::Base
-      has_many :line_items
-      has_many :orders, :through => :line_items
-    end
+```ruby
+class Product < ActiveRecord::Base
+  has_many :line_items
+  has_many :orders, through: :line_items
+end
+```
 
 Finally, the file `app/models/line_item.rb:`
 
-    class LineItem < ActiveRecord::Base
-      belongs_to :order
-      belongs_to :product
-    end
+```ruby
+class LineItem < ActiveRecord::Base
+  belongs_to :order
+  belongs_to :product
+end
+```
 
 ### The Association Works Transparent
 
 As we implement the associations via has\_many, most things will already
-be familiar to you from ?. I am going to discuss a few examples. For
-more details, see ?.
+be familiar to you from [Section "has_many - 1:n Association"](#has95many-1n-association). I am going to discuss a few examples. For
+more details, see [Section "has_many - 1:n Association"](#has95many-1n-association).
 
 First we populate our product database with the following values:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.2ms)  INSERT INTO "products" ("created_at", "name", "price", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:30:29 UTC +00:00], ["name", "Milk (1 liter)"], ["price", #<BigDecimal:7fb985120d18,'0.45E0',9(45)>], ["updated_at", Tue, 16 Jul 2013 12:30:29 UTC +00:00]]
-       (2.5ms)  commit transaction
-    => #<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fb985120d18,'0.45E0',9(45)>, created_at: "2013-07-16 12:30:29", updated_at: "2013-07-16 12:30:29">
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.9ms)  INSERT INTO "products" ("created_at", "name", "price", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:30:36 UTC +00:00], ["name", "Butter (250 gr)"], ["price", #<BigDecimal:7fb98281fe28,'0.75E0',9(45)>], ["updated_at", Tue, 16 Jul 2013 12:30:36 UTC +00:00]]
-       (2.3ms)  commit transaction
-    => #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fb98281fe28,'0.75E0',9(45)>, created_at: "2013-07-16 12:30:36", updated_at: "2013-07-16 12:30:36">
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.5ms)  INSERT INTO "products" ("created_at", "name", "price", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:30:43 UTC +00:00], ["name", "Flour (1 kg)"], ["price", #<BigDecimal:7fb98520b9f8,'0.45E0',9(45)>], ["updated_at", Tue, 16 Jul 2013 12:30:43 UTC +00:00]]
-       (2.0ms)  commit transaction
-    => #<Product id: 3, name: "Flour (1 kg)", price: #<BigDecimal:7fb98520b9f8,'0.45E0',9(45)>, created_at: "2013-07-16 12:30:43", updated_at: "2013-07-16 12:30:43">
-    >>  
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> milk = Product.create(name: 'Milk (1 liter)', price: 0.45)
+   (0.4ms)  begin transaction
+  SQL (0.7ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Milk (1 liter)"], ["price", 0.45], ["created_at", "2015-04-17 11:46:22.832375"], ["updated_at", "2015-04-17 11:46:22.832375"]]
+   (0.9ms)  commit transaction
+=> #<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa8249f0aa0,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">
+>> butter = Product.create(name: 'Butter (250 gr)', price: 0.75)
+   (0.1ms)  begin transaction
+  SQL (1.3ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Butter (250 gr)"], ["price", 0.75], ["created_at", "2015-04-17 11:46:34.798486"], ["updated_at", "2015-04-17 11:46:34.798486"]]
+   (9.1ms)  commit transaction
+=> #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fa823d42fb0,'0.75E0',9(27)>, created_at: "2015-04-17 11:46:34", updated_at: "2015-04-17 11:46:34">
+>> flour = Product.create(name: 'Flour (1 kg)', price: 0.45)
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Flour (1 kg)"], ["price", 0.45], ["created_at", "2015-04-17 11:46:42.711399"], ["updated_at", "2015-04-17 11:46:42.711399"]]
+   (9.1ms)  commit transaction
+=> #<Product id: 3, name: "Flour (1 kg)", price: #<BigDecimal:7fa823d200c8,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:42", updated_at: "2015-04-17 11:46:42">
+>>
+```
 
-Now we create a new Order object with the name `order`:
+Now we create a new `Order` object with the name `order`:
 
-    >>
-    => #<Order id: nil, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: nil, updated_at: nil>
-    >>
+```bash
+>> order = Order.new(delivery_address: '123 Acme Street, ACME STATE 12345')
+=> #<Order id: nil, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: nil, updated_at: nil>
+>>
+```
 
 Logically, this new order does not yet contain any products:
 
-    >>
-    => 0
-    >>
+```bash
+>> order.products.count
+=> 0
+>>
+```
 
 As often, there are several ways of adding products to the order. The
 simplest way: as the products are integrated as array, you can simply
 insert them as elements of an array:
 
-    >>
-    => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fb985120d18,'0.45E0',9(45)>, created_at: "2013-07-16 12:30:29", updated_at: "2013-07-16 12:30:29">]>
-    >>
+```bash
+>> order.products << milk
+=> #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa8249f0aa0,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">]>
+>>
+```
 
 But if the customer wants to buy three liters of milk instead of one
-liter, we need to enter it in the LineItem (in the linking element)
+liter, we need to enter it in the `LineItem` (in the linking element)
 table. ActiveRecord already build an object for us:
 
-    >>
-    => #<ActiveRecord::Associations::CollectionProxy [#<LineItem id: nil, order_id: nil, product_id: 1, quantity: nil, created_at: nil, updated_at: nil>]>
-    >>
+```bash
+>> order.line_items
+=> #<ActiveRecord::Associations::CollectionProxy [#<LineItem id: nil, order_id: nil, product_id: 1, quantity: nil, created_at: nil, updated_at: nil>]>
+>>
+```
 
 But the object is not yet saved in the database. After we do this via
-save, we can change the quantity in the LineItem object:
+save, we can change the quantity in the `LineItem` object:
 
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.9ms)  INSERT INTO "orders" ("created_at", "delivery_address", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:34:08 UTC +00:00], ["delivery_address", "123 Acme Street, ACME STATE 12345"], ["updated_at", Tue, 16 Jul 2013 12:34:08 UTC +00:00]]
-      SQL (0.3ms)  INSERT INTO "line_items" ("created_at", "order_id", "product_id", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:34:08 UTC +00:00], ["order_id", 1], ["product_id", 1], ["updated_at", Tue, 16 Jul 2013 12:34:08 UTC +00:00]]
-       (2.6ms)  commit transaction
-    => true
-    >>
-       (0.2ms)  begin transaction
-      SQL (1.0ms)  UPDATE "line_items" SET "quantity" = ?, "updated_at" = ? WHERE "line_items"."id" = 1  [["quantity", 3], ["updated_at", Tue, 16 Jul 2013 12:34:49 UTC +00:00]]
-       (3.0ms)  commit transaction
-    => true
-    >>
-
+```bash
+>> order.save
+   (0.1ms)  begin transaction
+  SQL (0.6ms)  INSERT INTO "orders" ("delivery_address", "created_at", "updated_at") VALUES (?, ?, ?)  [["delivery_address", "123 Acme Street, ACME STATE 12345"], ["created_at", "2015-04-17 11:49:43.968385"], ["updated_at", "2015-04-17 11:49:43.968385"]]
+  SQL (0.3ms)  INSERT INTO "line_items" ("product_id", "order_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["product_id", 1], ["order_id", 1], ["created_at", "2015-04-17 11:49:43.971970"], ["updated_at", "2015-04-17 11:49:43.971970"]]
+   (9.2ms)  commit transaction
+=> true
+>> order.line_items.first.update_attributes(quantity: 3)
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  UPDATE "line_items" SET "quantity" = ?, "updated_at" = ? WHERE "line_items"."id" = ?  [["quantity", 3], ["updated_at", "2015-04-17 11:49:53.529842"], ["id", 1]]
+   (9.2ms)  commit transaction
+=> true
+>>
+```
 Alternatively, we can also buy butter twice directly by adding a
-LineItem:
+`LineItem`:
 
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.6ms)  INSERT INTO "line_items" ("created_at", "order_id", "product_id", "quantity", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:35:38 UTC +00:00], ["order_id", 1], ["product_id", 2], ["quantity", 2], ["updated_at", Tue, 16 Jul 2013 12:35:38 UTC +00:00]]
-       (2.3ms)  commit transaction
-    => #<LineItem id: 2, order_id: 1, product_id: 2, quantity: 2, created_at: "2013-07-16 12:35:38", updated_at: "2013-07-16 12:35:38">
-    >>
+```bash
+>> order.line_items.create(product_id: butter.id, quantity: 2)
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "line_items" ("product_id", "quantity", "order_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["product_id", 2], ["quantity", 2], ["order_id", 1], ["created_at", "2015-04-17 11:50:26.181117"], ["updated_at", "2015-04-17 11:50:26.181117"]]
+   (8.3ms)  commit transaction
+=> #<LineItem id: 2, order_id: 1, product_id: 2, quantity: 2, created_at: "2015-04-17 11:50:26", updated_at: "2015-04-17 11:50:26">
+>>
+```
 
 > **Warning**
 >
@@ -2409,94 +2395,91 @@ LineItem:
 > logic. The database table contains all the correct information but
 > order hasn't been updated:
 >
->     >>
->     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fb985120d18,'0.45E0',9(45)>, created_at: "2013-07-16 12:30:29", updated_at: "2013-07-16 12:30:29">]>
+>     >> order.products
+>     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa8249f0aa0,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">]>
 >     >>
 >
 > But in the database table, it is of course correct:
 >
->     >>
->       Order Load (0.3ms)  SELECT "orders".* FROM "orders" ORDER BY "orders"."id" ASC LIMIT 1
->       Product Load (0.2ms)  SELECT "products".* FROM "products" INNER JOIN "line_items" ON "products"."id" = "line_items"."product_id" WHERE "line_items"."order_id" = ?  [["order_id", 1]]
->     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fb985148ac0,'0.45E0',9(45)>, created_at: "2013-07-16 12:30:29", updated_at: "2013-07-16 12:30:29">, #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fb985153c90,'0.75E0',9(45)>, created_at: "2013-07-16 12:30:36", updated_at: "2013-07-16 12:30:36">]>
+>     >> Order.first.products
+>        Order Load (0.4ms)  SELECT  "orders".* FROM "orders"  ORDER BY "orders"."id" ASC LIMIT 1
+>        Product Load (0.3ms)  SELECT "products".* FROM "products" INNER JOIN "line_items" ON "products"."id" = "line_items"."product_id" WHERE "line_items"."order_id" = ?  [["order_id", 1]]
+>     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa82824a630,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">, #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fa8282496e0,'0.75E0',9(27)>, created_at: "2015-04-17 11:46:34", updated_at: "2015-04-17 11:46:34">]>
 >     >>
 >
 > In this specific case, you would need to reload the object from the
-> database via the method reload:
+> database via the method `reload`:
 >
->     >>
->       Order Load (0.4ms)  SELECT "orders".* FROM "orders" WHERE "orders"."id" = ? LIMIT 1  [["id", 1]]
->     => #<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2013-07-16 12:34:08", updated_at: "2013-07-16 12:34:08">
->     >>
->       Product Load (0.3ms)  SELECT "products".* FROM "products" INNER JOIN "line_items" ON "products"."id" = "line_items"."product_id" WHERE "line_items"."order_id" = ?  [["order_id", 1]]
->     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fb98516a2d8,'0.45E0',9(45)>, created_at: "2013-07-16 12:30:29", updated_at: "2013-07-16 12:30:29">, #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fb985169540,'0.75E0',9(45)>, created_at: "2013-07-16 12:30:36", updated_at: "2013-07-16 12:30:36">]>
+>     >> order.reload
+>       Order Load (0.4ms)  SELECT  "orders".* FROM "orders" WHERE "orders"."id" = ? LIMIT 1  [["id", 1]]
+>     => #<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2015-04-17 11:49:43", updated_at: "2015-04-17 11:49:43">
+>     >> order.products
+>       Product Load (0.2ms)  SELECT "products".* FROM "products" INNER JOIN "line_items" ON "products"."id" = "line_items"."product_id" WHERE "line_items"."order_id" = ?  [["order_id", 1]]
+>     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa828229ef8,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">, #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fa8282289e0,'0.75E0',9(27)>, created_at: "2015-04-17 11:46:34", updated_at: "2015-04-17 11:46:34">]>
 >     >>
 
 Let's enter a second order with all available products into the system:
 
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.6ms)  INSERT INTO "orders" ("created_at", "delivery_address", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:39:27 UTC +00:00], ["delivery_address", "2, Test Road"], ["updated_at", Tue, 16 Jul 2013 12:39:27 UTC +00:00]]
-       (2.7ms)  commit transaction
-    => #<Order id: 2, delivery_address: "2, Test Road", created_at: "2013-07-16 12:39:27", updated_at: "2013-07-16 12:39:27">
-    >>
-      Product Load (0.3ms)  SELECT "products".* FROM "products"
-       (0.1ms)  begin transaction
-      SQL (0.5ms)  INSERT INTO "line_items" ("created_at", "order_id", "product_id", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:39:33 UTC +00:00], ["order_id", 2], ["product_id", 1], ["updated_at", Tue, 16 Jul 2013 12:39:33 UTC +00:00]]
-      SQL (0.1ms)  INSERT INTO "line_items" ("created_at", "order_id", "product_id", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:39:33 UTC +00:00], ["order_id", 2], ["product_id", 2], ["updated_at", Tue, 16 Jul 2013 12:39:33 UTC +00:00]]
-      SQL (0.1ms)  INSERT INTO "line_items" ("created_at", "order_id", "product_id", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:39:33 UTC +00:00], ["order_id", 2], ["product_id", 3], ["updated_at", Tue, 16 Jul 2013 12:39:33 UTC +00:00]]
-       (2.6ms)  commit transaction
-      Product Load (0.1ms)  SELECT "products".* FROM "products" INNER JOIN "line_items" ON "products"."id" = "line_items"."product_id" WHERE "line_items"."order_id" = ?  [["order_id", 2]]
-    => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fb9851c32c0,'0.45E0',9(45)>, created_at: "2013-07-16 12:30:29", updated_at: "2013-07-16 12:30:29">, #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fb9851c1538,'0.75E0',9(45)>, created_at: "2013-07-16 12:30:36", updated_at: "2013-07-16 12:30:36">, #<Product id: 3, name: "Flour (1 kg)", price: #<BigDecimal:7fb9851cafe8,'0.45E0',9(45)>, created_at: "2013-07-16 12:30:43", updated_at: "2013-07-16 12:30:43">]>
-    >>
-       (0.1ms)  begin transaction
-       (0.1ms)  commit transaction
-    => true
-    >>
+```bash
+>> order2 = Order.create(delivery_address: '2, Test Road')
+   (0.2ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "orders" ("delivery_address", "created_at", "updated_at") VALUES (?, ?, ?)  [["delivery_address", "2, Test Road"], ["created_at", "2015-04-17 11:55:08.141811"], ["updated_at", "2015-04-17 11:55:08.141811"]]
+   (9.0ms)  commit transaction
+=> #<Order id: 2, delivery_address: "2, Test Road", created_at: "2015-04-17 11:55:08", updated_at: "2015-04-17 11:55:08">
+>> order2.products << Product.all
+  Product Load (0.3ms)  SELECT "products".* FROM "products"
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "line_items" ("order_id", "product_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["order_id", 2], ["product_id", 1], ["created_at", "2015-04-17 11:55:17.318016"], ["updated_at", "2015-04-17 11:55:17.318016"]]
+  SQL (0.1ms)  INSERT INTO "line_items" ("order_id", "product_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["order_id", 2], ["product_id", 2], ["created_at", "2015-04-17 11:55:17.321279"], ["updated_at", "2015-04-17 11:55:17.321279"]]
+  SQL (0.1ms)  INSERT INTO "line_items" ("order_id", "product_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["order_id", 2], ["product_id", 3], ["created_at", "2015-04-17 11:55:17.323987"], ["updated_at", "2015-04-17 11:55:17.323987"]]
+   (8.4ms)  commit transaction
+  Product Load (0.2ms)  SELECT "products".* FROM "products" INNER JOIN "line_items" ON "products"."id" = "line_items"."product_id" WHERE "line_items"."order_id" = ?  [["order_id", 2]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa8289189d0,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">, #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fa828912030,'0.75E0',9(27)>, created_at: "2015-04-17 11:46:34", updated_at: "2015-04-17 11:46:34">, #<Product id: 3, name: "Flour (1 kg)", price: #<BigDecimal:7fa82890ba78,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:42", updated_at: "2015-04-17 11:46:42">]>
+>> order.save
+   (0.1ms)  begin transaction
+   (0.1ms)  commit transaction
+=> true
+>>
+```
 
 Now we can try out the oposite direction of this many-to-many
 association. Let's search for all orders that contain the first product:
 
-    >>
-      Product Load (0.3ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" ASC LIMIT 1
-      Order Load (0.2ms)  SELECT "orders".* FROM "orders" INNER JOIN "line_items" ON "orders"."id" = "line_items"."order_id" WHERE "line_items"."product_id" = ?  [["product_id", 1]]
-    => #<ActiveRecord::Associations::CollectionProxy [#<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2013-07-16 12:34:08", updated_at: "2013-07-16 12:34:08">, #<Order id: 2, delivery_address: "2, Test Road", created_at: "2013-07-16 12:39:27", updated_at: "2013-07-16 12:39:27">]>
-    >>
+```bash
+>> Product.first.orders
+  Product Load (0.1ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" ASC LIMIT 1
+  Order Load (0.2ms)  SELECT "orders".* FROM "orders" INNER JOIN "line_items" ON "orders"."id" = "line_items"."order_id" WHERE "line_items"."product_id" = ?  [["product_id", 1]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2015-04-17 11:49:43", updated_at: "2015-04-17 11:49:43">, #<Order id: 2, delivery_address: "2, Test Road", created_at: "2015-04-17 11:55:08", updated_at: "2015-04-17 11:55:08">]>
+>>
+```
 
-Of course, we can also work with a joins (see ?) and search for all
+Of course, we can also work with a `joins` (see [the section called "joins"](#joins)) and search for all
 orders that contain the product "Milk (1 liter)":
 
-    >>
-      Order Load (0.2ms)  SELECT "orders".* FROM "orders" INNER JOIN "line_items" ON "line_items"."order_id" = "orders"."id" INNER JOIN "products" ON "products"."id" = "line_items"."product_id" WHERE "products"."name" = 'Milk (1 liter)'
-    => #<ActiveRecord::Relation [#<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2013-07-16 12:34:08", updated_at: "2013-07-16 12:34:08">, #<Order id: 2, delivery_address: "2, Test Road", created_at: "2013-07-16 12:39:27", updated_at: "2013-07-16 12:39:27">]>
-    >>
-    $
+```bash
+Order.joins(:products).where(:products => {name: 'Milk (1 liter)'})
+  Order Load (0.4ms)  SELECT "orders".* FROM "orders" INNER JOIN "line_items" ON "line_items"."order_id" = "orders"."id" INNER JOIN "products" ON "products"."id" = "line_items"."product_id" WHERE "products"."name" = ?  [["name", "Milk (1 liter)"]]
+=> #<ActiveRecord::Relation [#<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2015-04-17 11:49:43", updated_at: "2015-04-17 11:49:43">, #<Order id: 2, delivery_address: "2, Test Road", created_at: "2015-04-17 11:55:08", updated_at: "2015-04-17 11:55:08">]>
+>> exit
+$
+```
 
 has\_one – 1:1 Association
 --------------------------
 
-ActiveRecord
-relations
-has\_one()
-ActiveRecord
-relations
-belongs\_to()
-ActiveRecord
-associations
-ActiveRecord, relations
-Similar to has\_many (see ?), the method has\_one also creates a logical
-relation between two models. But in contrast to has\_many, one record is
-only ever associated with exactly one other record in has\_one. In most
+Similar to `has_many` (see [Section "has_many - 1:n Association"](#has95many-1n-association)), the method `has_one` also creates a logical
+relation between two models. But in contrast to `has_many`, one record is
+only ever associated with exactly one other record in `has_one.` In most
 practical cases of application, it logically makes sense to put both
 into the same model and therefore the same database table, but for the
-sake of completeness I also want to discuss has\_one here.
+sake of completeness I also want to discuss `has_one here.
 
 > **Tip**
 >
-> You can probably safely skip has\_one without losing any sleep.
+> You can probably safely skip `has_one` without losing any sleep.
 
-In the examples, I assume that you have already read and understood ?. I
-am not going to explain methods like build (?) again but assume that you
+In the examples, I assume that you have already read and understood [Section "has_many - 1:n Association"](#has95many-1n-association). I
+am not going to explain methods like `build` (see [the section called "build"](#build)) again but assume that you
 already know the basics.
 
 ### Preparation
@@ -2506,151 +2489,167 @@ We use the example from the Rails documentation (see
 and create an application containing employees and offices. Each
 employee has an office. First the application:
 
-    $
-      [...]
-    $
-    $
+```bash
+$ rails new office-space
+  [...]
+$ cd office-space
+$
+```
 
 And now the two models:
 
-    $
-      [...]
-    $
-      [...]
-    $
-      [...]
-    $
+```bash
+$ rails generate model employee last_name
+  [...]
+$ rails generate model office location employee_id:integer
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
 ### Association
 
 The association in the file `app/model/employee.rb:`
 
-    class Employee < ActiveRecord::Base
-      has_one :office
-    end
+```ruby
+class Employee < ActiveRecord::Base
+  has_one :office
+end
+```
 
 And its counterpart in the file `app/model/office.rb:`
 
-    class Office < ActiveRecord::Base
-      belongs_to :employee
-    end
+```ruby
+class Office < ActiveRecord::Base
+  belongs_to :employee
+end
+```
 
 #### Options
 
-The options of has\_one are similar to those of has\_many. So for
-details, please refer to ? or
+The options of `has_one` are similar to those of `has_many`. So for
+details, please refer to [the section called "Options"](#options) or
 <http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_one>.
 
 ### Console Examples
 
 Let's start the console and create two employees:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.3ms)  INSERT INTO "employees" ("created_at", "last_name", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:44:24 UTC +00:00], ["last_name", "Udelhoven"], ["updated_at", Tue, 16 Jul 2013 12:44:24 UTC +00:00]]
-       (1.0ms)  commit transaction
-    => #<Employee id: 1, last_name: "Udelhoven", created_at: "2013-07-16 12:44:24", updated_at: "2013-07-16 12:44:24">
-    >>
-       (0.2ms)  begin transaction
-      SQL (0.7ms)  INSERT INTO "employees" ("created_at", "last_name", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:44:32 UTC +00:00], ["last_name", "Meier"], ["updated_at", Tue, 16 Jul 2013 12:44:32 UTC +00:00]]
-       (2.2ms)  commit transaction
-    => #<Employee id: 2, last_name: "Meier", created_at: "2013-07-16 12:44:32", updated_at: "2013-07-16 12:44:32">
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Employee.create(last_name: 'Udelhoven')
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "employees" ("last_name", "created_at", "updated_at") VALUES (?, ?, ?)  [["last_name", "Udelhoven"], ["created_at", "2015-04-17 12:23:35.499672"], ["updated_at", "2015-04-17 12:23:35.499672"]]
+   (0.9ms)  commit transaction
+=> #<Employee id: 1, last_name: "Udelhoven", created_at: "2015-04-17 12:23:35", updated_at: "2015-04-17 12:23:35">
+>> Employee.create(last_name: 'Meier')
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "employees" ("last_name", "created_at", "updated_at") VALUES (?, ?, ?)  [["last_name", "Meier"], ["created_at", "2015-04-17 12:23:49.983219"], ["updated_at", "2015-04-17 12:23:49.983219"]]
+   (9.5ms)  commit transaction
+=> #<Employee id: 2, last_name: "Meier", created_at: "2015-04-17 12:23:49", updated_at: "2015-04-17 12:23:49">
+>>
+```
 
 Now the first employee gets his own office:
 
-    >>
-      Employee Load (0.2ms)  SELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT 1
-       (0.1ms)  begin transaction
-      SQL (0.4ms)  INSERT INTO "offices" ("created_at", "employee_id", "location", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:45:13 UTC +00:00], ["employee_id", 1], ["location", "2nd floor"], ["updated_at", Tue, 16 Jul 2013 12:45:13 UTC +00:00]]
-       (2.2ms)  commit transaction
-    => #<Office id: 1, location: "2nd floor", employee_id: 1, created_at: "2013-07-16 12:45:13", updated_at: "2013-07-16 12:45:13">
-    >>
+```bash
+>> Office.create(location: '2nd floor', employee_id: Employee.first.id)
+  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" ASC LIMIT 1
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "offices" ("location", "employee_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["location", "2nd floor"], ["employee_id", 1], ["created_at", "2015-04-17 12:24:30.575972"], ["updated_at", "2015-04-17 12:24:30.575972"]]
+   (0.8ms)  commit transaction
+=> #<Office id: 1, location: "2nd floor", employee_id: 1, created_at: "2015-04-17 12:24:30", updated_at: "2015-04-17 12:24:30">
+>>
+```
 
 Both directions can be accessed the normal way:
 
-    >>
-      Employee Load (0.4ms)  SELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT 1
-      Office Load (0.2ms)  SELECT "offices".* FROM "offices" WHERE "offices"."employee_id" = ? ORDER BY "offices"."id" ASC LIMIT 1  [["employee_id", 1]]
-    => #<Office id: 1, location: "2nd floor", employee_id: 1, created_at: "2013-07-16 12:45:13", updated_at: "2013-07-16 12:45:13">
-    >>
-      Office Load (0.3ms)  SELECT "offices".* FROM "offices" ORDER BY "offices"."id" ASC LIMIT 1
-      Employee Load (0.2ms)  SELECT "employees".* FROM "employees" WHERE "employees"."id" = ? ORDER BY "employees"."id" ASC LIMIT 1  [["id", 1]]
-    => #<Employee id: 1, last_name: "Udelhoven", created_at: "2013-07-16 12:44:24", updated_at: "2013-07-16 12:44:24">
-    >>
+```bash
+>> Employee.first.office
+  Employee Load (0.4ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" ASC LIMIT 1
+  Office Load (0.3ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 1]]
+=> #<Office id: 1, location: "2nd floor", employee_id: 1, created_at: "2015-04-17 12:24:30", updated_at: "2015-04-17 12:24:30">
+>> Office.first.employee
+  Office Load (0.3ms)  SELECT  "offices".* FROM "offices"  ORDER BY "offices"."id" ASC LIMIT 1
+  Employee Load (0.2ms)  SELECT  "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT 1  [["id", 1]]
+=> #<Employee id: 1, last_name: "Udelhoven", created_at: "2015-04-17 12:23:35", updated_at: "2015-04-17 12:23:35">
+>>
+```
 
 For the second employee, we use the automatically generated method
-create\_office (with has\_many, we would use offices.create here):
+`create_office` (with `has_many`, we would use `offices.create` here):
 
-    >>
-      Employee Load (0.2ms)  SELECT "employees".* FROM "employees" ORDER BY "employees"."id" DESC LIMIT 1
-       (0.1ms)  begin transaction
-      SQL (0.5ms)  INSERT INTO "offices" ("created_at", "employee_id", "location", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:46:58 UTC +00:00], ["employee_id", 2], ["location", "1st floor"], ["updated_at", Tue, 16 Jul 2013 12:46:58 UTC +00:00]]
-       (2.3ms)  commit transaction
-      Office Load (0.1ms)  SELECT "offices".* FROM "offices" WHERE "offices"."employee_id" = ? ORDER BY "offices"."id" ASC LIMIT 1  [["employee_id", 2]]
-    => #<Office id: 2, location: "1st floor", employee_id: 2, created_at: "2013-07-16 12:46:58", updated_at: "2013-07-16 12:46:58">
-    >>
+```bash
+>> Employee.last.create_office(location: '1st floor')
+  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" DESC LIMIT 1
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "offices" ("location", "employee_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["location", "1st floor"], ["employee_id", 2], ["created_at", "2015-04-17 12:26:11.291450"], ["updated_at", "2015-04-17 12:26:11.291450"]]
+   (8.2ms)  commit transaction
+  Office Load (0.2ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 2]]
+=> #<Office id: 2, location: "1st floor", employee_id: 2, created_at: "2015-04-17 12:26:11", updated_at: "2015-04-17 12:26:11">
+>>
+```
 
-Removing is intuitively done via destroy:
+Removing is intuitively done via `destroy`:
 
-    >>
-      Employee Load (0.3ms)  SELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT 1
-      Office Load (0.1ms)  SELECT "offices".* FROM "offices" WHERE "offices"."employee_id" = ? ORDER BY "offices"."id" ASC LIMIT 1  [["employee_id", 1]]
-       (0.1ms)  begin transaction
-      SQL (0.3ms)  DELETE FROM "offices" WHERE "offices"."id" = ?  [["id", 1]]
-       (2.4ms)  commit transaction
-    => #<Office id: 1, location: "2nd floor", employee_id: 1, created_at: "2013-07-16 12:45:13", updated_at: "2013-07-16 12:45:13">
-    >>>>
-      Employee Load (0.4ms)  SELECT "employees".* FROM "employees" ORDER BY "employees"."id" ASC LIMIT 1
-      Office Load (0.1ms)  SELECT "offices".* FROM "offices" WHERE "offices"."employee_id" = ? ORDER BY "offices"."id" ASC LIMIT 1  [["employee_id", 1]]
-    => nil
-    >>>>
+```bash
+>> Employee.first.office.destroy
+  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" ASC LIMIT 1
+  Office Load (0.1ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 1]]
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  DELETE FROM "offices" WHERE "offices"."id" = ?  [["id", 1]]
+   (9.1ms)  commit transaction
+=> #<Office id: 1, location: "2nd floor", employee_id: 1, created_at: "2015-04-17 12:24:30", updated_at: "2015-04-17 12:24:30">
+>> Employee.first.office
+  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" ASC LIMIT 1
+  Office Load (0.2ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 1]]
+=> nil
+>>
+```
 
 > **Warning**
 >
-> If you create a new Office for an Employee with an existing Office
+> If you create a new `Office` for an `Employee` with an existing `Office`
 > then you will not get an error message:
 >
->     >>
->       Employee Load (0.3ms)  SELECT "employees".* FROM "employees" ORDER BY "employees"."id" DESC LIMIT 1
->        (0.1ms)  begin transaction
->       SQL (0.4ms)  INSERT INTO "offices" ("created_at", "employee_id", "location", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 12:48:44 UTC +00:00], ["employee_id", 2], ["location", "Basement"], ["updated_at", Tue, 16 Jul 2013 12:48:44 UTC +00:00]]
->        (1.9ms)  commit transaction
->       Office Load (0.1ms)  SELECT "offices".* FROM "offices" WHERE "offices"."employee_id" = ? ORDER BY "offices"."id" ASC LIMIT 1  [["employee_id", 2]]
->        (0.1ms)  begin transaction
->       SQL (0.4ms)  UPDATE "offices" SET "employee_id" = ?, "updated_at" = ? WHERE "offices"."id" = 2  [["employee_id", nil], ["updated_at", Tue, 16 Jul 2013 12:48:44 UTC +00:00]]
->        (0.8ms)  commit transaction
->     => #<Office id: 3, location: "Basement", employee_id: 2, created_at: "2013-07-16 12:48:44", updated_at: "2013-07-16 12:48:44">
->     >>
->       Employee Load (0.2ms)  SELECT "employees".* FROM "employees" ORDER BY "employees"."id" DESC LIMIT 1
->       Office Load (0.2ms)  SELECT "offices".* FROM "offices" WHERE "offices"."employee_id" = ? ORDER BY "offices"."id" ASC LIMIT 1  [["employee_id", 2]]
->     => #<Office id: 3, location: "Basement", employee_id: 2, created_at: "2013-07-16 12:48:44", updated_at: "2013-07-16 12:48:44">
->     >>
+>      >> Employee.last.create_office(location: 'Basement')
+>        Employee Load (0.2ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" DESC LIMIT 1
+>         (0.1ms)  begin transaction
+>        SQL (0.4ms)  INSERT INTO "offices" ("location", "employee_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["location", "Basement"], ["employee_id", 2], ["created_at", "2015-04-17 12:27:56.518229"], ["updated_at", "2015-04-17 12:27:56.518229"]]
+>         (9.2ms)  commit transaction
+>        Office Load (0.2ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 2]]
+>         (0.1ms)  begin transaction
+>        SQL (0.4ms)  UPDATE "offices" SET "employee_id" = ?, "updated_at" = ? WHERE "offices"."id" = ?  [["employee_id", nil], ["updated_at", "2015-04-17 12:27:56.531948"], ["id", 2]]
+>         (0.9ms)  commit transaction
+>      => #<Office id: 3, location: "Basement", employee_id: 2, created_at: "2015-04-17 12:27:56", updated_at: "2015-04-17 12:27:56">
+>      >> Employee.last.office
+>        Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" DESC LIMIT 1
+>        Office Load (0.1ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 2]]
+>      => #<Office id: 3, location: "Basement", employee_id: 2, created_at: "2015-04-17 12:27:56", updated_at: "2015-04-17 12:27:56">
+>      >>
 >
-> The old Office is even still in the database (the `employee_id` was
+> The old `Office` is even still in the database (the `employee_id` was
 > automatically set to `nil`):
 >
->     >>
->       Office Load (0.3ms)  SELECT "offices".* FROM "offices"
->     => #<ActiveRecord::Relation [#<Office id: 2, location: "1st floor", employee_id: nil, created_at: "2013-07-16 12:46:58", updated_at: "2013-07-16 12:48:44">, #<Office id: 3, location: "Basement", employee_id: 2, created_at: "2013-07-16 12:48:44", updated_at: "2013-07-16 12:48:44">]>
->     >>
->     $
+>      >> Office.all
+>        Office Load (0.2ms)  SELECT "offices".* FROM "offices"
+>      => #<ActiveRecord::Relation [#<Office id: 2, location: "1st floor", employee_id: nil, created_at: "2015-04-17 12:26:11", updated_at: "2015-04-17 12:27:56">, #<Office id: 3, location: "Basement", employee_id: 2, created_at: "2015-04-17 12:27:56", updated_at: "2015-04-17 12:27:56">]>
+>      >> exit
+>      $
 
 ### has\_one vs. belongs\_to
 
-Both has\_one and belongs\_to offer the option of representing a 1:1
+Both `has_one` and `belongs_to` offer the option of representing a 1:1
 relationship. The difference in practice is in the programmer's personal
-preference and the location of the foreign key. In general, has\_one
+preference and the location of the foreign key. In general, `has_one`
 tends to be used very rarely and depends on the degree of normalization
 of the data schema.
 
 Polymorphic Associations
 ------------------------
 
-ActiveRecord
-polymorphic associations
 Already the word "polymorphic" will probably make you tense up. What can
 it mean? Here is what the website
 <http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html>
@@ -2658,31 +2657,35 @@ tells us: “Polymorphic associations on models are not restricted on what
 types of models they can be associated with.” Well, there you go - as
 clear as mud! ;-)
 
-I am showing you an example in which we create a model for cars (Car)
-and a model for bicycles (Bike). To describe a car or bike, we use a
-model to tag it (Tag). A car and a bike can have any number of tags. The
+I am showing you an example in which we create a model for cars (`Car`)
+and a model for bicycles (`Bike`). To describe a car or bike, we use a
+model to tag it (`Tag`). A car and a bike can have any number of `tags`. The
 application:
 
-    $
-      [...]
-    $  
-    $
+```bash
+$ rails new example
+  [...]
+$ cd example
+$
+```
 
 Now the three required models:
 
-    $
-      [...]
-    $
-      [...]
-    $
-      [...]
-    $
-      [...]
-    $
+```bash
+$ rails generate model Car name
+  [...]
+$ rails generate model Bike name
+  [...]
+$ rails generate model Tag name taggable:references{polymorphic}
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
-Car and Bike are clear. For Tag we use the migration shortcut
-`taggable:references{polymorphic}` to generate the fields taggable\_type
-and taggable\_id, to give ActiveRecord an opportunity to save the
+`Car` and `Bike` are clear. For `Tag` we use the migration shortcut
+`taggable:references{polymorphic}` to generate the fields `taggable_type`
+and `taggable_id`, to give ActiveRecord an opportunity to save the
 assignment for the polymorphic association. We have to enter it
 accordingly in the model.
 
@@ -2691,29 +2694,34 @@ configuration for the polymorphic association:
 
 `app/models/tag.rb`
 
-    class Tag < ActiveRecord::Base
-      belongs_to :taggable, polymorphic: true
-    end
+```ruby
+class Tag < ActiveRecord::Base
+  belongs_to :taggable, polymorphic: true
+end
+```
 
 For the other models we have to add the polymorphic association
 manually:
 
 `app/models/car.rb`
 
-    class Car < ActiveRecord::Base
-      has_many :tags, as: :taggable
-    end
+```ruby
+class Car < ActiveRecord::Base
+  has_many :tags, as: :taggable
+end
+```
 
 `app/models/bike.rb`
 
-    class Bike < ActiveRecord::Base
-      has_many :tags, as: :taggable
-    end
+```ruby
+class Bike < ActiveRecord::Base
+  has_many :tags, as: :taggable
+end
+```
 
 For Car and Bike we use an additional `:as: :taggable` when defining
-has\_many. For Tag we use `belongs_to
-  :taggable, polymorphic: true` to indicate the polymorphic association
-to ActiveRecord.
+`has_many`. For Tag we use `belongs_to :taggable, polymorphic: true` to indicate 
+the polymorphic association to ActiveRecord.
 
 > **Tip**
 >
@@ -2724,269 +2732,278 @@ to ActiveRecord.
 
 Let's go into the *console* and create a car and a bike:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.2ms)  INSERT INTO "cars" ("created_at", "name", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:04:50 UTC +00:00], ["name", "Beetle"], ["updated_at", Tue, 16 Jul 2013 13:04:50 UTC +00:00]]
-       (0.9ms)  commit transaction
-    => #<Car id: 1, name: "Beetle", created_at: "2013-07-16 13:04:50", updated_at: "2013-07-16 13:04:50">
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.4ms)  INSERT INTO "bikes" ("created_at", "name", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:04:57 UTC +00:00], ["name", "Mountainbike"], ["updated_at", Tue, 16 Jul 2013 13:04:57 UTC +00:00]]
-       (2.5ms)  commit transaction
-    => #<Bike id: 1, name: "Mountainbike", created_at: "2013-07-16 13:04:57", updated_at: "2013-07-16 13:04:57">
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> beetle = Car.create(name: 'Beetle')
+   (0.1ms)  begin transaction
+  SQL (0.8ms)  INSERT INTO "cars" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "Beetle"], ["created_at", "2015-04-17 13:39:54.793336"], ["updated_at", "2015-04-17 13:39:54.793336"]]
+   (0.8ms)  commit transaction
+=> #<Car id: 1, name: "Beetle", created_at: "2015-04-17 13:39:54", updated_at: "2015-04-17 13:39:54">
+>> mountainbike = Bike.create(name: 'Mountainbike')
+   (0.1ms)  begin transaction
+  SQL (0.3ms)  INSERT INTO "bikes" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "Mountainbike"], ["created_at", "2015-04-17 13:39:55.896512"], ["updated_at", "2015-04-17 13:39:55.896512"]]
+   (9.0ms)  commit transaction
+=> #<Bike id: 1, name: "Mountainbike", created_at: "2015-04-17 13:39:55", updated_at: "2015-04-17 13:39:55">
+>>
+```
 
 Now we define for each a tag with the color of the corresponding object:
 
-    >>
-       (0.0ms)  begin transaction
-      SQL (0.5ms)  INSERT INTO "tags" ("created_at", "name", "taggable_id", "taggable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:05:19 UTC +00:00], ["name", "blue"], ["taggable_id", 1], ["taggable_type", "Car"], ["updated_at", Tue, 16 Jul 2013 13:05:19 UTC +00:00]]
-       (3.0ms)  commit transaction
-    => #<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car", created_at: "2013-07-16 13:05:19", updated_at: "2013-07-16 13:05:19">
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.4ms)  INSERT INTO "tags" ("created_at", "name", "taggable_id", "taggable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:05:27 UTC +00:00], ["name", "black"], ["taggable_id", 1], ["taggable_type", "Bike"], ["updated_at", Tue, 16 Jul 2013 13:05:27 UTC +00:00]]
-       (2.3ms)  commit transaction
-    => #<Tag id: 2, name: "black", taggable_id: 1, taggable_type: "Bike", created_at: "2013-07-16 13:05:27", updated_at: "2013-07-16 13:05:27">
-    >>
+```bash
+>> beetle.tags.create(name: 'blue')
+   (0.1ms)  begin transaction
+  SQL (1.0ms)  INSERT INTO "tags" ("name", "taggable_id", "taggable_type", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "blue"], ["taggable_id", 1], ["taggable_type", "Car"], ["created_at", "2015-04-17 13:41:04.984444"], ["updated_at", "2015-04-17 13:41:04.984444"]]
+   (0.9ms)  commit transaction
+=> #<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:04", updated_at: "2015-04-17 13:41:04">
+>> mountainbike.tags.create(name: 'black')
+   (0.1ms)  begin transaction
+  SQL (0.7ms)  INSERT INTO "tags" ("name", "taggable_id", "taggable_type", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "black"], ["taggable_id", 1], ["taggable_type", "Bike"], ["created_at", "2015-04-17 13:41:17.315318"], ["updated_at", "2015-04-17 13:41:17.315318"]]
+   (8.2ms)  commit transaction
+=> #<Tag id: 2, name: "black", taggable_id: 1, taggable_type: "Bike", created_at: "2015-04-17 13:41:17", updated_at: "2015-04-17 13:41:17">
+>>
+```
 
-For the `beetle`, we add another Tag:
+For the `beetle`, we add another `Tag`:
 
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.6ms)  INSERT INTO "tags" ("created_at", "name", "taggable_id", "taggable_type", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:05:56 UTC +00:00], ["name", "Automatic"], ["taggable_id", 1], ["taggable_type", "Car"], ["updated_at", Tue, 16 Jul 2013 13:05:56 UTC +00:00]]
-       (2.1ms)  commit transaction
-    => #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car", created_at: "2013-07-16 13:05:56", updated_at: "2013-07-16 13:05:56">
-    >>
+```bash
+>> beetle.tags.create(name: 'Automatic')
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "tags" ("name", "taggable_id", "taggable_type", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "Automatic"], ["taggable_id", 1], ["taggable_type", "Car"], ["created_at", "2015-04-17 13:41:51.042746"], ["updated_at", "2015-04-17 13:41:51.042746"]]
+   (9.2ms)  commit transaction
+=> #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:51", updated_at: "2015-04-17 13:41:51">
+>>
+```
 
 Let's have a look at all Tag items:
 
-    >>
-      Tag Load (0.3ms)  SELECT "tags".* FROM "tags"
-    => #<ActiveRecord::Relation [#<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car", created_at: "2013-07-16 13:05:19", updated_at: "2013-07-16 13:05:19">, #<Tag id: 2, name: "black", taggable_id: 1, taggable_type: "Bike", created_at: "2013-07-16 13:05:27", updated_at: "2013-07-16 13:05:27">, #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car", created_at: "2013-07-16 13:05:56", updated_at: "2013-07-16 13:05:56">]>
-    >>
+```bash
+>> Tag.all
+  Tag Load (0.3ms)  SELECT "tags".* FROM "tags"
+=> #<ActiveRecord::Relation [#<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:04", updated_at: "2015-04-17 13:41:04">, #<Tag id: 2, name: "black", taggable_id: 1, taggable_type: "Bike", created_at: "2015-04-17 13:41:17", updated_at: "2015-04-17 13:41:17">, #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:51", updated_at: "2015-04-17 13:41:51">]>
+>>
+```
 
 And now all tags of the beetle:
 
-    >>
-      Tag Load (0.4ms)  SELECT "tags".* FROM "tags" WHERE "tags"."taggable_id" = ? AND "tags"."taggable_type" = ?  [["taggable_id", 1], ["taggable_type", "Car"]]
-    => #<ActiveRecord::Associations::CollectionProxy [#<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car", created_at: "2013-07-16 13:05:19", updated_at: "2013-07-16 13:05:19">, #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car", created_at: "2013-07-16 13:05:56", updated_at: "2013-07-16 13:05:56">]>
-    >>
+```bash
+>> beetle.tags
+  Tag Load (0.3ms)  SELECT "tags".* FROM "tags" WHERE "tags"."taggable_id" = ? AND "tags"."taggable_type" = ?  [["taggable_id", 1], ["taggable_type", "Car"]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:04", updated_at: "2015-04-17 13:41:04">, #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:51", updated_at: "2015-04-17 13:41:51">]>
+>>
+```
 
 Of course you can also check which object the last Tag belongs to:
 
-    >>
-      Tag Load (0.3ms)  SELECT "tags".* FROM "tags" ORDER BY "tags"."id" DESC LIMIT 1
-      Car Load (0.2ms)  SELECT "cars".* FROM "cars" WHERE "cars"."id" = ? ORDER BY "cars"."id" ASC LIMIT 1  [["id", 1]]
-    => #<Car id: 1, name: "Beetle", created_at: "2013-07-16 13:04:50", updated_at: "2013-07-16 13:04:50">
-    >>
-    $
+```bash
+>> Tag.last.taggable
+  Tag Load (0.3ms)  SELECT  "tags".* FROM "tags"  ORDER BY "tags"."id" DESC LIMIT 1
+  Car Load (0.4ms)  SELECT  "cars".* FROM "cars" WHERE "cars"."id" = ? LIMIT 1  [["id", 1]]
+=> #<Car id: 1, name: "Beetle", created_at: "2015-04-17 13:39:54", updated_at: "2015-04-17 13:39:54">
+>> exit
+```
 
 Polymorphic associations are always useful if you want to normalize the
 database structure. In this example, we could also have defined a model
-CarTag and BikeTag, but as Tag is the same for both, a polymorphic
+`CarTag` and `BikeTag`, but as `Tag` is the same for both, a polymorphic
 association makes more sense in this case.
 
 ### Options
 
 Polymorphic associations can be configured with the same options as a
-normal ? model.
+normal [Section "has_many - 1:n Association"](#has95many-1n-association) model.
 
 Delete/Destroy a Record
 -----------------------
 
-To remove a database record, you can use the methods destroy and delete.
+To remove a database record, you can use the methods `destroy` and `delete`.
 It's quite easy to confuse these two terms, but they are different and
 after a while you get used to it.
 
 As an example, we use the following Rails application:
 
-    $
-      [...]
-    $
-    $
-      [...]
-    $
-      [...]
-    $
-      [...]
-    $
+```bash
+$ rails new bookshelf
+  [...]
+$ cd bookshelf
+$ rails generate model book title
+  [...]
+$ rails generate model author book_id:integer first_name last_name
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
 `app/models/book.rb`
 
-    class Book < ActiveRecord::Base
-      has_many :authors, dependent: :destroy
-    end
+```ruby
+class Book < ActiveRecord::Base
+  has_many :authors, dependent: :destroy
+end
+```
 
 `app/models/author.rb`
 
-    class Author < ActiveRecord::Base
-      belongs_to :book
-    end
+```ruby
+class Author < ActiveRecord::Base
+  belongs_to :book
+end
+```
 
 ### destroy
 
-ActiveRecord
-methods
-destroy()
-With destroy you can remove a record and any existing dependencies are
-also taken into account (see for example `:dependent => :destroy` in ?).
-Simply put: to be on the safe side, it's better to use destroy because
+With `destroy` you can remove a record and any existing dependencies are
+also taken into account (see for example `:dependent => :destroy` in [the section called "Options"](#options)).
+Simply put: to be on the safe side, it's better to use `destroy` because
 then the Rails system does more for you.
 
 Let's create a record and then destroy it again:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.2ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:30:24 UTC +00:00], ["title", "Homo faber"], ["updated_at", Tue, 16 Jul 2013 13:30:24 UTC +00:00]]
-       (2.2ms)  commit transaction
-    => #<Book id: 1, title: "Homo faber", created_at: "2013-07-16 13:30:24", updated_at: "2013-07-16 13:30:24">
-    >>
-       (0.3ms)  SELECT COUNT(*) FROM "books"
-    => 1
-    >>
-       (0.2ms)  begin transaction
-      Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
-      SQL (0.3ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 1]]
-       (0.6ms)  commit transaction
-    => #<Book id: 1, title: "Homo faber", created_at: "2013-07-16 13:30:24", updated_at: "2013-07-16 13:30:24">
-    >>
-       (0.4ms)  SELECT COUNT(*) FROM "books"
-    => 0
-    >>
-
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> book = Book.create(title: 'Homo faber')
+   (0.1ms)  begin transaction
+  SQL (0.7ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:49:58.092997"], ["updated_at", "2015-04-17 13:49:58.092997"]]
+   (9.0ms)  commit transaction
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 13:49:58", updated_at: "2015-04-17 13:49:58">
+>> Book.count
+   (0.3ms)  SELECT COUNT(*) FROM "books"
+=> 1
+>> book.destroy
+   (0.1ms)  begin transaction
+  Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
+  SQL (0.3ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 1]]
+   (9.0ms)  commit transaction
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 13:49:58", updated_at: "2015-04-17 13:49:58">
+>> Book.count
+   (0.5ms)  SELECT COUNT(*) FROM "books"
+=> 0
+>>
+```
 As we are using the option `dependent: :destroy` in the Book model, we
 can also automatically remove all authors:
 
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.6ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:31:11 UTC +00:00], ["title", "Homo faber"], ["updated_at", Tue, 16 Jul 2013 13:31:11 UTC +00:00]]
-       (1.9ms)  commit transaction
-       (0.1ms)  begin transaction
-      SQL (0.5ms)  INSERT INTO "authors" ("book_id", "created_at", "first_name", "last_name", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 2], ["created_at", Tue, 16 Jul 2013 13:31:11 UTC +00:00], ["first_name", "Max"], ["last_name", "Frisch"], ["updated_at", Tue, 16 Jul 2013 13:31:11 UTC +00:00]]
-       (1.0ms)  commit transaction
-    => #<Author id: 1, book_id: 2, first_name: "Max", last_name: "Frisch", created_at: "2013-07-16 13:31:11", updated_at: "2013-07-16 13:31:11">
-    >>
-       (0.4ms)  SELECT COUNT(*) FROM "authors"
-    => 1
-    >>
-      Book Load (0.3ms)  SELECT "books".* FROM "books" ORDER BY "books"."id" ASC LIMIT 1
-       (0.1ms)  begin transaction
-      Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 2]]
-      SQL (0.3ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 1]]
-      SQL (0.1ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 2]]
-       (2.1ms)  commit transaction
-    => #<Book id: 2, title: "Homo faber", created_at: "2013-07-16 13:31:11", updated_at: "2013-07-16 13:31:11">
-    >>
-       (0.4ms)  SELECT COUNT(*) FROM "authors"
-    => 0
-    >>
+```bash
+>> Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
+   (0.1ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:50:43.062148"], ["updated_at", "2015-04-17 13:50:43.062148"]]
+   (9.1ms)  commit transaction
+   (0.1ms)  begin transaction
+  SQL (0.3ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 2], ["created_at", "2015-04-17 13:50:43.083211"], ["updated_at", "2015-04-17 13:50:43.083211"]]
+   (0.9ms)  commit transaction
+=> #<Author id: 1, book_id: 2, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 13:50:43", updated_at: "2015-04-17 13:50:43">
+>> Author.count
+   (0.2ms)  SELECT COUNT(*) FROM "authors"
+=> 1
+>> Book.first.destroy
+  Book Load (0.3ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
+   (0.1ms)  begin transaction
+  Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 2]]
+  SQL (0.3ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 1]]
+  SQL (0.1ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 2]]
+   (9.1ms)  commit transaction
+=> #<Book id: 2, title: "Homo faber", created_at: "2015-04-17 13:50:43", updated_at: "2015-04-17 13:50:43">
+>> Author.count
+   (0.2ms)  SELECT COUNT(*) FROM "authors"
+=> 0
+>>
+```
 
 When removing records, please always consider the difference between the
 content of the database table and the value of the currently removed
 object. The instance is *frozen* after removing the database field. So
 it is no longer in the database, but still present in the program, yet
 it can no longer be modified there. It is read-only. To check, you can
-use the method frozen?()frozen?:
+use the method `frozen?`:
 
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.6ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:32:30 UTC +00:00], ["title", "Homo faber"], ["updated_at", Tue, 16 Jul 2013 13:32:30 UTC +00:00]]
-       (2.0ms)  commit transaction
-    => #<Book id: 3, title: "Homo faber", created_at: "2013-07-16 13:32:30", updated_at: "2013-07-16 13:32:30">
-    >>
-       (0.1ms)  begin transaction
-      Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
-      SQL (0.4ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 3]]
-       (1.9ms)  commit transaction
-    => #<Book id: 3, title: "Homo faber", created_at: "2013-07-16 13:32:30", updated_at: "2013-07-16 13:32:30">
-    >>
-       (0.2ms)  SELECT COUNT(*) FROM "books"
-    => 0
-    >>
-    => #<Book id: 3, title: "Homo faber", created_at: "2013-07-16 13:32:30", updated_at: "2013-07-16 13:32:30">
-    >>
-    => true
-    >>
+```bash
+>> book = Book.create(title: 'Homo faber')
+   (0.2ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:51:41.460050"], ["updated_at", "2015-04-17 13:51:41.460050"]]
+   (8.9ms)  commit transaction
+=> #<Book id: 3, title: "Homo faber", created_at: "2015-04-17 13:51:41", updated_at: "2015-04-17 13:51:41">
+>> book.destroy
+   (0.1ms)  begin transaction
+  Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
+  SQL (0.5ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 3]]
+   (9.2ms)  commit transaction
+=> #<Book id: 3, title: "Homo faber", created_at: "2015-04-17 13:51:41", updated_at: "2015-04-17 13:51:41">
+>> Book.count
+   (0.2ms)  SELECT COUNT(*) FROM "books"
+=> 0
+>> book
+=> #<Book id: 3, title: "Homo faber", created_at: "2015-04-17 13:51:41", updated_at: "2015-04-17 13:51:41">
+>> book.frozen?
+=> true
+>>
+```
 
 The record has been removed from the database, but the object with all
 its data is still present in the running Ruby program. So could we then
 revive the entire record? The answer is yes, but it will then be a new
 record:
 
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.5ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:33:31 UTC +00:00], ["title", "Homo faber"], ["updated_at", Tue, 16 Jul 2013 13:33:31 UTC +00:00]]
-       (1.7ms)  commit transaction
-    => #<Book id: 4, title: "Homo faber", created_at: "2013-07-16 13:33:31", updated_at: "2013-07-16 13:33:31">
-    >>
-    $
+```bash
+>> Book.create(title: book.title)
+   (0.1ms)  begin transaction
+  SQL (0.3ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:52:51.438501"], ["updated_at", "2015-04-17 13:52:51.438501"]]
+   (8.7ms)  commit transaction
+=> #<Book id: 4, title: "Homo faber", created_at: "2015-04-17 13:52:51", updated_at: "2015-04-17 13:52:51">
+>> exit
+```
 
 ### delete
 
-ActiveRecord
-methods
-delete()
-With delete you can remove a record directly from the database. Any
+With `delete` you can remove a record directly from the database. Any
 dependencies to other records in the *model* are not taken into account.
-The method delete only deletes that one row in the database and nothing
+The method `delete` only deletes that one row in the database and nothing
 else.
 
 Let's create a book with one author and then remove the book with
-delete:
+`delete`:
 
-    $
-      [...]
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.2ms)  INSERT INTO "books" ("created_at", "title", "updated_at") VALUES (?, ?, ?)  [["created_at", Tue, 16 Jul 2013 13:35:49 UTC +00:00], ["title", "Homo faber"], ["updated_at", Tue, 16 Jul 2013 13:35:49 UTC +00:00]]
-       (2.5ms)  commit transaction
-       (0.0ms)  begin transaction
-      SQL (0.4ms)  INSERT INTO "authors" ("book_id", "created_at", "first_name", "last_name", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 1], ["created_at", Tue, 16 Jul 2013 13:35:49 UTC +00:00], ["first_name", "Max"], ["last_name", "Frisch"], ["updated_at", Tue, 16 Jul 2013 13:35:49 UTC +00:00]]
-       (0.9ms)  commit transaction
-    => #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2013-07-16 13:35:49", updated_at: "2013-07-16 13:35:49">
-    >>
-       (0.3ms)  SELECT COUNT(*) FROM "authors"
-    => 1
-    >>
-      Book Load (0.2ms)  SELECT "books".* FROM "books" ORDER BY "books"."id" DESC LIMIT 1
-      SQL (2.9ms)  DELETE FROM "books" WHERE "books"."id" = 1
-    => #<Book id: 1, title: "Homo faber", created_at: "2013-07-16 13:35:49", updated_at: "2013-07-16 13:35:49">
-    >>
-       (0.4ms)  SELECT COUNT(*) FROM "authors"
-    => 1
-    >>
-       (0.4ms)  SELECT COUNT(*) FROM "books"
-    => 0
-    >>
-    $
+```bash
+$ rails db:reset
+  [...]
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
+   (0.5ms)  begin transaction
+  SQL (0.6ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:54:46.188830"], ["updated_at", "2015-04-17 13:54:46.188830"]]
+   (9.2ms)  commit transaction
+   (0.0ms)  begin transaction
+  SQL (0.4ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17 13:54:46.234460"], ["updated_at", "2015-04-17 13:54:46.234460"]]
+   (0.8ms)  commit transaction
+=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 13:54:46", updated_at: "2015-04-17 13:54:46">
+>> Author.count
+   (0.2ms)  SELECT COUNT(*) FROM "authors"
+=> 1
+>> Book.last.delete
+  Book Load (0.2ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" DESC LIMIT 1
+  SQL (1.5ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 1]]
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 13:54:46", updated_at: "2015-04-17 13:54:46">
+>> Author.count
+   (0.2ms)  SELECT COUNT(*) FROM "authors"
+=> 1
+>> Book.count
+   (0.2ms)  SELECT COUNT(*) FROM "books"
+=> 0
+>> exit
+$
+```
 
 The record of the book 'Homo faber' is deleted, but the author is still
 in the database.
 
-As with destroy, an object also gets frozen when you use delete (see ?).
+As with `destroy`, an object also gets frozen when you use `delete` (see [the section called "destroy"](#destroy)).
 The record is already removed from the database, but the object itself
 is still there.
 
 Transactions
 ------------
 
-ActiveRecord
-transactions
-transactions
-ActiveRecord, transactions
-database
-transactions
-ActiveRecord, transactions
-ActiveRecord
-methods
-transaction()
 In the world of databases, the term transaction refers to a block of SQL
 statements that must be executed together and without interruption. If
 an error should occur within the transaction, the database is reset to
@@ -3000,11 +3017,13 @@ executed.
 
 A transaction follows this pattern:
 
-    ActiveRecord::Base.transaction do
-      Book.create(:title => 'A')
-      Book.create(:title => 'B')
-      Book.create(:title => 'C').authors.create(:last_name => 'Z')
-    end
+```ruby
+ActiveRecord::Base.transaction do
+  Book.create(:title => 'A')
+  Book.create(:title => 'B')
+  Book.create(:title => 'C').authors.create(:last_name => 'Z')
+end
+```
 
 Transactions are a complex topic. If you want to find out more, you can
 consult the ri help on the shell via `ri
@@ -3012,7 +3031,7 @@ consult the ri help on the shell via `ri
 
 > **Important**
 >
-> The methods save and destroy are automatically executed within the
+> The methods `save` and `destroy` are automatically executed within the
 > transaction *wrapper*. That way, Rails ensures that no undefined state
 > can arise for these two methods.
 
@@ -3025,8 +3044,6 @@ consult the ri help on the shell via `ri
 Scopes
 ------
 
-ActiveRecord
-NamedScopes
 When programming Rails applications, it is sometimes clearer and simpler
 to define frequent searches as separate methods. In Rails speak, these
 are referred to as *NamedScope*. These NamedScopes can be chained, just
@@ -3036,82 +3053,98 @@ like other methods.
 
 We are building our own little online shop:
 
-    $
-      [...]
-    $
-    $
-      [...]
-    $
-      [...]
-    $
+```bash
+$ rails new shop
+  [...]
+$ cd shop
+$ rails generate model product name 'price:decimal{7,2}' weight:integer in_stock:boolean expiration_date:date
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
 Please populate the file `db/seeds.rb` with the following content:
 
-    Product.create(name: 'Milk (1 liter)', weight: 1000, in_stock: true, price: 0.45, expiration_date: Date.today + 14.days)
-    Product.create(name: 'Butter (250 g)', weight: 250, in_stock: true, price: 0.75, expiration_date: Date.today + 14.days)
-    Product.create(name: 'Flour (1 kg)', weight: 1000, in_stock: false, price: 0.45, expiration_date: Date.today + 100.days)
-    Product.create(name: 'Jelly Babies (6 x 300 g)', weight: 1500, in_stock: true, price: 4.96, expiration_date: Date.today + 1.year)
-    Product.create(name: 'Super-Duper Cake Mix', in_stock: true, price: 11.12, expiration_date: Date.today + 1.year)
-    Product.create(name: 'Eggs (12)', in_stock: true, price: 2, expiration_date: Date.today + 7.days)
-    Product.create(name: 'Peanuts (8 x 200 g bag)', in_stock: false, weight: 1600, price: 17.49, expiration_date: Date.today + 1.year)
+```ruby
+Product.create(name: 'Milk (1 liter)', weight: 1000, in_stock: true, price: 0.45, expiration_date: Date.today + 14.days)
+Product.create(name: 'Butter (250 g)', weight: 250, in_stock: true, price: 0.75, expiration_date: Date.today + 14.days)
+Product.create(name: 'Flour (1 kg)', weight: 1000, in_stock: false, price: 0.45, expiration_date: Date.today + 100.days)
+Product.create(name: 'Jelly Babies (6 x 300 g)', weight: 1500, in_stock: true, price: 4.96, expiration_date: Date.today + 1.year)
+Product.create(name: 'Super-Duper Cake Mix', in_stock: true, price: 11.12, expiration_date: Date.today + 1.year)
+Product.create(name: 'Eggs (12)', in_stock: true, price: 2, expiration_date: Date.today + 7.days)
+Product.create(name: 'Peanuts (8 x 200 g bag)', in_stock: false, weight: 1600, price: 17.49, expiration_date: Date.today + 1.year)
+```
 
 Now drop the database and repopulate it with the `db/seeds.rb`:
 
-    $
-      [...]
-    $
+```bash
+$ rake db:reset
+  [...]
+$
+```
 
 ### Defining a Scope
 
 If we want to count products that are in stock in our online shop, then
 we can use the following query each time:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT COUNT(*) FROM "products" WHERE "products"."in_stock" = 't'
-    => 5
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Product.where(in_stock: true).count
+   (0.1ms)  SELECT COUNT(*) FROM "products" WHERE "products"."in_stock" = 't'
+=> 5
+>> exit
+$
+```
 
 But we could also define a NamedScope `available` in the
 `app/models/product.rb`:
 
-    class Product < ActiveRecord::Base
-      scope :available, -> { where(in_stock: true) }
-    end
+```ruby
+class Product < ActiveRecord::Base
+  scope :available, -> { where(in_stock: true) }
+end
+```
 
 And then use it:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.2ms)  SELECT COUNT(*) FROM "products" WHERE "products"."in_stock" = 't'
-    => 5
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Product.available.count
+   (0.1ms)  SELECT COUNT(*) FROM "products" WHERE "products"."in_stock" = 't'
+=> 5
+>> exit
+$
+```
 
 Let's define a second NamedScope for this example in the
 `app/models/product.rb`:
 
-    class Product < ActiveRecord::Base
-      scope :available, -> { where(in_stock: true) }
-      scope :cheap, -> { where(price: 0..1) }
-    end
+```ruby
+class Product < ActiveRecord::Base
+  scope :available, -> { where(in_stock: true) }
+  scope :cheap, -> { where(price: 0..1) }
+end
+```
 
 Now we can chain both named scopes to output all cheap products that are
 in stock:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  SELECT COUNT(*) FROM "products" WHERE ("products"."price" BETWEEN 0 AND 1)
-    => 3
-    >>
-       (0.2ms)  SELECT COUNT(*) FROM "products" WHERE "products"."in_stock" = 't' AND ("products"."price" BETWEEN 0 AND 1)
-    => 2
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Product.cheap.count
+   (0.3ms)  SELECT COUNT(*) FROM "products" WHERE ("products"."price" BETWEEN 0 AND 1)
+=> 3
+>> Product.cheap.available.count
+   (0.3ms)  SELECT COUNT(*) FROM "products" WHERE ("products"."price" BETWEEN 0 AND 1) AND "products"."in_stock" = 't'
+=> 2
+>> exit
+$
+```
 
 ### Passing in Arguments
 
@@ -3120,50 +3153,56 @@ no problem either. The following example outputs products that are
 cheaper than the specified value. The `app/models/product.rb` looks like
 this:
 
-    class Product < ActiveRecord::Base
-      scope :cheaper_than, ->(price) { where("price < ?", price) }
-    end
+```ruby
+class Product < ActiveRecord::Base
+  scope :cheaper_than, ->(price) { where("price < ?", price) }
+end
+```
 
 Now we can count all products that cost less than 50 cent:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.2ms)  SELECT COUNT(*) FROM "products" WHERE (price < 0.5)
-    => 2
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Product.cheaper_than(0.5).count
+   (0.2ms)  SELECT COUNT(*) FROM "products" WHERE (price < 0.5)
+=> 2
+>> exit
+$
+```
 
 ### Creating New Records with Scopes
 
 Let's use the following `app/models/product.rb`:
 
-    class Product < ActiveRecord::Base
-      scope :available, -> { where(in_stock: true) }
-    end
+```ruby
+class Product < ActiveRecord::Base
+  scope :available, -> { where(in_stock: true) }
+end
+```
 
 With this NamedScope we can not only find all products that are in
 stock, but also create new products that contain the value `true` in the
 field `in_stock`:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    => #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: true, expiration_date: nil, created_at: nil, updated_at: nil>
-    >>
-    => true
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> product = Product.available.build
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: true, expiration_date: nil, created_at: nil, updated_at: nil>
+>> product.in_stock
+=> true
+>> exit
+$
+```
 
-This works with the method build (see ?) and create (see ?).
+This works with the method build (see [the section called "build"](#build)) and create (see [the section called "create"](#create)).
 
 Validation
 ----------
 
-ActiveRecord
-validation
 Non-valid records are frequently a source of errors in programs. With
-validates, Rails offers a quick and easy way of validating them. That
+`validates`, Rails offers a quick and easy way of validating them. That
 way you can be sure that only meaningful records will find their way
 into your database.
 
@@ -3171,14 +3210,16 @@ into your database.
 
 Let's create a new application for this chapter:
 
-    $
-      [...]
-    $
-    $
-      [...]
-    $
-      [...]
-    $
+```bash
+$ rails new shop
+  [...]
+$ cd shop
+$ rails generate model product name 'price:decimal{7,2}' weight:integer in_stock:boolean expiration_date:date
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
 ### The Basic Idea
 
@@ -3190,31 +3231,122 @@ programmer knows where to find it.
 Without any validation, we can create an empty record in a model without
 a problem:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (2.6ms)  INSERT INTO "products" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", Tue, 16 Jul 2013 17:50:34 UTC +00:00], ["updated_at", Tue, 16 Jul 2013 17:50:34 UTC +00:00]]
-       (3.4ms)  commit transaction
-    => #<Product id: 1, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: "2013-07-16 17:50:34", updated_at: "2013-07-16 17:50:34">
-    >>
-      Product Load (0.3ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" ASC LIMIT 1
-    --- !ruby/object:Product
-    attributes:
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Product.create
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "products" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", "2015-04-17 17:52:34.495378"], ["updated_at", "2015-04-17 17:52:34.495378"]]
+   (9.3ms)  commit transaction
+=> #<Product id: 1, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: "2015-04-17 17:52:34", updated_at: "2015-04-17 17:52:34">
+>> puts Product.first.to_yaml
+  Product Load (0.3ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" ASC LIMIT 1
+--- !ruby/object:Product
+raw_attributes:
+  id: 1
+  name:
+  price:
+  weight:
+  in_stock:
+  expiration_date:
+  created_at: '2015-04-17 17:52:34.495378'
+  updated_at: '2015-04-17 17:52:34.495378'
+attributes: !ruby/object:ActiveRecord::AttributeSet
+  attributes: !ruby/object:ActiveRecord::LazyAttributeHash
+    types:
+      id: &2 !ruby/object:ActiveRecord::Type::Integer
+        precision:
+        scale:
+        limit:
+        range: !ruby/range
+          begin: -2147483648
+          end: 2147483648
+          excl: true
+      name: &3 !ruby/object:ActiveRecord::Type::String
+        precision:
+        scale:
+        limit:
+      price: &4 !ruby/object:ActiveRecord::Type::Decimal
+        precision: 7
+        scale: 2
+        limit:
+      weight: &5 !ruby/object:ActiveRecord::Type::Integer
+        precision:
+        scale:
+        limit:
+        range: !ruby/range
+          begin: -2147483648
+          end: 2147483648
+          excl: true
+      in_stock: &6 !ruby/object:ActiveRecord::Type::Boolean
+        precision:
+        scale:
+        limit:
+      expiration_date: &7 !ruby/object:ActiveRecord::Type::Date
+        precision:
+        scale:
+        limit:
+      created_at: !ruby/object:ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
+        subtype: &1 !ruby/object:ActiveRecord::Type::DateTime
+          precision:
+          scale:
+          limit:
+      updated_at: !ruby/object:ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
+        subtype: *1
+    values:
       id: 1
       name:
       price:
       weight:
       in_stock:
       expiration_date:
-      created_at: 2013-07-16 17:50:34.791368000 Z
-      updated_at: 2013-07-16 17:50:34.791368000 Z
-    => nil
-    >>
-    $
+      created_at: '2015-04-17 17:52:34.495378'
+      updated_at: '2015-04-17 17:52:34.495378'
+    additional_types: {}
+    materialized: true
+    delegate_hash:
+      id: !ruby/object:ActiveRecord::Attribute::FromDatabase
+        name: id
+        value_before_type_cast: 1
+        type: *2
+      name: !ruby/object:ActiveRecord::Attribute::FromDatabase
+        name: name
+        value_before_type_cast:
+        type: *3
+      price: !ruby/object:ActiveRecord::Attribute::FromDatabase
+        name: price
+        value_before_type_cast:
+        type: *4
+      weight: !ruby/object:ActiveRecord::Attribute::FromDatabase
+        name: weight
+        value_before_type_cast:
+        type: *5
+      in_stock: !ruby/object:ActiveRecord::Attribute::FromDatabase
+        name: in_stock
+        value_before_type_cast:
+        type: *6
+      expiration_date: !ruby/object:ActiveRecord::Attribute::FromDatabase
+        name: expiration_date
+        value_before_type_cast:
+        type: *7
+      created_at: !ruby/object:ActiveRecord::Attribute::FromDatabase
+        name: created_at
+        value_before_type_cast: '2015-04-17 17:52:34.495378'
+        type: !ruby/object:ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
+          subtype: *1
+      updated_at: !ruby/object:ActiveRecord::Attribute::FromDatabase
+        name: updated_at
+        value_before_type_cast: '2015-04-17 17:52:34.495378'
+        type: !ruby/object:ActiveRecord::AttributeMethods::TimeZoneConversion::TimeZoneConverter
+          subtype: *1
+new_record: false
+=> nil
+>> exit
+$
+```
 
 But in practice, this record with no content doesn't make any sense. A
-Product needs to have a `name` and a price. That's why we can define
+`Product` needs to have a `name` and a `price`. That's why we can define
 validations in ActiveRecord. Then you can ensure as programmer that only
 records that are valid for you are saved in your database.
 
@@ -3222,95 +3354,101 @@ To make the mechanism easier to understand, I am going to jump ahead a
 bit and use the `presence` helper. Please fill your
 `app/model/product.rb` with the following content:
 
-    class Product < ActiveRecord::Base
-      validates :name,
-                presence: true
+```ruby
+class Product < ActiveRecord::Base
+  validates :name,
+            presence: true
 
-      validates :price,
-                presence: true
-    end
+  validates :price,
+            presence: true
+end
+```
 
 Now we try again to create an empty record in the console:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-    => #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> product = Product.create
+   (0.1ms)  begin transaction
+   (0.1ms)  rollback transaction
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+>>
+```
 
 Watch out for the `rollback transaction` part and the misssing `id` of
-the Product object! Rails began the transaction of creating a new record
+the `Product` object! Rails began the transaction of creating a new record
 but for some reason it couldn't do it. So it had to rollback the
 transaction. The validation method intervened before the record was
 saved. So validating happens before saving.
 
-Can we access the errors? Yes, via the method errors or with
-errors.messages we can look at the errors that occurred:
+Can we access the errors? Yes, via the method `errors` or with
+`errors.messages` we can look at the errors that occurred:
 
-    >>
-    => #<ActiveModel::Errors:0x007fec75067a20 @base=#<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>, @messages={:name=>["can't be blank"], :price=>["can't be blank"]}>
-    >>
-    => {:name=>["can't be blank"], :price=>["can't be blank"]}
-    >>
+```bash
+>> product.errors
+=> #<ActiveModel::Errors:0x007ff515a71680 @base=#<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>, @messages={:name=>["can't be blank"], :price=>["can't be blank"]}>
+>> product.errors.messages
+=> {:name=>["can't be blank"], :price=>["can't be blank"]}
+>>
+```
 
 This error message was defined for a human and English-speaking user
 (more on this and how the errors can be translated into another language
-in ?).
+in [Chapter 10, Internationalization](chapter10-i18n.html)).
 
-Only once we assign a value to the attributes `name` and price, we can
+Only once we assign a value to the attributes `name` and `price`, we can
 save the object:
 
-    >>
-    => "Milk (1 liter)"
-    >>
-    => 0.45
-    >>
-       (0.2ms)  begin transaction
-      SQL (2.9ms)  INSERT INTO "products" ("created_at", "name", "price", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Tue, 16 Jul 2013 17:52:50 UTC +00:00], ["name", "Milk (1 liter)"], ["price", #<BigDecimal:7fec739394c0,'0.45E0',9(45)>], ["updated_at", Tue, 16 Jul 2013 17:52:50 UTC +00:00]]
-       (2.9ms)  commit transaction
-    => true
-    >>
+```bash
+>> product.name = 'Milk (1 liter)'
+=> "Milk (1 liter)"
+>> product.price = 0.45
+=> 0.45
+>> product.save
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Milk (1 liter)"], ["price", 0.45], ["created_at", "2015-04-17 17:59:09.293831"], ["updated_at", "2015-04-17 17:59:09.293831"]]
+   (9.0ms)  commit transaction
+=> true
+>>
+```
 
 #### valid?
 
-ActiveRecord
-methods
-valid?()
 The method valid? indicates in boolean form if an object is valid. So
 you can check the validity already before you save:
 
-    >>
-    => #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
-    >>
-    => false
-    >>
+```bash
+>> product = Product.new
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+>> product.valid?
+=> false
+>>
+```
 
 #### save( validate: false )
 
-ActiveRecord
-methods
-save()
 As so often in life, you can find a way around everything. If you pass
-the parameter `:validate => false` to the method save, the data of
+the parameter `:validate => false` to the method `save`, the data of
 `Validation` is saved:
 
-    >>
-    => #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
-    >>
-    => false
-    >>
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-    => false
-    >>
-       (0.1ms)  begin transaction
-      SQL (0.8ms)  INSERT INTO "products" ("created_at", "expiration_date", "in_stock", "name", "price", "updated_at", "weight") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Mon, 19 Nov 2012 09:28:29 UTC +00:00], ["expiration_date", nil], ["in_stock", nil], ["name", nil], ["price", nil], ["updated_at", Mon, 19 Nov 2012 09:28:29 UTC +00:00], ["weight", nil]]
-       (2.3ms)  commit transaction
-    => true
-    >>
-    $
+```bash
+>> product = Product.new
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+>> product.valid?
+=> false
+>> product.save
+   (0.1ms)  begin transaction
+   (0.1ms)  rollback transaction
+=> false
+>> product.save(validate: false)
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "products" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", "2015-04-17 18:01:46.173590"], ["updated_at", "2015-04-17 18:01:46.173590"]]
+   (9.1ms)  commit transaction
+=> true
+>> exit
+$
+```
 
 > **Warning**
 >
@@ -3320,153 +3458,159 @@ the parameter `:validate => false` to the method save, the data of
 
 ### presence
 
-ActiveRecord
-methods
-validates\_presence\_of()
-ActiveRecord
-validates
-presence
 In our model `product` there are a few fields that must be filled in in
-any case. We can achieve this via presence.
+any case. We can achieve this via `presence`.
 
 `app/models/product.rb`
 
-    class Product < ActiveRecord::Base
-      validates :name,
-                presence: true
+```ruby
+class Product < ActiveRecord::Base
+  validates :name,
+            presence: true
 
-      validates :price,
-                presence: true
-    end
+  validates :price,
+            presence: true
+end
+```
 
 If we try to create an empty user record with this, we get lots of
 validation errors:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-    => #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
-    >>
-    => {:name=>["can't be blank"], :price=>["can't be blank"]}
-    >>
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> product = Product.create
+   (0.1ms)  begin transaction
+   (0.1ms)  rollback transaction
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+>> product.errors.messages
+=> {:name=>["can't be blank"], :price=>["can't be blank"]}
+>>
+```
 
 Only once we have entered all the data, the record can be saved:
 
-    >>
-    => "Milk (1 liter)"
-    >>
-    => 0.45
-    >>
-       (0.2ms)  begin transaction
-      SQL (6.3ms)  INSERT INTO "products" ("created_at", "expiration_date", "in_stock", "name", "price", "updated_at", "weight") VALUES (?, ?, ?, ?, ?, ?, ?)  [["created_at", Mon, 19 Nov 2012 09:30:21 UTC +00:00], ["expiration_date", nil], ["in_stock", nil], ["name", "Milk (1 liter)"], ["price", #<BigDecimal:7fc7044fad08,'0.45E0',9(45)>], ["updated_at", Mon, 19 Nov 2012 09:30:21 UTC +00:00], ["weight", nil]]
-       (2.5ms)  commit transaction
-    => true
-    >>
-    $
+```bash
+>> product.name = 'Milk (1 liter)'
+=> "Milk (1 liter)"
+>> product.price = 0.45
+=> 0.45
+>> product.save
+   (0.1ms)  begin transaction
+  SQL (0.6ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Milk (1 liter)"], ["price", 0.45], ["created_at", "2015-04-17 18:04:26.587946"], ["updated_at", "2015-04-17 18:04:26.587946"]]
+   (9.2ms)  commit transaction
+=> true
+>> exit
+$
+```
 
 ### length
 
-ActiveRecord
-methods
-validates\_length\_of()
-ActiveRecord
-validates
-length
-With length you can limit the length of a specific attribute. It's
+With `length` you can limit the length of a specific attribute. It's
 easiest to explain using an example. Let us limit the maximum length of
 the name to 20 and the minimum to 2.
 
 `app/models/product.rb`
 
-    class Product < ActiveRecord::Base
-      validates :name,
-                presence: true,
-                length: { in: 2..20 }
+```ruby
+class Product < ActiveRecord::Base
+  validates :name,
+            presence: true,
+            length: { in: 2..20 }
 
-      validates :price,
-                :presence => true
-    end
+  validates :price,
+            :presence => true
+end
+```
 
 If we now try to save a Product with a name that consists in one letter,
 we get an error message:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-    => #<Product id: nil, name: "M", price: #<BigDecimal:7f9f3d0943c0,'0.45E0',9(45)>, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
-    >>
-    => {:name=>["is too short (minimum is 2 characters)"]}
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> product = Product.create(:name => 'M', :price => 0.45)
+   (0.1ms)  begin transaction
+   (0.1ms)  rollback transaction
+=> #<Product id: nil, name: "M", price: #<BigDecimal:7ff735513400,'0.45E0',9(27)>, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+>> product.errors.messages
+=> {:name=>["is too short (minimum is 2 characters)"]}
+>>
+```
 
 #### Options
 
-length can be called with the following options.
+`length` can be called with the following options.
 
 ##### minimum
 
 The minimum length of an attribute. Example:
 
-    validates :name,
-              presence: true,
-              length: { minimum: 2 }
+```ruby
+validates :name,
+          presence: true,
+          length: { minimum: 2 }
+```
 
 ###### too\_short
 
 Defines the error message of :minimum. Default: "is too short (min is %d
 characters)". Example:
 
-    validates :name,
-              presence: true,
-              length: { minimum: 5 ,
-              too_short: "must have at least %{count} characters"}
-
-> **Note**
->
-> For all error messages, please note ?.
+```ruby
+validates :name,
+          presence: true,
+          length: { minimum: 5 ,
+          too_short: "must have at least %{count} characters"}
+```
 
 ##### maximum
 
 The maximum length of an attribute. Example:
 
-    validates :name,
-              presence: true,
-              length: { maximum: 20 }
+```ruby
+validates :name,
+          presence: true,
+          length: { maximum: 20 }
+```
 
 ###### too\_long
 
 Defines the error message of :maximum. Default: "is too long (maximum is
 %d characters)". Example:
 
-    validates :name,
-              presence: true,
-              length: { maximum: 20 ,
-              too_long: "must have at most %{count} characters" }
+```ruby
+validates :name,
+          presence: true,
+          length: { maximum: 20 ,
+          too_long: "must have at most %{count} characters" }
+```
+
 
 > **Note**
 >
-> For all error messages, please note ?.
+> For all error messages, please note [Chapter 10, Internationalization](chapter10-i18n.html)..
 
 ##### is
 
 Is exactly the specified number of characters long. Example:
 
-    validates :name,
-              presence: true,
-              length: { is: 8 }
+```ruby
+validates :name,
+          presence: true,
+          length: { is: 8 }
+```
 
 ##### :in or :within
 
 Defines a length interval. The first number specifies the minimum number
 of the range and the second the maximum. Example:
 
-    validates :name,
-              presence: true,
-              length: { in: 2..20 }
+```ruby
+validates :name,
+          presence: true,
+          length: { in: 2..20 }
+```
 
 ##### tokenizer
 
@@ -3474,160 +3618,174 @@ You can use this to define how the attribute should be split for
 counting. Default: `lambda{ |value| value.split(//) }` (individual
 characters are counted). Example (for counting words):
 
-    validates :content,
-              presence: true,
-              length: { in: 2..20 },
-              tokenizer: lambda {|str| str.scan(/\w+/)}
+```ruby
+validates :content,
+          presence: true,
+          length: { in: 2..20 },
+          tokenizer: lambda {|str| str.scan(/\w+/)}
+```
 
 ### numericality
 
-ActiveRecord
-methods
-validates\_numericality\_of()
-ActiveRecord
-validates
-numericality
-With numericality you can check if an attribute is a number. It's easier
+With `numericality` you can check if an attribute is a number. It's easier
 to explain if we use an example.
 
 `app/models/product.rb`
 
-    class Product < ActiveRecord::Base
-      validates :name,
-                presence: true,
-                length: { in: 2..20 }
+```ruby
+class Product < ActiveRecord::Base
+  validates :name,
+            presence: true,
+            length: { in: 2..20 }
 
-      validates :price,
-                presence: true
+  validates :price,
+            presence: true
 
-      validates :weight,
-                numericality: true
-    end
+  validates :weight,
+            numericality: true
+end
+```
 
 If we now use a `weight` that consists of letters or contains letters
 instead of numbers, we will get an error message:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>  
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-    => #<Product id: nil, name: "Milk (1 liter)", price: #<BigDecimal:7ff4a4380b30,'0.45E0',9(45)>, weight: 0, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
-    >>
-    => {:weight=>["is not a number"]}
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> product = Product.create(name: 'Milk (1 liter)', price: 0.45, weight: 'abc')
+   (0.1ms)  begin transaction
+   (0.1ms)  rollback transaction
+=> #<Product id: nil, name: "Milk (1 liter)", price: #<BigDecimal:7fca1ec90ed8,'0.45E0',9(27)>, weight: 0, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+>> product.errors.messages
+=> {:weight=>["is not a number"]}
+>> exit
+$
+```
 
 > **Tip**
 >
-> You can use numericality to define the content as number even if an
+> You can use `numericality` to define the content as number even if an
 > attribute is saved as string in the database.
 
 #### Options
 
-numericality can be called with the following options.
+`numericality` can be called with the following options.
 
 ##### only\_integer
 
 The attribute can only contain an integer. Default: false. Example:
 
-    validates :weight,
-              numericality: { only_integer: true }
+```ruby
+validates :weight,
+          numericality: { only_integer: true }
+```
 
 ##### greater\_than
 
 The number saved in the attribute must be greater than the specified
 value. Example:
 
-    validates :weight,
-              numericality: { greater_than: 100 }
+```ruby
+validates :weight,
+          numericality: { greater_than: 100 }
+```
 
 ##### greater\_than\_or\_equal\_to
 
 The number saved in the attribute must be greater than or equal to the
 specified value. Example:
 
-    validates :weight,
-              numericality: { greater_than_or_equal_to: 100 }
+```ruby
+validates :weight,
+          numericality: { greater_than_or_equal_to: 100 }
+```
 
 ##### equal\_to
 
 Defines a specific value that the attribute must have. Example:
 
-    validates :weight,
-              numericality: { equal_to: 100 }
+```ruby
+validates :weight,
+          numericality: { equal_to: 100 }
+```
 
 ##### less\_than
 
 The number saved in the attribute must be less than the specified value.
 Example:
 
-    validates :weight,
-              numericality: { less_than: 100 }
+```ruby
+validates :weight,
+          numericality: { less_than: 100 }
+```
 
 ##### less\_than\_or\_equal\_to
 
 The number saved in the attribute must be less than or equal to the
 specified value. Example:
 
-    validates :weight,
-              numericality: { less_than_or_equal_to: 100 }
+```ruby
+validates :weight,
+          numericality: { less_than_or_equal_to: 100 }
+```
 
 ##### odd
 
 The number saved in the attribute must be an odd number. Example:
 
-    validates :weight,
-              numericality: { odd: true }
+```ruby
+validates :weight,
+          numericality: { odd: true }
+```
 
 ##### even
 
 The number saved in the attribute must be an even number. Example:
 
-    validates :weight,
-              numericality: { even: true }
+```ruby
+validates :weight,
+          numericality: { even: true }
+```
 
 ### uniqueness
 
-ActiveRecord
-methods
-validates\_uniqueness\_of()
-ActiveRecord
-validates
-uniqueness
 With uniqueness you can define that the value of this attribute must be
 unique in the database. If you want a product in the database to have a
 unique name that appears nowhere else, then you can use this validation:
 
 `app/models/product.rb`
 
-    class Product < ActiveRecord::Base
-      validates :name,
-                presence: true,
-                uniqueness: true
-    end
+```ruby
+class Product < ActiveRecord::Base
+  validates :name,
+            presence: true,
+            uniqueness: true
+end
+```
 
-If we now try to create a new Product with a name that already exists,
+If we now try to create a new `Product` with a `name` that already exists,
 then we get an error message:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-      Product Load (1.9ms)  SELECT "products".* FROM "products" ORDER BY "products"."id" DESC LIMIT 1
-    => #<Product id: 4, name: "Milk (1 liter)", price: #<BigDecimal:7f90649840a8,'0.45E0',9(45)>, weight: nil, in_stock: nil, expiration_date: nil, created_at: "2012-11-19 09:30:21", updated_at: "2012-11-19 09:30:21">
-    >>
-       (0.1ms)  begin transaction
-      Product Exists (0.1ms)  SELECT 1 AS one FROM "products" WHERE "products"."name" = 'Milk (1 liter)' LIMIT 1
-       (0.1ms)  rollback transaction
-    => #<Product id: nil, name: "Milk (1 liter)", price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
-    >>
-    => {:name=>["has already been taken"]}
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Product.last
+  Product Load (0.2ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" DESC LIMIT 1
+=> #<Product id: 4, name: "Milk (1 liter)", price: #<BigDecimal:7fdccb1960b8,'0.45E0',9(27)>, weight: nil, in_stock: nil, expiration_date: nil, created_at: "2015-04-17 18:04:26", updated_at: "2015-04-17 18:04:26">
+>> product = Product.create(name: 'Milk (1 liter)')
+   (0.1ms)  begin transaction
+  Product Exists (0.2ms)  SELECT  1 AS one FROM "products" WHERE "products"."name" = 'Milk (1 liter)' LIMIT 1
+   (0.1ms)  rollback transaction
+=> #<Product id: nil, name: "Milk (1 liter)", price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+>> product.errors.messages
+=> {:name=>["has already been taken"]}
+>> exit
+$
+```
 
 > **Warning**
 >
-> The validation via uniqueness is no absolute guarantee that the
+> The validation via `uniqueness` is no absolute guarantee that the
 > attribute is unique in the database. A race condition could occur (see
 > <http://en.wikipedia.org/wiki/Race_condition>). A detailled discussion
 > of this effect would go beyond the scope of book aimed at beginners
@@ -3635,7 +3793,7 @@ then we get an error message:
 
 #### Options
 
-uniqueness can be called with the following options.
+`uniqueness` can be called with the following options.
 
 ##### scope
 
@@ -3644,57 +3802,57 @@ phone number database (with just one field for the phone number), then
 we could use this option to specify that a phone number must only be
 saved once per user. Here is what it would look like:
 
-    validates :name,
-              presence: true,
-              uniqueness: { scope: :user_id }
+```ruby
+validates :name,
+        presence: true,
+        uniqueness: { scope: :user_id }
+``` 
 
 ##### case\_sensitive
 
 Checks for uniqueness of upper and lower case as well. Default: false.
 Example:
 
-    validates :name,
-              presence: true,
-              uniqueness: { case_sensitive: true }
+```ruby
+validates :name,
+          presence: true,
+          uniqueness: { case_sensitive: true }
+```
 
 ### inclusion
 
-ActiveRecord
-methods
-validates\_inclusion\_of()
-ActiveRecord
-validates
-inclusion
-With inclusion you can define from which values the content of this
+With `inclusion` you can define from which values the content of this
 attribute can be created. For our example, we can demonstrate it using
-the attribute in\_stock.
+the attribute `in_stock`.
 
 `app/models/product.rb`
 
-    class Product < ActiveRecord::Base
-      attr_accessible :expiration_date, :in_stock, :name, :price, :weight
+```ruby
+class Product < ActiveRecord::Base
+  validates :name,
+            presence: true
 
-      validates :name,
-                presence: true
+  validates :in_stock,
+            inclusion: { in: [true, false] }
+end
+```
 
-      validates :in_stock,
-                inclusion: { in: [true, false] }
-    end
-
-In our data model, a Product must be either `true` or `false` for
-in\_stock (there must not be a nil). If we enter a different value than
+In our data model, a `Product` must be either `true` or `false` for
+`in_stock` (there must not be a nil). If we enter a different value than
 `true` or `false`, a validation error is returned:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-       (0.1ms)  rollback transaction
-    => #<Product id: nil, name: "Milk low-fat (1 liter)", price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
-    >>
-    => {:in_stock=>["is not included in the list"]}
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> product = Product.create(name: 'Milk low-fat (1 liter)')
+   (0.1ms)  begin transaction
+   (0.1ms)  rollback transaction
+=> #<Product id: nil, name: "Milk low-fat (1 liter)", price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+>> product.errors.messages
+=> {:in_stock=>["is not included in the list"]}
+>> exit
+$
+```
 
 > **Tip**
 >
@@ -3704,43 +3862,39 @@ in\_stock (there must not be a nil). If we enter a different value than
 
 #### Options
 
-inclusion can be called with the following option.
+`inclusion` can be called with the following option.
 
 ##### message
 
 For outputting custom error messages. Default: "is not included in the
 list". Example:
 
-    validates :in_stock,
-              inclusion: { in: [true, false],
-                              message: 'this one is not allowed' }
+```ruby
+validates :in_stock,
+          inclusion: { in: [true, false],
+                          message: 'this one is not allowed' }
+```
 
 > **Note**
 >
-> For all error messages, please note ?.
+> For all error messages, please note [Chapter 10, Internationalization](chapter10-i18n.html).
 
 ### exclusion
 
-ActiveRecord
-methods
-validates\_exclusion\_of()
-ActiveRecord
-validates
-exclusion
-exclusion is the inversion of ?. You can define from which values the
+`exclusion` is the inversion of [the section called "inclusion"](#inclusion). You can define from which values the
 content of this attribute must not be created.
 
 `app/models/product.rb`
 
-    class Product < ActiveRecord::Base
-      attr_accessible :expiration_date, :in_stock, :name, :price, :weight
+```ruby
+class Product < ActiveRecord::Base
+  validates :name,
+            presence: true
 
-      validates :name,
-                presence: true
-
-      validates :in_stock,
-                exclusion: { in: [nil] }
-    end
+  validates :in_stock,
+            exclusion: { in: [nil] }
+end
+```
 
 > **Tip**
 >
@@ -3750,37 +3904,35 @@ content of this attribute must not be created.
 
 #### Options
 
-exclusion can be called with the following option.
+`exclusion` can be called with the following option.
 
 ##### message
 
 For outputting custom error messages. Example:
 
-    validates :in_stock,
-              inclusion: { in: [nil],
-                              message: 'this one is not allowed' }
+```ruby
+validates :in_stock,
+          inclusion: { in: [nil],
+                          message: 'this one is not allowed' }
+```
 
 > **Note**
 >
-> For all error messages, please note ?.
+> For all error messages, please note [Chapter 10, Internationalization](chapter10-i18n.html).
 
 ### format
 
-ActiveRecord
-methods
-validates\_format\_of()
-ActiveRecord
-validates
-format
-With format you can define via a regular expression (see
+With `format` you can define via a regular expression (see
 <http://en.wikipedia.org/wiki/Regular_expression>) how the content of an
 attribute can be structured.
 
-With format you can for example carry out a simple validation of the
+With `format` you can for example carry out a simple validation of the
 syntax of an e-mail address:
 
-    validates :email,
-              format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i }
+```ruby
+validates :email,
+          format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i }
+```
 
 > **Warning**
 >
@@ -3790,58 +3942,46 @@ syntax of an e-mail address:
 
 #### Options
 
-validates\_format\_of can be called with the following options:
+`validates_format_of` can be called with the following options:
 
 -   `:message`
 
     For outputting a custom error message. Default: "is invalid".
     Example:
 
-        validates :email,
-                  format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i,
-                               message: 'is not a valid email address' }
+```ruby
+validates :email,
+          format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i,
+                       message: 'is not a valid email address' }
+```
 
-    > **Note**
-    >
-    > For all error messages, please note ?.
+> **Note**
+>
+> For all error messages, please note [Chapter 10, Internationalization](chapter10-i18n.html).
 
 ### General Validation Options
 
-ActiveRecord
-validates
-allow\_nil
-ActiveRecord
-validates
-allow\_blank
-ActiveRecord
-validates
-on
-ActiveRecord
-validates
-if
-ActiveRecord
-validates
-unless
-ActiveRecord
-validates
-proc
 There are some options that can be used for all validations.
 
 #### allow\_nil
 
 Allows the value `nil`. Example:
 
-    validates :email,
-              format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
-              allow_nil: true
+```ruby
+validates :email,
+          format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
+          allow_nil: true
+```
 
 #### allow\_blank
 
 As `allow_nil`, but additionally with an empty string. Example:
 
-    validates :email,
-              format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
-              allow_blank: true
+```ruby
+validates :email,
+          format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
+          allow_blank: true
+```
 
 #### on
 
@@ -3849,43 +3989,39 @@ With `on`, a validation can be limited to the events `create`, `update`
 or `safe`. In the following example, the validation only takes effect
 when the record is initially created (during the `create`):
 
-    validates :email,
-              format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
-              on: :create
+```ruby
+validates :email,
+          format: { with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i },
+          on: :create
+```
 
 #### `if` and `unless`
 
 `if` or `unless` call the specified method and only execute the
 validation if the result of the method is true:
 
-    validates :name,
-              presence: true,
-              if: :today_is_monday?
+```ruby
+validates :name,
+          presence: true,
+          if: :today_is_monday?
 
-    def today_is_monday?
-      Date.today.monday?
-    end
+def today_is_monday?
+  Date.today.monday?
+end
+```
 
 ##### proc
 
-`:``proc` calls a Proc object.
+`:proc` calls a `Proc` object.
 
-    validates :name,
-              presence: true,
-              if: Proc.new { |a| a.email == 'test@test.com' }
+```ruby
+validates :name,
+          presence: true,
+          if: Proc.new { |a| a.email == 'test@test.com' }
+```
 
 ### Writing Custom Validations
 
-ActiveRecord
-custom validations
-ActiveRecord
-validate
-ActiveRecord
-errors
-add
-ActiveRecord
-errors
-add\_to\_base
 Now and then, you want to do a validation where you need custom program
 logic. For such cases, you can define custom validations.
 
@@ -3894,62 +4030,68 @@ logic. For such cases, you can define custom validations.
 Let's assume you are a big shot hotel mogul and need a reservation
 system.
 
-    $
-      [...]
-    $  
-    $
-      [...]
-    $
-      [...]
-    $
+```ruby
+$ rails new my_hotel
+  [...]
+$ cd my_hotel
+$ rails generate model reservation start_date:date end_date:date room_type
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
 Then we specify in the `app/model/reservation.rb` that the attributes
 `start_date` and `end_date` must be present in any case, plus we use the
 method reservation\_dates\_must\_make\_sense to make sure that the
 `start_date` is before the `end_date`:
 
-    class Reservation < ActiveRecord::Base
-      validates :start_date,
-                presence: true
+```ruby
+class Reservation < ActiveRecord::Base
+  validates :start_date,
+            presence: true
 
-      validates :end_date,
-                presence: true
+  validates :end_date,
+            presence: true
 
-      validate :reservation_dates_must_make_sense
+  validate :reservation_dates_must_make_sense
 
-      private
-      def reservation_dates_must_make_sense
-        if end_date <= start_date
-          errors.add(:start_date, 'has to be before the end date')
-        end
-      end
+  private
+  def reservation_dates_must_make_sense
+    if end_date <= start_date
+      errors.add(:start_date, 'has to be before the end date')
     end
+  end
+end
+```
 
-With errors.add we can add error messages for individual attributes.
-With errors.add\_to\_base you can add error messages for the whole
+With `errors.add` we can add error messages for individual attributes.
+With `errors.add_to_base` you can add error messages for the whole
 object.
 
 Let's test the validation in the console:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    => #<Reservation id: nil, start_date: "2012-11-19", end_date: "2012-11-19", room_type: nil, created_at: nil, updated_at: nil>
-    >>
-    => false
-    >>
-    => {:start_date=>["has to be before the end date"]}
-    >>
-    => Tue, 20 Nov 2012
-    >>
-    => true
-    >>
-       (0.1ms)  begin transaction
-      SQL (8.7ms)  INSERT INTO "reservations" ("created_at", "end_date", "room_type", "start_date", "updated_at") VALUES (?, ?, ?, ?, ?)  [["created_at", Mon, 19 Nov 2012 14:00:50 UTC +00:00], ["end_date", Tue, 20 Nov 2012], ["room_type", nil], ["start_date", Mon, 19 Nov 2012], ["updated_at", Mon, 19 Nov 2012 14:00:50 UTC +00:00]]
-       (3.4ms)  commit transaction
-    => true
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> reservation = Reservation.new(start_date: Date.today, end_date: Date.today)
+=> #<Reservation id: nil, start_date: "2015-04-17", end_date: "2015-04-17", room_type: nil, created_at: nil, updated_at: nil>
+>> reservation.valid?
+=> false
+>> reservation.errors.messages
+=> {:start_date=>["has to be before the end date"]}
+>> reservation.end_date = Date.today + 1.day
+=> Sat, 18 Apr 2015
+>> reservation.valid?
+=> true
+>> reservation.save
+   (0.1ms)  begin transaction
+  SQL (0.6ms)  INSERT INTO "reservations" ("start_date", "end_date", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["start_date", "2015-04-17"], ["end_date", "2015-04-18"], ["created_at", "2015-04-17 18:46:34.684392"], ["updated_at", "2015-04-17 18:46:34.684392"]]
+   (9.5ms)  commit transaction
+=> true
+>> exit
+$
+```
 
 ### Further Documentation
 
@@ -3960,10 +4102,6 @@ documentation at
 Migrations
 ----------
 
-ActiveRecord
-migrations
-migrations
-ActiveRecord, migrations
 SQL database tables are generated in Rails with *migrations* and they
 should also be changed with *migrations*. If you create a model with
 `rails generate model`, a corresponding migration file is automatically
@@ -3971,115 +4109,135 @@ created in the directory `db/migrate/`. I am going to show you the
 principle using the example of a shop application. Let's create one
 first:
 
-    $
-      [...]
-    $
-    $
+```bash
+$ rails new shop
+  [...]
+$ cd shop
+$
+```
 
 Then we create a Product model:
 
-    $
-          invoke  active_record
-          create    db/migrate/20121119143522_create_products.rb
-          create    app/models/product.rb
-          invoke    test_unit
-          create      test/unit/product_test.rb
-          create      test/fixtures/products.yml
-    $
+```bash
+$ rails generate model product name 'price:decimal{7,2}' weight:integer in_stock:boolean expiration_date:date
+      invoke  active_record
+      create    db/migrate/20150417184823_create_products.rb
+      create    app/models/product.rb
+      invoke    test_unit
+      create      test/models/product_test.rb
+      create      test/fixtures/products.yml
+$
+```
 
-The migrations file `db/migrate/20121119143522_create_products.rb` was
+The migrations file `db/migrate/20150417184823_create_products.rb` was
 created. Let's have a closer look at it:
 
-    class CreateProducts < ActiveRecord::Migration
-      def change
-        create_table :products do |t|
-          t.string :name
-          t.decimal :price, :precision => 7, :scale => 2
-          t.integer :weight
-          t.boolean :in_stock
-          t.date :expiration_date
+```ruby
+class CreateProducts < ActiveRecord::Migration
+  def change
+    create_table :products do |t|
+      t.string :name
+      t.decimal :price, precision: 7, scale: 2
+      t.integer :weight
+      t.boolean :in_stock
+      t.date :expiration_date
 
-          t.timestamps
-        end
-      end
+      t.timestamps null: false
     end
+  end
+end
+```
 
-The method change creates and deletes the database table in case of a
+The method `change` creates and deletes the database table in case of a
 rollback. The migration files have embedded the current time in the file
 name and are processed in chronological order during a migration (in
 other words, when you call `rake
   db:migrate`).
 
-    $
-    ==  CreateProducts: migrating =================================================
-    -- create_table(:products)
-       -> 0.0017s
-    ==  CreateProducts: migrated (0.0018s) ========================================
+```bash
+$ rake db:migrate
+== 20150417184823 CreateProducts: migrating ===================================
+-- create_table(:products)
+   -> 0.0015s
+== 20150417184823 CreateProducts: migrated (0.0016s) ==========================
 
-    $
+$
+```
 
 Only those migrations that have not been executed yet are processed. If
 we call `rake db:migrate` again, nothing happens, because the
 corresponding migration has already been executed:
 
-    $
-    $
+```bash
+$ rake db:migrate
+$
+```
 
 But if we manually delete the database with `rm` and then call
 `rake db:migrate` again, the migration is repeated:
 
-    $  
-    $
-    ==  CreateProducts: migrating =================================================
-    -- create_table(:products)
-       -> 0.0016s
-    ==  CreateProducts: migrated (0.0017s) ========================================
+```bash
+$ rm db/development.sqlite3
+MAC-00020:shop richertd$ rake db:migrate
+== 20150417184823 CreateProducts: migrating ===================================
+-- create_table(:products)
+   -> 0.0017s
+== 20150417184823 CreateProducts: migrated (0.0018s) ==========================
 
-    $  
+$
+```
 
 After a while we realise that we want to save not just the weight for
 some products, but also the height. So we need another database field.
 There is an easy to remember syntax for this, `rails generate migration
   add_*`:
 
-    $
-          invoke  active_record
-          create    db/migrate/20121119143758_add_height_to_product.rb
-    $
+```bash
+$ rails generate migration addHeightToProduct height:integer
+      invoke  active_record
+      create    db/migrate/20150417185307_add_height_to_product.rb
+$
+```
 
 In the migration file
-`db/migrate/20121119143758_add_height_to_product.rb` we once again find
+`db/migrate/20150417185307_add_height_to_product.rb` we once again find
 a change method:
 
-    class AddHeightToProduct < ActiveRecord::Migration
-      def change
-        add_column :products, :height, :integer
-      end
-    end
+```ruby
+class AddHeightToProduct < ActiveRecord::Migration
+  def change
+    add_column :products, :height, :integer
+  end
+end
+```
 
 With `rake db:migrate` we can start in the new migration:
 
-    $
-    ==  AddHeightToProduct: migrating =============================================
-    -- add_column(:products, :height, :integer)
-       -> 0.0007s
-    ==  AddHeightToProduct: migrated (0.0008s) ====================================
+```bash
+$ rake db:migrate
+== 20150417185307 AddHeightToProduct: migrating ===============================
+-- add_column(:products, :height, :integer)
+   -> 0.0086s
+== 20150417185307 AddHeightToProduct: migrated (0.0089s) ======================
 
-    $
+$
+```
 
 In the *console* we can look at the new field. It was added after the
 field `updated_at`:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    => Product(id: integer, name: string, price: decimal, weight: integer, in_stock: boolean, expiration_date: date, created_at: datetime, updated_at: datetime, height: integer)
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Product.column_names
+=> ["id", "name", "price", "weight", "in_stock", "expiration_date", "created_at", "updated_at", "height"]
+>> exit
+$
+```
 
 > **Warning**
 >
-> Please note that you need to add the new field in attr\_accessible in
+> Please note that you need to add the new field in `attr_accessible` in
 > `app/models/product.rb`, otherwise you will not have access to the
 > `height` attribute.
 
@@ -4087,21 +4245,24 @@ What if you want to look at the previous state of things? No problem.
 You can easily go back to the previous version with `rake
   db:rollback`:
 
-    $
-    ==  AddHeightToProduct: reverting =============================================
-    -- remove_column("products", :height)
-       -> 0.0151s
-    ==  AddHeightToProduct: reverted (0.0152s) ====================================
+```bash
+$ rake db:rollback
+== 20150417185307 AddHeightToProduct: reverting ===============================
+-- remove_column(:products, :height, :integer)
+   -> 0.0076s
+== 20150417185307 AddHeightToProduct: reverted (0.0192s) ======================
 
-    $
+$
+```
 
 Each migration has its own version number. You can find out the version
-number of the current status via `rake
-  db:version`:
+number of the current status via `rake db:version`:
 
-    $
-    Current version: 20121119143522
-    $
+```bash
+$ rake db:version
+Current version: 20150417184823
+$
+```
 
 > **Important**
 >
@@ -4111,58 +4272,65 @@ number of the current status via `rake
 
 You will find the corresponding version in the directory `db/migrate`:
 
-    $
-    20121119143522_create_products.rb
-    20121119143758_add_height_to_product.rb
-    $
+```bash
+$ ls db/migrate/
+20150417184823_create_products.rb 
+20150417185307_add_height_to_product.rb
+$
+```
 
 You can go to a specific migration via `rake db:migrate
   VERSION=` and add the appropriate version number after the equals
 sign. The zero represents the version zero, in other words the start.
 Let's try it out:
 
-    $
-    ==  CreateProducts: reverting =================================================
-    -- drop_table("products")
-       -> 0.0005s
-    ==  CreateProducts: reverted (0.0006s) ========================================
+```bash
+$ rake db:migrate VERSION=0
+== 20150417184823 CreateProducts: reverting ===================================
+-- drop_table(:products)
+   -> 0.0007s
+== 20150417184823 CreateProducts: reverted (0.0032s) ==========================
 
-    $
+$
+```
 
 The table was deleted with all data. We are back to square one.
 
 ### Which Database is Used?
 
 The database table is created through the migration. As you can see, the
-table names automatically get the plural of the *model*s (Person vs.
+table names automatically get the plural of the *model*s (`Person` vs.
 `people`). But in which database are the tables created? This is defined
 in the configuration file `config/database.yml`:
 
-    # SQLite version 3.x
-    #   gem install sqlite3
-    #
-    #   Ensure the SQLite 3 gem is defined in your Gemfile
-    #   gem 'sqlite3'
-    development:
-      adapter: sqlite3
-      database: db/development.sqlite3
-      pool: 5
-      timeout: 5000
+```yml
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+#
+default: &default
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
 
-    # Warning: The database defined as "test" will be erased and
-    # re-generated from your development database when you run "rake".
-    # Do not set this db to the same as development or production.
-    test:
-      adapter: sqlite3
-      database: db/test.sqlite3
-      pool: 5
-      timeout: 5000
+development:
+  <<: *default
+  database: db/development.sqlite3
 
-    production:
-      adapter: sqlite3
-      database: db/production.sqlite3
-      pool: 5
-      timeout: 5000
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: db/test.sqlite3
+
+production:
+  <<: *default
+  database: db/production.sqlite3
+
+```
 
 Three different databases are defined there in YAML format (see
 <http://www.yaml.org/> or <http://en.wikipedia.org/wiki/YAML>). For us,
@@ -4171,43 +4339,44 @@ default, Rails usesSQLite3 there. SQLite3 may not be the correct choice
 for the analysis of the weather data collected worldwide, but for a
 quick and straightforward development of Rails applications you will
 quickly learn to appreciate it. In the production environment, you can
-later still switch to "big" databases such as MySQL or PostgreSQL.[^11]
+later still switch to "big" databases such as MySQL or PostgreSQL.
 
 To satisfy your curiosity, we have a quick look at the database with the
 command line tool `sqlite3`:
 
-    $  
-    SQLite version 3.7.12 2012-04-03 19:43:07
-    Enter ".help" for instructions
-    Enter SQL statements terminated with a ";"
-    sqlite>
-    schema_migrations
-    sqlite>
-    $
+```bash
+$ sqlite3 db/development.sqlite3
+SQLite version 3.8.5 2014-08-15 22:37:57
+Enter ".help" for usage hints.
+sqlite> .tables
+schema_migrations
+sqlite> .quit
+$
+```
 
 Nothing in it. Of course not, as we have not yet run the migration:
 
-    $
-    ==  CreateProducts: migrating =================================================
-    -- create_table(:products)
-       -> 0.0142s
-    ==  CreateProducts: migrated (0.0143s) ========================================
+```bash
+$ rake db:migrate
+== 20150417184823 CreateProducts: migrating ===================================
+-- create_table(:products)
+   -> 0.0019s
+== 20150417184823 CreateProducts: migrated (0.0020s) ==========================
 
-    ==  AddHeightToProduct: migrating =============================================
-    -- add_column(:products, :height, :integer)
-       -> 0.0011s
-    ==  AddHeightToProduct: migrated (0.0012s) ====================================
+== 20150417185307 AddHeightToProduct: migrating ===============================
+-- add_column(:products, :height, :integer)
+   -> 0.0007s
+== 20150417185307 AddHeightToProduct: migrated (0.0008s) ======================
 
-    $  
-    SQLite version 3.7.12 2012-04-03 19:43:07
-    Enter ".help" for instructions
-    Enter SQL statements terminated with a ";"
-    sqlite>
-    products           schema_migrations
-    sqlite>
-    CREATE TABLE "products" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "price" decimal(7,2), "weight" integer, "in_stock" boolean, "expiration_date" date, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "height" integer);
-    sqlite>
-    $
+$ sqlite3 db/development.sqlite3
+SQLite version 3.8.5 2014-08-15 22:37:57
+Enter ".help" for usage hints.
+sqlite> .tables
+products           schema_migrations
+sqlite> .schema products
+CREATE TABLE "products" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "price" decimal(7,2), "weight" integer, "in_stock" boolean, "expiration_date" date, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "height" integer);
+sqlite> .quit
+```
 
 The table `schema_migrations` is used for the versioning of the
 migrations. This table is created during the first migration carried out
@@ -4222,43 +4391,51 @@ brief: you can use it to quickly search for a specific table column.
 In our production database, we should index the field `name` in the
 `products` table. We create a new migration for that purpose:
 
-    $
-          invoke  active_record
-          create    db/migrate/20121120142002_create_index.rb
-    $
+```bash
+$ rails generate migration create_index
+      invoke  active_record
+      create    db/migrate/20150417190442_create_index.rb
+$
+```
 
 In the file `db/migrate/20121120142002_create_index.rb` we create the
-index with add\_index in the method self.up, and in the method self.down
-we delete it again with remove\_index:
+index with `add_index` in the method `self.up`, and in the method `self.down`
+we delete it again with `remove_index`:
 
-    class CreateIndex < ActiveRecord::Migration
-      def up
-        add_index :products, :name
-      end
+```ruby
+class CreateIndex < ActiveRecord::Migration
+  def up
+    add_index :products, :name
+  end
 
-      def down
-        remove_index :products, :name
-      end
-    end
+  def down
+    remove_index :products, :name
+  end
+end
+```
 
 With `rake db:migrate` we create the index:
 
-    $
-    ==  CreateIndex: migrating ====================================================
-    -- add_index(:products, :name)
-       -> 0.0010s
-    ==  CreateIndex: migrated (0.0011s) ===========================================
+```bash
+$ rake db:migrate
+==  CreateIndex: migrating ====================================================
+-- add_index(:products, :name)
+   -> 0.0010s
+==  CreateIndex: migrated (0.0011s) ===========================================
 
-    $
+$
+```
 
-Of course we don't have to use the up and down method. We can use change
+Of course we don't have to use the `up` and `down` method. We can use `change`
 too. The migration for the new index would look like this:
 
-    class CreateIndex < ActiveRecord::Migration
-      def change
-        add_index :products, :name
-      end
-    end
+```ruby
+class CreateIndex < ActiveRecord::Migration
+  def change
+    add_index :products, :name
+  end
+end
+```
 
 > **Tip**
 >
@@ -4266,24 +4443,24 @@ too. The migration for the new index would look like this:
 > our case (an index for the attribute `name`) the command would look
 > like this:
 >
->     $
->           invoke  active_record
->           create    db/migrate/20121120142344_create_products.rb
->           create    app/models/product.rb
->           invoke    test_unit
->           create      test/unit/product_test.rb
->           create      test/fixtures/products.yml
->     $
+>     $ rails generate model product name:string:index 'price:decimal{7,2}' weight:integer in_stock:boolean expiration_date:date --force
+>         invoke  active_record
+>         create    db/migrate/20150417191435_create_products.rb
+>         create    app/models/product.rb
+>         invoke    test_unit
+>         create      test/models/product_test.rb
+>         create      test/fixtures/products.yml
+>     $ cat db/migrate/20150417191435_create_products.rb
 >     class CreateProducts < ActiveRecord::Migration
 >       def change
 >         create_table :products do |t|
 >           t.string :name
->           t.decimal :price, :precision => 7, :scale => 2
+>           t.decimal :price, precision: 7, scale: 2
 >           t.integer :weight
 >           t.boolean :in_stock
 >           t.date :expiration_date
->
->           t.timestamps
+>     
+>           t.timestamps null: false
 >         end
 >         add_index :products, :name
 >       end
@@ -4351,26 +4528,6 @@ for solving specific ActiveRecord problems.
 
 ### Callbacks
 
-ActiveRecord
-callback
-ActiveRecord
-callback
-before\_validation
-ActiveRecord
-callback
-after\_validation
-ActiveRecord
-callback
-before\_save
-ActiveRecord
-callback
-before\_create
-ActiveRecord
-callback
-after\_save
-ActiveRecord
-callback
-after\_create
 Callbacks are defined programming hooks in the life of an ActiveRecord
 object. You can find a list of all callbacks at
 <http://api.rubyonrails.org/classes/ActiveRecord/Callbacks.html>. Here
@@ -4401,108 +4558,115 @@ are the most frequently used callbacks:
     Executed after the first save.
 
 A callback is always executed in the model. Let's assume you always want
-to save an e-mail address in a User model in lower case, but also give
+to save an e-mail address in a `User` model in lower case, but also give
 the user of the web interface the option to enter upper case letters.
-You could use a before\_save callback to convert the attribute `email`
-to lower case via the method downcase.
+You could use a `before_save` callback to convert the attribute `email`
+to lower case via the method `downcase`.
 
 The Rails application:
 
-    $
-      [...]
-    $
-    $
-      [...]
-    $
-      [...]
-    $
+```bash
+$ rails new shop
+  [...]
+$ cd shop
+$ rails generate model user email login
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
 Here is what the model `app/models/user.rb` would look like. The
 interesting stuff is the `before_save` part:
 
-    class User < ActiveRecord::Base
-      validates :login,
-                presence: true
+```ruby
+class User < ActiveRecord::Base
+  validates :login,
+            presence: true
 
-      validates :email,
-                presence: true,
-                format: { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i }
+  validates :email,
+            presence: true,
+            format: { :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i }
 
-      before_save :downcase_email
+  before_save :downcase_email
 
-      private
+  private
 
-      def downcase_email
-        self.email = self.email.downcase
-      end
+  def downcase_email
+    self.email = self.email.downcase
+  end
 
-    end
+end
+```
 
 Let's see in the console if it really works as we want it to:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-       (0.1ms)  begin transaction
-      SQL (29.9ms)  INSERT INTO "users" ("created_at", "email", "login", "updated_at") VALUES (?, ?, ?, ?)  [["created_at", Wed, 21 Nov 2012 09:14:47 UTC +00:00], ["email", "smith@example.com"], ["login", "smith"], ["updated_at", Wed, 21 Nov 2012 09:14:47 UTC +00:00]]
-       (0.7ms)  commit transaction
-    => #<User id: 1, email: "smith@example.com", login: "smith", created_at: "2012-11-21 09:14:47", updated_at: "2012-11-21 09:14:47">
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> User.create(login: 'smith', email: 'SMITH@example.com')
+   (0.1ms)  begin transaction
+  SQL (0.5ms)  INSERT INTO "users" ("login", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["login", "smith"], ["email", "smith@example.com"], ["created_at", "2015-04-17 19:22:20.928994"], ["updated_at", "2015-04-17 19:22:20.928994"]]
+   (9.0ms)  commit transaction
+=> #<User id: 1, email: "smith@example.com", login: "smith", created_at: "2015-04-17 19:22:20", updated_at: "2015-04-17 19:22:20">
+>> exit
+```
 
 Even though the e-mail address was entered partly with a capital
 letters, ActiveRecord has indeed converted all letters automatically to
-lower case via the before\_save callback.
+lower case via the `before_save` callback.
 
-In ? you will find an example for the same model where we use an
-after\_create callback to automatically send an e-mail to a newly
-created user. In ? you will find an example for defining a default value
-for a new object via an after\_initialize callback.
+In [Chapter 9, Action Mailer](chapter09-actionmailer.html) you will find an example for the same model where we use an
+`after_create` callback to automatically send an e-mail to a newly
+created user. In [the section called "Default Values"](#default-values) you will find an example for defining a default value
+for a new object via an `after_initialize` callback.
 
 ### Default Values
 
-ActiveRecord
-callback
-after\_initialize
 If you need specific default values for an ActiveRecord object, you can
-easily implement this with the after\_initialize callback. This method
+easily implement this with the `after_initialize` callback. This method
 is called by ActiveRecord when a new object is created. Let's assume we
-have a modelOrder and the minimum order quantity is always 1, so we can
+have a model `Order` and the minimum order quantity is always 1, so we can
 enter 1 directly as default value when creating a new record.
 
 Let's set up a quick example:
 
-    $
-      [...]
-    $
-    $
-      [...]
-    $
-      [...]
-    $
+```bash
+$ rails new shop
+  [...]
+$ cd shop
+$ rails generate model order product_id:integer quantity:integer
+  [...]
+$ rake db:migrate
+  [...]
+$
+```
 
-We write an after\_initialize callback into the file
+We write an `after_initialize` callback into the file
 `app/models/order.rb`:
 
-    class Order < ActiveRecord::Base
-      after_initialize :set_defaults
+```ruby
+class Order < ActiveRecord::Base
+  after_initialize :set_defaults
 
-      private
-      def set_defaults
-        self.quantity ||= 1
-      end
-    end
-
+  private
+  def set_defaults
+    self.quantity ||= 1
+  end
+end
+```
 And now we check in the console if a new order object automatically
 contains the quantity 1:
 
-    $
-    Loading development environment (Rails 4.0.0)
-    >>
-    => #<Order id: nil, product_id: nil, quantity: 1, created_at: nil, updated_at: nil>
-    >>
-    => 1
-    >>
-    $
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> order = Order.new
+=> #<Order id: nil, product_id: nil, quantity: 1, created_at: nil, updated_at: nil>
+>> order.quantity
+=> 1
+>> exit
+$
+```
 
 That's working fine.
