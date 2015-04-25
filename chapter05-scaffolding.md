@@ -1076,7 +1076,7 @@ Now our application is finished. Start the Rails server with
 `rails server` and open the URL <http://localhost:3000/products> in the
 browser.
 
-![](screenshots/read-only-products-index.jpg)
+![read only products index](images/screenshots/read-only-products-index.jpg "ReadOnlyProducts index")
 
 > **Note**
 >
