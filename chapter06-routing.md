@@ -92,7 +92,7 @@ server with `rails server`:
     for `home_pong GET /home/pong(.:format)
               home#pong`
 
-![home ping](images/screenshots/home_ping.jpg "Home ping")
+![home ping](images/screenshots/chapter06/home_ping.jpg "Home ping")
 
 With the output `home#index`, Rails tells us that the route
 `home/index` goes into the controller home and there to
@@ -191,7 +191,7 @@ $ rake db:seed
 $
 ```
 
-![posts index](images/screenshots/posts_index.jpg "Posts index")
+![posts index](images/screenshots/chapter06/posts_index.jpg "Posts index")
 
 If we now start the Rails server with `rails
       server` and go to the page <http://localhost:3000/posts> in the
@@ -301,7 +301,7 @@ end
 If we now go to <http://localhost:3000/2011/10/01> , we can see all
 `posts` of October 1st 2011.
 
-![posts 2011-10-01](images/screenshots/posts_2011_10_01.jpg "Posts 2011-10-01")
+![posts 2011-10-01](images/screenshots/chapter06/posts_2011_10_01.jpg "Posts 2011-10-01")
 
 ### Constraints
 
@@ -317,7 +317,7 @@ has one important disadvantage: it does not verify the individual
 elements. For example, the URL <http://localhost:3000/just/an/example>
 will be matched just the same and then of course results in an error:
 
-![Fehlermeldung](images/screenshots/ein_beispiel_dafuer_fehler.jpg "Fehlermeldung")
+![Fehlermeldung](images/screenshots/chapter06/ein_beispiel_dafuer_fehler.jpg "Fehlermeldung")
 
 In the log output in` log/development.log` we can see the following
 entry:
@@ -356,7 +356,7 @@ end
 If we go to the URL again with this configuration, Rails gives us an
 error message "No route matches":
 
-![no route match](images/screenshots/ein_beispiel_dafuer_no_route_matches.jpg "No route error")
+![no route match](images/screenshots/chapter06/ein_beispiel_dafuer_no_route_matches.jpg "No route error")
 
 ### Redirects
 
@@ -437,7 +437,7 @@ $
 
 If we go to the root URL <http://localhost:3000> we now see `home#index`.
 
-![Home index](images/screenshots/routes_root_url.jpg "home index")
+![Home index](images/screenshots/chapter06/routes_root_url.jpg "home index")
 
 resources
 ---------
@@ -831,7 +831,7 @@ If you want to see all comments of the first post you can access that
 with the URL <http://localhost:3000/posts/1/comments>. It would look like
 this:
 
-![Listing comments](images/screenshots/posts_1_comments.jpg "listing comments")
+![Listing comments](images/screenshots/chapter06/posts_1_comments.jpg "listing comments")
 
 #### Shallow Nesting
 

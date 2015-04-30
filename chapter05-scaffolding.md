@@ -534,21 +534,21 @@ Now a little drum roll... dramatic suspense... launch the web browser
 and go to the URL <http://localhost:3000/products>. You can see the list
 of products as simple web page.
 
-![products index](images/screenshots/products_index.jpg "Products index")
+![products index](images/screenshots/chapter05/products_index.jpg "Products index")
 
 If you now click the link "New Product", you will see an input form for
 a new record:
 
-![product new](images/screenshots/product_new.jpg "Products new")
+![product new](images/screenshots/chapter05/product_new.jpg "Products new")
 
 Use your browser's Back button to go back and click on the "Show" link
 in the first line. You will then see the following page:
 
-![product show](images/screenshots/product_show_1.jpg "Products show")
+![product show](images/screenshots/chapter05/product_show_1.jpg "Products show")
 
 If you now click "Edit", you will see the editing view for this record:
 
-![product edit](images/screenshots/product_edit_1.jpg "Products edit")
+![product edit](images/screenshots/chapter05/product_edit_1.jpg "Products edit")
 
 And if you click "Destroy" on the Index page, you can delete a record
 after confirming the message that pops up. Isn't that cool?! Within less
@@ -782,7 +782,7 @@ end
 When ever somebody wants to save a product which doesn't have a name
 Rails will show this Flash Error:
 
-![product error flash](images/screenshots/product_error_flash.jpg "Products error flash")
+![product error flash](images/screenshots/chapter05/product_error_flash.jpg "Products error flash")
 
 #### Access via JSON
 
@@ -832,7 +832,7 @@ You can use your browser to fetch the JSON output. Just open
 <http://localhost:3000/products.json> and view the result. I installed a
 JSON view extension in my Chrome browser to get a nicer format.
 
-![products index json](images/screenshots/products_index_json.jpg "Products index json")
+![products index json](images/screenshots/chapter05/products_index_json.jpg "Products index json")
 
 If you do not want the JSON output, you need to delete the
 `json.jbuilder` files.
@@ -987,7 +987,7 @@ products GET  /products(.:format)     products#index
 If we now start the server `rails server` and go to the URL
 <http://localhost:3000/products>, we get an error message.
 
-![products index json](images/screenshots/products_index_json.jpg "Products index json")
+![products index json](images/screenshots/chapter05/products_index_json.jpg "Products index json")
 
 The same message will be displayed in the log:
 
@@ -1076,7 +1076,7 @@ Now our application is finished. Start the Rails server with
 `rails server` and open the URL <http://localhost:3000/products> in the
 browser.
 
-![read only products index](images/screenshots/read-only-products-index.jpg "ReadOnlyProducts index")
+![read only products index](images/screenshots/chapter05/read-only-products-index.jpg "ReadOnlyProducts index")
 
 > **Note**
 >

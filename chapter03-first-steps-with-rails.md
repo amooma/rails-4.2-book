@@ -158,7 +158,7 @@ Rails 4.2.1 application starting in development on http://localhost:3000
 So let's go to the URL <http://0.0.0.0:3000> or <http://localhost:3000>
 in the web browser. Welcome aboard You're riding Ruby on Rails! …
 
-![Virgin rails app](images/screenshots/virgin_rails_app.jpg "Virgin rails app")
+![Virgin rails app](images/screenshots/chapter03/virgin_rails_app.jpg "Virgin rails app")
 
 Looks good. Rails seems to be working fine. The log of it tells what
 just happend:
@@ -228,7 +228,7 @@ $ rails server
 We can have a look at this web page at the URL
 <http://localhost:3000/hello-world>:
 
-![Hello Word Html](images/screenshots/hello-world-html.jpg "Hallo Word Html")
+![Hello Word Html](images/screenshots/chapter03/hello-world-html.jpg "Hallo Word Html")
 
 No output in the log means: This page was not handled by the Rails
 framework. It was delivered directly from the webserver.
@@ -495,7 +495,7 @@ $ rails server
 
 Visit that page with the URL <http://localhost:3000/example/test>
 
-![erb einfache addition](images/screenshots/erb_einfache_addition.jpg "ERB einfache addition")
+![erb einfache addition](images/screenshots/chapter03/erb_einfache_addition.jpg "ERB einfache addition")
 
 
 > **Important**
@@ -566,7 +566,7 @@ iterate through the Range `(0..5)`. Edit the
 
 Open this view In the browser:
 
-![erb einfache schleife](images/screenshots/erb_einfache_schleife.jpg "ERB einfache schleife")
+![erb einfache schleife](images/screenshots/chapter03/erb_einfache_schleife.jpg "ERB einfache schleife")
 
 Let's now have a look at the HTML source code in the browser:
 
@@ -782,7 +782,7 @@ $
 
 The new web page now looks like this:
 
-![partials footer](images/screenshots/partials_footer.jpg "Partials footer")
+![partials footer](images/screenshots/chapter03/partials_footer.jpg "Partials footer")
 
 > **Important**
 >
@@ -832,7 +832,7 @@ follows:
 
 If we now go to the URL <http://localhost:3000/example/test>, we see the 2000:
 
-![partials start year 2000](images/screenshots/partial_start_year_2000.jpg "Partial start year 2000")
+![partials start year 2000](images/screenshots/chapter03/partial_start_year_2000.jpg "Partial start year 2000")
 
 Sometimes you need a partial that partially uses a local variable and
 somewhere else you may need the same partial, but without the local
@@ -1072,7 +1072,7 @@ to expand `app/views/layouts/application.html.erb`:
 Now we see the flash message at the top of the page when we go to
 <http://localhost:3000/game/ping> in the browser:
 
-![flash pong notice](images/screenshots/flash_pong_notice.jpg "Flash Pong notice")
+![flash pong notice](images/screenshots/chapter03/flash_pong_notice.jpg "Flash Pong notice")
 
 If we go to <http://localhost:3000/game/pong> we still see the normal Pong
 page. But if we go to <http://localhost:3000/game/ping> we are redirected
