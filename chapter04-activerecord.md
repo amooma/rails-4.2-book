@@ -4177,7 +4177,7 @@ But if we manually delete the database with `rm` and then call
 
 ```bash
 $ rm db/development.sqlite3
-MAC-00020:shop richertd$ rake db:migrate
+$ rake db:migrate
 == 20150417184823 CreateProducts: migrating ===================================
 -- create_table(:products)
    -> 0.0017s

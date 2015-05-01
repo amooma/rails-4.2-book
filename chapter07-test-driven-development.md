@@ -118,14 +118,14 @@ Run options: --seed 149
 Finished in 0.320838s, 21.8179 runs/s, 31.1684 assertions/s.
 
   1) Failure:
-UsersControllerTest#test_should_create_user [/Users/richertd/rails/project-42/webshop/test/controllers/users_controller_test.rb:20]:
+UsersControllerTest#test_should_create_user [/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:20]:
 "User.count" didn't change by 1.
 Expected: 3
   Actual: 2
 
 
   2) Failure:
-UsersControllerTest#test_should_update_user [/Users/richertd/rails/project-42/webshop/test/controllers/users_controller_test.rb:39]:
+UsersControllerTest#test_should_update_user [/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:39]:
 Expected response to be a <redirect>, but was <200>
 
 7 runs, 10 assertions, 2 failures, 0 errors, 0 skips
@@ -236,14 +236,14 @@ occurred:
 
 ```bash
   1) Failure:
-UsersControllerTest#test_should_create_user [/Users/richertd/rails/project-42/webshop/test/controllers/users_controller_test.rb:20]:
+UsersControllerTest#test_should_create_user [/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:20]:
 "User.count" didn't change by 1.
 Expected: 3
   Actual: 2
 
 
   2) Failure:
-UsersControllerTest#test_should_update_user [/Users/richertd/rails/project-42/webshop/test/controllers/users_controller_test.rb:39]:
+UsersControllerTest#test_should_update_user [/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:39]:
 Expected response to be a <redirect>, but was <200>
 ```
 

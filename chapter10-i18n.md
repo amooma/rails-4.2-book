@@ -613,7 +613,7 @@ As a result, we then have the following new paths:
 
 ```bash
 $ rake routes
-(in /Users/richertd/rails/project-42/bibliography)
+(in /Users/xyz/rails/project-42/bibliography)
    Prefix Verb   URI Pattern                      Controller#Action
     books GET    /buecher(.:format)               books#index
           POST   /buecher(.:format)               books#create

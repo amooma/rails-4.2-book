@@ -51,16 +51,16 @@ Let's look at the scaffolding options:
 
 ```bash
 $ rails generate scaffold
-^C^C/Users/richertd/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:156:in `fork': Interrupt
-  from /Users/richertd/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:156:in `serve'
-  from /Users/richertd/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:131:in `block in run'
-  from /Users/richertd/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:125:in `loop'
-  from /Users/richertd/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:125:in `run'
-  from /Users/richertd/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application/boot.rb:18:in `<top (required)>'
-  from /Users/richertd/.rvm/rubies/ruby-2.2.0/lib/ruby/site_ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in `require'
-  from /Users/richertd/.rvm/rubies/ruby-2.2.0/lib/ruby/site_ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+^C^C/Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:156:in `fork': Interrupt
+  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:156:in `serve'
+  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:131:in `block in run'
+  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:125:in `loop'
+  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:125:in `run'
+  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application/boot.rb:18:in `<top (required)>'
+  from /Users/xyz/.rvm/rubies/ruby-2.2.0/lib/ruby/site_ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in `require'
+  from /Users/xyz/.rvm/rubies/ruby-2.2.0/lib/ruby/site_ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in `require'
   from -e:1:in `<main>'
-MAC-00020:shop richertd$ rails generate scaffold
+MAC-00020:shop xyz$ rails generate scaffold
 Usage:
   rails generate scaffold NAME [field[:type][:index] field[:type][:index]] [options]
 
@@ -996,7 +996,7 @@ $ rake routes
   Prefix Verb URI Pattern             Controller#Action
 products GET  /products(.:format)     products#index
  product GET  /products/:id(.:format) products#show
-MAC-00020:read-only-shop richertd$ rails server
+$ rails server
 => Booting WEBrick
 => Rails 4.2.1 application starting in development on http://localhost:3000
 => Run `rails server -h` for more startup options
