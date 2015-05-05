@@ -247,13 +247,12 @@ $ rails generate scaffold Person first_name last_name
 $ rake db:migrate
 [...]
 $ rails server
-=> Booting WEBrick
-=> Rails 4.0.0 application starting in development on http://0.0.0.0:3000
+=> Rails 4.2.1 application starting in development on http://localhost:3000
 => Run `rails server -h` for more startup options
 => Ctrl-C to shutdown server
-[2013-07-20 09:48:23] INFO  WEBrick 1.3.1
-[2013-07-20 09:48:23] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin12.4.0]
-[2013-07-20 09:48:23] INFO  WEBrick::HTTPServer#start: pid=72655 port=3000
+[2015-05-05 11:28:45] INFO  WEBrick 1.3.1
+[2015-05-05 11:28:45] INFO  ruby 2.2.0 (2014-12-25) [x86_64-darwin14]
+[2015-05-05 11:28:45] INFO  WEBrick::HTTPServer#start: pid=88054 port=3000
 ```
 
 Most times we create forms by using the Scaffold. Let's go through the
