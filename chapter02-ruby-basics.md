@@ -113,8 +113,6 @@ $
 
 ### Comments
 
-comments
-Ruby
 A comment in a Ruby program starts with a `#`-sign and ends with a newline. 
 As an example, I can add a comment to the `hello-world.rb` above:
 

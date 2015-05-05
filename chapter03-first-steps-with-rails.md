@@ -607,15 +607,19 @@ Now you have the important tools to use Ruby code in a view.
 #### Q & A
 
 Potentially, there are two open questions:
+
 **Q**: I don't understand anything. I can't cope with the Ruby code. Could you 
 please explain that again? 
+
 **A**: Is it possible that you have not completely worked your way through [Chapter 2, *Ruby Basics*](chapter02-ruby-basics.md)?
 Please do take your time with it and have another thorough look.
 Otherwise, the rest won't make any sense here. 
+
 **Q**: I can understand the Ruby
 code and the HTML output. But I don't get why some HTML code was
 rendered around it if I didn't even write that HTML code. Where does it
 come from, and can I influence it? 
+
 **A**: Excellent question! We will get to that next.
 
 ### Layouts

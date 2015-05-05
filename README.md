@@ -5,7 +5,7 @@ learn. It is not! It is probably the best and most effective Framework
 to develop webapplications but it is hard to understand in the
 beginning. The worst mistake of all is to not learn Ruby before diving
 into Ruby on Rails. I made this one myself. This book starts with the
-basics of Ruby (?). You will not become a Ruby guru after reading it but
+basics of Ruby ([Chapter 2, Ruby Basics](chapter02-ruby-basics.html)). You will not become a Ruby guru after reading it but
 you'll understand the basic ideas and that is important.
 
 The book is written in a way that you can and actually should read it
