@@ -24,7 +24,7 @@ delete the following items from the file
 With jQuery, you can implement animations and Ajax interactions on your
 web page relatively easily.
 
-You will find a good introduction to this topic in the djQuery
+You will find a good introduction to this topic in the jQuery
 documentation at <http://learn.jquery.com/>
 
 ### CoffeeScript
