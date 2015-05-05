@@ -334,7 +334,7 @@ After restarting the Rails application, we have a look at the HTTP
 header of <http://localhost:3000/companies/1>:
 
 ```bash
-$ curl -I http://0.0.0.0:3000/companies/1
+$ curl -I http://localhost:3000/companies/1
 HTTP/1.1 200 OK
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 1; mode=block
@@ -348,7 +348,7 @@ specify this time as well, then we do not get the web page back, but a
 `304 Not Modified` message:
 
 ```bash
-$ curl -I http://0.0.0.0:3000/companies/1 --header 'If-Modified-Since: Sun, 03 May 2015 18:38:05 GMT'
+$ curl -I http://localhost:3000/companies/1 --header 'If-Modified-Since: Sun, 03 May 2015 18:38:05 GMT'
 HTTP/1.1 304 Not Modified
  [...]
 $
@@ -456,7 +456,7 @@ We now use this etag to find out in the request with `If-None-Match` if
 the version we have cached is still up to date:
 
 ```bash
-$ curl -I http://0.0.0.0:3000/companies -b cookies.txt --header 'If-None-Match: "a8a30e6dcdb4380f169dd18911cd6a51"'
+$ curl -I http://localhost:3000/companies -b cookies.txt --header 'If-None-Match: "a8a30e6dcdb4380f169dd18911cd6a51"'
 HTTP/1.1 304 Not Modified
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 1; mode=block

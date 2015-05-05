@@ -7,17 +7,19 @@ Introduction
 Until now we were working with the development system. Let's have
 another close look at the output of that development system:
 
-    $
-    => Booting WEBrick
-    => Rails 4.0.0 application starting in development on http://0.0.0.0:3000
-    => Run `rails server -h` for more startup options
-    => Ctrl-C to shutdown server
-    [2013-07-18 10:20:30] INFO  WEBrick 1.3.1
-    [2013-07-18 10:20:30] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin12.4.0]
-    [2013-07-18 10:20:30] INFO  WEBrick::HTTPServer#start: pid=43853 port=3000
+```bash
+$ rails server
+=> Booting WEBrick
+=> Rails 4.2.1 application starting in development on http://localhost:3000
+=> Run `rails server -h` for more startup options
+=> Ctrl-C to shutdown server
+[2015-05-05 13:08:19] INFO  WEBrick 1.3.1
+[2015-05-05 13:08:19] INFO  ruby 2.2.1 (2015-02-26) [x86_64-darwin14]
+[2015-05-05 13:08:19] INFO  WEBrick::HTTPServer#start: pid=91678 port=3000
+```
 
 The second line tells us that we are in "development" mode and that the
-application can be accessed at the URL <http://0.0.0.0:3000>. The web
+application can be accessed at the URL <http://localhost:3000>. The web
 server used here is WEBrick (see
 <http://en.wikipedia.org/wiki/Webrick>). WEBrick is a very simple HTTP
 web server and component of the Ruby standard library. But WEBrick is
@@ -35,7 +37,7 @@ This chapter walks you through the setup process of a production server
 which runs Nginx as a reverse proxy webserver and unicorn as the Ruby on
 Rails webserver behind the Nginx. We start with a fresh Debian system
 and install all the software we need. The Rails project will be run with
-Ruby 2.0.0 which gets installed with RVM and runs for the user deployer.
+Ruby 2.2.1 which gets installed with RVM and runs for the user deployer.
 Feel free to customize the directorystructure once everything is up and
 running.
 
@@ -47,15 +49,15 @@ The example Rails application we use is called `blog`.
 > before you will get lost somewhere in this chapter. You probably get
 > it up and running but without understanding how things work.
 
-Debian 7.1
+Debian 8.0
 ----------
 
-We build our production web server on a minimal Debian 7.1 system. To
+We build our production web server on a minimal Debian 8.0 system. To
 carry out this installation, you need to have root rights on the web
 server!
 
 This description assumes that you have a freshly installed Debian
-GNU/Linux 7.1 (“Wheeze”). You will find an ISO image for the
+GNU/Linux 8.0 (jessie). You will find an ISO image for the
 installation at <http://www.debian.org>. I recommend the approximately
 250 MB net installation CD image. For instructions on how to install
 Debian-GNU/Linux, please go to <http://www.debian.org/distrib/netinst>.
@@ -69,9 +71,11 @@ Debian-GNU/Linux, please go to <http://www.debian.org/distrib/netinst>.
 
 First, we install a few debian packages we are going to need.
 
-    root@debian:~#
-    [...]
-    root@debian:~#
+```bash
+root@debian:~# apt-get -y install gawk libgdbm-dev pkg-config libffi-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion python
+[...]
+root@debian:~# 
+```
 
 ### Node.js
 
@@ -80,77 +84,89 @@ the homepage of Node.js (<http://nodejs.org/>), search for the current
 stable release and adapt the version numbers in the commands listed here
 accordingly.
 
-    root@debian:~#
-    root@debian:/usr/src#
-    [...]
-    root@debian:/usr/src#  
-    root@debian:/usr/src#
-    root@debian:/usr/src/node-v0.10.13#  
-    [...]
-    root@debian:/usr/src/node-v0.10.13#
-    [...]
-    root@debian:/usr/src/node-v0.10.13#
-    [...]
-    root@debian:/usr/src/node-v0.10.13#
-    [...]
-    root@debian:~#
+```bash
+root@debian:~# cd /usr/src
+root@debian:/usr/src# wget http://nodejs.org/dist/v0.12.2/node-v0.12.2.tar.gz
+[...]
+root@debian:/usr/src# tar xzf node-v0.12.2.tar.gz 
+root@debian:/usr/src# cd node-v0.12.2
+root@debian:/usr/src/node-v0.12.2# ./configure 
+[...]
+root@debian:/usr/src/node-v0.12.2# make
+[...]
+root@debian:/usr/src/node-v0.12.2# make install
+[...]
+root@debian:/usr/src/node-v0.12.2# cd
+root@debian:~#
+```
 
 ### nginx
 
 Nginx will be our web server to the outside world.
 
-    root@debian:~#
-    [...]
-    root@debian:~#
+```bash
+root@debian:~# apt-get -y install nginx
+[...]
+root@debian:~#
+```
 
 ### User Deployer
 
 Our Rails project is going to run within a Ruby and Rails installed via
 RVM in the user space. So we create a new user with the name `deployer`:
 
-    root@debian:~#
-    Lege Benutzer »deployer« an ...
-    Lege neue Gruppe »deployer« (1002) an ...
-    Lege neuen Benutzer »deployer« (1002) mit Gruppe »deployer« an ...
-    Erstelle Home-Verzeichnis »/home/deployer« ...
-    Kopiere Dateien aus »/etc/skel« ...
-    Geben Sie ein neues UNIX-Passwort ein:
-    Geben Sie das neue UNIX-Passwort erneut ein:
-    passwd: Passwort erfolgreich geändert
-    Benutzerinformationen für deployer werden geändert.
-    Geben Sie einen neuen Wert an oder drücken Sie ENTER für den Standardwert
-     Vollständiger Name []: Deployer
-     Raumnummer []:
-     Telefon geschäftlich []:
-     Telefon privat []:
-     Sonstiges []:
-    Sind die Informationen korrekt? [J/n] J
-    root@debian:~#
+```bash
+root@debian:~# adduser deployer
+Adding user `deployer' ...
+Adding new group `deployer' (1001) ...
+Adding new user `deployer' (1001) with group `deployer' ...
+Creating home directory `/home/deployer' ...
+Copying files from `/etc/skel' ...
+Enter new UNIX password: 
+Retype new UNIX password: 
+passwd: password updated successfully
+Changing the user information for deployer
+Enter the new value, or press ENTER for the default
+  Full Name []: Deployer
+  Room Number []: 
+  Work Phone []: 
+  Home Phone []: 
+  Other []: 
+Is the information correct? [Y/n] Y
+root@debian:~#
+```
 
 #### Setting up Rails Environment for User Deployer
 
 With `su - deployer` we'll become the user deployer:
 
-    root@debian:~#
-    deployer@debian:~$
+```bash
+root@debian:~# su - deployer
+deployer@debian:~$
+```
 
-As user `deployer`, please carry out the steps for installing Ruby 2.0.0
-and Rails 4.0 via RVM.
+As user `deployer`, please carry out the steps for installing Ruby 2.2.1
+and Rails 4.2.1 via RVM.
 
-    deployer@debian:~$
-    [...]
-    deployer@debian:~$
-    [...]
-    deployer@debian:~$
+```bash
+deployer@debian:~$ curl -L https://get.rvm.io | bash -s stable --rails
+[...]
+deployer@debian:~$ source /home/deployer/.rvm/scripts/rvm
+deployer@debian:~$
+```
 
 To be able to start Unicorn with the RVM environment from within an
 Init.d script, we now need to generate a corresponding wrapper:
 
-    deployer@debian:~$
-    [...]
-    deployer@debian:~$
-    deployer@debian:~$
-    root@debian:~$
+```bash
+deployer@debian:~$ gem install unicorn
+ [...]
+deployer@debian:~$ rvm wrapper 2.2.1 bootup unicorn
+Regenerating ruby-2.2.1 wrappers........
+deployer@debian:~$ exit
+logout
+root@debian:~#
+```
 
 ### Database
 
@@ -164,41 +180,45 @@ Next, we install the database MySQL. You will be asked for a database
 password. Please remember this password. Later, `root` can use it to log
 in to the database.
 
-    root@debian:~#
-    [...]
-    root@debian:~#
+```bash
+root@debian:~# apt-get -y install mysql-server libmysql-ruby libmysqlclient-dev
+[...]
+root@debian:~#
+```
 
 #### Creating Database with Rights
 
 In the MySQL database, we need to create the database `blog` with access
 rights for the user `deployer`:
 
-    deployer@debian:~$
-    Enter password:
-    Welcome to the MySQL monitor.  Commands end with ; or \g.
-    Your MySQL connection id is 40
-    Server version: 5.1.63-0+squeeze1 (Debian)
+```bash
+deployer@debian:~$ mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 45
+Server version: 5.5.43-0+deb8u1 (Debian)
 
-    Copyright (c) 2000, 2011, Oracle and/or its affiliates. All rights reserved.
+Copyright (c) 2000, 2015, Oracle and/or its affiliates. All rights reserved.
 
-    Oracle is a registered trademark of Oracle Corporation and/or its
-    affiliates. Other names may be trademarks of their respective
-    owners.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
 
-    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-    mysql>
-    Query OK, 1 row affected (0.00 sec)
+mysql> CREATE DATABASE blog;
+Query OK, 1 row affected (0.00 sec)
 
-    mysql>
-    Query OK, 0 rows affected (0.00 sec)
+mysql> GRANT USAGE ON *.* TO deployer@localhost IDENTIFIED BY 'IhrLieblingsPasswort';
+Query OK, 0 rows affected (0.00 sec)
 
-    mysql>
-    Query OK, 0 rows affected (0.00 sec)
+mysql> GRANT ALL PRIVILEGES ON blog.* TO deployer@localhost;
+Query OK, 0 rows affected (0.00 sec)
 
-    mysql> ;
-    Bye
-    deployer@debian:~$
+mysql> exit
+Bye
+deployer@debian:~$
+```
 
 > **Warning**
 >
@@ -211,9 +231,11 @@ If you are working with a cache server (highly recommended), you of
 course have to install the appropriate software. For memcached
 (<http://memcached.org/>) you would enter this:
 
-    root@debian:~#
-    [...]
-    root@debian:~#
+```bash
+root@debian:~# apt-get -y install memcached
+[...]
+root@debian:~#
+```
 
 Setting Up a New Rails Project
 ------------------------------
@@ -221,60 +243,83 @@ Setting Up a New Rails Project
 To keep this guide as simple as possible, we create a simple blog in the
 homedirectory of the user `deployer`.
 
-    root@debian:~#
-    deployer@debian:~$
-    [...]
-    deployer@debian:~$
-    deployer@debian:~/blog$
-    [...]
-    deployer@debian:~/blog$
+```bash
+root@debian:~# su - deployer
+deployer@debian:~$ rails new blog
+[...]
+deployer@debian:~$ cd blog
+deployer@debian:~$ bundle install
+[...]
+deployer@debian:~/blog$ rails generate scaffold post subject content:text
+[...]
+deployer@debian:~/blog$
+```
 
 ### Adapting Gemfile
 
 Please add the following content into the file `Gemfile`:
 
-    gem 'mysql', group: :production
-    gem 'unicorn', group: :production
+```ruby
+group :production do
+  gem 'mysql'
+  gem 'unicorn'
+end
+```
 
 Then install all gems with `bundle
       install`:
 
-    deployer@debian:~/blog$
-    [...]
-    deployer@debian:~/blog$
+```bash
+deployer@debian:~/blog$ bundle install
+[...]
+deployer@debian:~/blog$
+```
 
 To get a root URL we'll change to `config/routes.rb` file to this:
 
-    Blog::Application.routes.draw do
-      resources :posts
-      root 'posts#index'
-    end
-
+```ruby
+Blog::Application.routes.draw do
+  resources :posts
+  root 'posts#index'
+end
+```
 ### Production Database Configuration
 
 In the file` config/database.yml` you need to enter the database
 configuration for the MySQL database for the production system. Please
 make sure you enter the correct password.
 
-    # SQLite version 3.x
-    #   gem install sqlite3
-    #
-    #   Ensure the SQLite 3 gem is defined in your Gemfile
-    #   gem 'sqlite3'
-    development:
-      adapter: sqlite3
-      database: db/development.sqlite3
-      pool: 5
-      timeout: 5000
+```ruby
+# SQLite version 3.x
+#   gem install sqlite3
+#
+#   Ensure the SQLite 3 gem is defined in your Gemfile
+#   gem 'sqlite3'
+#
+default: &default
+  adapter: sqlite3
+  pool: 5
+  timeout: 5000
 
-    # Warning: The database defined as "test" will be erased and
-    # re-generated from your development database when you run "rake".
-    # Do not set this db to the same as development or production.
-    test:
-      adapter: sqlite3
-      database: db/test.sqlite3
-      pool: 5
-      timeout: 5000
+development:
+  <<: *default
+  database: db/development.sqlite3
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: db/test.sqlite3
+
+
+production:
+  adapter: mysql
+  encoding: utf8
+  database: blog
+  username: deployer
+  password: YourFavoritePassword
+```
 
 > **Warning**
 >
@@ -287,117 +332,121 @@ For the Unicorn configuration, we use the file
 as basis and save it as follows in the file `config/unicorn.rb` after we
 adapt it to our server:
 
-    # Sample verbose configuration file for Unicorn (not Rack)
-    #
-    # This configuration file documents many features of Unicorn
-    # that may not be needed for some applications. See
-    # http://unicorn.bogomips.org/examples/unicorn.conf.minimal.rb
-    # for a much simpler configuration file.
-    #
-    # See http://unicorn.bogomips.org/Unicorn/Configurator.html for complete
-    # documentation.
+```ruby
+# Sample verbose configuration file for Unicorn (not Rack)
+#
+# This configuration file documents many features of Unicorn
+# that may not be needed for some applications. See
+# http://unicorn.bogomips.org/examples/unicorn.conf.minimal.rb
+# for a much simpler configuration file.
+#
+# See http://unicorn.bogomips.org/Unicorn/Configurator.html for complete
+# documentation.
 
-    # Use at least one worker per core if you're on a dedicated server,
-    # more will usually help for _short_ waits on databases/caches.
-    worker_processes 4
+# Use at least one worker per core if you're on a dedicated server,
+# more will usually help for _short_ waits on databases/caches.
+worker_processes 4
 
-    # Since Unicorn is never exposed to outside clients, it does not need to
-    # run on the standard HTTP port (80), there is no reason to start Unicorn
-    # as root unless it's from system init scripts.
-    # If running the master process as root and the workers as an unprivileged
-    # user, do this to switch euid/egid in the workers (also chowns logs):
-    user "deployer", "www-data"
+# Since Unicorn is never exposed to outside clients, it does not need to
+# run on the standard HTTP port (80), there is no reason to start Unicorn
+# as root unless it's from system init scripts.
+# If running the master process as root and the workers as an unprivileged
+# user, do this to switch euid/egid in the workers (also chowns logs):
+user "deployer", "www-data"
 
-    # Help ensure your application will always spawn in the symlinked
-    # "current" directory that Capistrano sets up.
-    APP_PATH = "/home/deployer/blog"
-    working_directory APP_PATH # available in 0.94.0+
+# Help ensure your application will always spawn in the symlinked
+# "current" directory that Capistrano sets up.
+APP_PATH = "/home/deployer/blog"
+working_directory APP_PATH # available in 0.94.0+
 
-    # listen on both a Unix domain socket and a TCP port,
-    # we use a shorter backlog for quicker failover when busy
-    listen "/tmp/.unicorn_blog.sock", :backlog => 64
-    listen 8080, :tcp_nopush => true
+# listen on both a Unix domain socket and a TCP port,
+# we use a shorter backlog for quicker failover when busy
+listen "/tmp/.unicorn_blog.sock", :backlog => 64
+listen 8080, :tcp_nopush => true
 
-    # nuke workers after 30 seconds instead of 60 seconds (the default)
-    timeout 30
+# nuke workers after 30 seconds instead of 60 seconds (the default)
+timeout 30
 
-    # feel free to point this anywhere accessible on the filesystem
-    pid "/var/run/unicorn_blog.pid"
+# feel free to point this anywhere accessible on the filesystem
+pid "/var/run/unicorn_blog.pid"
 
-    # By default, the Unicorn logger will write to stderr.
-    # Additionally, ome applications/frameworks log to stderr or stdout,
-    # so prevent them from going to /dev/null when daemonized here:
-    stderr_path APP_PATH + "/log/unicorn_blog.stderr.log"
-    stdout_path APP_PATH + "/log/unicorn_blog.stdout.log"
+# By default, the Unicorn logger will write to stderr.
+# Additionally, ome applications/frameworks log to stderr or stdout,
+# so prevent them from going to /dev/null when daemonized here:
+stderr_path APP_PATH + "/log/unicorn_blog.stderr.log"
+stdout_path APP_PATH + "/log/unicorn_blog.stdout.log"
 
-    # combine Ruby 2.0.0dev or REE with "preload_app true" for memory savings
-    # http://rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
-    preload_app true
-    GC.respond_to?(:copy_on_write_friendly=) and
-      GC.copy_on_write_friendly = true
+# combine Ruby 2.0.0dev or REE with "preload_app true" for memory savings
+# http://rubyenterpriseedition.com/faq.html#adapt_apps_for_cow
+preload_app true
+GC.respond_to?(:copy_on_write_friendly=) and
+  GC.copy_on_write_friendly = true
 
-    # Enable this flag to have unicorn test client connections by writing the
-    # beginning of the HTTP headers before calling the application.  This
-    # prevents calling the application for connections that have disconnected
-    # while queued.  This is only guaranteed to detect clients on the same
-    # host unicorn runs on, and unlikely to detect disconnects even on a
-    # fast LAN.
-    check_client_connection false
+# Enable this flag to have unicorn test client connections by writing the
+# beginning of the HTTP headers before calling the application.  This
+# prevents calling the application for connections that have disconnected
+# while queued.  This is only guaranteed to detect clients on the same
+# host unicorn runs on, and unlikely to detect disconnects even on a
+# fast LAN.
+check_client_connection false
 
-    before_fork do |server, worker|
-      # the following is highly recomended for Rails + "preload_app true"
-      # as there's no need for the master process to hold a connection
-      defined?(ActiveRecord::Base) and
-        ActiveRecord::Base.connection.disconnect!
+before_fork do |server, worker|
+  # the following is highly recomended for Rails + "preload_app true"
+  # as there's no need for the master process to hold a connection
+  defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.connection.disconnect!
 
-      # The following is only recommended for memory/DB-constrained
-      # installations.  It is not needed if your system can house
-      # twice as many worker_processes as you have configured.
-      #
-      # # This allows a new master process to incrementally
-      # # phase out the old master process with SIGTTOU to avoid a
-      # # thundering herd (especially in the "preload_app false" case)
-      # # when doing a transparent upgrade.  The last worker spawned
-      # # will then kill off the old master process with a SIGQUIT.
-      # old_pid = "#{server.config[:pid]}.oldbin"
-      # if old_pid != server.pid
-      #   begin
-      #     sig = (worker.nr + 1) >= server.worker_processes ? :QUIT : :TTOU
-      #     Process.kill(sig, File.read(old_pid).to_i)
-      #   rescue Errno::ENOENT, Errno::ESRCH
-      #   end
-      # end
-      #
-      # Throttle the master from forking too quickly by sleeping.  Due
-      # to the implementation of standard Unix signal handlers, this
-      # helps (but does not completely) prevent identical, repeated signals
-      # from being lost when the receiving process is busy.
-      # sleep 1
-    end
+  # The following is only recommended for memory/DB-constrained
+  # installations.  It is not needed if your system can house
+  # twice as many worker_processes as you have configured.
+  #
+  # # This allows a new master process to incrementally
+  # # phase out the old master process with SIGTTOU to avoid a
+  # # thundering herd (especially in the "preload_app false" case)
+  # # when doing a transparent upgrade.  The last worker spawned
+  # # will then kill off the old master process with a SIGQUIT.
+  # old_pid = "#{server.config[:pid]}.oldbin"
+  # if old_pid != server.pid
+  #   begin
+  #     sig = (worker.nr + 1) >= server.worker_processes ? :QUIT : :TTOU
+  #     Process.kill(sig, File.read(old_pid).to_i)
+  #   rescue Errno::ENOENT, Errno::ESRCH
+  #   end
+  # end
+  #
+  # Throttle the master from forking too quickly by sleeping.  Due
+  # to the implementation of standard Unix signal handlers, this
+  # helps (but does not completely) prevent identical, repeated signals
+  # from being lost when the receiving process is busy.
+  # sleep 1
+end
 
-    after_fork do |server, worker|
-      # per-process listener ports for debugging/admin/migrations
-      # addr = "127.0.0.1:#{9293 + worker.nr}"
-      # server.listen(addr, :tries => -1, :delay => 5, :tcp_nopush => true)
+after_fork do |server, worker|
+  # per-process listener ports for debugging/admin/migrations
+  # addr = "127.0.0.1:#{9293 + worker.nr}"
+  # server.listen(addr, :tries => -1, :delay => 5, :tcp_nopush => true)
 
-      # the following is *required* for Rails + "preload_app true",
-      defined?(ActiveRecord::Base) and
-        ActiveRecord::Base.establish_connection
+  # the following is *required* for Rails + "preload_app true",
+  defined?(ActiveRecord::Base) and
+    ActiveRecord::Base.establish_connection
 
-      # if preload_app is true, then you may also want to check and
-      # restart any other shared sockets/descriptors such as Memcached,
-      # and Redis.  TokyoCabinet file handles are safe to reuse
-      # between any number of forked children (assuming your kernel
-      # correctly implements pread()/pwrite() system calls)
-    end
+  # if preload_app is true, then you may also want to check and
+  # restart any other shared sockets/descriptors such as Memcached,
+  # and Redis.  TokyoCabinet file handles are safe to reuse
+  # between any number of forked children (assuming your kernel
+  # correctly implements pread()/pwrite() system calls)
+end
+```
 
 ### rake db:migration
 
 We still need to create the database:
 
-    deployer@debian:~/blog$
-    [...]
-    deployer@debian:~/blog$
+```bash
+deployer@debian:~/blog$ rake db:migrate RAILS_ENV=production
+[...]
+deployer@debian:~/blog$
+```
 
 > **Important**
 >
@@ -409,69 +458,77 @@ We still need to create the database:
 `rake assets:precompile` ensures that all assets in the asset pipeline
 are made available for the production environment (see ?).
 
-    deployer@debian:~/blog$
-    [...]
-    deployer@debian:~/blog$
+```bash
+deployer@debian:~/blog$ rake assets:precompile
+[...]
+deployer@debian:~/blog$
+```
 
 ### Unicorn Init Script
 
 Now you need to continue working as user `root`:
 
-    deployer@debian:~$
-    Abgemeldet
-    root@debian:~#
+```bash
+deployer@debian:~/blog$ exit
+logout
+root@debian:~$
+```
 
 Create the init script `/etc/init.d/unicorn_blog` with the following
 content:
 
-    #!/bin/bash
+```bash
+#!/bin/bash
 
-    ### BEGIN INIT INFO
-    # Provides:          unicorn
-    # Required-Start:    $remote_fs $syslog
-    # Required-Stop:     $remote_fs $syslog
-    # Default-Start:     2 3 4 5
-    # Default-Stop:      0 1 6
-    # Short-Description: Unicorn webserver
-    # Description:       Unicorn webserver for the blog
-    ### END INIT INFO
+### BEGIN INIT INFO
+# Provides:          unicorn
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Unicorn webserver
+# Description:       Unicorn webserver for the blog
+### END INIT INFO
 
-    UNICORN=/home/deployer/.rvm/bin/bootup_unicorn
-    UNICORN_ARGS="-D -c /home/deployer/blog/config/unicorn.rb -E production"
-    KILL=/bin/kill
-    PID=/var/run/unicorn_blog.pid
+UNICORN=/home/deployer/.rvm/bin/bootup_unicorn
+UNICORN_ARGS="-D -c /home/deployer/blog/config/unicorn.rb -E production"
+KILL=/bin/kill
+PID=/var/run/unicorn_blog.pid
 
-    sig () {
-      test -s "$PID" && kill -$1 `cat $PID`
-    }
+sig () {
+  test -s "$PID" && kill -$1 `cat $PID`
+}
 
-    case "$1" in
-            start)
-                    echo "Starting unicorn..."
-                    $UNICORN $UNICORN_ARGS
-                    ;;
-            stop)
-                    sig QUIT && exit 0
-                    echo >&2 "Not running"
-                    ;;
-            restart)
-                    $0 stop
-                    $0 start
-                    ;;
-            status)
-                    ;;
-            *)
-                    echo "Usage: $0 {start|stop|restart|status}"
-                    ;;
-    esac
+case "$1" in
+        start)
+                echo "Starting unicorn..."
+                $UNICORN $UNICORN_ARGS
+                ;;
+        stop)
+                sig QUIT && exit 0
+                echo >&2 "Not running"
+                ;;
+        restart)
+                $0 stop
+                $0 start
+                ;;
+        status)
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|restart|status}"
+                ;;
+esac
+```
 
 You still have to activate the init script and start Unicorn:
 
-    root@debian:~#  
-    root@debian:~#
-    update-rc.d: using dependency based boot sequencing
-    root@debian:~#
-    root@debian:~#
+```bash
+root@debian:~# chmod +x /etc/init.d/unicorn_blog
+root@debian:~# update-rc.d -f unicorn_blog defaults
+root@debian:~# /etc/init.d/unicorn_blog start
+Starting unicorn...
+root@debian:~#
+```
 
 Your Rails project is now accessible via the IP address of the web
 server.
@@ -481,71 +538,82 @@ server.
 For the Rails project, we add a new configuration file
 `/etc/nginx/sites-available/blog.conf` with the following content:
 
-    upstream unicorn {
-      server unix:/tmp/.unicorn_blog.sock fail_timeout=0;
-    }
+```conf
+upstream unicorn {
+  server unix:/tmp/.unicorn_blog.sock fail_timeout=0;
+}
 
-    server {
-      listen 80 default deferred;
-      # server_name example.com;
-      root /home/deployer/blog/public;
+server {
+  listen 80 default deferred;
+  # server_name example.com;
+  root /home/deployer/blog/public;
 
-      location / {
-        gzip_static on;
-      }
+  location / {
+    gzip_static on;
+  }
 
-      location ^~ /assets/ {
-        gzip_static on;
-        expires max;
-        add_header Cache-Control public;
-      }
+  location ^~ /assets/ {
+    gzip_static on;
+    expires max;
+    add_header Cache-Control public;
+  }
 
-      try_files $uri/index.html $uri @unicorn;
-      location @unicorn {
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $http_host;
-        proxy_redirect off;
-        proxy_pass http://unicorn;
-      }
+  try_files $uri/index.html $uri @unicorn;
+  location @unicorn {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+    proxy_pass http://unicorn;
+  }
 
-      error_page 500 502 503 504 /500.html;
-      client_max_body_size 4G;
-      keepalive_timeout 10;
-    }
+  error_page 500 502 503 504 /500.html;
+  client_max_body_size 4G;
+  keepalive_timeout 10;
+}
+```
 
 We link this configuration file into the /etc/nginx/sites-enabled
 directory to have it loaded by Nginx. The default file can be deleted.
 After that we restart Nginx and are all set. You can access the Rails
 application through the IP address of this server.
 
-    root@debian:~#
-    root@debian:~#
-    root@debian:~#
-    Restarting nginx: nginx.
-    root@debian:~#
+```bash
+root@debian:~# ln -s /etc/nginx/sites-available/blog /etc/nginx/sites-enabled/
+root@debian:~# rm /etc/nginx/sites-enabled/default 
+root@debian:~# /etc/init.d/nginx restart
+[ ok ] Restarting nginx (via systemctl): nginx.service.
+root@debian:~#
+```
 
 ### Loading Updated Versions of the Rails Project
 
 If you want to activate Updates to the Rails project, you need to copy
 them into the directory `/home/deployer/blog` and log in as user
 `deployer` to run `rake
-      assets:precompile` (see ?).
+      assets:precompile` (see [Chapter "Asset Pipeline"](chapter12-asset-pipeline.html)).
 
-    deployer@debian:~/blog$
-    [...]
-    deployer@debian:~/blog$
+```bash
+deployer@debian:~/blog$ rake assets:precompile
+[...]
+deployer@debian:~/blog$
+```
 
 If you bring in new migrations, you of course also need to do a
 `rake db:migrate RAILS_ENV=production`:
 
-    deployer@debian:~/blog$
-    [...]
-    deployer@debian:~/blog$
+```bash
+deployer@debian:~/blog$ rake db:migrate RAILS_ENV=production
+[...]
+deployer@debian:~/blog$ 
+```
 
 Then you need to restart Unicorn as user `root`:
 
-    root@debian:~#
-    root@debian:~#
+```bash
+root@debian:~# /etc/init.d/unicorn_blog restart
+Starting unicorn...
+root@debian:~#
+```
 
 Misc
 ----
