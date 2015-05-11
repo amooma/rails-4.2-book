@@ -1,13 +1,15 @@
 First Steps with Rails
 ======================
+
 ### Introduction
 
-Now that you have painstakingly read your way through [Chapter 2 - Ruby Basics](chapter02-ruby-basics.html) we 
-can move on to a more exciting bit. In this chapter, we will start our first 
-Ruby on Rails project and find our way into the topic step by step.
+Now that you have painstakingly read your way through [Chapter 2 - Ruby
+Basics](chapter02-ruby-basics.html) we can move on to a more exciting
+bit. In this chapter, we will start our first Ruby on Rails project and
+find our way into the topic step by step.
 
-We will use Ruby on Rails version 4.2.1. Please update to this version in
-case have installed an older one.
+We will use Ruby on Rails version 4.2.1. Please update to this version
+in case have installed an older one.
 
 > **Note**
 >
@@ -28,9 +30,9 @@ In this chapter, we are only working with the Development environment.
 Once you have gained a better feeling for Rails, we will start using
 tests and then we will need the corresponding environment (where, for
 example, the Test database is populated when you start a test and then
-cleared). Later, I will explain the various scenarios to show how you can
-roll out your Rails application from the Development environment to the
-Production environment.
+cleared). Later, I will explain the various scenarios to show how you
+can roll out your Rails application from the Development environment to
+the Production environment.
 
 The Development environment has everything you need for developing,
 apart from an editor and a web browser. So you do not need to install a
@@ -58,12 +60,12 @@ Rails apparently loves the English language. Even if you are not a
 native English speaker, you should try to accept and even adopt Rails'
 love for the English language. Much of it will then be much easier and
 more logical. Most of the code then reads just like a normal English
-sentence.
-For example, many mechanisms automagically use plural or singular forms of
-normal English words. If you get used to naming database fields and
-tables with English terms (even if you are programming in a different
-language), then you can make use of the whole power of this magic. This
-mechanism is referred to as `Inflector` or *Inflections*.
+sentence. For example, many mechanisms automagically use plural or
+singular forms of normal English words. If you get used to naming
+database fields and tables with English terms (even if you are
+programming in a different language), then you can make use of the whole
+power of this magic. This mechanism is referred to as `Inflector` or
+*Inflections*.
 
 If you are programming in a language other than English, it still makes
 sense to use English names for variables, classes and methods. You can
@@ -81,9 +83,10 @@ Let's first create a new Rails project.
 
 ### Create Rails Project
 
-Before we even get going, please check that you are using Ruby version 2.2.1:
+Before we even get going, please check that you are using Ruby version
+2.2.1:
 
-```bash
+``` {.bash}
 $ ruby -v
 ruby 2.2.1p85 (2015-02-26 revision 49769) [x86_64-darwin14]
 $
@@ -91,7 +94,7 @@ $
 
 Next, check if Rails 4.2.1 is also installed:
 
-```bash
+``` {.bash}
 $ rails -v
 Rails 4.2.1
 $
@@ -106,7 +109,7 @@ the corresponding directory structure and basic configuration, including
 several scripts. Easy as pie, just use the command
 `rails new testproject`:
 
-```bash
+``` {.bash}
 $ rails new testproject
     create
     create  README.rdoc
@@ -119,15 +122,15 @@ $
 
 > **Note**
 >
-> In previous versions of Rails, you had to do a
-> `bundle install` first. With Rails 3.2 onwards, this is done
-> automatically when you create a new Rails project. The Rails project
-> then has all required *gems* available. A *gem* is a kind of software
-> library. You can integrate certain ready-made functionalities with it,
-> without having to reinvent the wheel.
+> In previous versions of Rails, you had to do a `bundle install` first.
+> With Rails 3.2 onwards, this is done automatically when you create a
+> new Rails project. The Rails project then has all required *gems*
+> available. A *gem* is a kind of software library. You can integrate
+> certain ready-made functionalities with it, without having to reinvent
+> the wheel.
 
-Next, we check if the new Rails application 
-is working by launching the integrated web server.
+Next, we check if the new Rails application is working by launching the
+integrated web server.
 
 > **Tip**
 >
@@ -137,7 +140,7 @@ is working by launching the integrated web server.
 > corresponding connection. As we are only working locally, you can
 > safely confirm.
 
-```bash
+``` {.bash}
 $ cd testproject/
 $ rails server
 => Booting WEBrick
@@ -151,19 +154,20 @@ $ rails server
 
 The start of the Rails application is looking good. It tells us:
 
-```bash
+``` {.bash}
 Rails 4.2.1 application starting in development on http://localhost:3000
 ```
 
 So let's go to the URL <http://0.0.0.0:3000> or <http://localhost:3000>
 in the web browser. Welcome aboard You're riding Ruby on Rails! …
 
-![Virgin rails app](images/screenshots/chapter03/virgin_rails_app.jpg "Virgin rails app")
+![Virgin rails
+app](images/screenshots/chapter03/virgin_rails_app.jpg "Virgin rails app")
 
 Looks good. Rails seems to be working fine. The log of it tells what
 just happend:
 
-```bash
+``` {.bash}
 Started GET "/" for ::1 at 2015-04-14 19:11:32 +0200
 Processing by Rails::WelcomeController#index as HTML
   Rendered /usr/local/lib/ruby/gems/2.2.0/gems/railties-4.2.1/lib/rails/templates/rails/welcome/index.html.erb (1.6ms)
@@ -183,7 +187,7 @@ There are certain static pages, images and JavaScript files that are
 automatically output by Rails. Remember part of the output of the
 command `rails new testproject`:
 
-```bash
+``` {.bash}
 $ rails new testproject
     [...]
     create  public/404.html
@@ -194,13 +198,11 @@ $ rails new testproject
     [...]
 ```
 
-
 The directory name `public` and the files it contains already look very
 much like static pages. Hello World in Rails Let's have a go and create
 the file `public/hello-world.html` with the following content:
 
-
-```html
+``` {.html}
 <html>
 <head>
   <title>Hello World!</title>
@@ -214,7 +216,7 @@ the file `public/hello-world.html` with the following content:
 
 Now start the Rails web server with `rails server`
 
-```bash
+``` {.bash}
 $ rails server
 => Booting WEBrick
 => Rails 4.2.1 application starting in development on http://localhost:3000
@@ -228,7 +230,8 @@ $ rails server
 We can have a look at this web page at the URL
 <http://localhost:3000/hello-world>:
 
-![Hello Word Html](images/screenshots/chapter03/hello-world-html.jpg "Hallo Word Html")
+![Hello Word
+Html](images/screenshots/chapter03/hello-world-html.jpg "Hallo Word Html")
 
 No output in the log means: This page was not handled by the Rails
 framework. It was delivered directly from the webserver.
@@ -246,7 +249,8 @@ Rails is not currently working, for example because of an update. In a
 production environment, you would usually put a classic web server such
 as Apache or Nginx infront of the Rails server. Which is capable of
 autonomously delivering static files from the `public` directory. You'll
-learn how to set up a production webserver in [Chapter 15, Web Server in Production Mode](chapter15-production-webserver.html).
+learn how to set up a production webserver in [Chapter 15, Web Server in
+Production Mode](chapter15-production-webserver.html).
 
 With Ctrl+C you can stop the Rails server.
 
@@ -255,13 +259,13 @@ Creating HTML Dynamically with erb
 
 The the content of an `erb` file will propably seem familiar to you. It
 is a mixture of HTML and Ruby code (`erb` stands for **e**mbedded
-**R**uby). erb pages are rendered as Views. This is the first time
-for us to get in touch with the MVC
-model. We need a controllercontroller to use a view. That can be
-created it via the generator `rails generate controller`. Let's have a
-look at the onboard help of this generator:
+**R**uby). erb pages are rendered as Views. This is the first time for
+us to get in touch with the MVC model. We need a controllercontroller to
+use a view. That can be created it via the generator
+`rails generate controller`. Let's have a look at the onboard help of
+this generator:
 
-```bash
+``` {.bash}
 $ rails generate controller
 Usage:
   rails generate controller NAME [action action] [options]
@@ -307,15 +311,14 @@ $
 
 Nice! We are kindly provided with an example further down:
 
-```bash
+``` {.bash}
 rails generate controller CreditCard open debit credit close
 ```
 
 Doesn't really fit the bill for our case but I am feeling brave and
-suggest that we simply try `rails generate controller Example
-    test`
+suggest that we simply try `rails generate controller Example     test`
 
-```bash
+``` {.bash}
 $ rails generate controller Example test
       create  app/controllers/example_controller.rb
        route  get 'example/test'
@@ -338,7 +341,7 @@ $
 Phew... that's a lot of stuff being created. Amongst others, the file
 `app/views/example/test.html.erb`. Let's have a closer look at it:
 
-```erb
+``` {.erb}
 $ cat app/views/example/test.html.erb>
 <h1>Example#test</h1>
 <p>Find me in app/views/example/test.html.erb</p>
@@ -346,10 +349,11 @@ $
 ```
 
 It's HTML, but for it to be a valid HTML page, something is “missing” at
-the top and bottom (the missing HTML "rest" will be explained in [the section called "Layouts"](#layouts)). We
-launch the web server to test it:
+the top and bottom (the missing HTML "rest" will be explained in [the
+section called "Layouts"](#layouts)). We launch the web server to test
+it:
 
-```bash
+``` {.bash}
 $ rails server
 ```
 
@@ -358,7 +362,7 @@ and have a look at the web page in the browser at the URL
 
 In the log `log/development.log` we find the following lines:
 
-```bash
+``` {.bash}
 Started GET "/example/test" for 127.0.0.1 at 2015-04-14 19:30:37 +0200
 Processing by ExampleController#test as HTML
   Rendered example/test.html.erb within layouts/application (2.3ms)
@@ -382,7 +386,7 @@ Started GET "/assets/application.self-3b8dabdc891efe46b9a144b400ad69e37d7e587
 
 That almost reads like normal English. Let us analyse the first part:
 
-```bash
+``` {.bash}
 Started GET "/example/test" for 127.0.0.1 at 2015-04-14 19:30:37 +0200
 Processing by ExampleController#test as HTML
   Rendered example/test.html.erb within layouts/application (2.3ms)
@@ -398,12 +402,12 @@ controller `ExampleController` using the method test.
 > compiled and than delivered. In production mode these would be
 > precompiled and delivered as one CSS and one JavaScript
 
-Now we just need to find the controller. Good thing you bought this book.
-;-) All controllers are in the directory `app/controllers`, and there
-you go, we indeed find the corresponding file
+Now we just need to find the controller. Good thing you bought this
+book. ;-) All controllers are in the directory `app/controllers`, and
+there you go, we indeed find the corresponding file
 `app/controllers/example_controller.rb.`
 
-```bash
+``` {.bash}
 $ ls -l app/controllers/
 total 16
 -rw-r--r--  1 xyz  EVS\Helpdesk  204 14 Apr 19:04 application_controller.rb
@@ -415,7 +419,7 @@ $
 Please open the file `app/controllers/example_controller.rb` with your
 favorite editor:
 
-```ruby
+``` {.ruby}
 class ExampleController < ApplicationController
   def test
   end
@@ -426,14 +430,13 @@ That is very clear. The controller `ExampleController` is a descendant
 of the `ApplicationController` and contains currently just one method
 with the name test. This method contains currently no program logic.
 
-You will probably ask yourself how Rails
-knows that for the URL path [/example/test](/example/test) it should
-process the controller `ExampleController` and the method `test`. This
-is not determined by some magical logic, but by a *routing*
-configuration. The current routings can be listed with the command
-`rake routes`
+You will probably ask yourself how Rails knows that for the URL path
+[/example/test](/example/test) it should process the controller
+`ExampleController` and the method `test`. This is not determined by
+some magical logic, but by a *routing* configuration. The current
+routings can be listed with the command `rake routes`
 
-```bash
+``` {.bash}
 $ rake routes
       Prefix Verb URI Pattern             Controller#Action
 example_test GET  /example/test(.:format) example#test
@@ -445,7 +448,7 @@ been auto-filled by the controller generator with a route to
 `example/test`. The one line which is important for us right now is the
 second one:
 
-```bash
+``` {.bash}
 $ head -n 2 config/routes.rb
 Rails.application.routes.draw do
   get 'example/test'
@@ -453,7 +456,8 @@ $
 ```
 
 The `config/routes.rb` file includes a lot of examples. Give it a read
-when you have time. We'll dive into that later [Chapter 6, Routes](chapter06-routing.html).
+when you have time. We'll dive into that later [Chapter 6,
+Routes](chapter06-routing.html).
 
 > **Important**
 >
@@ -469,7 +473,7 @@ these page dynamic content.
 Let's start with something very simple: adding 1 and 1. First we try out
 the code in `irb`:
 
-```bash
+``` {.bash}
 $ irb --simple-prompt
 >> 1 + 1
 => 2
@@ -480,7 +484,7 @@ $
 That was easy. We fill the `erb` file `app/views/example/test.html.erb`
 as follows:
 
-```erb
+``` {.erb}
 <h1>First experiment with erb</h1>
 <p>Addition:
   <%= 1 + 1 %>
@@ -489,14 +493,14 @@ as follows:
 
 Then use `rails server` to launch the web server.
 
-```bash
+``` {.bash}
 $ rails server
 ```
 
 Visit that page with the URL <http://localhost:3000/example/test>
 
-![erb einfache addition](images/screenshots/chapter03/erb_einfache_addition.jpg "ERB einfache addition")
-
+![erb einfache
+addition](images/screenshots/chapter03/erb_einfache_addition.jpg "ERB einfache addition")
 
 > **Important**
 >
@@ -507,7 +511,7 @@ You may ask yourself: how can the result of adding two `Fixnums` be
 displayed as a String? Let's first look up in `irb` if it really is a
 `Fixnum`:
 
-```bash
+``` {.bash}
 $ irb --simple-prompt
 >> 1.class
 => Fixnum
@@ -519,9 +523,12 @@ Yes, both the number 1 and the result of 1 + 1 is a `Fixnum`. What
 happened? Rails is so intelligent that it automatically calls all
 objects in a view (that is the file `test.html.erb`) that are not
 already a string via the method `.to_s`, which always converts the
-content of the object to a string ([the section called “Method to_s for Your Own Classes”](chapter02-ruby-basics.html#method-to-s-for-your-own-classes)). Once more, a brief trip to `irb`:
+content of the object to a string ([the section called “Method to\_s for
+Your Own
+Classes”](chapter02-ruby-basics.html#method-to-s-for-your-own-classes)).
+Once more, a brief trip to `irb`:
 
-```bash
+``` {.bash}
 >> (1 + 1).to_s
 => "2"
 >> (1 + 1).to_s.class
@@ -532,31 +539,31 @@ content of the object to a string ([the section called “Method to_s for Your O
 You are now going to learn the finer points of `erb` step by step. Don't
 worry, it's neither magic nor rocket science.
 
-#### <% ... %> vs. <%= ... %>
+#### \<% ... %\> vs. \<%= ... %\>
 
-In a `.html.erb `file, there are two kinds of Ruby code instructions in
+In a `.html.erb`file, there are two kinds of Ruby code instructions in
 addition to the HTML elements:
 
--   <% … %>
+-   \<% … %\>
 
     Executes the Ruby code it contains, but does not output anything
     (unless you explicitly use something like `print` or `puts`).
 
--   <%= … %>
+-   \<%= … %\>
 
     Executes the Ruby code it contains and outputs the result as a
     String. If is is not a String the methode `to_s` will be called.
 
 > **Important**
 >
-> The output of <%= ... %> is automatically escaped. So you don't need
+> The output of \<%= ... %\> is automatically escaped. So you don't need
 > to worry about "dangerous" HTML.
 
 Let's use an example, to make sure it all makes sense. We use `each` to
 iterate through the Range `(0..5)`. Edit the
 `app/views/example/test.html.erb` as follows:
 
-```erb
+``` {.erb}
 <p>Loop from 0 to 5:
 <% (0..5).each do |i| %>
 <%= "#{i}, " %>
@@ -566,11 +573,12 @@ iterate through the Range `(0..5)`. Edit the
 
 Open this view In the browser:
 
-![erb einfache schleife](images/screenshots/chapter03/erb_einfache_schleife.jpg "ERB einfache schleife")
+![erb einfache
+schleife](images/screenshots/chapter03/erb_einfache_schleife.jpg "ERB einfache schleife")
 
 Let's now have a look at the HTML source code in the browser:
 
-```html
+``` {.html}
 
 <!DOCTYPE html>
 <html>
@@ -599,7 +607,6 @@ Let's now have a look at the HTML source code in the browser:
 
 </body>
 </html>
-
 ```
 
 Now you have the important tools to use Ruby code in a view.
@@ -608,17 +615,17 @@ Now you have the important tools to use Ruby code in a view.
 
 Potentially, there are two open questions:
 
-**Q**: I don't understand anything. I can't cope with the Ruby code. Could you 
-please explain that again? 
+**Q**: I don't understand anything. I can't cope with the Ruby code.
+Could you please explain that again?
 
-**A**: Is it possible that you have not completely worked your way through [Chapter 2, *Ruby Basics*](chapter02-ruby-basics.md)?
-Please do take your time with it and have another thorough look.
-Otherwise, the rest won't make any sense here. 
+**A**: Is it possible that you have not completely worked your way
+through [Chapter 2, *Ruby Basics*](chapter02-ruby-basics.md)? Please do
+take your time with it and have another thorough look. Otherwise, the
+rest won't make any sense here.
 
-**Q**: I can understand the Ruby
-code and the HTML output. But I don't get why some HTML code was
-rendered around it if I didn't even write that HTML code. Where does it
-come from, and can I influence it? 
+**Q**: I can understand the Ruby code and the HTML output. But I don't
+get why some HTML code was rendered around it if I didn't even write
+that HTML code. Where does it come from, and can I influence it?
 
 **A**: Excellent question! We will get to that next.
 
@@ -629,7 +636,7 @@ of the later HTML page. By default, an automatically generated
 `app/views/layouts/application.html.erb` is always rendered around it.
 Let's have a closer look at it:
 
-```erb
+``` {.erb}
 <!DOCTYPE html>
 <html>
 <head>
@@ -648,21 +655,22 @@ Let's have a closer look at it:
 
 The interesting bit is the line
 
-```erb
+``` {.erb}
 <%= yield %>
 ```
 
-With `<%= yield %>` the View file is included here. The lines
-with the stylesheets, the JavaScript and the csrf\_meta\_tags can stay
-as they are for now. They integrate <
-We'll have a look into that in [chapter12 Asset pipeline](chapter12-asset-pipeline.html). No need to bother with that right now.
+With `<%= yield %>` the View file is included here. The lines with the
+stylesheets, the JavaScript and the csrf\_meta\_tags can stay as they
+are for now. They integrate \< We'll have a look into that in [chapter12
+Asset pipeline](chapter12-asset-pipeline.html). No need to bother with
+that right now.
 
 The file `app/views/layouts/application.html.erb` enables you to
 determine the basic layout for the entire Rails application. If you want
 to enter a `<hr>` for each page and above it a text, then you can do
 this between the `<%= yield %>` and the `<body>` tag:
 
-```html
+``` {.html}
 <!DOCTYPE html>
 <html>
 <head>
@@ -681,6 +689,7 @@ this between the `<%= yield %>` and the `<body>` tag:
 </body>
 </html>
 ```
+
 You can also create other layouts in the directory `app/views/layouts/`
 and apply these layouts depending on the relevant situation. But let's
 leave it for now. The important thing is that you understand the basic
@@ -697,8 +706,9 @@ was always that easy. But let's just play it through in our minds: if I
 have a value in the controller that I want to display in the view, then
 I need a mechanism for this. This is referred to as *instance variable*
 and always starts with a `@`. If you are not 100 % sure any more which
-variable has which *scope*, then please have another quick look at 
-[the section called “Scope of Variables”](chapter02-ruby-basics.html#scope-of-variables).
+variable has which *scope*, then please have another quick look at [the
+section called “Scope of
+Variables”](chapter02-ruby-basics.html#scope-of-variables).
 
 In the following example, we insert an instance variable for the current
 time in the controller and then insert it in the view. So we are taking
@@ -707,7 +717,7 @@ programming intelligence from the view to the controller.
 The controller file `app/controllers/example_controller.rb` looks like
 this:
 
-```erb
+``` {.erb}
 class ExampleController < ApplicationController
   def test
     @current_time = Time.now
@@ -718,7 +728,7 @@ end
 In the view file `app/views/example/test.html.erb` we can then access
 this instance variable:
 
-```erb
+``` {.erb}
 <p>
 The current time is
 <%= @current_time %>
@@ -740,17 +750,17 @@ controller to the view with instance variables.
 ### Partials
 
 Even with small web projects, there are often elements that appear
-repeatedly, for example a *footer* on the page with contact info
-or a menu. Rails gives us the option of encapsulate this HTML code in
-form of *partials* and then integrating it within a view. A partial
-is also stored in the directory `app/views/example/`. But the file name
-must start with an underscore (`_`).
+repeatedly, for example a *footer* on the page with contact info or a
+menu. Rails gives us the option of encapsulate this HTML code in form of
+*partials* and then integrating it within a view. A partial is also
+stored in the directory `app/views/example/`. But the file name must
+start with an underscore (`_`).
 
 As an example, we now add a mini footer to our page in a separate
 partial. Copy the following content into the new file
 `app/views/example/_footer.html.erb`:
 
-```erb
+``` {.erb}
 <hr>
 <p>
   Copyright 2009 - <%= Date.today.year %> the Easter Bunny.
@@ -766,7 +776,7 @@ partial. Copy the following content into the new file
 We edit the file `app/views/example/test.html.erb` as follows and insert
 the partial via the command render:
 
-```erb
+``` {.erb}
 <p>Loop from 0 to 5:
 <% (0..5).each do |i| %>
 <%= "#{i}, " %>
@@ -778,7 +788,7 @@ the partial via the command render:
 
 So now we have the following files in the directory `app/views/example`:
 
-```bash
+``` {.bash}
 $ ls app/views/example/
 _footer.html.erb  test.html.erb
 $
@@ -786,7 +796,8 @@ $
 
 The new web page now looks like this:
 
-![partials footer](images/screenshots/chapter03/partials_footer.jpg "Partials footer")
+![partials
+footer](images/screenshots/chapter03/partials_footer.jpg "Partials footer")
 
 > **Important**
 >
@@ -801,30 +812,28 @@ for recurring and shared content and create a file `_footer.html.erb` in
 this directory. You would then integrate this file into the `erb` code
 via the line
 
-```erb
+``` {.erb}
 <%= render "shared/footer" %>
 ```
 
 #### Passing Variables to a Partial
 
-Partials are great in the sense of the DRY
-(**D**on't **R**epeat **Y**ourself) concept. But what makes them
-really useful is the option of passing variables. Let's stick with the
-copyright example. If we want to pass the start year as value, we can
-integrate this by adding the following in the file
-`app/views/example/_footer.html.erb`:
+Partials are great in the sense of the DRY (**D**on't **R**epeat
+**Y**ourself) concept. But what makes them really useful is the option
+of passing variables. Let's stick with the copyright example. If we want
+to pass the start year as value, we can integrate this by adding the
+following in the file `app/views/example/_footer.html.erb`:
 
-```erb
+``` {.erb}
 <hr>
 <p>
 Copyright <%= start_year %> - <%= Date.today.year %> the Easter Bunny.
 </p>
 ```
 
-So let's change the file `app/views/example/test.html.erb` as
-follows:
+So let's change the file `app/views/example/test.html.erb` as follows:
 
-```erb
+``` {.erb}
 <p>Loop from 0 to 5:
 <% (0..5).each do |i| %>
 <%= "#{i}, " %>
@@ -834,16 +843,18 @@ follows:
 <%= render "footer", :start_year => '2000' %>
 ```
 
-If we now go to the URL <http://localhost:3000/example/test>, we see the 2000:
+If we now go to the URL <http://localhost:3000/example/test>, we see the
+2000:
 
-![partials start year 2000](images/screenshots/chapter03/partial_start_year_2000.jpg "Partial start year 2000")
+![partials start year
+2000](images/screenshots/chapter03/partial_start_year_2000.jpg "Partial start year 2000")
 
 Sometimes you need a partial that partially uses a local variable and
 somewhere else you may need the same partial, but without the local
 variable. We can take care of this in the partial itself with an if
 statement:
 
-```erb
+``` {.erb}
 <hr>
 <p>
   Copyright
@@ -857,16 +868,17 @@ statement:
 >
 > `defined?` can be used to check if an expression has been defined.
 
-You can call this partial with `<%= render 'footer',
-        :start_year => '2000' %>` and with `<%= render
-        'footer' %>`.
+You can call this partial with
+`<%= render 'footer',         :start_year => '2000' %>` and with
+`<%= render         'footer' %>`.
 
 #### Alternative Notation
 
-In [the section called “Passing Variables to a Partial”](#passing-variables-to-a-partial) we only use the short 
-form for rendering partials. Often, you will also see this long version:
+In [the section called “Passing Variables to a
+Partial”](#passing-variables-to-a-partial) we only use the short form
+for rendering partials. Often, you will also see this long version:
 
-```erb
+``` {.erb}
 <%= render :partial => "footer", :locals => { :start_year => '2000' } %>
 ```
 
@@ -890,7 +902,7 @@ within the controller to “skip”, i.e. redirect, to other web pages.
 
 Let's create a new Rails project for a suitable example:
 
-```bash
+``` {.bash}
 $ rails new redirect_example
 [...]
 $ cd redirect_example
@@ -900,7 +912,7 @@ $
 Before we can redirect, we need a controller with at least two different
 methods. Off we go then:
 
-```bash
+``` {.bash}
 $ rails generate controller Game ping pong
       create  app/controllers/game_controller.rb
        route  get 'game/pong'
@@ -925,7 +937,7 @@ $
 The controller `app/controllers/game_controller.rb` has the following
 content:
 
-```erb
+``` {.erb}
 class GameController < ApplicationController
   def ping
   end
@@ -937,13 +949,13 @@ end
 
 Now for the redirect: how can we achieve that we get immediately
 redirected to the method pong when we go to
-<http://localhost:3000/game/ping>? Easy, you will say, we just change the
-route in `config/routes.rb`. And you are right. So we don't
+<http://localhost:3000/game/ping>? Easy, you will say, we just change
+the route in `config/routes.rb`. And you are right. So we don't
 necessarily need a redirect. But if we want to process something else in
 the method ping before redirecting, then this is only possible by using
 a `redirect_to` in the controller `app/controllers/game_controller.rb`:
 
-```erb
+``` {.erb}
 class GameController < ApplicationController
   def ping
    logger.info '+++  Example  +++'
@@ -958,7 +970,7 @@ end
 But what is `game_pong_path`? Let's have a look a the routes generated
 for this Rails application:
 
-```bash
+``` {.bash}
 $ rake routes
    Prefix Verb URI Pattern          Controller#Action
 game_ping GET  /game/ping(.:format) game#ping
@@ -983,7 +995,7 @@ When we try to go to <http://localhost:3000/game/ping> we are
 automatically redirected to <http://localhost:3000/game/pong> and in the
 log output we see this:
 
-```bash
+``` {.bash}
 Started GET "/game/ping" for 127.0.0.1 at 2015-04-15 17:50:04 +0200
 Processing by GameController#ping as HTML
 +++  Example  +++
@@ -1020,10 +1032,10 @@ carried out. A typical example of a flash message is the system feedback
 when a user has logged in. Often the user is redirected back to the
 original page and gets the message “You are now logged in.”
 
-As an example, we are once more constructing the ping pong scenario 
-from [Section 3.4, “Redirects”](#redirects):
+As an example, we are once more constructing the ping pong scenario from
+[Section 3.4, “Redirects”](#redirects):
 
-```bash
+``` {.bash}
 $ rails new pingpong
       [...]
 $ cd pingpong
@@ -1035,7 +1047,7 @@ $
 We fill the `app/controllers/game_controller.rb` with the following
 content:
 
-```erb
+``` {.erb}
 class GameController < ApplicationController
   def ping
    redirect_to game_pong_path, notice: 'Ping-Pong!'
@@ -1046,13 +1058,12 @@ class GameController < ApplicationController
 end
 ```
 
-Now we start the Rails web server with `rails
-    server` and use the browser to go to
-<http://localhost:3000/game/ping>. We are redirected from ping to pong.
-But the flash message "Ping-Pong!" is nowhere to be seen. We first need
-to expand `app/views/layouts/application.html.erb`:
+Now we start the Rails web server with `rails     server` and use the
+browser to go to <http://localhost:3000/game/ping>. We are redirected
+from ping to pong. But the flash message "Ping-Pong!" is nowhere to be
+seen. We first need to expand `app/views/layouts/application.html.erb`:
 
-```erb
+``` {.erb}
 <!DOCTYPE html>
 <html>
 <head>
@@ -1076,11 +1087,13 @@ to expand `app/views/layouts/application.html.erb`:
 Now we see the flash message at the top of the page when we go to
 <http://localhost:3000/game/ping> in the browser:
 
-![flash pong notice](images/screenshots/chapter03/flash_pong_notice.jpg "Flash Pong notice")
+![flash pong
+notice](images/screenshots/chapter03/flash_pong_notice.jpg "Flash Pong notice")
 
-If we go to <http://localhost:3000/game/pong> we still see the normal Pong
-page. But if we go to <http://localhost:3000/game/ping> we are redirected
-to the Pong page and then the flash message is displayed at the top.
+If we go to <http://localhost:3000/game/pong> we still see the normal
+Pong page. But if we go to <http://localhost:3000/game/ping> we are
+redirected to the Pong page and then the flash message is displayed at
+the top.
 
 > **Tip**
 >
@@ -1101,12 +1114,9 @@ syntaxes of flash messages in practice. I am not going to take part in
 the discussion about which is the best syntax, but just show you briefly
 the two most common variations:
 
--   ```ruby redirect_to game_pong_path, notice: 'Ping-Pong!' ```
+-   `ruby redirect_to game_pong_path, notice: 'Ping-Pong!'`
 
--   ```ruby 
-        flash[:notice] = 'Ping-Pong!'
-        redirect_to action: pong 
-    ```
+-   `ruby          flash[:notice] = 'Ping-Pong!'         redirect_to action: pong`
 
 Please have a look at the official documentation at
 <http://guides.rubyonrails.org/action_controller_overview.html#the-flash>
@@ -1123,15 +1133,16 @@ every single time you need one.
 The Rails Console
 -----------------
 
-The *console* in Rails is nothing more than an `irb` (see [Section 2.3, “irb”](chapter02-ruby-basics.html#irb)) built
-around the Rails environment. The console is very useful both for
-developing and for administration purposes, because the whole Rails
-environment is represented and available.
+The *console* in Rails is nothing more than an `irb` (see [Section 2.3,
+“irb”](chapter02-ruby-basics.html#irb)) built around the Rails
+environment. The console is very useful both for developing and for
+administration purposes, because the whole Rails environment is
+represented and available.
 
 For our working environment, we again use a variation of the ping pong
 scenario from [Section 3.4, “Redirects”](#redirects):
 
-```bash
+``` {.bash}
 $ rails new pingpong
       [...]
 $ cd pingpong
@@ -1140,10 +1151,9 @@ $ rails generate controller Game ping pong
 $
 ```
 
-Start the Rails console with the command `rails
-    console`:
+Start the Rails console with the command `rails     console`:
 
-```bash
+``` {.bash}
 $ rails console
 Loading development environment (Rails 4.2.1)
 irb(main):001:0>
@@ -1151,7 +1161,7 @@ irb(main):001:0>
 
 And you can use `exit` to get back out:
 
-```bash
+``` {.bash}
 irb(main):001:0> exit
 $
 ```
@@ -1161,7 +1171,7 @@ any code or terminal output width to a minimum. To save the real estate
 which is by default occupied by `irb(main):001:0>` we can start
 `rails console` with the parameter `-- --simple-prompt`.
 
-```bash
+``` {.bash}
 $ rails console -- --simple-prompt
 Loading development environment (Rails 4.2.1)
 >> exit
@@ -1172,9 +1182,10 @@ Alternativly you can change the IRB configuration in the file `.irbrc`
 which is located in your home directory. If you want to have the simple
 prompt you have to add the following line in that file.
 
-```bash
+``` {.bash}
 IRB.conf[:PROMPT_MODE] = :SIMPLE
 ```
+
 > **Note**
 >
 > If the `.irbrc` file you can simply create on in your home directory
@@ -1182,7 +1193,7 @@ IRB.conf[:PROMPT_MODE] = :SIMPLE
 In the console, you have access to all variables that are also available
 later in the proper application:
 
-```bash
+``` {.bash}
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Rails.env
@@ -1193,8 +1204,9 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-Already in [Chapter 4, ActiveRecord](chapter04-activerecord.html) we are going to be working lots with the console and will
-soon begin to appreciate the possibilities it offers.
+Already in [Chapter 4, ActiveRecord](chapter04-activerecord.html) we are
+going to be working lots with the console and will soon begin to
+appreciate the possibilities it offers.
 
 > **Tip**
 >
@@ -1206,10 +1218,9 @@ soon begin to appreciate the possibilities it offers.
 
 ### app
 
-`app` is useful if you want to analyze things to do with
-routing:
+`app` is useful if you want to analyze things to do with routing:
 
-```bash
+``` {.bash}
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> app.url_for(controller: 'game', action: 'ping')
@@ -1245,7 +1256,7 @@ the world of Rails.
 ### "Model View Controller" Architecture (MVC)
 
 According to Wikipedia
-<http://en.wikipedia.org/wiki/Model–view–controller>,
+[http://en.wikipedia.org/wiki/Model–view–controller](http://en.wikipedia.org/wiki/Model–view–controller),
 MVC is a design pattern that separates the representation of information
 from the user's interaction with it.
 
@@ -1259,7 +1270,8 @@ certain functionaity in a Rails project.
 #### Model
 
 "Model" in this case means data model. By default, Rails applications
-are an ActiveRecord data model (see [Chapter 4, AktiveRecord](chapter04-activerecord.html)).
+are an ActiveRecord data model (see [Chapter 4,
+AktiveRecord](chapter04-activerecord.html)).
 
 All models can be found in the directory `app/models/.`
 
@@ -1274,22 +1286,23 @@ You will find all the views in the directory `app/views/.`
 
 #### Controller
 
-Once a web page call has ended up in a route (see [Chapter 6, Routes](chapter06-routing.html)), it goes from there
-to the controller. The route specifies a certain method (action) as
-target. This method can then fulfil the desired tasks (such as finding a
-specific set of data and saving it in an instance variable) and then
-renders the desired view.
+Once a web page call has ended up in a route (see [Chapter 6,
+Routes](chapter06-routing.html)), it goes from there to the controller.
+The route specifies a certain method (action) as target. This method can
+then fulfil the desired tasks (such as finding a specific set of data
+and saving it in an instance variable) and then renders the desired
+view.
 
 All controllers can be found in the directory `app/controllers/.`
 
 ### What is a Generator?
 
-We have already used the command `rails generate
-      controller`. It starts the generator with the name `controller`.
-There are other generators as well. You can use the command
-`rails generate` to display a list of available generators:
+We have already used the command `rails generate       controller`. It
+starts the generator with the name `controller`. There are other
+generators as well. You can use the command `rails generate` to display
+a list of available generators:
 
-```bash
+``` {.bash}
 $ rails generate
 Usage: rails generate GENERATOR [args] [options]
 
@@ -1351,7 +1364,7 @@ you want to display stars (\*) for rating a restaurant and not a number
 from 1 to 5, you can define the following helper in the file
 `app/helpers/application_helper.rb` :
 
-```ruby
+``` {.ruby}
 module ApplicationHelper
 
   def render_stars(value)
@@ -1367,7 +1380,7 @@ end
 
 With this helper, we can then apply the following code in a view:
 
-```erb
+``` {.erb}
 <p>
   <b>Rating:</b> <%= render_stars(5) %>
 </p>
@@ -1375,7 +1388,7 @@ With this helper, we can then apply the following code in a view:
 
 You can also try out the helper in the console:
 
-```bash
+``` {.bash}
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> helper.render_stars(5)
