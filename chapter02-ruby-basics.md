@@ -28,11 +28,6 @@ up to you. If you would like to know more about Ruby, then I recommend
 the book "The Ruby Programming Language" by David Flanagan and Yukihiro
 Matsumoto.
 
-Because Ruby version 2.2 is the way to go we use it. Please take care to
-update your current Ruby if you are running older versions. Truth be
-told: For most part of this book you'll be fine with versions 2.0 and
-2.1 too - but we tested everything with version 2.2.
-
 The command `ruby -v` will print the current running Ruby version:
 
 ``` {.bash}
@@ -164,9 +159,7 @@ $
 When programming, you do not always have a Ruby handbook available.
 Fortunately, the Ruby developers thought of this and provided a built-in
 help feature in form of the program `ri` (of course only if you have
-installed the documentation). ri is the abbreviation for “**R**uby
-**I**ndex”. The output gets opend in a so called pager (z.B. `less`).
-The parameter `-T` sets the output directly to stdout.
+installed the documentation which is the default).
 
 This is a typical chicken and egg situation. How can I explain the Ruby
 help feature, if we are only just getting started with Ruby? So I am
@@ -174,35 +167,8 @@ going to jump ahead a little and show you how you can search for
 information on the class String:
 
 ``` {.bash}
-$ vi String
+$ ri String
 = String < Object
-
-------------------------------------------------------------------------------
-= Includes:
-Comparable (from ruby site)
-
-(from ruby site)
-------------------------------------------------------------------------------
-BigDecimal extends the native String class to provide the #to_d method.
-
-When you require BigDecimal in your application, this method will be available
-on String objects.
-
-
-
-
-
-additions to class String for Unicode normalization
-
-A String object holds and manipulates an arbitrary sequence of bytes, typically 
-representing characters. String objects may be created using String::new 
-or as literals.
-
-Because of aliasing issues, users of strings should be aware of the methods
-that modify the contents of a String object.  Typically, methods with names
-ending in ``!'' modify their receiver, while those without a ``!'' return a
-new String.  However, there are exceptions, such as String#[]=.
-------------------------------------------------------------------------------
 [...]
 $
 ```
@@ -226,8 +192,7 @@ Returns the character length of str.
 
 The program `ri` always prints the output in the pager program defined
 by the shell (for example `less`). You can also use the command option
-`-T` to output everything directly to STDOUT. In the book I am going to
-be using both variations.
+`-T` to output everything directly to STDOUT.
 
 irb
 ---
@@ -239,7 +204,7 @@ entering `irb` on the shell and ends if you enter `exit`.
 An example is worth a thousand words:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> puts 'Hello World!'
 Hello World!
 => nil
@@ -249,8 +214,9 @@ $
 
 > **Note**
 >
-> I use `irb --simple-prompt` to generate shorter lines which make it
-> easier to read this book on mobile devises.
+> I use `IRB.conf[:PROMPT_MODE] = :SIMPLE` in my `.irbrc` config file to
+> generate shorter irb output. You can do the same by using
+> `irb --simple-prompt`.
 
 In this chapter, we develop many examples within irb. It is so
 wonderfully quick and easy.
@@ -269,7 +235,7 @@ Ruby is Object-Oriented
 
 Ruby only knows objects. Everything is an object (sounds almost like
 Zen). Every object is an instance of a class. You can find out the class
-of an object via the method .class.
+of an object via the method `.class`.
 
 An object in Ruby is encapsulated and can only be reached from the
 outside via the methods of the corresponding object. What does this
@@ -296,21 +262,21 @@ would be: functions, procedures, subroutines and of course methods.
 > **Note**
 >
 > Here we go with the oversimplification. We can not compare non-Object
-> oriented programming languages with OO onces. Plus there are two kinds
+> oriented programming languages with OO ones. Plus there are two kinds
 > of methods (class methods and instance methods). At this point, I do
 > not want to make it too complicated and am simply ignoring this "fine"
 > distinctions for now.
 
-At this point you start looking for a good example, but all you can
-think of are silly ones. The problem is the premisse that we are only
+At this point you start looking for a good example, but all I can
+think of are silly ones. The problem is the assumption that we are only
 allowed to use knowledge that has already been described previously in
 this book.
 
-So let's assume that we use the following code sequence repeatedly - for
-whatever reason:
+So let's assume that we use the following code sequence repeatedly (for
+whatever reason):
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> puts 'Hello World!'
 Hello World!
 => nil
@@ -326,7 +292,7 @@ $
 
 So we want to output the string “Hello World!” three times in a row. As
 this makes our daily work routine much longer, we are now going to
-define a method (with the meaningless name three\_times), with which
+define a method (with the meaningless name `three\_times`), with which
 this can all be done in one go.
 
 > **Important**
@@ -334,7 +300,7 @@ this can all be done in one go.
 > Names of methods are always written in lower case.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> def three_times
 >>   puts 'Hello World!'
 >>   puts 'Hello World!'
@@ -393,7 +359,7 @@ Hello World!
 > yourself what makes you happy.
 
 If you do not specify a parameter with the above method, you will get
-the error message: “`wrong number of arguments (0 for       1)`”:
+the error message: “`wrong number of arguments (0 for 1)`”:
 
 ``` {.bash}
 >> three_times
@@ -409,7 +375,7 @@ You can give the variable `value` a default value and then you can also
 call the method without parameter:
 
 ``` {.bash}
-$ irb --simple_prompt
+$ irb
 >> def three_times(value = 'blue')
 >>   puts value
 >>   puts value
@@ -431,10 +397,10 @@ blue
 
 ### Classes
 
-A class is a collection of methods. The name of a class always starts
-with an upper case letter. Let's assume that the method belongs to the
-new class This\_and\_that. It would then be defined as follows in a Ruby
-program:
+For now you can think of a class as a collection of methods. The name of
+a class always starts with an upper case letter. Let's assume that the
+method belongs to the new class `This\_and\_that`. It would then be defined
+as follows in a Ruby program:
 
 ``` {.ruby}
 class This_and_that
@@ -449,7 +415,7 @@ end
 Let's play it through in `irb`:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class This_and_that
 >>   def three_times
 >>     puts 'Hello World!'
@@ -461,7 +427,7 @@ $ irb --simple-prompt
 >>
 ```
 
-Now we try to call the method three\_times:
+Now we try to call the method `three\_times`:
 
 ``` {.bash}
 >> This_and_that.three_times
@@ -471,10 +437,10 @@ NoMethodError: undefined method `three_times' for This_and_that:Class
 >>
 ```
 
-This results in an error message, because This\_and\_that is a class and
+This results in an error message, because `This\_and\_that` is a class and
 not an instance. As we are working with instance methods, it only works
 if we have first created a new object (a new instance) of the class
-This\_and\_that with the class method new:
+`This\_and\_that` with the class method new:
 
 ``` {.bash}
 >> abc = This_and_that.new
@@ -503,7 +469,7 @@ opposed to public methods), and they are listed below the keyword
 irb example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class Example
 >>   def a
 >>     puts 'a'
@@ -530,14 +496,14 @@ $
 #### Method initialize()
 
 If a new instance is created (by calling the method new), the method
-that is processed first and automatically is the method initialize. The
-method is automatically a private method, even if it not listed
+that is processed first and automatically is the method `initialize`.
+The method is automatically a private method, even if it not listed
 explicitly under `private`.
 
 irb example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class Room
 >>   def initialize
 >>     puts 'abc'
@@ -558,7 +524,7 @@ The method new accepts the parameters specified for the method
 initialize:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class Example
 >>   def initialize(value)
 >>     puts value
@@ -579,7 +545,7 @@ need a way to return the result of something. The `return` statement can
 be used for that:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> def area_of_a_circle(radius)
 >>   pi = 3.14
 >>   area = pi * radius * radius
@@ -595,7 +561,7 @@ But it wouldn't be Ruby if you couldn't do it shorter. You can simply
 skip return:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> def area_of_a_circle(radius)
 >>   pi = 3.14
 >>   area = pi * radius * radius
@@ -611,7 +577,7 @@ You can actually even skip the last line because Ruby returns the value
 of the last expression as a default:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> def area_of_a_circle(radius)
 >>   pi = 3.14
 >>   area = pi * radius * radius
@@ -637,15 +603,15 @@ class Example < ParentClass
 Rails makes use of this approach very frequently (otherwise I would not
 be bothering you with it).
 
-In the following example, we define the class Abc and which contains the
-methods a, b and c. Then we define a class Abcd and let it inherit the
-class Abc and add a new method d. The new instances `example1` and
+In the following example, we define the class `Abc` and which contains the
+methods `a`, `b` and `c`. Then we define a class Abcd and let it inherit
+the class `Abc` and add a new method `d`. The new instances `example1` and
 `example2` are created with the Class-Methods new and show that
 `example2` has access to the methods a, b, c and d but `example1` only
-to a, b and c.
+to `a`, `b` and `c`.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class Abc
 >>   def a
 >>     'a'
@@ -687,7 +653,7 @@ $
 > It is important to read the Error-Messages. They tell you what happend
 > and where to search for the problem. In this example Ruby said that
 > there is an `undefined method` for `#<Abc:0x007fb463023928>`. With
-> that information you know that the Class Abc is missing the method
+> that information you know that the Class `Abc` is missing the method
 > which you were trying to use.
 
 #### Class Methods and Instance Methods
@@ -704,7 +670,7 @@ instance. So you cannot apply the method `new` to an instance.
 Let's first try to call an instance method as class method:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class Knowledge
 >>   def pi
 >>     3.14
@@ -735,7 +701,7 @@ and pick out examples from the ActiveRecord. I will spare you this and
 show an abstract example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class Knowledge
 >>   def self.pi
 >>     3.14
@@ -793,12 +759,12 @@ end
 
 The result is always the same.
 
-Of course you can use the same methodname for a class and an instance
-method. Obviously that doesn't make any code easier to understand. Here
-is an example with \`pi as a class and an instance method:
+Of course you can use the same method name for a class and an instance
+method. Obviously that doesn't make code easier to understand. Here
+is an example with `pi` as a class and an instance method:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class Knowledge
 >>   def pi
 >>     3.14
@@ -825,7 +791,7 @@ You can read out all defined methods for a class with the method
 create it once again in the irb):
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class Knowledge
 >>   def pi
 >>     3.14
@@ -833,17 +799,17 @@ $ irb --simple-prompt
 >> end
 => :pi
 >> Knowledge.instance_methods
-=> [:pi, :nil?, :===, :=~, :!~, :eql?, :hash, :<=>, :class, 
-:singleton_class, :clone, :dup, :itself, :taint, :tainted?, 
-:untaint, :untrust, :untrusted?, :trust, :freeze, :frozen?, 
-:to_s, :inspect, :methods, :singleton_methods, :protected_methods, 
-:private_methods, :public_methods, :instance_variables, 
-:instance_variable_get, :instance_variable_set, 
-:instance_variable_defined?, :remove_instance_variable, 
-:instance_of?, :kind_of?, :is_a?, :tap, :send, :public_send, 
-:respond_to?, :extend, :display, :method, :public_method, 
-:singleton_method, :define_singleton_method, :object_id, :to_enum, 
-:enum_for, :==, :equal?, :!, :!=, :instance_eval, :instance_exec, 
+=> [:pi, :nil?, :===, :=~, :!~, :eql?, :hash, :<=>, :class,
+:singleton_class, :clone, :dup, :itself, :taint, :tainted?,
+:untaint, :untrust, :untrusted?, :trust, :freeze, :frozen?,
+:to_s, :inspect, :methods, :singleton_methods, :protected_methods,
+:private_methods, :public_methods, :instance_variables,
+:instance_variable_get, :instance_variable_set,
+:instance_variable_defined?, :remove_instance_variable,
+:instance_of?, :kind_of?, :is_a?, :tap, :send, :public_send,
+:respond_to?, :extend, :display, :method, :public_method,
+:singleton_method, :define_singleton_method, :object_id, :to_enum,
+:enum_for, :==, :equal?, :!, :!=, :instance_eval, :instance_exec,
 :__send__, :__id__]
 >>
 ```
@@ -877,19 +843,19 @@ upper case letter.
 > a constant.
 
 You are on the safe side if you are using only ASCII symbols. But with
-Ruby 1.9 and the right encoding, you could also use special characters
+Ruby 2.2 and the right encoding, you could also use special characters
 (for example German umlauts) more or less without any problems in a
 variable name. But if you want to be polite towards other programmers
 who probably do not have those characters directly available on their
-keyboards, it is better to use only pure ASCII.
+keyboards, it is better to stick to pure ASCII.
 
 ### Strings
 
-Let's experiment a little bit in the `irb`. The method \`.class tells us
+Let's experiment a little bit in the `irb`. The method `.class` tells us
 which class we are dealing with.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = 'First test'
 => "First test"
 >> a.class
@@ -898,7 +864,7 @@ $ irb --simple-prompt
 
 That was easy. As you can see, Ruby “automagically” creates an object of
 the class `String`. We could also do this by explicitly calling the
-method \`new:
+method `new`:
 
 ``` {.bash}
 >> b = String.new('Second test')
@@ -937,7 +903,7 @@ inserted in the corresponding place in the string.
 Example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = 'blue'
 => "blue"
 >> b = "Color: #{a}"
@@ -956,12 +922,12 @@ method `to_s` in order to convert the value of the object into a string.
 #### Fixnum and Bignum
 
 `Fixnum` and `Bignum` are `Integer` classes. A `Fixnum` is an `Integer`
-that can be saved in a “Word”. If a `Fixnum` gets bigger, it
+that can be saved in a `Word`. If a `Fixnum` gets bigger, it
 automatically becomes a `Bignum`. Here is an example where a becomes
 larger and by that becomes a `Bignum`.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> 20.class
 => Fixnum
 >> a = 20
@@ -983,11 +949,10 @@ $
 #### Floats
 
 `Float` is a class for real numbers (“floating point numbers”). The
-decimal separator is a point (not a comma, as in some European
-countries).
+decimal separator is a point.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = 20.424
 => 20.424
 >> a.class
@@ -1004,7 +969,7 @@ Calculating with integers and floats is so easy that you can describe
 everything with just a few lines of code in the `irb`:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = 10
 => 10
 >> b = 23
@@ -1039,7 +1004,7 @@ For boolean values (`true` and `false`) and for `nil` (no value) there
 are separate classes:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> true.class
 => TrueClass
 >> false.class
@@ -1065,7 +1030,7 @@ application and therefore also within a Ruby on Rails application.
 > You need to keep this scope in mind while programming. Otherwise you
 > can end up with odd effects.
 
-#### Local Variables (aaa or \_aaa)
+#### Local Variables (`aaa` or `_aaa`)
 
 Local variables either start with a lower case letter or an underscore
 (`_`). Their scope is limited to the current environment (for example
@@ -1074,7 +1039,7 @@ the same local variable radius. Because they are local they don't
 interact with each other:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> def area(radius)
 >>   3.14 * radius * radius
 >> end
@@ -1091,13 +1056,13 @@ $ irb --simple-prompt
 $
 ```
 
-#### Global Variables (\$aaa)
+#### Global Variables (`$aaa`)
 
 A global variable starts with a `$`-sign and is accessible in the entire
 programm. Example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> $value = 10
 => 10
 >> puts $value
@@ -1119,9 +1084,9 @@ $ irb --simple-prompt
 $
 ```
 
-Global variables are used very rarely.
+Global variables are used very rarely!
 
-#### Instance Variables (@aaa)
+#### Instance Variables (`@aaa`)
 
 Instance variables (“**A**ttributes”, hence the `@`) only apply within a
 class, but everywhere in it – a mini version of global variables, so to
@@ -1338,7 +1303,7 @@ point.
 Here are a few examples for methods of the class `String`.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = 'A dog'
 => "A dog"
 >> a.class
@@ -1359,20 +1324,20 @@ With `instance_methods(false)` you can get a list of the build in
 methods:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> String.instance_methods(false)
-=> [:<=>, :==, :===, :eql?, :hash, :casecmp, :+, :*, :%, :[], :[]=, :insert, :length, 
-:size, :bytesize, :empty?, :=~, :match, :succ, :succ!, :next, :next!, :upto, :index, 
-:rindex, :replace, :clear, :chr, :getbyte, :setbyte, :byteslice, :scrub, :scrub!, 
-:freeze, :to_i, :to_f, :to_s, :to_str, :inspect, :dump, :upcase, :downcase, 
-:capitalize, :swapcase, :upcase!, :downcase!, :capitalize!, :swapcase!, :hex, :oct, 
-:split, :lines, :bytes, :chars, :codepoints, :reverse, :reverse!, :concat, :<<, 
-:prepend, :crypt, :intern, :to_sym, :ord, :include?, :start_with?, :end_with?, 
-:scan, :ljust, :rjust, :center, :sub, :gsub, :chop, :chomp, :strip, :lstrip, :rstrip, 
-:sub!, :gsub!, :chop!, :chomp!, :strip!, :lstrip!, :rstrip!, :tr, :tr_s, :delete, 
-:squeeze, :count, :tr!, :tr_s!, :delete!, :squeeze!, :each_line, :each_byte, 
-:each_char, :each_codepoint, :sum, :slice, :slice!, :partition, :rpartition, 
-:encoding, :force_encoding, :b, :valid_encoding?, :ascii_only?, :unpack, :encode, 
+=> [:<=>, :==, :===, :eql?, :hash, :casecmp, :+, :*, :%, :[], :[]=, :insert, :length,
+:size, :bytesize, :empty?, :=~, :match, :succ, :succ!, :next, :next!, :upto, :index,
+:rindex, :replace, :clear, :chr, :getbyte, :setbyte, :byteslice, :scrub, :scrub!,
+:freeze, :to_i, :to_f, :to_s, :to_str, :inspect, :dump, :upcase, :downcase,
+:capitalize, :swapcase, :upcase!, :downcase!, :capitalize!, :swapcase!, :hex, :oct,
+:split, :lines, :bytes, :chars, :codepoints, :reverse, :reverse!, :concat, :<<,
+:prepend, :crypt, :intern, :to_sym, :ord, :include?, :start_with?, :end_with?,
+:scan, :ljust, :rjust, :center, :sub, :gsub, :chop, :chomp, :strip, :lstrip, :rstrip,
+:sub!, :gsub!, :chop!, :chomp!, :strip!, :lstrip!, :rstrip!, :tr, :tr_s, :delete,
+:squeeze, :count, :tr!, :tr_s!, :delete!, :squeeze!, :each_line, :each_byte,
+:each_char, :each_codepoint, :sum, :slice, :slice!, :partition, :rpartition,
+:encoding, :force_encoding, :b, :valid_encoding?, :ascii_only?, :unpack, :encode,
 :encode!, :to_r, :to_c, :unicode_normalize, :unicode_normalize!, :unicode_normalized?]
 >> exit
 $
@@ -1401,7 +1366,7 @@ working with Ruby, then it makes perfect sense (and is perfectly
 logical) to chain different methods.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = 'A dog'
 => "A dog"
 >> a.upcase.reverse
@@ -1417,7 +1382,7 @@ There is a whole range of useful instance methods for converting
 method `.to_s` to convert a `Fixnum` to a `String`.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = 10
 => 10
 >> a.class
@@ -1439,7 +1404,7 @@ $
 Now we use the method `.to_i` to change a `Float` to a `Fixnum`.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> c = 10.0
 => 10.0
 >> c.class
@@ -1452,7 +1417,7 @@ $ irb --simple-prompt
 $
 ```
 
-### Method to\_s for Your Own Classes
+### Method 'to_s' for Your Own Classes
 
 You should always integrate a method `to_s` for your own custom classes,
 even if it is just for the sake of easier debugging. Then you can simply
@@ -1462,7 +1427,7 @@ an object via the method `to_s`).
 Here is an example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> class Person
 >>   def initialize(first_name, last_name)
 >>     @first_name = first_name
@@ -1494,7 +1459,7 @@ String.+
 (from ruby site)
 ----------------------------------------------------------------------
   str + other_str   -> new_str
-   
+
 ----------------------------------------------------------------------
 
 Concatenation---Returns a new String containing other_str
@@ -1513,7 +1478,7 @@ Fixnum.+
 (from ruby site)
 ----------------------------------------------------------------------
   fix + numeric  ->  numeric_result
-   
+
 ----------------------------------------------------------------------
 
 Performs addition: the class of the resulting object depends on the class of
@@ -1527,7 +1492,7 @@ to add the + to an object, just as any other method, separated by a dot
 and add the second number in brackets as parameter:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> 10 + 10
 => 20
 >> 10+10
@@ -1544,7 +1509,7 @@ Aha! The plus symbol is indeed a method, and this method takes the next
 value as parameter. Really we should put this value in brackets, but
 thanks to Ruby's well thought-out syntax this is not necessary.
 
-#### Can I Overwrite the Method +?
+#### Can I Overwrite the Method `+``?
 
 Yes, you can overwrite any method. Logically, this does not make much
 sense for methods such as `+`, unless you want to drive your fellow
@@ -1555,7 +1520,7 @@ The aim is overwriting the method `+` for `Fixnum`. We want the result
 of every addition to be the number 42.
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> 10 + 10
 => 20
 >> class Fixnum
@@ -1615,7 +1580,7 @@ end
 You can try an *expression* really well in `irb`:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = 10
 => 10
 >> a == 10
@@ -1700,7 +1665,7 @@ end
 Here is a practical `irb` example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> i = 0
 => 0
 >> while i < 3 do
@@ -1726,7 +1691,7 @@ ends
 Again, here is the corresponding `irb` example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> i = 5
 => 5
 >> until i == 0
@@ -1780,7 +1745,7 @@ Implementation from Integer
 ------------------------------------------------------------------------------
   int.times {|i| block }  ->  self
   int.times               ->  an_enumerator
-   
+
 
 ------------------------------------------------------------------------------
 
@@ -1796,13 +1761,13 @@ If no block is given, an enumerator is returned instead.
 produces:
 
   0 1 2 3 4
-$ 
+$
 ```
 
 And it also gives a nice example that we are going to try out in irb:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> 5.times do |i|
 ?>   puts i
 >> end
@@ -1819,7 +1784,7 @@ $
 There is also a single-line notation for small blocks:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> 5.times { |i| puts i }
 0
 1
@@ -1835,7 +1800,7 @@ By the way, an iterator does not necessarily have to pass a variable to
 the block:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> 5.times { puts 'example' }
 example
 example
@@ -1866,7 +1831,7 @@ Implementation from Integer
 ------------------------------------------------------------------------------
   int.upto(limit) {|i| block }  ->  self
   int.upto(limit)               ->  an_enumerator
-   
+
 
 ------------------------------------------------------------------------------
 
@@ -1895,7 +1860,7 @@ structures in Ruby for storing data.
 An array is a list of objects. Let's play around in `irb:`
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = [1,2,3,4,5]
 => [1, 2, 3, 4, 5]
 >> a.class
@@ -1909,7 +1874,7 @@ That is simple and easy to understand.
 Let's see if it also works with strings in the array:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = ['Test', 'Banana', 'blue']
 => ["Test", "Banana", "blue"]
 >> a.class
@@ -1930,7 +1895,7 @@ matter which kind of objects they are (i.e. `String`, `Fixnum`, `Float`,
 …). But a little test can't hurt:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = [1, 2.2, 'House', nil]
 => [1, 2.2, "House", nil]
 >> a.class
@@ -1980,7 +1945,7 @@ Instance methods:
 
 [...]
 
-$ 
+$
 ```
 
 As you can see, arrays can also be created via the method `new` (like
@@ -1988,7 +1953,7 @@ any class). Individual new elements can then be added at the end of an
 array via the method `<<`. Here is the corresponding example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = Array.new
 => []
 >> a << 'first item'
@@ -2005,7 +1970,7 @@ You can work your way through an array piece by piece via the method
 `each`. Example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> cart = ['eggs', 'butter']
 => ["eggs", "butter"]
 >> cart.each do |item|
@@ -2029,7 +1994,7 @@ Array.each
 ------------------------------------------------------------------------------
   ary.each {|item| block }   -> ary
   ary.each                   -> an_enumerator
-   
+
 
 ------------------------------------------------------------------------------
 
@@ -2054,7 +2019,7 @@ A “*Hash*” is a list of *key/value pairs*. Here is an example with
 strings as keys:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> prices = { 'egg' => 0.1, 'butter' => 0.99 }
 => {"egg"=>0.1, "butter"=>0.99}
 >> prices['egg']
@@ -2076,7 +2041,7 @@ very useful and used frequently, amongst others with hashes. Normally,
 variables always create new objects:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> a = 'Example 1'
 => "Example 1"
 >> a.object_id
@@ -2100,7 +2065,7 @@ values itself, but it always has the same object ID, so it is very well
 suited to be a *key*:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> :a.class
 => Symbol
 >> :a.object_id
@@ -2116,7 +2081,7 @@ object is created each time. For the symbol `:white`, only the first
 time:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> 'white'.object_id
 => 70342874305700
 >> 'white'.object_id
@@ -2136,7 +2101,7 @@ $
 Using symbols as key for hashes is much more memory efficient:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> colors = { black: '#000000', white: '#FFFFFF' }
 => {:black=>"#000000", :white=>"#FFFFFF"}
 >> puts colors[:white]
@@ -2156,7 +2121,7 @@ With the method `each` you can work your way through a `Hash` step by
 step. Example:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> colors = {black: '#000000', white: '#FFFFFF' }
 => {:black=>"#000000", :white=>"#FFFFFF"}
 >> colors.each do |key, value|
@@ -2182,11 +2147,11 @@ Hash.each
   hsh.each_pair {| key, value | block } -> hsh
   hsh.each                              -> an_enumerator
   hsh.each_pair                         -> an_enumerator
-   
+
 
 ------------------------------------------------------------------------------
 
-Calls block once for each key in hsh, passing the key-value pair
+Calls block once for each key in hash, passing the key-value pair
 as parameters.
 
 If no block is given, an enumerator is returned instead.
@@ -2213,7 +2178,7 @@ dots in between them. Here is an example in which we use a range like an
 iterator with each:
 
 ``` {.bash}
-$ irb --simple-prompt
+$ irb
 >> (0..3)
 => 0..3
 >> (0..3).class
