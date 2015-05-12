@@ -30,7 +30,7 @@ Matsumoto.
 
 The command `ruby -v` will print the current running Ruby version:
 
-``` {.bash}
+```bash
 $ ruby -v
 ruby 2.2.1p85 (2015-02-26 revision 49769) [x86_64-darwin14]
 $
@@ -49,7 +49,7 @@ but read by an interpreter and then processed line by line.
 
 A simple Ruby program `hello-world.rb` consist of the following line:
 
-``` {.ruby}
+```ruby
 puts 'Hello World!'
 ```
 
@@ -57,7 +57,7 @@ Use your favorite editor to open a new file with the filename
 `hello-world.rb` and insert the above line into it. You can then execute
 this Ruby program in the command line as follows:
 
-``` {.bash}
+```bash
 $ ruby hello-world.rb
 Hello World!
 $
@@ -88,7 +88,7 @@ two typical ways of printing text on the screen:
 
 Example program (an extension of the program `hello-world.rb`):
 
-``` {.ruby}
+```ruby
 puts 'Hello World!'
 puts
 puts '------------'
@@ -99,7 +99,7 @@ puts '------------'
 
 On the screen, you will see this:
 
-``` {.bash}
+```bash
 $ ruby hello-world.rb
 Hello World!
 
@@ -114,7 +114,7 @@ A comment in a Ruby program starts with a `#`-sign and ends with a
 newline. As an example, I can add a comment to the `hello-world.rb`
 above:
 
-``` {.ruby}
+```ruby
 # Program for displaying "Hello World!"
 # by Stefan Wintermeyer
 
@@ -123,7 +123,7 @@ puts 'Hello World!'
 
 A comment can also follow a program line:
 
-``` {.ruby}
+```ruby
 # Program for displaying "Hello World!"
 # by Stefan Wintermeyer
 
@@ -133,7 +133,7 @@ puts 'Hello World!'  # output
 A `#`-sign within strings in inverted commas is not treated as the start
 of a comment. Example program:
 
-``` {.ruby}
+```ruby
 # Example program
 # by Stefan Wintermeyer
 
@@ -145,7 +145,7 @@ puts '1#2#3#4#5#6#'  # Comment on this
 
 On the screen, you will see this:
 
-``` {.bash}
+```bash
 $ ruby hello-world.rb
 Hello World!
 ############
@@ -166,7 +166,7 @@ help feature, if we are only just getting started with Ruby? So I am
 going to jump ahead a little and show you how you can search for
 information on the class String:
 
-``` {.bash}
+```bash
 $ ri String
 = String < Object
 [...]
@@ -177,7 +177,7 @@ If we are looking for information on a specific method (chicken-egg!),
 then we can also use `ri`. Let's take gsub as an example. This is a
 method for replacing parts of a String (that is useful now and again).
 
-``` {.bash}
+```bash
 $ ri String.size
 = String.size
 
@@ -203,7 +203,7 @@ entering `irb` on the shell and ends if you enter `exit`.
 
 An example is worth a thousand words:
 
-``` {.bash}
+```bash
 $ irb
 >> puts 'Hello World!'
 Hello World!
@@ -275,7 +275,7 @@ this book.
 So let's assume that we use the following code sequence repeatedly (for
 whatever reason):
 
-``` {.bash}
+```bash
 $ irb
 >> puts 'Hello World!'
 Hello World!
@@ -299,7 +299,7 @@ this can all be done in one go.
 >
 > Names of methods are always written in lower case.
 
-``` {.bash}
+```bash
 $ irb
 >> def three_times
 >>   puts 'Hello World!'
@@ -319,7 +319,7 @@ When defining a method, you can define required parameters and use them
 within the method. This enables us to create a method to which we pass a
 string as parameter and we can then output it three times.
 
-``` {.bash}
+```bash
 >> def three_times(value)
 >>   puts value
 >>   puts value
@@ -336,7 +336,7 @@ Hello World!
 
 Incidentally, you can omit the brackets when calling the method.
 
-``` {.bash}
+```bash
 >> three_times 'Hello World!'
 Hello World!
 Hello World!
@@ -361,7 +361,7 @@ Hello World!
 If you do not specify a parameter with the above method, you will get
 the error message: “`wrong number of arguments (0 for 1)`”:
 
-``` {.bash}
+```bash
 >> three_times
 ArgumentError: wrong number of arguments (0 for 1)
     from (irb):1:in `three_times'
@@ -374,7 +374,7 @@ $
 You can give the variable `value` a default value and then you can also
 call the method without parameter:
 
-``` {.bash}
+```bash
 $ irb
 >> def three_times(value = 'blue')
 >>   puts value
@@ -402,7 +402,7 @@ a class always starts with an upper case letter. Let's assume that the
 method belongs to the new class `This\_and\_that`. It would then be defined
 as follows in a Ruby program:
 
-``` {.ruby}
+```ruby
 class This_and_that
   def three_times
     puts 'Hello World!'
@@ -414,7 +414,7 @@ end
 
 Let's play it through in `irb`:
 
-``` {.bash}
+```bash
 $ irb
 >> class This_and_that
 >>   def three_times
@@ -429,7 +429,7 @@ $ irb
 
 Now we try to call the method `three\_times`:
 
-``` {.bash}
+```bash
 >> This_and_that.three_times
 NoMethodError: undefined method `three_times' for This_and_that:Class
   from (irb):8
@@ -442,7 +442,7 @@ not an instance. As we are working with instance methods, it only works
 if we have first created a new object (a new instance) of the class
 `This\_and\_that` with the class method new:
 
-``` {.bash}
+```bash
 >> abc = This_and_that.new
 => #<This_and_that:0x007fc6f306bd70>
 >> abc.three_times
@@ -468,7 +468,7 @@ opposed to public methods), and they are listed below the keyword
 
 irb example:
 
-``` {.bash}
+```bash
 $ irb
 >> class Example
 >>   def a
@@ -502,7 +502,7 @@ explicitly under `private`.
 
 irb example:
 
-``` {.bash}
+```bash
 $ irb
 >> class Room
 >>   def initialize
@@ -523,7 +523,7 @@ initialize is processed automatically.
 The method new accepts the parameters specified for the method
 initialize:
 
-``` {.bash}
+```bash
 $ irb
 >> class Example
 >>   def initialize(value)
@@ -544,7 +544,7 @@ puts is nice to demonstrate an example in this book but normally you
 need a way to return the result of something. The `return` statement can
 be used for that:
 
-``` {.bash}
+```bash
 $ irb
 >> def area_of_a_circle(radius)
 >>   pi = 3.14
@@ -560,7 +560,7 @@ $ irb
 But it wouldn't be Ruby if you couldn't do it shorter. You can simply
 skip return:
 
-``` {.bash}
+```bash
 $ irb
 >> def area_of_a_circle(radius)
 >>   pi = 3.14
@@ -576,7 +576,7 @@ $ irb
 You can actually even skip the last line because Ruby returns the value
 of the last expression as a default:
 
-``` {.bash}
+```bash
 $ irb
 >> def area_of_a_circle(radius)
 >>   pi = 3.14
@@ -596,7 +596,7 @@ don't have to use it in case you feel more comfortable with out.
 A class can inherit from another class. When defining the class, the
 parent class must be added with a `<` (smaller than) sign:
 
-``` {.ruby}
+```ruby
 class Example < ParentClass
 ```
 
@@ -610,7 +610,7 @@ the class `Abc` and add a new method `d`. The new instances `example1` and
 `example2` has access to the methods a, b, c and d but `example1` only
 to `a`, `b` and `c`.
 
-``` {.bash}
+```bash
 $ irb
 >> class Abc
 >>   def a
@@ -669,7 +669,7 @@ instance. So you cannot apply the method `new` to an instance.
 
 Let's first try to call an instance method as class method:
 
-``` {.bash}
+```bash
 $ irb
 >> class Knowledge
 >>   def pi
@@ -686,7 +686,7 @@ NameError: uninitialized constant Knowlegde
 So that does not work. Well, then let's create a new instance of the
 class and try again:
 
-``` {.bash}
+```bash
 >> example = Knowledge.new
 => #<Knowledge:0x007fce04039bf0>
 >> example.pi
@@ -700,7 +700,7 @@ Rails gurus would now whisk you away into the depths of the source code
 and pick out examples from the ActiveRecord. I will spare you this and
 show an abstract example:
 
-``` {.bash}
+```bash
 $ irb
 >> class Knowledge
 >>   def self.pi
@@ -715,7 +715,7 @@ $ irb
 
 And the proof to the contrary:
 
-``` {.bash}
+```bash
 >> example = Knowledge.new
 => #<Knowledge:0x007ffda3050980>
 >> example.pi
@@ -731,7 +731,7 @@ common ones are:
 
 -   `self.xyz`
 
-``` {.ruby}
+```ruby
 # Variant 1
 # with self.xyz
 #
@@ -744,7 +744,7 @@ end
 
 -   `class << self`
 
-``` {.ruby}
+```ruby
 # Variant 2
 # with class << self
 #
@@ -763,7 +763,7 @@ Of course you can use the same method name for a class and an instance
 method. Obviously that doesn't make code easier to understand. Here
 is an example with `pi` as a class and an instance method:
 
-``` {.bash}
+```bash
 $ irb
 >> class Knowledge
 >>   def pi
@@ -790,7 +790,7 @@ You can read out all defined methods for a class with the method
 `instance_methods`. We try it out with the class `Knowledge` (first we
 create it once again in the irb):
 
-``` {.bash}
+```bash
 $ irb
 >> class Knowledge
 >>   def pi
@@ -818,7 +818,7 @@ But that is much more than we have defined! Why? It's because Ruby gives
 every new class a basic set of methods by default. If we only want to
 list the methods that we have defined, then we can do it like this:
 
-``` {.bash}
+```bash
 >> Knowledge.instance_methods(false)
 => [:pi]
 >> exit
@@ -854,7 +854,7 @@ keyboards, it is better to stick to pure ASCII.
 Let's experiment a little bit in the `irb`. The method `.class` tells us
 which class we are dealing with.
 
-``` {.bash}
+```bash
 $ irb
 >> a = 'First test'
 => "First test"
@@ -866,7 +866,7 @@ That was easy. As you can see, Ruby “automagically” creates an object of
 the class `String`. We could also do this by explicitly calling the
 method `new`:
 
-``` {.bash}
+```bash
 >> b = String.new('Second test')
 => "Second test"
 >> b.class
@@ -876,7 +876,7 @@ method `new`:
 If we call `String.new` without a parameter, this also creates an object
 of the class `String`. But it is an empty String:
 
-``` {.bash}
+```bash
 >> c = String.new
 => ""
 >> c.class
@@ -902,7 +902,7 @@ inserted in the corresponding place in the string.
 
 Example:
 
-``` {.bash}
+```bash
 $ irb
 >> a = 'blue'
 => "blue"
@@ -926,7 +926,7 @@ that can be saved in a `Word`. If a `Fixnum` gets bigger, it
 automatically becomes a `Bignum`. Here is an example where a becomes
 larger and by that becomes a `Bignum`.
 
-``` {.bash}
+```bash
 $ irb
 >> 20.class
 => Fixnum
@@ -951,7 +951,7 @@ $
 `Float` is a class for real numbers (“floating point numbers”). The
 decimal separator is a point.
 
-``` {.bash}
+```bash
 $ irb
 >> a = 20.424
 => 20.424
@@ -968,7 +968,7 @@ $
 Calculating with integers and floats is so easy that you can describe
 everything with just a few lines of code in the `irb`:
 
-``` {.bash}
+```bash
 $ irb
 >> a = 10
 => 10
@@ -1003,7 +1003,7 @@ $
 For boolean values (`true` and `false`) and for `nil` (no value) there
 are separate classes:
 
-``` {.bash}
+```bash
 $ irb
 >> true.class
 => TrueClass
@@ -1038,7 +1038,7 @@ the current method). The follwing example defines two methods which use
 the same local variable radius. Because they are local they don't
 interact with each other:
 
-``` {.bash}
+```bash
 $ irb
 >> def area(radius)
 >>   3.14 * radius * radius
@@ -1061,7 +1061,7 @@ $
 A global variable starts with a `$`-sign and is accessible in the entire
 programm. Example:
 
-``` {.bash}
+```bash
 $ irb
 >> $value = 10
 => 10
@@ -1094,7 +1094,7 @@ speak. Unlike global variables, you will find instance variables all
 over the place in a Rails application. Let's tackle them in form of an
 example program with the name `color.rb`:
 
-``` {.ruby}
+```ruby
 class Wall
   def initialize
     @color = 'white'
@@ -1118,7 +1118,7 @@ puts my_wall.color
 
 If you start this program, the following output will appear:
 
-``` {.bash}
+```bash
 $ ruby color.rb
 white
 red
@@ -1148,7 +1148,7 @@ instance variables `@doors` and `@windows` (for the number of doors and
 windows in the room), then we can create the getter methods `doors` und
 `windows` (example program `room.rb`):
 
-``` {.ruby}
+```ruby
 class Room
   def initialize
     @doors  = 1
@@ -1172,7 +1172,7 @@ puts "W: #{kitchen.windows}"
 
 The execution of the program:
 
-``` {.bash}
+```bash
 $ ruby room.rb
 D: 1
 W: 1
@@ -1184,7 +1184,7 @@ is so common, there is already a ready-made getter method for it with
 the name `attr_reader`, which you would apply as follows in the program
 `room.rb`:
 
-``` {.ruby}
+```ruby
 class Room
   def initialize
     @doors  = 1
@@ -1213,7 +1213,7 @@ variables (e.g. @doors and @windows) as parameter.
 If you want to change the number of doors or windows from the outside,
 you need a “setter” method. It can be implemented as follows:
 
-``` {.ruby}
+```ruby
 class Room
   def initialize
     @doors  = 1
@@ -1241,7 +1241,7 @@ puts "W: #{kitchen.windows}"
 
 The corresponding output is this:
 
-``` {.bash}
+```bash
 $ ruby room.rb
 D: 1
 W: 2
@@ -1252,7 +1252,7 @@ As you can probably imagine, there is of course also a ready-made and
 easier way of doing this. Via the setter method `attr_writer` you can
 simplify the code of `room.rb` further:
 
-``` {.ruby}
+```ruby
 class Room
   def initialize
     @doors  = 1
@@ -1275,7 +1275,7 @@ And (who would have thought!) there is even a method `attr_accessor`
 that combines getters and setters. The code for `room.rb` would then
 look like this:
 
-``` {.ruby}
+```ruby
 class Room
   def initialize
     @doors  = 1
@@ -1302,7 +1302,7 @@ point.
 
 Here are a few examples for methods of the class `String`.
 
-``` {.bash}
+```bash
 $ irb
 >> a = 'A dog'
 => "A dog"
@@ -1323,7 +1323,7 @@ $
 With `instance_methods(false)` you can get a list of the build in
 methods:
 
-``` {.bash}
+```bash
 $ irb
 >> String.instance_methods(false)
 => [:<=>, :==, :===, :eql?, :hash, :casecmp, :+, :*, :%, :[], :[]=, :insert, :length,
@@ -1346,7 +1346,7 @@ $
 If you are not sure what one of these methods does you can use `ri` to
 look it up:
 
-``` {.bash}
+```bash
 $ ri String.size
 = String.size
 
@@ -1365,7 +1365,7 @@ You may not think of it straight away, but once you have got used to
 working with Ruby, then it makes perfect sense (and is perfectly
 logical) to chain different methods.
 
-``` {.bash}
+```bash
 $ irb
 >> a = 'A dog'
 => "A dog"
@@ -1381,7 +1381,7 @@ There is a whole range of useful instance methods for converting
 (“casting”) objects from one class to another. First, let's use the
 method `.to_s` to convert a `Fixnum` to a `String`.
 
-``` {.bash}
+```bash
 $ irb
 >> a = 10
 => 10
@@ -1403,7 +1403,7 @@ $
 
 Now we use the method `.to_i` to change a `Float` to a `Fixnum`.
 
-``` {.bash}
+```bash
 $ irb
 >> c = 10.0
 => 10.0
@@ -1426,7 +1426,7 @@ an object via the method `to_s`).
 
 Here is an example:
 
-``` {.bash}
+```bash
 $ irb
 >> class Person
 >>   def initialize(first_name, last_name)
@@ -1452,7 +1452,7 @@ $
 Why is there also a plus symbol in the list of methods for String? Let's
 find out by looking it up in `ri`:
 
-``` {.bash}
+```bash
 $ ri -T String.+
 String.+
 
@@ -1471,7 +1471,7 @@ $
 
 hmmm … Let's see what it says for `Fixnum`:
 
-``` {.bash}
+```bash
 $ ri -T Fixnum.+
 Fixnum.+
 
@@ -1491,7 +1491,7 @@ Let's have a go and play around with this in `irb`. So we should be able
 to add the + to an object, just as any other method, separated by a dot
 and add the second number in brackets as parameter:
 
-``` {.bash}
+```bash
 $ irb
 >> 10 + 10
 => 20
@@ -1519,7 +1519,7 @@ will believe me.
 The aim is overwriting the method `+` for `Fixnum`. We want the result
 of every addition to be the number 42.
 
-``` {.bash}
+```bash
 $ irb
 >> 10 + 10
 => 20
@@ -1544,7 +1544,7 @@ if-Condition
 
 An abstract `if`-condition looks like this:
 
-``` {.ruby}
+```ruby
 if expression
   program
 end
@@ -1564,7 +1564,7 @@ of the expression is not `false` and not `nil`.
 The construct for a simple `if`-branch in a Ruby program looks like the
 following example program:
 
-``` {.ruby}
+```ruby
 a = 10
 
 if a == 10
@@ -1579,7 +1579,7 @@ end
 
 You can try an *expression* really well in `irb`:
 
-``` {.bash}
+```bash
 $ irb
 >> a = 10
 => 10
@@ -1594,7 +1594,7 @@ $
 A frequently used shorthand notation of an `if`-condition can be found
 in the following code:
 
-``` {.ruby}
+```ruby
 a = 10
 
 # long version
@@ -1613,7 +1613,7 @@ puts 'a is 10' if a == 10
 You can probably imagine how this works, but for the sake of
 completeness, here is a little example:
 
-``` {.ruby}
+```ruby
 a = 10
 
 if a == 10 then
@@ -1627,7 +1627,7 @@ end
 
 Again, most programmers will know what this is all about. Example:
 
-``` {.ruby}
+```ruby
 a = 10
 
 if a == 10 then
@@ -1647,7 +1647,7 @@ variation is used particularly often in the Rails environment.
 
 An abstract while loop looks like this:
 
-``` {.ruby}
+```ruby
 while expression do
   program
 end
@@ -1664,7 +1664,7 @@ end
 
 Here is a practical `irb` example:
 
-``` {.bash}
+```bash
 $ irb
 >> i = 0
 => 0
@@ -1682,7 +1682,7 @@ $
 
 Until loops are built similarly:
 
-``` {.ruby}
+```ruby
 until expression
   program
 ends
@@ -1690,7 +1690,7 @@ ends
 
 Again, here is the corresponding `irb` example:
 
-``` {.bash}
+```bash
 $ irb
 >> i = 5
 => 5
@@ -1715,7 +1715,7 @@ programmers. Now I am going to show you why.
 
 In the loop
 
-``` {.ruby}
+```ruby
 5.times { |i| puts i }
 ```
 
@@ -1723,7 +1723,7 @@ In the loop
 
 You can also express the whole thing in the following syntax:
 
-``` {.ruby}
+```ruby
 5.times do |i|
   puts i
 end
@@ -1736,7 +1736,7 @@ word “*iterate*” means to repeat something. For example, the class
 Fixnum has the iterator times() Rubytimes. Let's see what help `ri`
 offers us:
 
-``` {.bash}
+```bash
 $ ri -T Fixnum.times
 Fixnum.times
 
@@ -1766,7 +1766,7 @@ $
 
 And it also gives a nice example that we are going to try out in irb:
 
-``` {.bash}
+```bash
 $ irb
 >> 5.times do |i|
 ?>   puts i
@@ -1783,7 +1783,7 @@ $
 
 There is also a single-line notation for small blocks:
 
-``` {.bash}
+```bash
 $ irb
 >> 5.times { |i| puts i }
 0
@@ -1799,7 +1799,7 @@ $
 By the way, an iterator does not necessarily have to pass a variable to
 the block:
 
-``` {.bash}
+```bash
 $ irb
 >> 5.times { puts 'example' }
 example
@@ -1822,7 +1822,7 @@ have access to the local variable(s) passed by the iterator.
 Apart from `times` there is also the method `upto`, for easily
 implementing a loop. `ri` offers a nice example for this, too:
 
-``` {.bash}
+```bash
 $ ri -T Fixnum.upto
 Fixnum.upto
 
@@ -1859,7 +1859,7 @@ structures in Ruby for storing data.
 
 An array is a list of objects. Let's play around in `irb:`
 
-``` {.bash}
+```bash
 $ irb
 >> a = [1,2,3,4,5]
 => [1, 2, 3, 4, 5]
@@ -1873,7 +1873,7 @@ That is simple and easy to understand.
 
 Let's see if it also works with strings in the array:
 
-``` {.bash}
+```bash
 $ irb
 >> a = ['Test', 'Banana', 'blue']
 => ["Test", "Banana", "blue"]
@@ -1894,7 +1894,7 @@ that will work, too, because the array stores objects and it does not
 matter which kind of objects they are (i.e. `String`, `Fixnum`, `Float`,
 …). But a little test can't hurt:
 
-``` {.bash}
+```bash
 $ irb
 >> a = [1, 2.2, 'House', nil]
 => [1, 2.2, "House", nil]
@@ -1914,7 +1914,7 @@ $
 
 Next, let's have a look at what the `ri` help page says for `Array`:
 
-``` {.bash}
+```bash
 $ ri -T Array
 Array < Object
 
@@ -1952,7 +1952,7 @@ As you can see, arrays can also be created via the method `new` (like
 any class). Individual new elements can then be added at the end of an
 array via the method `<<`. Here is the corresponding example:
 
-``` {.bash}
+```bash
 $ irb
 >> a = Array.new
 => []
@@ -1969,7 +1969,7 @@ $
 You can work your way through an array piece by piece via the method
 `each`. Example:
 
-``` {.bash}
+```bash
 $ irb
 >> cart = ['eggs', 'butter']
 => ["eggs", "butter"]
@@ -1986,7 +1986,7 @@ $
 Once more, `ri` provides help and an example in case you forget how to
 use each:
 
-``` {.bash}
+```bash
 $ ri -T Array.each
 Array.each
 
@@ -2018,7 +2018,7 @@ $
 A “*Hash*” is a list of *key/value pairs*. Here is an example with
 strings as keys:
 
-``` {.bash}
+```bash
 $ irb
 >> prices = { 'egg' => 0.1, 'butter' => 0.99 }
 => {"egg"=>0.1, "butter"=>0.99}
@@ -2040,7 +2040,7 @@ section called "Arrays"](#arrays)).
 very useful and used frequently, amongst others with hashes. Normally,
 variables always create new objects:
 
-``` {.bash}
+```bash
 $ irb
 >> a = 'Example 1'
 => "Example 1"
@@ -2064,7 +2064,7 @@ A symbol is defined by a colon before the name and cannot store any
 values itself, but it always has the same object ID, so it is very well
 suited to be a *key*:
 
-``` {.bash}
+```bash
 $ irb
 >> :a.class
 => Symbol
@@ -2080,7 +2080,7 @@ then the symbol `:white` three times in a row. For `"white"`, a new
 object is created each time. For the symbol `:white`, only the first
 time:
 
-``` {.bash}
+```bash
 $ irb
 >> 'white'.object_id
 => 70342874305700
@@ -2100,7 +2100,7 @@ $
 
 Using symbols as key for hashes is much more memory efficient:
 
-``` {.bash}
+```bash
 $ irb
 >> colors = { black: '#000000', white: '#FFFFFF' }
 => {:black=>"#000000", :white=>"#FFFFFF"}
@@ -2120,7 +2120,7 @@ about symbols, go to the help page about the class Symbol via
 With the method `each` you can work your way through a `Hash` step by
 step. Example:
 
-``` {.bash}
+```bash
 $ irb
 >> colors = {black: '#000000', white: '#FFFFFF' }
 => {:black=>"#000000", :white=>"#FFFFFF"}
@@ -2137,7 +2137,7 @@ $
 Again, `ri` offers help and an example, in case you cannot remember one
 day how to use each:
 
-``` {.bash}
+```bash
 $ ri -T Hash.each
 Hash.each
 
@@ -2177,7 +2177,7 @@ interval are defined enclosed in normal brackets and separated by two
 dots in between them. Here is an example in which we use a range like an
 iterator with each:
 
-``` {.bash}
+```bash
 $ irb
 >> (0..3)
 => 0..3
@@ -2196,7 +2196,7 @@ $ irb
 
 Via the method `to_a` you can generate an array from a `Range`:
 
-``` {.bash}
+```bash
 >> (0..3).to_a
 => [0, 1, 2, 3]
 >>
@@ -2207,7 +2207,7 @@ that the objects can be compared via `<=>` and use the method `succ` for
 counting on to the next value. So you can also use `Range` to represent
 letters:
 
-``` {.bash}
+```bash
 >> ('a'..'h').to_a
 => ["a", "b", "c", "d", "e", "f", "g", "h"]
 >>
@@ -2217,7 +2217,7 @@ As alternative notation, you may sometimes come across `Range.new()`. In
 this case, the start and end points are not separated by two dots, but
 by a comma. This is what it looks like:
 
-``` {.bash}
+```bash
 >> (0..3) == Range.new(0,3)
 => true
 >> exit
