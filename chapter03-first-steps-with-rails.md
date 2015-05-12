@@ -1190,14 +1190,12 @@ Loading development environment (Rails 4.2.1)
 => "http://www.example.com/game/ping"
 >> app.get '/game/ping'
 
-
 Started GET "/game/ping" for 127.0.0.1 at 2015-04-15 18:47:26 +0200
 Processing by GameController#ping as HTML
 Redirected to http://www.example.com/game/pong
 Completed 302 Found in 10ms (ActiveRecord: 0.0ms)
 => 302
 >> app.get '/game/pong'
-
 
 Started GET "/game/pong" for 127.0.0.1 at 2015-04-15 18:47:33 +0200
 Processing by GameController#pong as HTML
@@ -1208,57 +1206,8 @@ Completed 200 OK in 2119ms (Views: 2117.6ms | ActiveRecord: 0.0ms)
 $
 ```
 
-Misc
-----
-
-You have now already created a simple Rails application and in the next
-chapter you will dive deeply into the topic ActiveRecord. So now is a
-good time to very briefly introduce a few terms that often surface in
-the world of Rails.
-
-### "Model View Controller" Architecture (MVC)
-
-According to Wikipedia
-[http://en.wikipedia.org/wiki/Model–view–controller](http://en.wikipedia.org/wiki/Model–view–controller),
-MVC is a design pattern that separates the representation of information
-from the user's interaction with it.
-
-MVC is a structure for software development. It was agreed that it makes
-sense to have one part of the software in one place and another part of
-the software in another place. Nothing more, nothing less. This
-agreement has the enormous advantage that once you are used to this
-concept, you know exactly where you can find or need to integrate a
-certain functionaity in a Rails project.
-
-#### Model
-
-"Model" in this case means data model. By default, Rails applications
-are an ActiveRecord data model (see [Chapter 4,
-AktiveRecord](chapter04-activerecord.html)).
-
-All models can be found in the directory `app/models/.`
-
-#### View
-
-The "view" is responsible for the presentation of the application. It
-takes care of rendering the web page, an XML or JSON file. A view could
-also render a PDF or an ASCII text. It depends entirely on your
-application.
-
-You will find all the views in the directory `app/views/.`
-
-#### Controller
-
-Once a web page call has ended up in a route (see [Chapter 6,
-Routes](chapter06-routing.html)), it goes from there to the controller.
-The route specifies a certain method (action) as target. This method can
-then fulfil the desired tasks (such as finding a specific set of data
-and saving it in an instance variable) and then renders the desired
-view.
-
-All controllers can be found in the directory `app/controllers/.`
-
-### What is a Generator?
+What is a Generator?
+--------------------
 
 We have already used the command `rails generate controller`. It
 starts the generator with the name `controller`. There are other
@@ -1320,7 +1269,8 @@ errors that can easily arise from mindless repetitive tasks.
 > <http://guides.rubyonrails.org/generators.html> to find a description
 > of how to do that.
 
-### Helper
+Helper
+------
 
 A helper method takes care of recurring tasks in a view. For example, if
 you want to display stars (\*) for rating a restaurant and not a number
@@ -1362,37 +1312,37 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-There are lots of predefined helpers in Rails and we will use some of
-them in the next chapters. But you can also define your own custom
-helpers. Any of the helpers from the file
-`app/helpers/application_helper.rb` can be used in any view. Helpers
-that you want to be only available in certain views must be defined for
-each controller. When creating a controller, a file for helpers of that
-controller is automatically created in `app/helpers`. This gives you the
-option of defining helpers only for this controller or for the views of
-this controller.
+There are lots of predefined helpers in Rails and we will use some of them in
+the next chapters. But you can also define your own custom helpers. Any of the
+helpers from the file `app/helpers/application_helper.rb` can be used in any
+view. Helpers that you want to be only available in certain views must be
+defined for each controller. When creating a controller, a file for helpers of
+that controller is automatically created in `app/helpers`. This gives you the
+option of defining helpers only for this controller or for the views of this
+controller.
 
 All helpers are in the directory `app/helpers/.`
 
-### Rails Lingo
+Rails Lingo
+-----------
 
 Here you find a couple of words which you'll often find in the Ruby on
 Rails universe.
 
-#### DRY - Don't repeat yourself
+### DRY - Don't repeat yourself
 
 Many Rails programmers are big fans of DRY. DRY means purely and simply
 that you should try to place repeated programming logic into separate
 methods.
 
-#### Refactoring
+### Refactoring
 
 You often hear the word refactoring in the context of DRY. This involves
 functioning applications that are further improved. The application in
 itself remains unchanged in its interface. But its core is optimized,
 amongst others through DRY.
 
-#### Convention Over Configuration
+### Convention Over Configuration
 
 Convention over configuration (also known as coding by convention, see
 <http://en.wikipedia.org/wiki/Convention_over_configuration>) is an
@@ -1402,3 +1352,52 @@ project and set these via configuration parameters. It specifies an
 underlying basic consensus and this is set by default. But if you want
 to work outside of this conventional basic consensus, then you will need
 to change the corresponding parameters.
+
+Model View Controller Architecture (MVC)
+----------------------------------------
+
+You have now already created a simple Rails application and in the next
+chapter you will dive deeply into the topic ActiveRecord. So now is a good
+time to very briefly introduce a few terms that often surface in the world of
+Rails.
+
+According to Wikipedia
+[http://en.wikipedia.org/wiki/Model–view–controller](http://en.wikipedia.org/wiki/Model–view–controller),
+MVC is a design pattern that separates the representation of information from
+the user's interaction with it.
+
+MVC is a structure for software development. It was agreed that it makes sense
+to have one part of the software in one place and another part of the software
+in another place. Nothing more, nothing less. 
+
+**This agreement has the enormous advantage that once you are used to this
+concept, you know exactly where you can find or need to integrate a certain
+functionaity in a Rails project.**
+
+### Model
+
+"Model" in this case means data model. By default, Rails applications are an
+ActiveRecord data model (see [Chapter 4,
+AktiveRecord](chapter04-activerecord.html)).
+
+All models can be found in the directory `app/models/.`
+
+### View
+
+The "view" is responsible for the presentation of the application. It takes
+care of rendering the web page, an XML or JSON file. A view could also render
+a PDF or an ASCII text. It depends entirely on your application.
+
+You will find all the views in the directory `app/views/.`
+
+### Controller
+
+Once a web page call has ended up in a route (see [Chapter 6,
+Routes](chapter06-routing.html)), it goes from there to the controller. The
+route specifies a certain method (action) as target. This method can then
+fulfil the desired tasks (such as finding a specific set of data and saving it
+in an instance variable) and then renders the desired view.
+
+All controllers can be found in the directory `app/controllers/.`
+
+
