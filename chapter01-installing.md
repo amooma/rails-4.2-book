@@ -61,7 +61,10 @@ And now the installation of the packages required for the RVM
 installation:
 
 ```bash
-root@debian:~# apt-get -y install curl patch bzip2 gawk g++ gcc make libc6-dev patch libreadline6-dev zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 autoconf libgdbm-dev libncurses5-dev automake libtool bison pkg-config libffi-dev
+root@debian:~# apt-get -y install curl patch bzip2 gawk g++ gcc make \
+libc6-dev patch libreadline6-dev zlib1g-dev libssl-dev libyaml-dev \
+libsqlite3-dev sqlite3 autoconf libgdbm-dev libncurses5-dev automake \
+libtool bison pkg-config libffi-dev
 [...]
 root@debian:~#
 ```
