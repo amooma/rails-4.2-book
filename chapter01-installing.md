@@ -2,9 +2,10 @@
 
 ## Development System
 
-This chapter's installation methods described are intended for
-development systems. If you are looking for instructions on installing a
-web server in the production system, please have a look at the chapter which handles the server setup.
+This chapter's installation methods described are intended for development
+systems. If you are looking for instructions on installing a web server in the
+production system, please have a look at the chapter which handles the server
+setup.
 
 Both types of installation are very different.
 
@@ -26,19 +27,19 @@ RVM (Ruby Version Manager):
 > Detailled information on RVM can be found on the RVM homepage at
 > https://rvm.io
 
-This description assumes that you have a freshly installed Debian
-GNU/Linux 8.0 ("Jessie"). You will find an ISO image for the
-installation at http://www.debian.org. I recommend the approximately
-250 MB net installation CD image. For instructions on how to install
-Debian-GNU/Linux, please go to http://www.debian.org/distrib/netinst.
+This description assumes that you have a freshly installed Debian GNU/Linux
+8.0 ("Jessie"). You will find an ISO image for the installation at
+http://www.debian.org. I recommend the approximately 250 MB net installation
+CD image. For instructions on how to install Debian-GNU/Linux, please go to
+http://www.debian.org/distrib/netinst.
 
 ### Preparations
 
 If you have root rights on the target system, you can use the following
-commands to ensure that all required programs for a successful
-installation of RVM are available. If you do not have root rights, you
-have to either hope that your admin has already installed everything you
-need, or send them a quick e-mail with the corresponding lines.
+commands to ensure that all required programs for a successful installation of
+RVM are available. If you do not have root rights, you have to either hope
+that your admin has already installed everything you need, or send them a
+quick e-mail with the corresponding lines.
 
 Login as root and update the package lists:
 
@@ -86,7 +87,8 @@ recommend using the following commands and get at least one cup of
 tea/coffee/favorite drink:
 
 ```bash
-xyz@debian:~$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+xyz@debian:~$ gpg --keyserver hkp://keys.gnupg.net \
+--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 [...]
 xyz@debian:~$ curl -sSL https://get.rvm.io | bash
 [...]
@@ -98,7 +100,8 @@ xyz@debian:~$ gem install rails -v '~> 4.2.0'
 xyz@debian:~$
 ```
 
-RVM, Ruby 2.2 and Rails 4.2 are now fully installed. You can check it with the following commands.
+RVM, Ruby 2.2 and Rails 4.2 are now fully installed. You can check it with the
+following commands.
 
 ```bash
 xyz@debian:~$ ruby -v
@@ -115,15 +118,15 @@ Rails installer for Windows for Ruby and Rails.
 
 # Ruby on Rails 4.2 on Mac OS X 10.10 (Yosemite)
 
-Mac OS 10.10 includes Ruby by default. Not interesting for
-our purposes. We want Ruby 2.2 and Rails 4.2. To avoid interfering
-with the existing Ruby and Rails installation and therefore the packet
-management of Mac OS X, we install Ruby 2.2 and Rails 4.2 with RVM (Ruby Version Manager).
+Mac OS 10.10 includes Ruby by default. Not interesting for our purposes. We
+want Ruby 2.2 and Rails 4.2. To avoid interfering with the existing Ruby and
+Rails installation and therefore the packet management of Mac OS X, we install
+Ruby 2.2 and Rails 4.2 with RVM (Ruby Version Manager).
 
-With RVM, you can install and run any number of Ruby and Rails versions
-as normal user (without root rights and in your home directory). So you
-can work in parallel on old projects that may still use Ruby 1.9.3 and
-new projects that use Ruby 2.2.
+With RVM, you can install and run any number of Ruby and Rails versions as
+normal user (without root rights and in your home directory). So you can work
+in parallel on old projects that may still use Ruby 1.9.3 and new projects
+that use Ruby 2.2.
 
 > **Note**
 >
@@ -132,21 +135,21 @@ new projects that use Ruby 2.2.
 
 ## Xcode Installation or Upgrade
 
-Before you start installing Ruby on Rails, you must install the *latest*
-Apple Xcode tools on your system. The easiest way is via the Mac App
-Store (search for "xcode") or via the website
-https://developer.apple.com/xcode/
+Before you start installing Ruby on Rails, you must install the *latest* Apple
+Xcode tools on your system. The easiest way is via the Mac App Store (search
+for "xcode") or via the website https://developer.apple.com/xcode/
 
 Please take care to install all the command line tools!
 
 ## Installing Ruby 2.2 and Ruby on Rails 4.2 with RVM
 
-RVM can be installed in various ways. I recommend using the following
-monster command (please copy it exactly) that installs the latest RVM,
-Ruby and Ruby on Rails in your home directory:
+RVM can be installed in various ways. I recommend using the following monster
+command (please copy it exactly) that installs the latest RVM, Ruby and Ruby
+on Rails in your home directory:
 
 ```bash
-$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
+$ gpg --keyserver hkp://keys.gnupg.net \
+--recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 [...]
 $ curl -sSL https://get.rvm.io | bash
 [...]
@@ -160,5 +163,16 @@ $ rvm install 2.2
 [...]
 $ gem install rails -v '~> 4.2.0'
 [...]
+$
+```
+
+RVM, Ruby 2.2 and Rails 4.2 are now fully installed. You can check it with the
+following commands.
+
+```bash
+$ ruby -v
+ruby 2.2.1p85 (2015-02-26 revision 49769) [x86_64-darwin14]
+$ rails -v
+Rails 4.2.1
 $
 ```
