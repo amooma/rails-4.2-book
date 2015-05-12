@@ -6,54 +6,37 @@ ActiveRecord
 
 > **Note**
 >
-> This is referred to as *object-relational-mapping*, *ORM*. I find it rather dry
-> and boring, but in case you have trouble going to sleep tonight, have
-> a look at <http://en.wikipedia.org/wiki/Object_relational_mapping>.
+> This is referred to as object-relational-mapping or *ORM*. I find it rather
+> dry and boring, but in case you have trouble going to sleep tonight, have a
+> look at <http://en.wikipedia.org/wiki/Object_relational_mapping>.
 
-One of the recipes for the success of Rails is surely the fact that is
-uses `ActiveRecord`. The programming and use “feels Ruby like” and it is
-much less susceptible to errors than pure SQL. When working with this
-chapter, it helps if you have some knowledge of SQL, but this is not
-required and also not essential for working with `ActiveRecord`.
+One of the recipes for the success of Rails is surely the fact that is uses
+`ActiveRecord`. The programming and use “feels Ruby like” and it is much less
+susceptible to errors than pure SQL. When working with this chapter, it helps
+if you have some knowledge of SQL, but this is not required and also not
+essential for working with `ActiveRecord`.
 
-Just as an aside, let me mention that you are not obliged to work with
-ActiveRecord when working with Rails. You can also use other ORMs.
-ActiveRecord is the default and is used by the majority of all Rails
-developers.
-
-Howto for this Chapter
-----------------------
-
-This chapter is a self-contained unit. But the knowledge provided in
-[Chapter 2, Ruby basics](chapter02-ruby-basics.html) and [Chapter 3, First steps with rails](chapter03-first-steps-with-rails.html) is required.
-Without these basics, you will not have any fun with this chapter!
-
-Rails newbies should read this chapter once from beginning to end.
-Please take your time. This chapter is important!
+This chapter is a self-contained unit. But the knowledge provided in [Chapter
+2, Ruby basics](chapter02-ruby-basics.html) and [Chapter 3, First steps with
+rails](chapter03-first-steps-with-rails.html) is required. Without these
+basics, you will not have any fun with this chapter!
 
 > **Note**
 >
-> This chapter is only about ActiveRecord. So I am not going to
-> integrate any tests (see [Chapter 7, Tests](chapter07-test-driven-development.html)), to keep the examples as simple as
-> possible.
-
-### Not in the Mood for SQL?
-
-Occasionally, I will discuss SQL code created by ActiveRecord methods.
-If you are not interested in SQL: just read over it and don't worry. The
-beauty of ActiveRecord is that you do not need to think about it. For
-everyone else, my comments provide better understanding of the
-optimization processes going on in the background.
+> This chapter is only about ActiveRecord. So I am not going to integrate any
+> tests (see [Chapter 7, Tests](chapter07-test-driven-development.html)), to
+> keep the examples as simple as possible.
 
 Creating Database/“Model”
 -------------------------
 
 > **Note**
 >
-> Model in this context refers to the data model of Model-View-Controller (MVC).
+> Model in this context refers to the data model of Model-View-Controller
+> (MVC).
 
-As a first example, let's take a list of countries in Europe. First, we
-create a new Rails project:
+As a first example, let's take a list of countries in Europe. First, we create
+a new Rails project:
 
 ```bash
 $ rails new europe
@@ -207,11 +190,12 @@ Examples:
             Migration:  db/migrate/XXX_create_admin_accounts.rb
 ```
 
-The usage description `rails generate model NAME
-  [field[:type][:index] field[:type][:index]] [options]` tells us that
-after `rails generate model` comes the name of the model and then the
-table fields. If you do not put `:type` after a table field name, it is
-assumed to be a string by default. Let's create the *model* `country`:
+The usage description `rails generate model NAME [field[:type][:index]
+field[:type][:index]] [options]` tells us that after `rails generate model`
+comes the name of the model and then the table fields. If you do not put
+`:type` after a table field name, it is assumed to be a `string`.
+
+Let's create the *model* `country`:
 
 ```bash
 $ rails generate model Country name population:integer
@@ -242,12 +226,11 @@ end
 ```
 
 A migration contains database changes. In this migration, a class
-CreateCountries is defined as a child of ActiveRecord::Migration. The
-class method change is used to define a migration and the associated
-roll-back.
+CreateCountries is defined as a child of ActiveRecord::Migration. The method
+`change` is used to define a migration and the associated roll-back.
 
-With `rake db:migrate` we can apply the migrations, in other words,
-create the corresponding database table:
+With the command `rake db:migrate` we can apply the migrations, in other
+words, create the corresponding database table:
 
 ```bash
 $ rake db:migrate
@@ -261,7 +244,8 @@ $
 
 > **Note**
 >
-> You will find more details on migrations in [the section Migrations](#migrations).
+> You will find more details on migrations in [the section
+> Migrations](#migrations).
 
 Let's have a look at the file `app/models/country.rb`:
 
@@ -270,15 +254,15 @@ class Country < ActiveRecord::Base
 end
 ```
 
-Hmmm … the class Country is a child of ActiveRecord::Base. Makes sense,
-as we are discussing ActiveRecord in this chapter. ;-)
+Hmmm … the class Country is a child of ActiveRecord::Base. Makes sense, as we
+are discussing ActiveRecord in this chapter. ;-)
 
-### The Attributes id, created\_at and updated\_at
+### The Attributes `id`, `created_at` and `updated_at`
 
-Even if you cannot see it in the migration, we also get the attributes
-`id`, `created_at` und `updated_at` by default for each ActiveRecord model.
-In the Rails console, we can output the attributes of the class `Country`
-by using the class method `column_names`:
+Even if you cannot see it in the migration, we also get the attributes `id`,
+`created_at` und `updated_at` by default for each ActiveRecord model.  In the
+Rails console, we can output the attributes of the class `Country` by using
+the class method `column_names`:
 
 ```bash
 $ rails console
@@ -289,27 +273,26 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-The attribute created\_at stores the time when the record was initially
-created. updated\_at shows the time of the last update for this record.
+The attribute `created_at` stores the time when the record was initially
+created. `updated_at` stores the time of the last update for this record.
 
-id is used a central identification of the record (primary key). The id
-is automatically incremented by 1 for each record.
+`id` is used a central identification of the record (primary key). The `id` is
+automatically incremented by 1 for each record.
 
 ### Getters and Setters
 
 To read and write values of a SQL table row you can use by ActiveRecord
-provided getters and setters [the section called "Getters and Setters"](#getters-and-setters).
-These attr\_accessors are automatically created. The getter of the field
-`updated_at` for a given `Country` with the name `germany` would
-be `germany.updated_at`.
+provided getters and setters [the section called "Getters and
+Setters"](#getters-and-setters).  These `attr_accessors` are automatically
+created. The getter of the field `updated_at` for a given `Country` with the
+name `germany` would be `germany.updated_at`.
 
 ### Possible Data Types in ActiveRecord
 
 ActiveRecord is a *layer* between Ruby and various relational databases.
-Unfortunately, many SQL databases have different perspectives regarding
-the definition of columns and their content. But you do not need to
-worry about this, because ActiveRecord solves this problem transparently
-for you.
+Unfortunately, many SQL databases have different perspectives regarding the
+definition of columns and their content. But you do not need to worry about
+this, because ActiveRecord solves this problem transparently for you.
 
 -   Advantage:
 
@@ -417,20 +400,18 @@ To generate a *model*, you can use the following field types:
 
     A time with date, filled in automatically by the database.
 
-In [the section "Migrations"](#migrations) we will provide more information on the individual data types and
-discuss available options. Don't forget, this is a book for beginners,
-so this section just gives a brief overview.
+In [the section "Migrations"](#migrations) we will provide more information on
+the individual data types and discuss available options. Don't forget, this is
+a book for beginners, so this section just gives a brief overview.
 
 ### Naming Conventions (Country vs. country vs. countries)
 
-Rails newbies often find it hard to figure out when to use upper and
-lower case, for example, `Country` or `country` (one is a class, the
-other one a model). The problem is usually not the class itself, but
-purely the spelling or wording. For now, let's just say: it's all very
-logical and you will quickly get the hang of it. The important thing is
-that you keep using English words, even if you would normally be
-programming in another language (see [the section called "Why is it
-all in english?"](chapter03-first-steps-with-rails.html#why-is-it-all-in-english)).
+Rails newbies often find it hard to figure out when to use upper and lower
+case, for example, `Country` or `country` (one is a class, the other one a
+model). The problem is usually not the class itself, but purely the spelling
+or wording. For now, let's just say: it's all very logical and you will
+quickly get the hang of it. The important thing is that you keep using English
+words.
 
 Originally, my plan was to now start philosophizing at great length on
 naming conventions. But then I thought: “Jeez, the readers want to get
@@ -450,9 +431,9 @@ Loading development environment (Rails 4.2.1)
 >>
 ```
 
-ActiveRecord automatically uses the English plural forms. So for the
-class Country, it's countries. If you are not sure about a term, you can
-also work with the class and method name.
+ActiveRecord automatically uses the English plural forms. So for the class
+Country, it's countries. If you are not sure about a term, you can also work
+with the class and method name.
 
 ```bash
 >> Country.name.tableize
@@ -504,7 +485,7 @@ production:
 
 As we are working in `development` mode, Rails has created a new SQLite3
 database `db/development.sqlite3` as a result of `rake db:migrate` and
-saved all data there.
+will save all data there.
 
 Fans of command line clients can use `sqlite3` for viewing this
 database:
@@ -525,13 +506,14 @@ $
 Adding Records
 --------------
 
-Actually, I would like to show you first how to view records, but there
-we have another chicken and egg problem. So first, here is how you can
-create a new record with `ActiveRecord`.
+Actually, I would like to show you first how to view records, but there we
+have another chicken and egg problem. So first, here is how you can create a
+new record with `ActiveRecord`.
 
 ### create
 
 The most frequently used method for creating a new record is `create`.
+
 Let's try creating a country in the console with the command
 `Country.create(name: 'Germany', population: 81831000)`
 
@@ -551,9 +533,9 @@ created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
 $
 ```
 
-ActiveRecord saves the new record and outputs the executed SQL command
-in the development environment. But to make absolutely sure it works,
-let's have a quick look with the command line client `sqlite3`:
+ActiveRecord saves the new record and outputs the executed SQL command in the
+development environment. But to make absolutely sure it works, let's have a
+last look with the command line client `sqlite3`:
 
 ```bash
 $ sqlite3 db/development.sqlite3
@@ -597,8 +579,8 @@ Country.create([{name: 'Germany'}, {name: 'France'}])
 
 ### new
 
-In addition to create there is also new. But you have to use save to
-save an object created with new (which has both advantages and
+In addition to `create` there is also `new`. But you have to use `save` to
+save an object created with `new` (which has both advantages and
 disadvantages):
 
 ```bash
@@ -620,8 +602,8 @@ Loading development environment (Rails 4.2.1)
 >>
 ```
 
-You can also pass parameters for the new record directly to the method
-`new`, just as with `create`:
+You can also pass parameters for the new record directly to the method `new`,
+just as with `create`:
 
 ```bash
 >> belgium = Country.new(name: 'Belgium', population: 10839905)
@@ -635,12 +617,12 @@ You can also pass parameters for the new record directly to the method
 $
 ```
 
-### new\_record?
+### `new_record?`
 
-With the method `new_record?` you can find out if a record has already
-been saved or not. If a `new` object has been created with new and not yet
-been saved, then the result of `new_record?` is `true`. After a `save` it
-is `false`.
+With the method `new_record?` you can find out if a record has already been
+saved or not. If a `new` object has been created with new and not yet been
+saved, then the result of `new_record?` is `true`. After a `save` it is
+`false`.
 
 Example:
 
@@ -664,15 +646,15 @@ $
 
 > **Tip**
 >
-> For already existing records, you can also check for changes with the
-> method `changed?` (see [the section called "changed?"](#changed)).
+> For already existing records, you can also check for changes with the method
+> `changed?` (see [the section called "changed?"](#changed)).
 
-first, last and all
--------------------
+`first`, `last` and `all`
+-------------------------
 
-In certain cases, you may need the first record, or the last one, or
-perhaps even all records. Conveniently, there is a ready-made method for
-each case. Let's start with the easiest ones: `first` and `last`.
+In certain cases, you may need the first record, or the last one, or perhaps
+even all records. Conveniently, there is a ready-made method for each case.
+Let's start with the easiest ones: `first` and `last`.
 
 ```bash
 $ rails console
@@ -695,9 +677,9 @@ And now all at once with `all`:
 >>
 ```
 
-But the objects created by `first`, `last` and `all` are different. `first` and
-`last` return an object of the class `Country` and `all` of course returns an
-array of such objects:
+But the objects created by `first`, `last` and `all` are different. `first`
+and `last` return an object of the class `Country`. `all` returns an array of
+such objects:
 
 ```bash
 >> Country.first.class
@@ -709,8 +691,8 @@ array of such objects:
 ```
 
 So `Country.first` is a Country which makes sense. But `Country.all` is
-something we haven't had yet. Let's use the console to get a better idea
-of it:
+something we haven't had yet. Let's use the console to get a better idea of
+it:
 
 ```bash
 >> puts Country.all.to_yaml
@@ -748,18 +730,20 @@ of it:
 >>
 ```
 
-hmmm... by using the `to_yaml` method suddenly the database has work to
-do. The reason for this behavior is optimization. Let's assume that you
-want to chain a couple of methods. Than it might be better for
-ActiveRecord to wait till the very last second which it does. It only
-requests the data from the SQL database when it has to do it. Until than
-it stores the request in a `ActiveRecord::Relation`.
+hmmm... by using the `to_yaml` method suddenly the database has work to do.
+The reason for this behavior is optimization. Let's assume that you want to
+chain a couple of methods. Than it might be better for ActiveRecord to wait
+till the very last second which it does. It only requests the data from the
+SQL database when it has to do it (it's called LazyLoading). Until than it
+stores the request in a `ActiveRecord::Relation`.
 
 The result of `Country.all` is actually an `Array` of `Country`.
 
 If `Country.all` returns an array, then we should also be able to use
-iterators (see [the section called "Iterators"](chapter02.ruby-basics.html#iterators) and [the section called "Iterator each"](chapter02-ruby-basics.html#iterator-each)),
-right? Yes, of course! That is the beauty of it. Here is a little experiment with each:
+iterators (see [the section called
+"Iterators"](chapter02.ruby-basics.html#iterators) and [the section called
+"Iterator each"](chapter02-ruby-basics.html#iterator-each)), right? Yes, of
+course! That is the beauty of it. Here is a little experiment with each:
 
 ```bash
 >> Country.all.each do |country|
@@ -774,8 +758,8 @@ Netherlands
 >>
 ```
 
-So can we also use `.all.first` as an alternative for `.first`? Yes, but
-it does not make much sense. Have a look for yourself:
+So can we also use `.all.first` as an alternative for `.first`? Yes, but it
+does not make much sense. Have a look for yourself:
 
 ```bash
 >> Country.first
@@ -788,20 +772,25 @@ it does not make much sense. Have a look for yourself:
 ```
 
 `Country.first` and `Country.all.first` result in exact the same SQL
-query.
+query because ActiveRecord optimizes it.
 
-Populating the Database with seeds.rb
--------------------------------------
+### `second`, `third`, `fourth` and `fifth`
 
-With the file `db/seeds.rb`, the Rails gods have given us a way of
-feeding default values easily and quickly to a fresh installation. This
-is a normal Ruby program within the Rails environment. You have full
-access to all classes and methods of your application.
+Since Rails 4.1 ActiveRecord does not only provide the `first` method but also
+`second`, `third`, `fourth` and `fifth`. It's obvious what they do.
 
-So you do not need to enter everything manually with `rails
-  console` in order to make the records created in [the section called "create"](#create) available in a new
-Rails application, but you can simply use the following file
-`db/seeds.rb`:
+Populating the Database with `seeds.rb`
+---------------------------------------
+
+With the file `db/seeds.rb`, the Rails gods have given us a way of feeding
+default values easily and quickly to a fresh installation. This is a normal
+Ruby program within the Rails environment. You have full access to all classes
+and methods of your application.
+
+So you do not need to enter everything manually with `rails console` in order
+to make the records created in [the section called "create"](#create)
+available in a new Rails application, but you can simply use the following
+file `db/seeds.rb`:
 
 ```ruby
 Country.create(name: 'Germany', population: 81831000)
@@ -810,10 +799,10 @@ Country.create(name: 'Belgium', population: 10839905)
 Country.create(name: 'Netherlands', population: 16680000)
 ```
 
-You then populate it with data via `rake db:seed`. To be on the safe
-side, you should always set up the database from scratch with
-`rake db:setup` in the context of this book and then automatically
-populate it with the file `db/seeds.rb`. Here is what is looks like:
+You then populate it with data via `rake db:seed`. To be on the safe side, you
+should always set up the database from scratch with `rake db:setup` in the
+context of this book and then automatically populate it with the file
+`db/seeds.rb`. Here is what is looks like:
 
 ```bash
 $ rake db:setup
@@ -835,14 +824,13 @@ $
 ```
 
 I use the file `db/seeds.rb` at this point because it offers a simple
-mechanism for filling an empty database with default values. In the
-course of this book, this will make it easier for us to set up quick
-example scenarios.
+mechanism for filling an empty database with default values. In the course of
+this book, this will make it easier for us to set up quick example scenarios.
 
 ### It's all just Ruby code
 
-The `db/seeds.rb` is a Ruby program. Correspondingly, we can also use
-the following approach as an alternative:
+The `db/seeds.rb` is a Ruby program. Correspondingly, we can also use the
+following approach as an alternative:
 
 ```ruby
 country_list = [
@@ -858,26 +846,27 @@ end
 ```
 
 The result is the same. I am showing you this example to make it clear
-that you can program completely normally within the file `db/seeds.rb`.
+that you can program completely normally within `db/seeds.rb`.
 
-### Generating seeds.rb From Existing Data
+### Generating `seeds.rb` From Existing Data
 
 Sometimes it can be useful to export the current data pool of a Rails
-application into a `db/seeds.rb`. While writing this book, I encountered
-this problem in almost every chapter. Unfortunately, there is no
-standard approach for this. I am showing you what you can do in this
-case. There are other, more complex scenarios that can be derived from
-my approach.
+application into a `db/seeds.rb`. While writing this book, I encountered this
+problem in almost every chapter. Unfortunately, there is no standard approach
+for this. I am showing you what you can do in this case. There are other, more
+complex scenarios that can be derived from my approach.
 
-We create our own little rake task for that. That can be done by
-creating the file `lib/tasks/export.rake` with the following content:
+We create our own little rake task for that. That can be done by creating the
+file `lib/tasks/export.rake` with the following content:
 
 ```ruby
 namespace :export do
   desc "Prints Country.all in a seeds.rb way."
   task :seeds_format => :environment do
     Country.order(:id).all.each do |country|
-      puts "Country.create(#{country.serializable_hash.delete_if {|key, value| ['created_at','updated_at','id'].include?(key)}.to_s.gsub(/[{}]/,'')})"
+      puts "Country.create(#{country.serializable_hash.delete_if 
+           {|key, value| ['created_at','updated_at','id'].include?(key)}.
+           to_s.gsub(/[{}]/,'')})"
     end
   end
 end
@@ -990,8 +979,8 @@ $
 > **Warning**
 >
 > The method `find` generates an exception if the ID you are searching for
-> does not have a record in the database. If in doubt, you should use
-> `where` (see [the section called "where"](#where)).
+> does not have a record in the database. If in doubt, you should use `where`
+> (see [the section called "where"](#where)).
 
 ### where
 
@@ -1010,7 +999,8 @@ Loading development environment (Rails 4.2.1)
 >>
 ```
 
-You can also use where to search for *ranges* (see [the section called "Range"](chapter02-ruby-basics.html#range)):
+You can also use where to search for *ranges* (see [the section called
+"Range"](chapter02-ruby-basics.html#range)):
 
 ```bash
 >> Album.where(release_year: 1960..1966)
@@ -1022,8 +1012,8 @@ You can also use where to search for *ranges* (see [the section called "Range"](
 >>
 ```
 
-And you can also specify several search factors simultaneously,
-separated by commas:
+And you can also specify several search factors simultaneously, separated by
+commas:
 
 ```bash
 >> Album.where(release_year: 1960..1966, id: 1..5)
@@ -1041,9 +1031,9 @@ Or an array of parameters:
 >>
 ```
 
-The result of `where` is always an array. Even if it only contains one hit
-or if no hits are returned. If you are looking for the first hit, you
-need to combine the method `where` with the method `first`:
+The result of `where` is always an array. Even if it only contains one hit or
+if no hit is returned. If you are looking for the first hit, you need to
+combine the method `where` with the method `first`:
 
 ```bash
 >> Album.where(release_year: [1966, 1968]).first
@@ -1058,21 +1048,20 @@ $
 
 #### SQL Queries with where
 
-Sometimes there is no other way and you just have to define and execute
-your own SQL query. In ActiveRecord, there are two different ways of
-doing this. One *sanitizes* each query before executing it and the other
-passes the query on to the SQL database 1 to 1 as it is. Normally, you
-should always use the sanitized version because otherwise you can easily
-fall victim to an *SQL injection* attack (see
-<http://en.wikipedia.org/wiki/Sql_injection>).
+Sometimes there is no other way and you just have to define and execute your
+own SQL query. In ActiveRecord, there are two different ways of doing this.
+One *sanitizes* each query before executing it and the other passes the query
+on to the SQL database 1 to 1 as it is. Normally, you should always use the
+sanitized version because otherwise you can easily fall victim to an *SQL
+injection* attack (see <http://en.wikipedia.org/wiki/Sql_injection>).
 
-If you do not know much about SQL, you can safely skip this section. The
-SQL commands used here are not explained further.
+If you do not know much about SQL, you can safely skip this section. The SQL
+commands used here are not explained further.
 
 ##### Sanitized Queries
 
-In this variant, all dynamic search parts are replaced by a question
-mark as placeholder and only listed as parameters after the SQL string.
+In this variant, all dynamic search parts are replaced by a question mark as
+placeholder and only listed as parameters after the SQL string.
 
 In this example, we are searching for all albums whose name contains the
 string “on”:
@@ -1094,8 +1083,8 @@ Now the number of albums that were published from 1965 onwards:
 >>
 ```
 
-The number of albums that are more recent than 1970 and whose name
-contains the string “on”:
+The number of albums that are more recent than 1970 and whose name contains
+the string “on”:
 
 ```bash
 >> Album.where( 'name like ? AND release_year > ?', '%on%', 1970 ).count
@@ -1104,8 +1093,8 @@ contains the string “on”:
 >>
 ```
 
-If the variable `search_string` contains the desired string, you can
-search for it as follows:
+If the variable `search_string` contains the desired string, you can search
+for it as follows:
 
 ```bash
 >> search_string = 'ing'
@@ -1119,8 +1108,8 @@ $
 
 ##### “Dangerous” SQL Queries
 
-If you really know what you are doing, you can of course also define the
-SQL query completely and forego the *sanitizing* of the query.
+If you really know what you are doing, you can of course also define the SQL
+query completely and forego the *sanitizing* of the query.
 
 Let's count all albums whose name contain the string “on”:
 
@@ -1134,24 +1123,23 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-Please only use this variation if you know exactly what you are doing
-and once you have familiarized yourself with the topic SQL injections
-(see <http://en.wikipedia.org/wiki/Sql_injection>).
+Please only use this variation if you know exactly what you are doing and once
+you have familiarized yourself with the topic SQL injections (see
+<http://en.wikipedia.org/wiki/Sql_injection>).
 
 #### Lazy Loading
 
-Lazy Loading is a mechanism that only carries out a database query if
-the program flow cannot be realised without the result of this query.
-Until then, the query is saved as `ActiveRecord::Relation`. (Incidentally,
-the opposite of *lazy loading* is referred to as *eager loading*.)
+Lazy Loading is a mechanism that only carries out a database query if the
+program flow cannot be realised without the result of this query. Until then,
+the query is saved as `ActiveRecord::Relation`. (Incidentally, the opposite of
+*lazy loading* is referred to as *eager loading*.)
 
-Does it make sense in principle, but you are not sure what the point of
-it all is? Then let's cobble together a query where we nest several
-methods. In the following example, `a` is defined more and more closely
-and only at the end (when calling the method `all`) the database query
-would really be executed in a production system. With the method
-ActiveRecord methods `to_sql` you can display the current SQL
-query.
+Does it make sense in principle, but you are not sure what the point of it all
+is? Then let's cobble together a query where we nest several methods. In the
+following example, `a` is defined more and more closely and only at the end
+(when calling the method `all`) the database query would really be executed in
+a production system. With the method ActiveRecord methods `to_sql` you can
+display the current SQL query.
 
 ```bash
 $ rails console
@@ -1171,18 +1159,17 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-The console can be a bit tricky about this. It tries to help the
-developer by actually showing the result but in a non-console
-environment this would would only happen at the very last time.
+The console can be a bit tricky about this. It tries to help the developer by
+actually showing the result but in a non-console environment this would would
+only happen at the very last time.
 
 ##### Automatic Optimization
 
-One of the great advantages of *lazy loading* is the automatic
-optimization of the SQL query through ActiveRecord.
+One of the great advantages of *lazy loading* is the automatic optimization of
+the SQL query through ActiveRecord.
 
-Let's take the sum of all release years of the albums that came out in
-the 70s. Then we sort the albums alphabetically and then calculate the
-sum.
+Let's take the sum of all release years of the albums that came out in the
+70s. Then we sort the albums alphabetically and then calculate the sum.
 
 ```bash
 $ rails console
@@ -1197,21 +1184,21 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-Logically, the result is the same for both queries. But the interesting
-thing is that ActiveRecord uses the same SQL code for both queries. It
-has detected that `order` is completely irrelevant for `sum` and therefore
-taken it out altogether.
+Logically, the result is the same for both queries. But the interesting thing
+is that ActiveRecord uses the same SQL code for both queries. It has detected
+that `order` is completely irrelevant for `sum` and therefore took it out
+altogether.
 
 > **Note**
 >
 > In case you are asking yourself why the first query took 1.5ms and the
-> second 0.3ms: ActiveRecord cached the results of the first SQL
-> request.
+> second 0.3ms: ActiveRecord cached the results of the first SQL request.
 
-### order and reverse\_order
+### order and reverse_order
 
-To sort a database query, you can use the method `order`. Example: all
-albums from the 60s, sorted by name:
+To sort a database query, you can use the method `order`.
+
+Example: all albums from the 60s, sorted by name:
 
 ```bash
 $ rails console
@@ -1222,7 +1209,7 @@ Loading development environment (Rails 4.2.1)
 >>
 ```
 
-With the method reverse\_order you can reverse an order previously
+With the method `reverse_order` you can reverse an order previously
 defined via `order`:
 
 ```bash
@@ -1235,8 +1222,8 @@ $
 
 ### limit
 
-The result of any search can be limited to a certain range via the
-method `limit`.
+The result of any search can be limited to a certain range via the method
+`limit`.
 
 The first 5 albums from the 60s:
 
@@ -1259,11 +1246,11 @@ $
 
 #### offset
 
-With the method `offset`, you can define the starting position of the
-method limit.
+With the method `offset`, you can define the starting position of the method
+limit.
 
-First, we return the first two records and then the first two records
-with an offset of 5:
+First, we return the first two records and then the first two records with an
+offset of 5:
 
 ```bash
 $ rails console
@@ -1280,8 +1267,7 @@ $
 
 ### group
 
-With the method `group`, you can return the result of a query in grouped
-form.
+With the method `group`, you can return the result of a query in grouped form.
 
 Let's return all albums, grouped by their release year:
 
@@ -1295,13 +1281,13 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-### pluck
+### `pluck`
 
-Normally, ActiveRecord pulls all table columns from the database and
-leaves it up to the programmer to later pick out the components he is
-interested in. But in case of large amounts of data, it can be useful
-and above all much quicker to define a specific database field directly
-for the query. You can do this via the method `pluck`.
+Normally, ActiveRecord pulls all table columns from the database and leaves it
+up to the programmer to later pick out the components he is interested in. But
+in case of large amounts of data, it can be useful and above all much quicker
+to define a specific database field directly for the query. You can do this
+via the method `pluck`.
 
 ```bash
 $ rails console
@@ -1318,11 +1304,11 @@ $
 
 As a result, `pluck` returns an array.
 
-### first\_or\_create and first\_or\_initialize
+### `first_or_create` and `first_or_initialize`
 
-The methods `first_or_create` and `first_or_initialize` are create ways
-to search for a specific entry in your database or create one if the
-entry doesn't exist already. Both can be chained to a where search.
+The methods `first_or_create` and `first_or_initialize` are create ways to
+search for a specific entry in your database or create one if the entry
+doesn't exist already. Both have to be chained to a `where` search.
 
 ```bash
 $ rails console
@@ -1342,12 +1328,12 @@ $
 
 ### Calculations
 
-#### average
+#### `average`
 
-With the method `average`, you can calculate the average of the values in
-a particular column of the table. Our data material is of course not
-really suited to this. But as an example, let's calculate the average
-release year of all albums and then the same for albums from the 60s:
+With the method `average`, you can calculate the average of the values in a
+particular column of the table. Our data material is of course not really
+suited to this. But as an example, let's calculate the average release year of
+all albums and then the same for albums from the 60s:
 
 ```bash
 $ rails console
@@ -1368,7 +1354,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-#### count
+#### `count`
 
 The name says it all: the method `count` counts the number of records.
 
@@ -1385,7 +1371,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-#### maximum
+#### `maximum`
 
 With the method `maximum`, you can output the item with the highest value
 within a query.
@@ -1402,7 +1388,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-#### minimum
+#### `minimum`
 
 With the method `minimum`, you can output the item with the lowest value
 within a query.
@@ -1419,7 +1405,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-#### sum
+#### `sum`
 
 With the method `sum`, you can calculate the sum of all items in a
 specific column of the database query.
@@ -1438,12 +1424,12 @@ $
 
 ### SQL EXPLAIN
 
-Most SQL databases can provide detailled information on a SQL query with
-the command EXPLAIN. This does not make much sense for our mini
-application, but if you are working with a large database one day, then
-EXPLAIN is a good debugging method, for example to find out where to
-place an index. SQL EXPLAIN can be called with the method `explain` (it
-will be displayed in prettier form if you add a `puts`):
+Most SQL databases can provide detailled information on a SQL query with the
+command EXPLAIN. This does not make much sense for our mini application, but
+if you are working with a large database one day, then EXPLAIN is a good
+debugging method, for example to find out where to place an index. SQL EXPLAIN
+can be called with the method `explain` (it will be displayed in prettier form
+if you add a `puts`):
 
 ```bash
 $ rails console
@@ -4468,12 +4454,12 @@ end
 
 ### Miscellaneous
 
-This book is aimed at beginners, so I cannot discuss the topic
-migrations in great depth. The main focus is on understanding the
-mechanics in principle. But there are a few details that are so
-important that I want to mention them here.
+This book is aimed at beginners, so I cannot discuss the topic migrations in
+great depth. The main focus is on understanding the mechanics in principle.
+But there are a few details that are so important that I want to mention them
+here.
 
-#### Automatically Added Fields (id, created\_at and updated\_at)
+#### Automatically Added Fields (`id`, `created_at` and `updated_at`)
 
 Rails kindly adds the following fields automatically in the default
 migration:
@@ -4520,17 +4506,17 @@ topic migration:
 Miscellaneous
 -------------
 
-In this section, I am going to show you some examples of topics and
-questions that are important for your everyday work, but as a whole go
-beyond the scope of this book aimed at beginners. They provide recipes
-for solving specific ActiveRecord problems.
+In this section, I am going to show you some examples of topics and questions
+that are important for your everyday work, but as a whole go beyond the scope
+of this book aimed at beginners. They provide recipes for solving specific
+ActiveRecord problems.
 
 ### Callbacks
 
-Callbacks are defined programming hooks in the life of an ActiveRecord
-object. You can find a list of all callbacks at
-<http://api.rubyonrails.org/classes/ActiveRecord/Callbacks.html>. Here
-are the most frequently used callbacks:
+Callbacks are defined programming hooks in the life of an ActiveRecord object.
+You can find a list of all callbacks at
+<http://api.rubyonrails.org/classes/ActiveRecord/Callbacks.html>. Here are the
+most frequently used callbacks:
 
 -   `before_validation`
 
@@ -4556,11 +4542,11 @@ are the most frequently used callbacks:
 
     Executed after the first save.
 
-A callback is always executed in the model. Let's assume you always want
-to save an e-mail address in a `User` model in lower case, but also give
-the user of the web interface the option to enter upper case letters.
-You could use a `before_save` callback to convert the attribute `email`
-to lower case via the method `downcase`.
+A callback is always executed in the model. Let's assume you always want to
+save an e-mail address in a `User` model in lower case, but also give the user
+of the web interface the option to enter upper case letters.  You could use a
+`before_save` callback to convert the attribute `email` to lower case via the
+method `downcase`.
 
 The Rails application:
 
@@ -4611,22 +4597,23 @@ Loading development environment (Rails 4.2.1)
 >> exit
 ```
 
-Even though the e-mail address was entered partly with a capital
-letters, ActiveRecord has indeed converted all letters automatically to
-lower case via the `before_save` callback.
+Even though the e-mail address was entered partly with a capital letters,
+ActiveRecord has indeed converted all letters automatically to lower case via
+the `before_save` callback.
 
-In [Chapter 9, Action Mailer](chapter09-actionmailer.html) you will find an example for the same model where we use an
-`after_create` callback to automatically send an e-mail to a newly
-created user. In [the section called "Default Values"](#default-values) you will find an example for defining a default value
-for a new object via an `after_initialize` callback.
+In [Chapter 9, Action Mailer](chapter09-actionmailer.html) you will find an
+example for the same model where we use an `after_create` callback to
+automatically send an e-mail to a newly created user. In [the section called
+"Default Values"](#default-values) you will find an example for defining a
+default value for a new object via an `after_initialize` callback.
 
 ### Default Values
 
-If you need specific default values for an ActiveRecord object, you can
-easily implement this with the `after_initialize` callback. This method
-is called by ActiveRecord when a new object is created. Let's assume we
-have a model `Order` and the minimum order quantity is always 1, so we can
-enter 1 directly as default value when creating a new record.
+If you need specific default values for an ActiveRecord object, you can easily
+implement this with the `after_initialize` callback. This method is called by
+ActiveRecord when a new object is created. Let's assume we have a model
+`Order` and the minimum order quantity is always 1, so we can enter 1 directly
+as default value when creating a new record.
 
 Let's set up a quick example:
 
