@@ -1133,10 +1133,10 @@ irb(main):001:0> exit
 $
 ```
 
-Many readers use this document on mobile devises. For them I try to keep
-any code or terminal output width to a minimum. To save the real estate
-which is by default occupied by `irb(main):001:0>` we can start
-`rails console` with the parameter `-- --simple-prompt`.
+Many readers use this ebook on small mobile devises. For them I try to keep
+any code or terminal output width to a minimum. To save the real estate which
+is by default occupied by `irb(main):001:0>` we can start `rails console` with
+the parameter `-- --simple-prompt`.
 
 ```bash
 $ rails console -- --simple-prompt
@@ -1323,6 +1323,64 @@ controller.
 
 All helpers are in the directory `app/helpers/.`
 
+Debugging
+---------
+
+Rails provides a couple of debug tools to make the developer's live easier.
+
+### debug
+
+In any view you can use the `debug` helper to render an object with the YAML
+format within a `<pre>` tag. To display the value of `@foo` you can use the
+following line in your view:
+
+```erb
+<%= debug @foo %>
+```
+
+### Web Console
+
+The `web-console` gem provides a way to render a rails console views. So when
+you browser to a specific URL at the end of that page you'll get a console.
+
+Let me show you this by example with this simple rails application:
+
+```bash
+rails new testapp
+cd testapp
+rails generate controller page index
+```
+
+In the `app/controllers/page_controller.rb` we add the following code:
+
+```ruby
+class PageController < ApplicationController                                    
+  def index
+    @foo = 'bar'
+  end
+end
+```
+
+And in the view `app/views/page/index.html.erb` we'll add the `console` command:
+
+```ruby
+<h1>Page#index</h1>
+<p>Find me in app/views/page/index.html.erb</p>
+
+<%= console %>
+```
+
+After starting the rails application with `rails server` and browsing to the URL `http://localhost:3000/page/index` we get a web console at the bottom of the page. In it we have access to the instance variable `@foo`.
+
+![Web Console](images/screenshots/chapter03/web-console.jpg "Web Console")
+
+### Other Debugging Tools
+
+There are a couple of other build in debugging tools which are out of the scope
+of this introduction. Please have a look at
+http://guides.rubyonrails.org/debugging_rails_applications.html to get an
+overview.
+
 Rails Lingo
 -----------
 
@@ -1399,5 +1457,3 @@ fulfil the desired tasks (such as finding a specific set of data and saving it
 in an instance variable) and then renders the desired view.
 
 All controllers can be found in the directory `app/controllers/.`
-
-
