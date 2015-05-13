@@ -497,8 +497,9 @@ Enter ".help" for usage hints.
 sqlite> .tables
 countries          schema_migrations
 sqlite> .schema countries
-CREATE TABLE "countries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar,
-"population" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
+CREATE TABLE "countries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+"name" varchar, "population" integer, "created_at" datetime NOT NULL,
+"updated_at" datetime NOT NULL);
 sqlite> .exit
 $
 ```
@@ -521,14 +522,14 @@ Let's try creating a country in the console with the command
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Country.create(name: 'Germany', population: 81831000)
-   (0.3ms)  begin transaction
-  SQL (1.3ms)  INSERT INTO "countries" ("name", "population",
-  "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Germany"],
-  ["population", 81831000], ["created_at", "2015-04-16 13:32:37.748459"],
-  ["updated_at", "2015-04-16 13:32:37.748459"]]
-   (0.7ms)  commit transaction
-=> #<Country id: 1, name: "Germany", population: 81831000,
-created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
+   (0.3ms)  begin transaction SQL (1.3ms)  INSERT INTO "countries" ("name",
+   "population", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name",
+   "Germany"], ["population", 81831000], ["created_at", "2015-04-16
+   13:32:37.748459"], ["updated_at", "2015-04-16 13:32:37.748459"]] (0.7ms)
+   commit transaction 
+   => #<Country id: 1, name: "Germany", population:
+   81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16
+   13:32:37">
 >> exit
 $
 ```
@@ -587,18 +588,21 @@ disadvantages):
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> france = Country.new
-=> #<Country id: nil, name: nil, population: nil, created_at: nil, updated_at: nil>
+=> #<Country id: nil, name: nil, population: nil, created_at: nil, updated_at:
+nil>
 >> france.name = 'France'
 => "France"
 >> france.population = 65447374
 => 65447374
 >> france.save
-   (0.2ms)  begin transaction
-  SQL (0.9ms)  INSERT INTO "countries" ("name", "population", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "France"], ["population", 65447374], ["created_at", "2015-04-16 13:40:07.608858"], ["updated_at", "2015-04-16 13:40:07.608858"]]
-   (9.4ms)  commit transaction
-=> true
+   (0.2ms)  begin transaction SQL (0.9ms)  INSERT INTO "countries" ("name",
+   "population", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name",
+   "France"], ["population", 65447374], ["created_at", "2015-04-16
+   13:40:07.608858"], ["updated_at", "2015-04-16 13:40:07.608858"]] (9.4ms)
+   commit transaction => true
 >> france
-=> #<Country id: 2, name: "France", population: 65447374, created_at: "2015-04-16 13:40:07", updated_at: "2015-04-16 13:40:07">
+=> #<Country id: 2, name: "France", population: 65447374, created_at:
+"2015-04-16 13:40:07", updated_at: "2015-04-16 13:40:07">
 >>
 ```
 
@@ -607,12 +611,14 @@ just as with `create`:
 
 ```bash
 >> belgium = Country.new(name: 'Belgium', population: 10839905)
-=> #<Country id: nil, name: "Belgium", population: 10839905, created_at: nil, updated_at: nil>
+=> #<Country id: nil, name: "Belgium", population: 10839905, created_at: nil,
+updated_at: nil>
 >> belgium.save
-   (0.2ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "countries" ("name", "population", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Belgium"], ["population", 10839905], ["created_at", "2015-04-16 13:42:04.580377"], ["updated_at", "2015-04-16 13:42:04.580377"]]
-   (9.3ms)  commit transaction
-=> true
+   (0.2ms)  begin transaction SQL (0.4ms)  INSERT INTO "countries" ("name",
+   "population", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name",
+   "Belgium"], ["population", 10839905], ["created_at", "2015-04-16
+   13:42:04.580377"], ["updated_at", "2015-04-16 13:42:04.580377"]] (9.3ms)
+   commit transaction => true
 >> exit
 $
 ```
@@ -630,14 +636,15 @@ Example:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> netherlands = Country.new(name: 'Netherlands')
-=> #<Country id: nil, name: "Netherlands", population: nil, created_at: nil, updated_at: nil>
+=> #<Country id: nil, name: "Netherlands", population: nil, created_at: nil,
+updated_at: nil>
 >> netherlands.new_record?
 => true
 >> netherlands.save
-   (0.2ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "countries" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "Netherlands"], ["created_at", "2015-04-16 13:48:03.114012"], ["updated_at", "2015-04-16 13:48:03.114012"]]
-   (0.8ms)  commit transaction
-=> true
+   (0.2ms)  begin transaction SQL (0.5ms)  INSERT INTO "countries" ("name",
+   "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "Netherlands"],
+   ["created_at", "2015-04-16 13:48:03.114012"], ["updated_at", "2015-04-16
+   13:48:03.114012"]] (0.8ms)  commit transaction => true
 >> netherlands.new_record?
 => false
 >> exit
@@ -660,11 +667,15 @@ Let's start with the easiest ones: `first` and `last`.
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Country.first
-  Country Load (0.8ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" ASC LIMIT 1
-=> #<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
+  Country Load (0.8ms)  SELECT  "countries".* FROM "countries"  ORDER BY
+  "countries"."id" ASC LIMIT 1 => #<Country id: 1, name: "Germany",
+  population: 81831000, created_at: "2015-04-16 13:32:37", updated_at:
+  "2015-04-16 13:32:37">
 >> Country.last
-  Country Load (0.4ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" DESC LIMIT 1
-=> #<Country id: 4, name: "Netherlands", population: nil, created_at: "2015-04-16 13:48:03", updated_at: "2015-04-16 13:48:03">
+  Country Load (0.4ms)  SELECT  "countries".* FROM "countries"  ORDER BY
+  "countries"."id" DESC LIMIT 1 => #<Country id: 4, name: "Netherlands",
+  population: nil, created_at: "2015-04-16 13:48:03", updated_at: "2015-04-16
+  13:48:03">
 >>
 ```
 
@@ -672,8 +683,15 @@ And now all at once with `all`:
 
 ```bash
 >> Country.all
-  Country Load (0.3ms)  SELECT "countries".* FROM "countries"
-=> #<ActiveRecord::Relation [#<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">, #<Country id: 2, name: "France", population: 65447374, created_at: "2015-04-16 13:40:07", updated_at: "2015-04-16 13:40:07">, #<Country id: 3, name: "Belgium", population: 10839905, created_at: "2015-04-16 13:42:04", updated_at: "2015-04-16 13:42:04">, #<Country id: 4, name: "Netherlands", population: nil, created_at: "2015-04-16 13:48:03", updated_at: "2015-04-16 13:48:03">]>
+  Country Load (0.3ms)  SELECT "countries".* FROM "countries" =>
+  #<ActiveRecord::Relation [#<Country id: 1, name: "Germany", population:
+  81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16
+  13:32:37">, #<Country id: 2, name: "France", population: 65447374,
+  created_at: "2015-04-16 13:40:07", updated_at: "2015-04-16 13:40:07">,
+  #<Country id: 3, name: "Belgium", population: 10839905, created_at:
+  "2015-04-16 13:42:04", updated_at: "2015-04-16 13:42:04">, #<Country id: 4,
+  name: "Netherlands", population: nil, created_at: "2015-04-16 13:48:03",
+  updated_at: "2015-04-16 13:48:03">]>
 >>
 ```
 
@@ -683,8 +701,9 @@ such objects:
 
 ```bash
 >> Country.first.class
-  Country Load (0.2ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" ASC LIMIT 1
-=> Country(id: integer, name: string, population: integer, created_at: datetime, updated_at: datetime)
+  Country Load (0.2ms)  SELECT  "countries".* FROM "countries"  ORDER BY
+  "countries"."id" ASC LIMIT 1 => Country(id: integer, name: string,
+  population: integer, created_at: datetime, updated_at: datetime)
 >> Country.all.class
 => Country::ActiveRecord_Relation
 >>
@@ -754,7 +773,13 @@ Germany
 France
 Belgium
 Netherlands
-=> [#<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">, #<Country id: 2, name: "France", population: 65447374, created_at: "2015-04-16 13:40:07", updated_at: "2015-04-16 13:40:07">, #<Country id: 3, name: "Belgium", population: 10839905, created_at: "2015-04-16 13:42:04", updated_at: "2015-04-16 13:42:04">, #<Country id: 4, name: "Netherlands", population: nil, created_at: "2015-04-16 13:48:03", updated_at: "2015-04-16 13:48:03">]
+=> [#<Country id: 1, name: "Germany", population: 81831000, created_at:
+"2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">, #<Country id: 2,
+name: "France", population: 65447374, created_at: "2015-04-16 13:40:07",
+updated_at: "2015-04-16 13:40:07">, #<Country id: 3, name: "Belgium",
+population: 10839905, created_at: "2015-04-16 13:42:04", updated_at:
+"2015-04-16 13:42:04">, #<Country id: 4, name: "Netherlands", population: nil,
+created_at: "2015-04-16 13:48:03", updated_at: "2015-04-16 13:48:03">]
 >>
 ```
 
@@ -763,11 +788,15 @@ does not make much sense. Have a look for yourself:
 
 ```bash
 >> Country.first
-  Country Load (0.3ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" ASC LIMIT 1
-=> #<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
+  Country Load (0.3ms)  SELECT  "countries".* FROM "countries"  ORDER BY
+  "countries"."id" ASC LIMIT 1 => #<Country id: 1, name: "Germany",
+  population: 81831000, created_at: "2015-04-16 13:32:37", updated_at:
+  "2015-04-16 13:32:37">
 >> Country.all.first
-  Country Load (0.2ms)  SELECT  "countries".* FROM "countries"  ORDER BY "countries"."id" ASC LIMIT 1
-=> #<Country id: 1, name: "Germany", population: 81831000, created_at: "2015-04-16 13:32:37", updated_at: "2015-04-16 13:32:37">
+  Country Load (0.2ms)  SELECT  "countries".* FROM "countries"  ORDER BY
+  "countries"."id" ASC LIMIT 1 => #<Country id: 1, name: "Germany",
+  population: 81831000, created_at: "2015-04-16 13:32:37", updated_at:
+  "2015-04-16 13:32:37">
 >>
 ```
 
@@ -943,7 +972,7 @@ db/development.sqlite3 already exists
 $
 ```
 
-### find
+### `find`
 
 The simplest case is searching for a record via a primary key (by
 default, the `id` field in the database table). If I know the ID of an
@@ -954,11 +983,17 @@ object or several objects at once via the ID:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Album.find(2)
-  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ? LIMIT 1  [["id", 2]]
-=> #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ?
+  LIMIT 1  [["id", 2]] => #<Album id: 2, name: "Pet Sounds", release_year:
+  1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">
 >> Album.find([1,3,7])
-  Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."id" IN (1, 3, 7)
-=> [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]
+  Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."id" IN
+  (1, 3, 7) => [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band",
+  release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at:
+  "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966,
+  created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+  #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at:
+  "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]
 >>
 ```
 
@@ -967,11 +1002,12 @@ pass an array as parameter:
 
 ```bash
 >> Album.find(5).class
-  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ? LIMIT 1  [["id", 5]]
-=> Album(id: integer, name: string, release_year: integer, created_at: datetime, updated_at: datetime)
+  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ?
+  LIMIT 1  [["id", 5]] => Album(id: integer, name: string, release_year:
+  integer, created_at: datetime, updated_at: datetime)
 >> Album.find([5]).class
-  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ? LIMIT 1  [["id", 5]]
-=> Array
+  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ?
+  LIMIT 1  [["id", 5]] => Array
 >> exit
 $
 ```
@@ -982,7 +1018,7 @@ $
 > does not have a record in the database. If in doubt, you should use `where`
 > (see [the section called "where"](#where)).
 
-### where
+### `where`
 
 With the method `where`, you can search for specific values in the
 database. Let's search for all albums from the year 1966:
@@ -1450,7 +1486,7 @@ $
 
 ActiveRecord stores the results of a query in Memory. With very large
 tables and results that can become a performance issue. To address this
-you can use the find\_each method which splits up the query into batches
+you can use the 'find_each' method which splits up the query into batches
 with the size of 1,000 (can be configured with the `:batch_size`
 option). Our example Album table is too small to show the effect but the
 method would be used like this:
@@ -1512,7 +1548,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-### changed?
+### `changed?`
 
 If you are not sure if a record has been changed and not yet saved, you
 can check via the method `changed?`:
@@ -1521,8 +1557,10 @@ can check via the method `changed?`:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> beatles_album = Album.where(id: 10).first
-  Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ?  ORDER BY "albums"."id" ASC LIMIT 1  [["id", 10]]
-=> #<Album id: 10, name: "A Test", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 18:46:03">
+  Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ?
+  ORDER BY "albums"."id" ASC LIMIT 1  [["id", 10]]
+=> #<Album id: 10, name: "A Test", release_year: 1968, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 18:46:03">
 >> beatles_album.changed?
 => false
 >> beatles_album.name = 'The Beatles'
@@ -1530,9 +1568,10 @@ Loading development environment (Rails 4.2.1)
 >> beatles_album.changed?
 => true
 >> beatles_album.save
-   (0.1ms)  begin transaction
-  SQL (0.6ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = ?  [["name", "The Beatles"], ["updated_at", "2015-04-16 18:47:26.794527"], ["id", 10]]
-   (9.2ms)  commit transaction
+   (0.1ms)  begin transaction SQL (0.6ms)  UPDATE "albums" SET "name" = ?,
+   "updated_at" = ? WHERE "albums"."id" = ?  [["name", "The Beatles"],
+   ["updated_at", "2015-04-16 18:47:26.794527"], ["id", 10]] (9.2ms)  commit
+   transaction
 => true
 >> beatles_album.changed?
 => false
@@ -1540,7 +1579,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-### update\_attributes
+### `update_attributes`
 
 With the method `update_attributes` you can change several attributes of
 an object in one go and then immediately save them automatically.
@@ -1551,30 +1590,39 @@ Let's use this method within the example used in [the section called "Simple Edi
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> first_album = Album.first
-  Album Load (0.2ms)  SELECT  "albums".* FROM "albums"  ORDER BY "albums"."id" ASC LIMIT 1
-=> #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">
+  Album Load (0.2ms)  SELECT  "albums".* FROM "albums"  ORDER BY "albums"."id"
+  ASC LIMIT 1
+=> #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year:
+1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">
 >> first_album.changed?
 => false
 >> first_album.update_attributes(name: 'Another Test')
-   (0.1ms)  begin transaction
-  SQL (0.5ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = ?  [["name", "Another Test"], ["updated_at", "2015-04-16 18:57:08.054247"], ["id", 1]]
+   (0.1ms)  begin transaction SQL (0.5ms)  UPDATE "albums" SET "name" = ?,
+   "updated_at" = ? WHERE "albums"."id" = ?  [["name", "Another Test"],
+   ["updated_at", "2015-04-16 18:57:08.054247"], ["id", 1]]
    (9.2ms)  commit transaction
 => true
 >> first_album.changed?
 => false
 >> Album.first
-  Album Load (0.3ms)  SELECT  "albums".* FROM "albums"  ORDER BY "albums"."id" ASC LIMIT 1
-=> #<Album id: 1, name: "Another Test", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 18:57:08">
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums"  ORDER BY "albums"."id"
+  ASC LIMIT 1
+=> #<Album id: 1, name: "Another Test", release_year: 1967, created_at:
+"2015-04-16 17:45:34", updated_at: "2015-04-16 18:57:08">
 >>
 ```
 
 This kind of update can also be chained with a `where` method:
 
 ```bash
->> Album.where(name: 'Another Test').first.update_attributes(name: "Sgt. Pepper's Lonely Hearts Club Band")
-  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."name" = ?  ORDER BY "albums"."id" ASC LIMIT 1  [["name", "Another Test"]]
+>> Album.where(name: 'Another Test').first.update_attributes(name: "Sgt.
+>> Pepper's Lonely Hearts Club Band")
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."name" =
+  ?  ORDER BY "albums"."id" ASC LIMIT 1  [["name", "Another Test"]]
    (0.1ms)  begin transaction
-  SQL (0.4ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE "albums"."id" = ?  [["name", "Sgt. Pepper's Lonely Hearts Club Band"], ["updated_at", "2015-04-16 18:58:00.268375"], ["id", 1]]
+  SQL (0.4ms)  UPDATE "albums" SET "name" = ?, "updated_at" = ? WHERE
+  "albums"."id" = ?  [["name", "Sgt. Pepper's Lonely Hearts Club Band"],
+  ["updated_at", "2015-04-16 18:58:00.268375"], ["id", 1]]
    (9.0ms)  commit transaction
 => true
 >> exit
@@ -1582,13 +1630,12 @@ This kind of update can also be chained with a `where` method:
 
 ### Locking
 
-There are many ways of locking a database. By default, Rails uses
-“optimistic locking” of records. To activate locking you need to have an
-attribute with the name `lock_version` which has to be an integer. To
-show how it works I'll create a new Rails project with a `Product` model.
-Than I'll try to change the price of the first `Product` on two different
-instances. The second change will raise an
-ActiveRecord::StaleObjectError.
+There are many ways of locking a database. By default, Rails uses “optimistic
+locking” of records. To activate locking you need to have an attribute with
+the name `lock_version` which has to be an integer. To show how it works I'll
+create a new Rails project with a `Product` model.  Than I'll try to change
+the price of the first `Product` on two different instances. The second change
+will raise an ActiveRecord::StaleObjectError.
 
 Example setup:
 
@@ -1609,28 +1656,42 @@ Raising an ActiveRecord::StaleObjectError:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Product.create(name: 'Orange', price: 0.5)
-   (0.1ms)  begin transaction
-  SQL (0.7ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at", "lock_version") VALUES (?, ?, ?, ?, ?)  [["name", "Orange"], ["price", 0.5], ["created_at", "2015-04-16 19:02:17.338531"], ["updated_at", "2015-04-16 19:02:17.338531"], ["lock_version", 0]]
+   (0.1ms)  begin transaction SQL (0.7ms)  INSERT INTO "products" ("name",
+   "price", "created_at", "updated_at", "lock_version") VALUES (?, ?, ?, ?, ?)
+   [["name", "Orange"], ["price", 0.5], ["created_at", "2015-04-16
+   19:02:17.338531"], ["updated_at", "2015-04-16 19:02:17.338531"],
+   ["lock_version", 0]]
    (1.0ms)  commit transaction
-=> #<Product id: 1, name: "Orange", price: #<BigDecimal:7feb59231198,'0.5E0',9(27)>, lock_version: 0, created_at: "2015-04-16 19:02:17", updated_at: "2015-04-16 19:02:17">
+=> #<Product id: 1, name: "Orange", price:
+#<BigDecimal:7feb59231198,'0.5E0',9(27)>, lock_version: 0, created_at:
+"2015-04-16 19:02:17", updated_at: "2015-04-16 19:02:17">
 >> a = Product.first
-  Product Load (0.4ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" ASC LIMIT 1
-=> #<Product id: 1, name: "Orange", price: #<BigDecimal:7feb5918a870,'0.5E0',9(27)>, lock_version: 0, created_at: "2015-04-16 19:02:17", updated_at: "2015-04-16 19:02:17">
+  Product Load (0.4ms)  SELECT  "products".* FROM "products"  ORDER BY
+  "products"."id" ASC LIMIT 1
+=> #<Product id: 1, name: "Orange", price:
+#<BigDecimal:7feb5918a870,'0.5E0',9(27)>, lock_version: 0, created_at:
+"2015-04-16 19:02:17", updated_at: "2015-04-16 19:02:17">
 >> b = Product.first
-  Product Load (0.3ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" ASC LIMIT 1
-=> #<Product id: 1, name: "Orange", price: #<BigDecimal:7feb59172d60,'0.5E0',9(27)>, lock_version: 0, created_at: "2015-04-16 19:02:17", updated_at: "2015-04-16 19:02:17">
+  Product Load (0.3ms)  SELECT  "products".* FROM "products"  ORDER BY
+  "products"."id" ASC LIMIT 1 => #<Product id: 1, name: "Orange", price:
+  #<BigDecimal:7feb59172d60,'0.5E0',9(27)>, lock_version: 0, created_at:
+  "2015-04-16 19:02:17", updated_at: "2015-04-16 19:02:17">
 >> a.price = 0.6
 => 0.6
 >> a.save
    (0.1ms)  begin transaction
-  SQL (0.4ms)  UPDATE "products" SET "price" = 0.6, "updated_at" = '2015-04-16 19:02:59.514736', "lock_version" = 1 WHERE "products"."id" = ? AND "products"."lock_version" = ?  [["id", 1], ["lock_version", 0]]
+  SQL (0.4ms)  UPDATE "products" SET "price" = 0.6, "updated_at" = '2015-04-16
+  19:02:59.514736', "lock_version" = 1 WHERE "products"."id" = ? AND
+  "products"."lock_version" = ?  [["id", 1], ["lock_version", 0]]
    (9.1ms)  commit transaction
 => true
 >> b.price = 0.7
 => 0.7
 >> b.save
    (0.1ms)  begin transaction
-  SQL (0.3ms)  UPDATE "products" SET "price" = 0.7, "updated_at" = '2015-04-16 19:03:08.408511', "lock_version" = 1 WHERE "products"."id" = ? AND "products"."lock_version" = ?  [["id", 1], ["lock_version", 0]]
+  SQL (0.3ms)  UPDATE "products" SET "price" = 0.7, "updated_at" = '2015-04-16
+  19:03:08.408511', "lock_version" = 1 WHERE "products"."id" = ? AND
+  "products"."lock_version" = ?  [["id", 1], ["lock_version", 0]]
    (0.1ms)  rollback transaction
 ActiveRecord::StaleObjectError: Attempted to update a stale object: Product
 [...]
@@ -1640,16 +1701,16 @@ $
 
 You have to deal with the conflict by rescuing the exception and fix the
 conflict depending on your business logic. Please make sure to add a
-`lock_version` hidden field in your forms while using this mechanism
-with a WebGUI.
+`lock_version` hidden field in your forms while using this mechanism with a
+WebGUI.
 
-has\_many – 1:n Association
+`has_many` – 1:n Association
 ---------------------------
 
-In order to explain `has_many`, let's create a bookshelf application. In
-this database, there is a model with books and a model with authors. As
-a book can have multiple authors, we need a 1:n association
-(*one-to-many association*) to represent it.
+In order to explain `has_many`, let's create a bookshelf application. In this
+database, there is a model with books and a model with authors. As a book can
+have multiple authors, we need a 1:n association (*one-to-many association*)
+to represent it.
 
 > **Note**
 >
@@ -1673,10 +1734,10 @@ $ rails generate model book title
 $
 ```
 
-And finally, we create the database table for the authors. In this, we
-need an assignment field to the books table. This *foreign key* is
-always set by default as name of the referenced object (here: `book`)
-with an attached `_id`:
+And finally, we create the database table for the authors. In this, we need an
+assignment field to the books table. This *foreign key* is always set by
+default as name of the referenced object (here: `book`) with an attached
+`_id`:
 
 ```bash
 $ rails generate model author book_id:integer first_name last_name
@@ -1732,10 +1793,32 @@ These two simple definitions form the basis for a good deal of
 ActiveRecord magic. It will generate a bunch of cool new methods for us
 to link both models.
 
+#### `references` modifier
+
+Instead of creating a `book_id` attribute you can also use the `references`
+modifier with the model generator. By that you'll save a little bit of time
+because it will not only create a `book_id` attribute but add the `belongs_to
+:book` code in the `app/models/author.rb` file too. 
+
+> Note
+>
+> It does not add the `has_many` code.
+
+The above example could be done with this code:
+
+```bash
+$ rails new bookshelf
+$ cd bookshelf
+$ rails generate model book title
+$ rails generate model author book:references first_name last_name
+$ rake db:migrate
+$
+```
+
 ### Creating Records
 
-In this example, we want to save a record for the book "Homo faber" by
-Max Frisch.
+In this example, we want to save a record for the book "Homo faber" by Max
+Frisch.
 
 #### Manually
 
@@ -1747,23 +1830,30 @@ $ rake db:reset
 $
 ```  
 
-Befor using the magic we'll insert a book with an author manually. For
-that we have to use the book's id in the `book_id` attribute to create
-the author.
+Befor using the magic we'll insert a book with an author manually. For that we
+have to use the book's id in the `book_id` attribute to create the author.
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> book = Book.create(title: 'Homo faber')
-   (0.1ms)  begin transaction
-  SQL (0.7ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 08:55:01.961855"], ["updated_at", "2015-04-17 08:55:01.961855"]]
+   (0.1ms)  begin transaction SQL (0.7ms)  INSERT INTO "books" ("title",
+   "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"],
+   ["created_at", "2015-04-17 08:55:01.961855"], ["updated_at", "2015-04-17
+   08:55:01.961855"]]
    (0.9ms)  commit transaction
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 08:55:01", updated_at: "2015-04-17 08:55:01">
->> author = Author.create(book_id: book.id, first_name: 'Max', last_name: 'Frisch')
-   (0.1ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "authors" ("book_id", "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["book_id", 1], ["first_name", "Max"], ["last_name", "Frisch"], ["created_at", "2015-04-17 08:56:04.847540"], ["updated_at", "2015-04-17 08:56:04.847540"]]
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 08:55:01",
+updated_at: "2015-04-17 08:55:01">
+>> author = Author.create(book_id: book.id, first_name: 'Max', last_name:
+>> 'Frisch')
+   (0.1ms)  begin transaction SQL (0.4ms)  INSERT INTO "authors" ("book_id",
+   "first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?,
+   ?)  [["book_id", 1], ["first_name", "Max"], ["last_name", "Frisch"],
+   ["created_at", "2015-04-17 08:56:04.847540"], ["updated_at", "2015-04-17
+   08:56:04.847540"]]
    (1.0ms)  commit transaction
-=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 08:56:04", updated_at: "2015-04-17 08:56:04">
+=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch",
+created_at: "2015-04-17 08:56:04", updated_at: "2015-04-17 08:56:04">
 >> exit
 $
 ```
@@ -1772,12 +1862,12 @@ Entering the `book_id` manually in this way is of course not very
 practical and susceptible to errors. That's why there is the method
 [the section called "create"](#create).
 
-#### create
+#### 'create'
 
-Now we try doing the same as in [the section called "Manually"](#manually), but this time we use a bit of
-ActiveRecord magic. We can use the method `create` of `authors` to add new
-authors to each `Book` object. These automatically get the correct
-`book_id`:
+Now we try doing the same as in [the section called "Manually"](#manually),
+but this time we use a bit of ActiveRecord magic. We can use the method
+`create` of `authors` to add new authors to each `Book` object. These
+automatically get the correct `book_id`:
 
 ```bash
 $ rake 
@@ -1786,19 +1876,25 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> book = Book.create(title: 'Homo faber')
    (0.1ms)  begin transaction
-  SQL (0.6ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 09:00:37.707093"], ["updated_at", "2015-04-17 09:00:37.707093"]]
+  SQL (0.6ms)  INSERT INTO "books" ("title", "created_at", "updated_at")
+  VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17
+  09:00:37.707093"], ["updated_at", "2015-04-17 09:00:37.707093"]]
    (8.5ms)  commit transaction
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:00:37", updated_at: "2015-04-17 09:00:37">
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:00:37",
+updated_at: "2015-04-17 09:00:37">
 >> author = book.authors.create(first_name: 'Max', last_name: 'Frisch')
    (0.1ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17 09:00:44.616235"], ["updated_at", "2015-04-17 09:00:44.616235"]]
+  SQL (0.4ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"],
+  ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17
+  09:00:44.616235"], ["updated_at", "2015-04-17 09:00:44.616235"]]
    (1.1ms)  commit transaction
-=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:00:44", updated_at: "2015-04-17 09:00:44">
+=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch",
+created_at: "2015-04-17 09:00:44", updated_at: "2015-04-17 09:00:44">
 >> exit
 $
 ```
     
-
 You could also place the `authors.create()` directly behind the
 `Book.create()`:
 
@@ -1809,40 +1905,58 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
    (0.1ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 09:02:22.917846"], ["updated_at", "2015-04-17 09:02:22.917846"]]
+  SQL (0.4ms)  INSERT INTO "books" ("title", "created_at", "updated_at")
+  VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17
+  09:02:22.917846"], ["updated_at", "2015-04-17 09:02:22.917846"]]
    (8.9ms)  commit transaction
    (0.0ms)  begin transaction
-  SQL (0.3ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17 09:02:22.956936"], ["updated_at", "2015-04-17 09:02:22.956936"]]
+  SQL (0.3ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"],
+  ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17
+  09:02:22.956936"], ["updated_at", "2015-04-17 09:02:22.956936"]]
    (0.9ms)  commit transaction
-=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:02:22", updated_at: "2015-04-17 09:02:22">
+=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch",
+created_at: "2015-04-17 09:02:22", updated_at: "2015-04-17 09:02:22">
 >> exit
 $
 ```
 
-As create also accepts an array of hashes as an alternative to a single
-hash, you can also create multiple authors for a book in one go:
+As create also accepts an array of hashes as an alternative to a single hash,
+you can also create multiple authors for a book in one go:
 
 ```bash
 $ rake 
   [...]
 $ rails console
 Loading development environment (Rails 4.2.1)
->> Book.create(title: 'Example').authors.create([{last_name: 'A'}, {last_name: 'B'}])
+>> Book.create(title: 'Example').authors.create([{last_name: 'A'}, {last_name:
+>> 'B'}])
    (0.1ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Example"], ["created_at", "2015-04-17 09:04:01.548882"], ["updated_at", "2015-04-17 09:04:01.548882"]]
+  SQL (0.4ms)  INSERT INTO "books" ("title", "created_at", "updated_at")
+  VALUES (?, ?, ?)  [["title", "Example"], ["created_at", "2015-04-17
+  09:04:01.548882"], ["updated_at", "2015-04-17 09:04:01.548882"]]
    (8.4ms)  commit transaction
    (0.0ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "authors" ("last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["last_name", "A"], ["book_id", 1], ["created_at", "2015-04-17 09:04:01.581035"], ["updated_at", "2015-04-17 09:04:01.581035"]]
+  SQL (0.4ms)  INSERT INTO "authors" ("last_name", "book_id", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["last_name", "A"], ["book_id", 1],
+  ["created_at", "2015-04-17 09:04:01.581035"], ["updated_at", "2015-04-17
+  09:04:01.581035"]]
    (1.0ms)  commit transaction
    (0.1ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "authors" ("last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["last_name", "B"], ["book_id", 1], ["created_at", "2015-04-17 09:04:01.585728"], ["updated_at", "2015-04-17 09:04:01.585728"]]
+  SQL (0.4ms)  INSERT INTO "authors" ("last_name", "book_id", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["last_name", "B"], ["book_id", 1],
+  ["created_at", "2015-04-17 09:04:01.585728"], ["updated_at", "2015-04-17
+  09:04:01.585728"]]
    (0.8ms)  commit transaction
-=> [#<Author id: 1, book_id: 1, first_name: nil, last_name: "A", created_at: "2015-04-17 09:04:01", updated_at: "2015-04-17 09:04:01">, #<Author id: 2, book_id: 1, first_name: nil, last_name: "B", created_at: "2015-04-17 09:04:01", updated_at: "2015-04-17 09:04:01">]
+=> [#<Author id: 1, book_id: 1, first_name: nil, last_name: "A", created_at:
+"2015-04-17 09:04:01", updated_at: "2015-04-17 09:04:01">, #<Author id: 2,
+book_id: 1, first_name: nil, last_name: "B", created_at: "2015-04-17
+09:04:01", updated_at: "2015-04-17 09:04:01">]
 >> exit
 $
 ```
 
-#### build
+#### 'build'
 
 The method `build` resembles `create`. But the record is not saved. This
 only happens after a `save`:
@@ -1854,16 +1968,23 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> book = Book.create(title: 'Homo faber')
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 09:05:25.850233"], ["updated_at", "2015-04-17 09:05:25.850233"]]
+  SQL (0.5ms)  INSERT INTO "books" ("title", "created_at", "updated_at")
+  VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17
+  09:05:25.850233"], ["updated_at", "2015-04-17 09:05:25.850233"]]
    (9.0ms)  commit transaction
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:05:25", updated_at: "2015-04-17 09:05:25">
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:05:25",
+updated_at: "2015-04-17 09:05:25">
 >> author = book.authors.build(first_name: 'Max', last_name: 'Frisch')
-=> #<Author id: nil, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: nil, updated_at: nil>
+=> #<Author id: nil, book_id: 1, first_name: "Max", last_name: "Frisch",
+created_at: nil, updated_at: nil>
 >> author.new_record?
 => true
 >> author.save
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17 09:05:52.439983"], ["updated_at", "2015-04-17 09:05:52.439983"]]
+  SQL (0.5ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"],
+  ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17
+  09:05:52.439983"], ["updated_at", "2015-04-17 09:05:52.439983"]]
    (9.2ms)  commit transaction
 => true
 >> author.new_record?
@@ -1875,8 +1996,8 @@ $
 > **Warning**
 >
 > When using `create` and `build`, you of course have to observe logical
-> dependencies, otherwise there will be an error. For example, you
-> cannot chain two `build` methods. Example:
+> dependencies, otherwise there will be an error. For example, you cannot
+> chain two `build` methods. Example:
 >
 >     $ rails console
 >     Loading development environment (Rails 4.2.1)
@@ -1888,12 +2009,14 @@ $
 
 ### Accessing Records
 
-First we need example data. Please populate the file `db/seeds.rb` with
-the following content:
+First we need example data. Please populate the file `db/seeds.rb` with the
+following content:
 
 ```ruby
-Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
-Book.create(title: 'Der Besuch der alten Dame').authors.create(first_name: 'Friedrich', last_name: 'Dürrenmatt')
+Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name:
+'Frisch')
+Book.create(title: 'Der Besuch der alten Dame').authors.create(first_name:
+'Friedrich', last_name: 'Dürrenmatt')
 Book.create(title: 'Julius Shulman: The Last Decade').authors.create([
   {first_name: 'Thomas', last_name: 'Schirmbock'},
   {first_name: 'Julius', last_name: 'Shulman'},
@@ -1907,8 +2030,10 @@ Book.create(title: 'Photographing Architecture and Interiors').authors.create([
   {first_name: 'Julius', last_name: 'Shulman'},
   {first_name: 'Richard', last_name: 'Neutra'}
   ])
-Book.create(title: 'Der Zauberberg').authors.create(first_name: 'Thomas', last_name: 'Mann')
-Book.create(title: 'In einer Familie').authors.create(first_name: 'Heinrich', last_name: 'Mann')
+Book.create(title: 'Der Zauberberg').authors.create(first_name: 'Thomas',
+last_name: 'Mann')
+Book.create(title: 'In einer Familie').authors.create(first_name: 'Heinrich',
+last_name: 'Mann')
 ```
 
 Now drop the database and refill it with the `db/seeds.rb`:
@@ -1920,19 +2045,24 @@ $
 ```
 
 The convenient feature of the 1:n assignment in ActiveRecord is the
-particularly easy access to the n instances. Let's look at the first
-record:
+particularly easy access to the n instances. Let's look at the first record:
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Book.first
-  Book Load (0.1ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:08:49", updated_at: "2015-04-17 09:08:49">
+  Book Load (0.1ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC
+  LIMIT 1
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:08:49",
+updated_at: "2015-04-17 09:08:49">
 >> Book.first.authors
-  Book Load (0.3ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
-  Author Load (0.3ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
-=> #<ActiveRecord::Associations::CollectionProxy [#<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:08:49", updated_at: "2015-04-17 09:08:49">]>
+  Book Load (0.3ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC
+  LIMIT 1
+  Author Load (0.3ms)  SELECT "authors".* FROM "authors" WHERE
+  "authors"."book_id" = ?  [["book_id", 1]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Author id: 1, book_id: 1,
+first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:08:49",
+updated_at: "2015-04-17 09:08:49">]>
 >>
 ```
 
