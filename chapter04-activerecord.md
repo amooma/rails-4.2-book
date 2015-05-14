@@ -1996,8 +1996,8 @@ $
 > **Warning**
 >
 > When using `create` and `build`, you of course have to observe logical
-> dependencies, otherwise there will be an error. For example, you cannot
-> chain two `build` methods. Example:
+> dependencies, otherwise there will be an error. 
+> For example, you cannot chain two `build` methods. Example:
 >
 >     $ rails console
 >     Loading development environment (Rails 4.2.1)
@@ -2045,7 +2045,8 @@ $
 ```
 
 The convenient feature of the 1:n assignment in ActiveRecord is the
-particularly easy access to the n instances. Let's look at the first record:
+particularly easy access to the n instances. Let's look at the first book and
+it's authors:
 
 ```bash
 $ rails console
@@ -2066,34 +2067,36 @@ updated_at: "2015-04-17 09:08:49">]>
 >>
 ```
 
-Isn't that cool?! You can access the records simply via the plural form
-of the n model. The result is returned as array. Hm, maybe it also works
-the other way round?
+Isn't that cool?! You can access the records simply via the plural form of the
+n model. The result is returned as array. Hm, maybe it also works the other
+way round?
 
 ```bash
 >> Author.first.book
-  Author Load (0.3ms)  SELECT  "authors".* FROM "authors"  ORDER BY "authors"."id" ASC LIMIT 1
-  Book Load (0.2ms)  SELECT  "books".* FROM "books" WHERE "books"."id" = ? LIMIT 1  [["id", 1]]
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:08:49", updated_at: "2015-04-17 09:08:49">
+  Author Load (0.3ms)  SELECT  "authors".* FROM "authors"  ORDER BY
+  "authors"."id" ASC LIMIT 1
+  Book Load (0.2ms)  SELECT  "books".* FROM "books" WHERE "books"."id" = ?
+  LIMIT 1  [["id", 1]]
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:08:49",
+updated_at: "2015-04-17 09:08:49">
 >> exit
 $
 ```
 
-Bingo! Accessing the associated `Book` class is also very easy. And as
-it's only a single record (`belongs_to`), the singular form is used in
-this case.
+Bingo! Accessing the associated `Book` class is also very easy. And as it's
+only a single record (`belongs_to`), the singular form is used in this case.
 
 > **Note**
 >
-> If there was no author for this book, the result would be an empty
-> array. If no book is associated with an author, then ActiveRecord
-> outputs the value `nil` as `Book`.
+> If there was no author for this book, the result would be an empty array. If
+> no book is associated with an author, then ActiveRecord outputs the value
+> `nil` as `Book`.
 
 ### Searching For Records
 
-Before we can start searching, we again need defined example data.
-Please fill the file `db/seeds.rb` with the following content (its the
-same as we used in [the section called "Accesing Records"](##accessing-records)):
+Before we can start searching, we again need defined example data. Please
+fill the file `db/seeds.rb` with the following content (its the same as we
+used in [the section called "Accesing Records"](##accessing-records)):
 
 ```ruby
 Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
@@ -2144,95 +2147,124 @@ And how many authors?
 $
 ```
 
-#### joins
+#### `joins`
 
-To find all books that have at least one author with the surname 'Mann'
-we use a *join*.
+To find all books that have at least one author with the surname 'Mann' we use
+a *join*.
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Book.joins(:authors).where(:authors => {last_name: 'Mann'})
-  Book Load (0.2ms)  SELECT "books".* FROM "books" INNER JOIN "authors" ON "authors"."book_id" = "books"."id" WHERE "authors"."last_name" = ?  [["last_name", "Mann"]]
-=> #<ActiveRecord::Relation [#<Book id: 6, title: "Der Zauberberg", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Book id: 7, title: "In einer Familie", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]>
+  Book Load (0.2ms)  SELECT "books".* FROM "books" INNER JOIN "authors" ON
+  "authors"."book_id" = "books"."id" WHERE "authors"."last_name" = ?
+  [["last_name", "Mann"]]
+=> #<ActiveRecord::Relation [#<Book id: 6, title: "Der Zauberberg",
+created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Book
+id: 7, title: "In einer Familie", created_at: "2015-04-17 09:13:31",
+updated_at: "2015-04-17 09:13:31">]>
 >>
 ```
 
-The database contains two books with the author 'Mann'. In the SQL, you
-can see that the method `joins` executes an `INNER JOIN`.
+The database contains two books with the author 'Mann'. In the SQL, you can
+see that the method `joins` executes an `INNER JOIN`.
 
-Of course, we can also do it the other way round. We could search for
-the author of the book 'Homo faber':
+Of course, we can also do it the other way round. We could search for the
+author of the book 'Homo faber':
 
 ```bash
 >> Author.joins(:book).where(:books => {title: 'Homo faber'})
-  Author Load (0.3ms)  SELECT "authors".* FROM "authors" INNER JOIN "books" ON "books"."id" = "authors"."book_id" WHERE "books"."title" = ?  [["title", "Homo faber"]]
-=> #<ActiveRecord::Relation [#<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]>
+  Author Load (0.3ms)  SELECT "authors".* FROM "authors" INNER JOIN "books" ON
+  "books"."id" = "authors"."book_id" WHERE "books"."title" = ?  [["title",
+  "Homo faber"]]
+=> #<ActiveRecord::Relation [#<Author id: 1, book_id: 1, first_name: "Max",
+last_name: "Frisch", created_at: "2015-04-17 09:13:31", updated_at:
+"2015-04-17 09:13:31">]>
 >> exit
 $
 ```
 
-#### includes
+#### `includes`
 
-`includes` is very similar to the method `joins` (see [the section called "joins"](#joins)). Again, you can use
-it to search within a 1:n association. Let's once more search for all
-books with an author whose surname is 'Mann':
+`includes` is very similar to the method `joins` (see [the section called
+"joins"](#joins)). Again, you can use it to search within a 1:n association.
+Let's once more search for all books with an author whose surname is 'Mann':
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Book.includes(:authors).where(:authors => {last_name: 'Mann'})
-  SQL (1.1ms)  SELECT "books"."id" AS t0_r0, "books"."title" AS t0_r1, "books"."created_at" AS t0_r2, "books"."updated_at" AS t0_r3, "authors"."id" AS t1_r0, "authors"."book_id" AS t1_r1, "authors"."first_name" AS t1_r2, "authors"."last_name" AS t1_r3, "authors"."created_at" AS t1_r4, "authors"."updated_at" AS t1_r5 FROM "books" LEFT OUTER JOIN "authors" ON "authors"."book_id" = "books"."id" WHERE "authors"."last_name" = ?  [["last_name", "Mann"]]
-=> #<ActiveRecord::Relation [#<Book id: 6, title: "Der Zauberberg", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Book id: 7, title: "In einer Familie", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]>
+  SQL (1.1ms)  SELECT "books"."id" AS t0_r0, "books"."title" AS t0_r1,
+  "books"."created_at" AS t0_r2, "books"."updated_at" AS t0_r3, "authors"."id"
+  AS t1_r0, "authors"."book_id" AS t1_r1, "authors"."first_name" AS t1_r2,
+  "authors"."last_name" AS t1_r3, "authors"."created_at" AS t1_r4,
+  "authors"."updated_at" AS t1_r5 FROM "books" LEFT OUTER JOIN "authors" ON
+  "authors"."book_id" = "books"."id" WHERE "authors"."last_name" = ?
+  [["last_name", "Mann"]]
+=> #<ActiveRecord::Relation [#<Book id: 6, title: "Der Zauberberg",
+created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Book
+id: 7, title: "In einer Familie", created_at: "2015-04-17 09:13:31",
+updated_at: "2015-04-17 09:13:31">]>
 >> exit
 $
 ```
 
-In the console output, you can see that the SQL code is different from
-the joins query.
+In the console output, you can see that the SQL code is different from the
+joins query.
 
 `joins` only reads in the `Book` records and `includes` also reads the
 associated `Authors`. As you can see even in our little example, this
 obviously takes longer (0.2 ms vs. 1.1 ms).
 
-#### join vs. includes
+#### `joins` vs. `includes`
 
-Why would you want to use `includes` at all? Well, if you already know
-before the query that you will later need all author data, then it makes
-sense to use `includes`, because then you only need one database query.
-That is a lot faster than starting a seperate query for each n.
+Why would you want to use `includes` at all? Well, if you already know before
+the query that you will later need all author data, then it makes sense to use
+`includes`, because then you only need one database query. That is a lot
+faster than starting a seperate query for each n.
 
 In that case, would it not be better to always work with `includes`? No,
 it depends on the specific case. When you are using `includes`, a lot more
 data is transported initially. This has to be cached and processed by
 ActiveRecord, which takes longer and requires more resources.
 
-### delete and destroy
+### `delete` and `destroy`
 
 With the methods `destroy`, `destroy_all`, `delete` and `delete_all` you can
-delete records, as described in [Section "Delete/Destroy a Record"](#deletedestroy-a-record). In the context of `has_many`, this
-means that you can delete the `Author` records associated with a `Book` in
-one go:
+delete records, as described in [Section "Delete/Destroy a
+Record"](#deletedestroy-a-record). In the context of `has_many`, this means
+that you can delete the `Author` records associated with a `Book` in one go:
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> book = Book.where(title: 'Julius Shulman: The Last Decade').first
-  Book Load (0.2ms)  SELECT  "books".* FROM "books" WHERE "books"."title" = ?  ORDER BY "books"."id" ASC LIMIT 1  [["title", "Julius Shulman: The Last Decade"]]
-=> #<Book id: 3, title: "Julius Shulman: The Last Decade", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">
+  Book Load (0.2ms)  SELECT  "books".* FROM "books" WHERE "books"."title" = ?
+  ORDER BY "books"."id" ASC LIMIT 1  [["title", "Julius Shulman: The Last
+  Decade"]]
+=> #<Book id: 3, title: "Julius Shulman: The Last Decade", created_at:
+"2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">
 >> book.authors.count
-   (0.3ms)  SELECT COUNT(*) FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
+   (0.3ms)  SELECT COUNT(*) FROM "authors" WHERE "authors"."book_id" = ?
+   [["book_id", 3]]
 => 3
 >> book.authors.destroy_all
-  Author Load (0.3ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
+  Author Load (0.3ms)  SELECT "authors".* FROM "authors" WHERE
+  "authors"."book_id" = ?  [["book_id", 3]]
    (0.1ms)  begin transaction
   SQL (0.5ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 3]]
   SQL (0.1ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 4]]
   SQL (0.1ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 5]]
    (9.3ms)  commit transaction
-=> [#<Author id: 3, book_id: 3, first_name: "Thomas", last_name: "Schirmbock", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Author id: 4, book_id: 3, first_name: "Julius", last_name: "Shulman", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">, #<Author id: 5, book_id: 3, first_name: "Jürgen", last_name: "Nogai", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]
+=> [#<Author id: 3, book_id: 3, first_name: "Thomas", last_name: "Schirmbock",
+created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">,
+#<Author id: 4, book_id: 3, first_name: "Julius", last_name: "Shulman",
+created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">,
+#<Author id: 5, book_id: 3, first_name: "Jürgen", last_name: "Nogai",
+created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]
 >> book.authors.count
-   (0.2ms)  SELECT COUNT(*) FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
+   (0.2ms)  SELECT COUNT(*) FROM "authors" WHERE "authors"."book_id" = ?
+   [["book_id", 3]]
 => 0
 >> exit
 $
@@ -2240,20 +2272,20 @@ $
 
 ### Options
 
-I can't comment on all possible options at this point. But I'd like to
-show you the most often used ones. For all others, please refer to the
-Ruby on Rails documentation that you can find on the Internet at
+I can't comment on all possible options at this point. But I'd like to show
+you the most often used ones. For all others, please refer to the Ruby on
+Rails documentation that you can find on the Internet at
 <http://rails.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html>.
 
-#### belongs\_to
+#### `belongs_to`
 
 The most important option for `belongs_to` is.
 
-##### touch: true
+##### `touch: true`
 
-It automatically sets the field `updated_at` of the entry in the table
-`Book` to the current time when an `Author` is edited. In the
-`app/models/author.rb`, it would look like this:
+It automatically sets the field `updated_at` of the entry in the table `Book`
+to the current time when an `Author` is edited. In the `app/models/author.rb`,
+it would look like this:
 
 ```ruby
 class Author < ActiveRecord::Base
@@ -2261,16 +2293,15 @@ class Author < ActiveRecord::Base
 end
 ```
 
-#### has\_many
+#### `has_many`
 
 The most important options for `has_many` are.
 
+##### `dependent: :destroy`
 
-##### dependent: :destroy
-
-If a book is removed, then it usually makes sense to also automatically
-remove all authors dependent on this book. This can be done via
-`:dependent => :destroy` in the `app/models/book.rb`:
+If a book is removed, then it usually makes sense to also automatically remove
+all authors dependent on this book. This can be done via `:dependent =>
+:destroy` in the `app/models/book.rb`:
 
 ```ruby
 class Book < ActiveRecord::Base
@@ -2278,27 +2309,36 @@ class Book < ActiveRecord::Base
 end
 ```
 
-In the following example, we destroy the first book in the database
-table. All authors of this book are also automatically destroyed:
+In the following example, we destroy the first book in the database table. All
+authors of this book are also automatically destroyed:
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Book.first
-  Book Load (0.2ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">
+  Book Load (0.2ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC
+  LIMIT 1
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:13:31",
+updated_at: "2015-04-17 09:13:31">
 >> Book.first.authors
-  Book Load (0.2ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
-  Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
-=> #<ActiveRecord::Associations::CollectionProxy [#<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]>
+  Book Load (0.2ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC
+  LIMIT 1
+  Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE
+  "authors"."book_id" = ?  [["book_id", 1]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Author id: 1, book_id: 1,
+first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 09:13:31",
+updated_at: "2015-04-17 09:13:31">]>
 >> Book.first.destroy
-  Book Load (0.3ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
+  Book Load (0.3ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC
+  LIMIT 1
    (0.1ms)  begin transaction
-  Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
+  Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE
+  "authors"."book_id" = ?  [["book_id", 1]]
   SQL (1.6ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 1]]
   SQL (0.1ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 1]]
    (9.1ms)  commit transaction
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 09:13:31",
+updated_at: "2015-04-17 09:13:31">
 >> Author.exists?(1)
 >> exit
 $
@@ -2307,31 +2347,32 @@ $
 > **Important**
 >
 > Please always remember the difference between the methods `destroy` (see
-> [the section called "destroy"](#destroy)) and `delete` (see [the section called "delete"](#delete)). This association only works with the method
+> [the section called "destroy"](#destroy)) and `delete` (see [the section
+> called "delete"](#delete)). This association only works with the method
 > `destroy`.
 
-##### has\_many .., through: ..
+##### `has_many .., through: ...`
 
-Here I need to elaborate a bit: you will probably have noticed that in
-our book-author example we have sometimes been entering authors several
-times in the `authors` table. Normally, you would of course not do this.
-It would be better to enter each author only once in the authors table
-and take care of the association with the books via an intermediary
-table. For this purpose, there is `has_many ..., through:  :...`.
+Here I need to elaborate a bit: you will probably have noticed that in our
+book-author example we have sometimes been entering authors several times in
+the `authors` table. Normally, you would of course not do this.  It would be
+better to enter each author only once in the authors table and take care of
+the association with the books via an intermediary table. For this purpose,
+there is `has_many ..., through:  :...`.
 
-This kind of association is called Many-to-Many (n:n) and we'll discuss
-it in detail in [Section "Many-to-Many - n:n Association"](#many-to-many-nn-association).
+This kind of association is called Many-to-Many (n:n) and we'll discuss it in
+detail in [Section "Many-to-Many - n:n
+Association"](#many-to-many-nn-association).
 
 Many-to-Many – n:n Association
 ------------------------------
 
-Up to now, we have always associated a database table directly with
-another table. For many-to-many, we will associate two tables via a
-third table. As example for this kind of relation, we use an order in a
-very basic online shop. In this type of shop system, a `Product` can
-appear in several orders (`Order`) and at the same time an order can
-contain several products. This is referred to as many-to-many. Let's
-recreate this scenario with code.
+Up to now, we have always associated a database table directly with another
+table. For many-to-many, we will associate two tables via a third table. As
+example for this kind of relation, we use an order in a very basic online
+shop. In this type of shop system, a `Product` can appear in several orders
+(`Order`) and at the same time an order can contain several products. This is
+referred to as many-to-many. Let's recreate this scenario with code.
 
 ### Preparation
 
@@ -2378,9 +2419,9 @@ $
 ### The Association
 
 An order (`Order`) consists of one or several items (`LineItem`). This
-LineItem consists of the `order_id`, a `product_id` and the number of
-items ordered (`quantity`). The individual product is defined in the
-product database (`Product`).
+LineItem consists of the `order_id`, a `product_id` and the number of items
+ordered (`quantity`). The individual product is defined in the product
+database (`Product`).
 
 Associating the models happens as always in the directory `app/models`.
 First, in the file `app/models/order.rb:`
@@ -2412,9 +2453,11 @@ end
 
 ### The Association Works Transparent
 
-As we implement the associations via has\_many, most things will already
-be familiar to you from [Section "has_many - 1:n Association"](#has95many-1n-association). I am going to discuss a few examples. For
-more details, see [Section "has_many - 1:n Association"](#has95many-1n-association).
+As we implement the associations via `has_many`, most things will already be
+familiar to you from [Section "has_many - 1:n
+Association"](#has95many-1n-association). I am going to discuss a few
+examples. For more details, see [Section "has_many - 1:n
+Association"](#has95many-1n-association).
 
 First we populate our product database with the following values:
 
@@ -2423,19 +2466,34 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> milk = Product.create(name: 'Milk (1 liter)', price: 0.45)
    (0.4ms)  begin transaction
-  SQL (0.7ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Milk (1 liter)"], ["price", 0.45], ["created_at", "2015-04-17 11:46:22.832375"], ["updated_at", "2015-04-17 11:46:22.832375"]]
+  SQL (0.7ms)  INSERT INTO "products" ("name", "price", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["name", "Milk (1 liter)"], ["price",
+  0.45], ["created_at", "2015-04-17 11:46:22.832375"], ["updated_at",
+  "2015-04-17 11:46:22.832375"]]
    (0.9ms)  commit transaction
-=> #<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa8249f0aa0,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">
+=> #<Product id: 1, name: "Milk (1 liter)", price:
+#<BigDecimal:7fa8249f0aa0,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22",
+updated_at: "2015-04-17 11:46:22">
 >> butter = Product.create(name: 'Butter (250 gr)', price: 0.75)
    (0.1ms)  begin transaction
-  SQL (1.3ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Butter (250 gr)"], ["price", 0.75], ["created_at", "2015-04-17 11:46:34.798486"], ["updated_at", "2015-04-17 11:46:34.798486"]]
+  SQL (1.3ms)  INSERT INTO "products" ("name", "price", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["name", "Butter (250 gr)"], ["price",
+  0.75], ["created_at", "2015-04-17 11:46:34.798486"], ["updated_at",
+  "2015-04-17 11:46:34.798486"]]
    (9.1ms)  commit transaction
-=> #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fa823d42fb0,'0.75E0',9(27)>, created_at: "2015-04-17 11:46:34", updated_at: "2015-04-17 11:46:34">
+=> #<Product id: 2, name: "Butter (250 gr)", price:
+#<BigDecimal:7fa823d42fb0,'0.75E0',9(27)>, created_at: "2015-04-17 11:46:34",
+updated_at: "2015-04-17 11:46:34">
 >> flour = Product.create(name: 'Flour (1 kg)', price: 0.45)
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Flour (1 kg)"], ["price", 0.45], ["created_at", "2015-04-17 11:46:42.711399"], ["updated_at", "2015-04-17 11:46:42.711399"]]
+  SQL (0.5ms)  INSERT INTO "products" ("name", "price", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["name", "Flour (1 kg)"], ["price",
+  0.45], ["created_at", "2015-04-17 11:46:42.711399"], ["updated_at",
+  "2015-04-17 11:46:42.711399"]]
    (9.1ms)  commit transaction
-=> #<Product id: 3, name: "Flour (1 kg)", price: #<BigDecimal:7fa823d200c8,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:42", updated_at: "2015-04-17 11:46:42">
+=> #<Product id: 3, name: "Flour (1 kg)", price:
+#<BigDecimal:7fa823d200c8,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:42",
+updated_at: "2015-04-17 11:46:42">
 >>
 ```
 
@@ -2443,7 +2501,8 @@ Now we create a new `Order` object with the name `order`:
 
 ```bash
 >> order = Order.new(delivery_address: '123 Acme Street, ACME STATE 12345')
-=> #<Order id: nil, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: nil, updated_at: nil>
+=> #<Order id: nil, delivery_address: "123 Acme Street, ACME STATE 12345",
+created_at: nil, updated_at: nil>
 >>
 ```
 
@@ -2455,82 +2514,116 @@ Logically, this new order does not yet contain any products:
 >>
 ```
 
-As often, there are several ways of adding products to the order. The
-simplest way: as the products are integrated as array, you can simply
-insert them as elements of an array:
+As often, there are several ways of adding products to the order. The simplest
+way: as the products are integrated as array, you can simply insert them as
+elements of an array:
 
 ```bash
 >> order.products << milk
-=> #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa8249f0aa0,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">]>
+=> #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk
+(1 liter)", price: #<BigDecimal:7fa8249f0aa0,'0.45E0',9(27)>, created_at:
+"2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">]>
 >>
 ```
 
-But if the customer wants to buy three liters of milk instead of one
-liter, we need to enter it in the `LineItem` (in the linking element)
-table. ActiveRecord already build an object for us:
+But if the customer wants to buy three liters of milk instead of one liter, we
+need to enter it in the `LineItem` (in the linking element) table.
+ActiveRecord already build an object for us:
 
 ```bash
 >> order.line_items
-=> #<ActiveRecord::Associations::CollectionProxy [#<LineItem id: nil, order_id: nil, product_id: 1, quantity: nil, created_at: nil, updated_at: nil>]>
+=> #<ActiveRecord::Associations::CollectionProxy [#<LineItem id: nil,
+order_id: nil, product_id: 1, quantity: nil, created_at: nil, updated_at:
+nil>]>
 >>
 ```
 
-But the object is not yet saved in the database. After we do this via
-save, we can change the quantity in the `LineItem` object:
+But the object is not yet saved in the database. After we do this via save, we
+can change the quantity in the `LineItem` object:
 
 ```bash
 >> order.save
    (0.1ms)  begin transaction
-  SQL (0.6ms)  INSERT INTO "orders" ("delivery_address", "created_at", "updated_at") VALUES (?, ?, ?)  [["delivery_address", "123 Acme Street, ACME STATE 12345"], ["created_at", "2015-04-17 11:49:43.968385"], ["updated_at", "2015-04-17 11:49:43.968385"]]
-  SQL (0.3ms)  INSERT INTO "line_items" ("product_id", "order_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["product_id", 1], ["order_id", 1], ["created_at", "2015-04-17 11:49:43.971970"], ["updated_at", "2015-04-17 11:49:43.971970"]]
+  SQL (0.6ms)  INSERT INTO "orders" ("delivery_address", "created_at",
+  "updated_at") VALUES (?, ?, ?)  [["delivery_address", "123 Acme Street, ACME
+  STATE 12345"], ["created_at", "2015-04-17 11:49:43.968385"], ["updated_at",
+  "2015-04-17 11:49:43.968385"]]
+  SQL (0.3ms)  INSERT INTO "line_items" ("product_id", "order_id",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["product_id", 1],
+  ["order_id", 1], ["created_at", "2015-04-17 11:49:43.971970"],
+  ["updated_at", "2015-04-17 11:49:43.971970"]]
    (9.2ms)  commit transaction
 => true
 >> order.line_items.first.update_attributes(quantity: 3)
    (0.1ms)  begin transaction
-  SQL (0.4ms)  UPDATE "line_items" SET "quantity" = ?, "updated_at" = ? WHERE "line_items"."id" = ?  [["quantity", 3], ["updated_at", "2015-04-17 11:49:53.529842"], ["id", 1]]
+  SQL (0.4ms)  UPDATE "line_items" SET "quantity" = ?, "updated_at" = ? WHERE
+  "line_items"."id" = ?  [["quantity", 3], ["updated_at", "2015-04-17
+  11:49:53.529842"], ["id", 1]]
    (9.2ms)  commit transaction
 => true
 >>
 ```
-Alternatively, we can also buy butter twice directly by adding a
-`LineItem`:
+Alternatively, we can also buy butter twice directly by adding a `LineItem`:
 
 ```bash
 >> order.line_items.create(product_id: butter.id, quantity: 2)
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "line_items" ("product_id", "quantity", "order_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["product_id", 2], ["quantity", 2], ["order_id", 1], ["created_at", "2015-04-17 11:50:26.181117"], ["updated_at", "2015-04-17 11:50:26.181117"]]
+  SQL (0.5ms)  INSERT INTO "line_items" ("product_id", "quantity", "order_id",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["product_id", 2],
+  ["quantity", 2], ["order_id", 1], ["created_at", "2015-04-17
+  11:50:26.181117"], ["updated_at", "2015-04-17 11:50:26.181117"]]
    (8.3ms)  commit transaction
-=> #<LineItem id: 2, order_id: 1, product_id: 2, quantity: 2, created_at: "2015-04-17 11:50:26", updated_at: "2015-04-17 11:50:26">
+=> #<LineItem id: 2, order_id: 1, product_id: 2, quantity: 2, created_at:
+"2015-04-17 11:50:26", updated_at: "2015-04-17 11:50:26">
 >>
 ```
 
 > **Warning**
 >
-> When creating a line\_item we bypass the has\_many: ... :through ..
+> When creating a `line_item` we bypass the `has_many: ... :through ...`
 > logic. The database table contains all the correct information but
 > order hasn't been updated:
 >
 >     >> order.products
->     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa8249f0aa0,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">]>
+>     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name:
+>     "Milk (1 liter)", price: #<BigDecimal:7fa8249f0aa0,'0.45E0',9(27)>,
+>     created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">]>
 >     >>
 >
 > But in the database table, it is of course correct:
 >
 >     >> Order.first.products
->        Order Load (0.4ms)  SELECT  "orders".* FROM "orders"  ORDER BY "orders"."id" ASC LIMIT 1
->        Product Load (0.3ms)  SELECT "products".* FROM "products" INNER JOIN "line_items" ON "products"."id" = "line_items"."product_id" WHERE "line_items"."order_id" = ?  [["order_id", 1]]
->     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa82824a630,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">, #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fa8282496e0,'0.75E0',9(27)>, created_at: "2015-04-17 11:46:34", updated_at: "2015-04-17 11:46:34">]>
+>        Order Load (0.4ms)  SELECT  "orders".* FROM "orders"  ORDER BY
+>        "orders"."id" ASC LIMIT 1
+>        Product Load (0.3ms)  SELECT "products".* FROM "products" INNER JOIN
+>        "line_items" ON "products"."id" = "line_items"."product_id" WHERE
+>        "line_items"."order_id" = ?  [["order_id", 1]]
+>     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name:
+>     "Milk (1 liter)", price: #<BigDecimal:7fa82824a630,'0.45E0',9(27)>,
+>     created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">,
+>     #<Product id: 2, name: "Butter (250 gr)", price:
+>     #<BigDecimal:7fa8282496e0,'0.75E0',9(27)>, created_at: "2015-04-17
+>     11:46:34", updated_at: "2015-04-17 11:46:34">]>
 >     >>
 >
 > In this specific case, you would need to reload the object from the
 > database via the method `reload`:
 >
 >     >> order.reload
->       Order Load (0.4ms)  SELECT  "orders".* FROM "orders" WHERE "orders"."id" = ? LIMIT 1  [["id", 1]]
->     => #<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2015-04-17 11:49:43", updated_at: "2015-04-17 11:49:43">
+>       Order Load (0.4ms)  SELECT  "orders".* FROM "orders" WHERE
+>       "orders"."id" = ? LIMIT 1  [["id", 1]]
+>     => #<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345",
+>     created_at: "2015-04-17 11:49:43", updated_at: "2015-04-17 11:49:43">
 >     >> order.products
->       Product Load (0.2ms)  SELECT "products".* FROM "products" INNER JOIN "line_items" ON "products"."id" = "line_items"."product_id" WHERE "line_items"."order_id" = ?  [["order_id", 1]]
->     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa828229ef8,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">, #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fa8282289e0,'0.75E0',9(27)>, created_at: "2015-04-17 11:46:34", updated_at: "2015-04-17 11:46:34">]>
+>       Product Load (0.2ms)  SELECT "products".* FROM "products" INNER JOIN
+>       "line_items" ON "products"."id" = "line_items"."product_id" WHERE
+>       "line_items"."order_id" = ?  [["order_id", 1]]
+>     => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name:
+>     "Milk (1 liter)", price: #<BigDecimal:7fa828229ef8,'0.45E0',9(27)>,
+>     created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">,
+>     #<Product id: 2, name: "Butter (250 gr)", price:
+>     #<BigDecimal:7fa8282289e0,'0.75E0',9(27)>, created_at: "2015-04-17
+>     11:46:34", updated_at: "2015-04-17 11:46:34">]>
 >     >>
 
 Let's enter a second order with all available products into the system:
@@ -2538,9 +2631,13 @@ Let's enter a second order with all available products into the system:
 ```bash
 >> order2 = Order.create(delivery_address: '2, Test Road')
    (0.2ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "orders" ("delivery_address", "created_at", "updated_at") VALUES (?, ?, ?)  [["delivery_address", "2, Test Road"], ["created_at", "2015-04-17 11:55:08.141811"], ["updated_at", "2015-04-17 11:55:08.141811"]]
+  SQL (0.4ms)  INSERT INTO "orders" ("delivery_address", "created_at",
+  "updated_at") VALUES (?, ?, ?)  [["delivery_address", "2, Test Road"],
+  ["created_at", "2015-04-17 11:55:08.141811"], ["updated_at", "2015-04-17
+  11:55:08.141811"]]
    (9.0ms)  commit transaction
-=> #<Order id: 2, delivery_address: "2, Test Road", created_at: "2015-04-17 11:55:08", updated_at: "2015-04-17 11:55:08">
+=> #<Order id: 2, delivery_address: "2, Test Road", created_at: "2015-04-17
+11:55:08", updated_at: "2015-04-17 11:55:08">
 >> order2.products << Product.all
   Product Load (0.3ms)  SELECT "products".* FROM "products"
    (0.1ms)  begin transaction
@@ -2548,8 +2645,17 @@ Let's enter a second order with all available products into the system:
   SQL (0.1ms)  INSERT INTO "line_items" ("order_id", "product_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["order_id", 2], ["product_id", 2], ["created_at", "2015-04-17 11:55:17.321279"], ["updated_at", "2015-04-17 11:55:17.321279"]]
   SQL (0.1ms)  INSERT INTO "line_items" ("order_id", "product_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["order_id", 2], ["product_id", 3], ["created_at", "2015-04-17 11:55:17.323987"], ["updated_at", "2015-04-17 11:55:17.323987"]]
    (8.4ms)  commit transaction
-  Product Load (0.2ms)  SELECT "products".* FROM "products" INNER JOIN "line_items" ON "products"."id" = "line_items"."product_id" WHERE "line_items"."order_id" = ?  [["order_id", 2]]
-=> #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk (1 liter)", price: #<BigDecimal:7fa8289189d0,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">, #<Product id: 2, name: "Butter (250 gr)", price: #<BigDecimal:7fa828912030,'0.75E0',9(27)>, created_at: "2015-04-17 11:46:34", updated_at: "2015-04-17 11:46:34">, #<Product id: 3, name: "Flour (1 kg)", price: #<BigDecimal:7fa82890ba78,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:42", updated_at: "2015-04-17 11:46:42">]>
+  Product Load (0.2ms)  SELECT "products".* FROM "products" INNER JOIN
+  "line_items" ON "products"."id" = "line_items"."product_id" WHERE
+  "line_items"."order_id" = ?  [["order_id", 2]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk
+(1 liter)", price: #<BigDecimal:7fa8289189d0,'0.45E0',9(27)>, created_at:
+"2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">, #<Product id: 2,
+name: "Butter (250 gr)", price: #<BigDecimal:7fa828912030,'0.75E0',9(27)>,
+created_at: "2015-04-17 11:46:34", updated_at: "2015-04-17 11:46:34">,
+#<Product id: 3, name: "Flour (1 kg)", price:
+#<BigDecimal:7fa82890ba78,'0.45E0',9(27)>, created_at: "2015-04-17 11:46:42",
+updated_at: "2015-04-17 11:46:42">]>
 >> order.save
    (0.1ms)  begin transaction
    (0.1ms)  commit transaction
@@ -2557,52 +2663,68 @@ Let's enter a second order with all available products into the system:
 >>
 ```
 
-Now we can try out the oposite direction of this many-to-many
-association. Let's search for all orders that contain the first product:
+Now we can try out the oposite direction of this many-to-many association.
+Let's search for all orders that contain the first product:
 
 ```bash
 >> Product.first.orders
-  Product Load (0.1ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" ASC LIMIT 1
-  Order Load (0.2ms)  SELECT "orders".* FROM "orders" INNER JOIN "line_items" ON "orders"."id" = "line_items"."order_id" WHERE "line_items"."product_id" = ?  [["product_id", 1]]
-=> #<ActiveRecord::Associations::CollectionProxy [#<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2015-04-17 11:49:43", updated_at: "2015-04-17 11:49:43">, #<Order id: 2, delivery_address: "2, Test Road", created_at: "2015-04-17 11:55:08", updated_at: "2015-04-17 11:55:08">]>
+  Product Load (0.1ms)  SELECT  "products".* FROM "products"  ORDER BY
+  "products"."id" ASC LIMIT 1
+  Order Load (0.2ms)  SELECT "orders".* FROM "orders" INNER JOIN "line_items"
+  ON "orders"."id" = "line_items"."order_id" WHERE "line_items"."product_id" =
+  ?  [["product_id", 1]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Order id: 1,
+delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2015-04-17
+11:49:43", updated_at: "2015-04-17 11:49:43">, #<Order id: 2,
+delivery_address: "2, Test Road", created_at: "2015-04-17 11:55:08",
+updated_at: "2015-04-17 11:55:08">]>
 >>
 ```
 
-Of course, we can also work with a `joins` (see [the section called "joins"](#joins)) and search for all
-orders that contain the product "Milk (1 liter)":
+Of course, we can also work with a `joins` (see [the section called
+"joins"](#joins)) and search for all orders that contain the product "Milk (1
+liter)":
 
 ```bash
 Order.joins(:products).where(:products => {name: 'Milk (1 liter)'})
-  Order Load (0.4ms)  SELECT "orders".* FROM "orders" INNER JOIN "line_items" ON "line_items"."order_id" = "orders"."id" INNER JOIN "products" ON "products"."id" = "line_items"."product_id" WHERE "products"."name" = ?  [["name", "Milk (1 liter)"]]
-=> #<ActiveRecord::Relation [#<Order id: 1, delivery_address: "123 Acme Street, ACME STATE 12345", created_at: "2015-04-17 11:49:43", updated_at: "2015-04-17 11:49:43">, #<Order id: 2, delivery_address: "2, Test Road", created_at: "2015-04-17 11:55:08", updated_at: "2015-04-17 11:55:08">]>
+  Order Load (0.4ms)  SELECT "orders".* FROM "orders" INNER JOIN "line_items"
+  ON "line_items"."order_id" = "orders"."id" INNER JOIN "products" ON
+  "products"."id" = "line_items"."product_id" WHERE "products"."name" = ?
+  [["name", "Milk (1 liter)"]]
+=> #<ActiveRecord::Relation [#<Order id: 1, delivery_address: "123 Acme
+Street, ACME STATE 12345", created_at: "2015-04-17 11:49:43", updated_at:
+"2015-04-17 11:49:43">, #<Order id: 2, delivery_address: "2, Test Road",
+created_at: "2015-04-17 11:55:08", updated_at: "2015-04-17 11:55:08">]>
 >> exit
 $
 ```
 
-has\_one – 1:1 Association
+`has_one` – 1:1 Association
 --------------------------
 
-Similar to `has_many` (see [Section "has_many - 1:n Association"](#has95many-1n-association)), the method `has_one` also creates a logical
-relation between two models. But in contrast to `has_many`, one record is
-only ever associated with exactly one other record in `has_one.` In most
-practical cases of application, it logically makes sense to put both
-into the same model and therefore the same database table, but for the
-sake of completeness I also want to discuss `has_one here.
+Similar to `has_many` (see [Section "has_many - 1:n
+Association"](#has95many-1n-association)), the method `has_one` also creates a
+logical relation between two models. But in contrast to `has_many`, one record
+is only ever associated with exactly one other record in `has_one.` In most
+practical cases of application, it logically makes sense to put both into the
+same model and therefore the same database table, but for the sake of
+completeness I also want to discuss `has_one here.
 
 > **Tip**
 >
 > You can probably safely skip `has_one` without losing any sleep.
 
-In the examples, I assume that you have already read and understood [Section "has_many - 1:n Association"](#has95many-1n-association). I
-am not going to explain methods like `build` (see [the section called "build"](#build)) again but assume that you
-already know the basics.
+In the examples, I assume that you have already read and understood [Section
+"has_many - 1:n Association"](#has95many-1n-association). I am not going to
+explain methods like `build` (see [the section called "build"](#build)) again
+but assume that you already know the basics.
 
 ### Preparation
 
 We use the example from the Rails documentation (see
 <http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html>)
-and create an application containing employees and offices. Each
-employee has an office. First the application:
+and create an application containing employees and offices. Each employee has
+an office. First the application:
 
 ```bash
 $ rails new office-space
@@ -2643,8 +2765,8 @@ end
 
 #### Options
 
-The options of `has_one` are similar to those of `has_many`. So for
-details, please refer to [the section called "Options"](#options) or
+The options of `has_one` are similar to those of `has_many`. So for details,
+please refer to [the section called "Options"](#options) or
 <http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_one>.
 
 ### Console Examples
@@ -2656,14 +2778,20 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> Employee.create(last_name: 'Udelhoven')
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "employees" ("last_name", "created_at", "updated_at") VALUES (?, ?, ?)  [["last_name", "Udelhoven"], ["created_at", "2015-04-17 12:23:35.499672"], ["updated_at", "2015-04-17 12:23:35.499672"]]
+  SQL (0.5ms)  INSERT INTO "employees" ("last_name", "created_at",
+  "updated_at") VALUES (?, ?, ?)  [["last_name", "Udelhoven"], ["created_at",
+  "2015-04-17 12:23:35.499672"], ["updated_at", "2015-04-17 12:23:35.499672"]]
    (0.9ms)  commit transaction
-=> #<Employee id: 1, last_name: "Udelhoven", created_at: "2015-04-17 12:23:35", updated_at: "2015-04-17 12:23:35">
+=> #<Employee id: 1, last_name: "Udelhoven", created_at: "2015-04-17
+12:23:35", updated_at: "2015-04-17 12:23:35">
 >> Employee.create(last_name: 'Meier')
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "employees" ("last_name", "created_at", "updated_at") VALUES (?, ?, ?)  [["last_name", "Meier"], ["created_at", "2015-04-17 12:23:49.983219"], ["updated_at", "2015-04-17 12:23:49.983219"]]
+  SQL (0.5ms)  INSERT INTO "employees" ("last_name", "created_at",
+  "updated_at") VALUES (?, ?, ?)  [["last_name", "Meier"], ["created_at",
+  "2015-04-17 12:23:49.983219"], ["updated_at", "2015-04-17 12:23:49.983219"]]
    (9.5ms)  commit transaction
-=> #<Employee id: 2, last_name: "Meier", created_at: "2015-04-17 12:23:49", updated_at: "2015-04-17 12:23:49">
+=> #<Employee id: 2, last_name: "Meier", created_at: "2015-04-17 12:23:49",
+updated_at: "2015-04-17 12:23:49">
 >>
 ```
 
@@ -2671,11 +2799,16 @@ Now the first employee gets his own office:
 
 ```bash
 >> Office.create(location: '2nd floor', employee_id: Employee.first.id)
-  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" ASC LIMIT 1
+  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY
+  "employees"."id" ASC LIMIT 1
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "offices" ("location", "employee_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["location", "2nd floor"], ["employee_id", 1], ["created_at", "2015-04-17 12:24:30.575972"], ["updated_at", "2015-04-17 12:24:30.575972"]]
+  SQL (0.5ms)  INSERT INTO "offices" ("location", "employee_id", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["location", "2nd floor"],
+  ["employee_id", 1], ["created_at", "2015-04-17 12:24:30.575972"],
+  ["updated_at", "2015-04-17 12:24:30.575972"]]
    (0.8ms)  commit transaction
-=> #<Office id: 1, location: "2nd floor", employee_id: 1, created_at: "2015-04-17 12:24:30", updated_at: "2015-04-17 12:24:30">
+=> #<Office id: 1, location: "2nd floor", employee_id: 1, created_at:
+"2015-04-17 12:24:30", updated_at: "2015-04-17 12:24:30">
 >>
 ```
 
@@ -2683,13 +2816,19 @@ Both directions can be accessed the normal way:
 
 ```bash
 >> Employee.first.office
-  Employee Load (0.4ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" ASC LIMIT 1
-  Office Load (0.3ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 1]]
-=> #<Office id: 1, location: "2nd floor", employee_id: 1, created_at: "2015-04-17 12:24:30", updated_at: "2015-04-17 12:24:30">
+  Employee Load (0.4ms)  SELECT  "employees".* FROM "employees"  ORDER BY
+  "employees"."id" ASC LIMIT 1
+  Office Load (0.3ms)  SELECT  "offices".* FROM "offices" WHERE
+  "offices"."employee_id" = ? LIMIT 1  [["employee_id", 1]]
+=> #<Office id: 1, location: "2nd floor", employee_id: 1, created_at:
+"2015-04-17 12:24:30", updated_at: "2015-04-17 12:24:30">
 >> Office.first.employee
-  Office Load (0.3ms)  SELECT  "offices".* FROM "offices"  ORDER BY "offices"."id" ASC LIMIT 1
-  Employee Load (0.2ms)  SELECT  "employees".* FROM "employees" WHERE "employees"."id" = ? LIMIT 1  [["id", 1]]
-=> #<Employee id: 1, last_name: "Udelhoven", created_at: "2015-04-17 12:23:35", updated_at: "2015-04-17 12:23:35">
+  Office Load (0.3ms)  SELECT  "offices".* FROM "offices"  ORDER BY
+  "offices"."id" ASC LIMIT 1
+  Employee Load (0.2ms)  SELECT  "employees".* FROM "employees" WHERE
+  "employees"."id" = ? LIMIT 1  [["id", 1]]
+=> #<Employee id: 1, last_name: "Udelhoven", created_at: "2015-04-17
+12:23:35", updated_at: "2015-04-17 12:23:35">
 >>
 ```
 
@@ -2698,12 +2837,18 @@ For the second employee, we use the automatically generated method
 
 ```bash
 >> Employee.last.create_office(location: '1st floor')
-  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" DESC LIMIT 1
+  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY
+  "employees"."id" DESC LIMIT 1
    (0.1ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "offices" ("location", "employee_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["location", "1st floor"], ["employee_id", 2], ["created_at", "2015-04-17 12:26:11.291450"], ["updated_at", "2015-04-17 12:26:11.291450"]]
+  SQL (0.4ms)  INSERT INTO "offices" ("location", "employee_id", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["location", "1st floor"],
+  ["employee_id", 2], ["created_at", "2015-04-17 12:26:11.291450"],
+  ["updated_at", "2015-04-17 12:26:11.291450"]]
    (8.2ms)  commit transaction
-  Office Load (0.2ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 2]]
-=> #<Office id: 2, location: "1st floor", employee_id: 2, created_at: "2015-04-17 12:26:11", updated_at: "2015-04-17 12:26:11">
+  Office Load (0.2ms)  SELECT  "offices".* FROM "offices" WHERE
+  "offices"."employee_id" = ? LIMIT 1  [["employee_id", 2]]
+=> #<Office id: 2, location: "1st floor", employee_id: 2, created_at:
+"2015-04-17 12:26:11", updated_at: "2015-04-17 12:26:11">
 >>
 ```
 
@@ -2711,15 +2856,20 @@ Removing is intuitively done via `destroy`:
 
 ```bash
 >> Employee.first.office.destroy
-  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" ASC LIMIT 1
-  Office Load (0.1ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 1]]
+  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY
+  "employees"."id" ASC LIMIT 1
+  Office Load (0.1ms)  SELECT  "offices".* FROM "offices" WHERE
+  "offices"."employee_id" = ? LIMIT 1  [["employee_id", 1]]
    (0.1ms)  begin transaction
   SQL (0.4ms)  DELETE FROM "offices" WHERE "offices"."id" = ?  [["id", 1]]
    (9.1ms)  commit transaction
-=> #<Office id: 1, location: "2nd floor", employee_id: 1, created_at: "2015-04-17 12:24:30", updated_at: "2015-04-17 12:24:30">
+=> #<Office id: 1, location: "2nd floor", employee_id: 1, created_at:
+"2015-04-17 12:24:30", updated_at: "2015-04-17 12:24:30">
 >> Employee.first.office
-  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" ASC LIMIT 1
-  Office Load (0.2ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 1]]
+  Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY
+  "employees"."id" ASC LIMIT 1
+  Office Load (0.2ms)  SELECT  "offices".* FROM "offices" WHERE
+  "offices"."employee_id" = ? LIMIT 1  [["employee_id", 1]]
 => nil
 >>
 ```
@@ -2730,19 +2880,30 @@ Removing is intuitively done via `destroy`:
 > then you will not get an error message:
 >
 >      >> Employee.last.create_office(location: 'Basement')
->        Employee Load (0.2ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" DESC LIMIT 1
+>        Employee Load (0.2ms)  SELECT  "employees".* FROM "employees"  ORDER
+>        BY "employees"."id" DESC LIMIT 1
 >         (0.1ms)  begin transaction
->        SQL (0.4ms)  INSERT INTO "offices" ("location", "employee_id", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["location", "Basement"], ["employee_id", 2], ["created_at", "2015-04-17 12:27:56.518229"], ["updated_at", "2015-04-17 12:27:56.518229"]]
+>        SQL (0.4ms)  INSERT INTO "offices" ("location", "employee_id",
+>        "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["location",
+>        "Basement"], ["employee_id", 2], ["created_at", "2015-04-17
+>        12:27:56.518229"], ["updated_at", "2015-04-17 12:27:56.518229"]]
 >         (9.2ms)  commit transaction
->        Office Load (0.2ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 2]]
+>        Office Load (0.2ms)  SELECT  "offices".* FROM "offices" WHERE
+>        "offices"."employee_id" = ? LIMIT 1  [["employee_id", 2]]
 >         (0.1ms)  begin transaction
->        SQL (0.4ms)  UPDATE "offices" SET "employee_id" = ?, "updated_at" = ? WHERE "offices"."id" = ?  [["employee_id", nil], ["updated_at", "2015-04-17 12:27:56.531948"], ["id", 2]]
+>        SQL (0.4ms)  UPDATE "offices" SET "employee_id" = ?, "updated_at" = ?
+>        WHERE "offices"."id" = ?  [["employee_id", nil], ["updated_at",
+>        "2015-04-17 12:27:56.531948"], ["id", 2]]
 >         (0.9ms)  commit transaction
->      => #<Office id: 3, location: "Basement", employee_id: 2, created_at: "2015-04-17 12:27:56", updated_at: "2015-04-17 12:27:56">
+>      => #<Office id: 3, location: "Basement", employee_id: 2, created_at:
+>      "2015-04-17 12:27:56", updated_at: "2015-04-17 12:27:56">
 >      >> Employee.last.office
->        Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY "employees"."id" DESC LIMIT 1
->        Office Load (0.1ms)  SELECT  "offices".* FROM "offices" WHERE "offices"."employee_id" = ? LIMIT 1  [["employee_id", 2]]
->      => #<Office id: 3, location: "Basement", employee_id: 2, created_at: "2015-04-17 12:27:56", updated_at: "2015-04-17 12:27:56">
+>        Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER
+>        BY "employees"."id" DESC LIMIT 1
+>        Office Load (0.1ms)  SELECT  "offices".* FROM "offices" WHERE
+>        "offices"."employee_id" = ? LIMIT 1  [["employee_id", 2]]
+>      => #<Office id: 3, location: "Basement", employee_id: 2, created_at:
+>      "2015-04-17 12:27:56", updated_at: "2015-04-17 12:27:56">
 >      >>
 >
 > The old `Office` is even still in the database (the `employee_id` was
@@ -2750,17 +2911,21 @@ Removing is intuitively done via `destroy`:
 >
 >      >> Office.all
 >        Office Load (0.2ms)  SELECT "offices".* FROM "offices"
->      => #<ActiveRecord::Relation [#<Office id: 2, location: "1st floor", employee_id: nil, created_at: "2015-04-17 12:26:11", updated_at: "2015-04-17 12:27:56">, #<Office id: 3, location: "Basement", employee_id: 2, created_at: "2015-04-17 12:27:56", updated_at: "2015-04-17 12:27:56">]>
+>      => #<ActiveRecord::Relation [#<Office id: 2, location: "1st floor",
+>      employee_id: nil, created_at: "2015-04-17 12:26:11", updated_at:
+>      "2015-04-17 12:27:56">, #<Office id: 3, location: "Basement",
+>      employee_id: 2, created_at: "2015-04-17 12:27:56", updated_at:
+>      "2015-04-17 12:27:56">]>
 >      >> exit
 >      $
 
-### has\_one vs. belongs\_to
+### `has_one` vs. `belongs_to`
 
 Both `has_one` and `belongs_to` offer the option of representing a 1:1
 relationship. The difference in practice is in the programmer's personal
-preference and the location of the foreign key. In general, `has_one`
-tends to be used very rarely and depends on the degree of normalization
-of the data schema.
+preference and the location of the foreign key. In general, `has_one` tends to
+be used very rarely and depends on the degree of normalization of the data
+schema.
 
 Polymorphic Associations
 ------------------------
