@@ -1028,10 +1028,15 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> Album.where(release_year: 1966)
   Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE "albums"."release_year" = ?  [["release_year", 1966]]
-=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year:
+1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on
+Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at:
+"2015-04-16 17:45:34">]>
 >> Album.where(release_year: 1966).count
-   (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE "albums"."release_year" = ?  [["release_year", 1966]]
-=> 3
+   (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE "albums"."release_year" = ?
+   [["release_year", 1966]] => 3
 >>
 ```
 
@@ -1041,7 +1046,15 @@ You can also use where to search for *ranges* (see [the section called
 ```bash
 >> Album.where(release_year: 1960..1966)
   Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966)
-=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year:
+1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway
+61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34",
+updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul",
+release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
 >> Album.where(release_year: 1960..1966).count
    (0.2ms)  SELECT COUNT(*) FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966)
 => 5
@@ -1054,7 +1067,14 @@ commas:
 ```bash
 >> Album.where(release_year: 1960..1966, id: 1..5)
   Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966) AND ("albums"."id" BETWEEN 1 AND 5)
-=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year:
+1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway
+61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34",
+updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul",
+release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">]>
 >>
 ```
 
@@ -1063,7 +1083,13 @@ Or an array of parameters:
 ```bash
 >> Album.where(release_year: [1966, 1968])
   Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."release_year" IN (1966, 1968)
-=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+=> #<ActiveRecord::Relation [#<Album id: 2, name: "Pet Sounds", release_year:
+1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on
+Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at:
+"2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year:
+1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
 >>
 ```
 
@@ -1082,7 +1108,7 @@ combine the method `where` with the method `first`:
 $
 ```
 
-#### SQL Queries with where
+#### SQL Queries with `where`
 
 Sometimes there is no other way and you just have to define and execute your
 own SQL query. In ActiveRecord, there are two different ways of doing this.
@@ -1107,7 +1133,16 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> Album.where( 'name like ?', '%on%')
   Album Load (1.1ms)  SELECT "albums".* FROM "albums" WHERE (name like '%on%')
-=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 6, name: "What's Going On", release_year: 1971, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 8, name: "London Calling", release_year: 1979, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts
+Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at:
+"2015-04-16 17:45:34">, #<Album id: 6, name: "What's Going On", release_year:
+1971, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at:
+"2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 8,
+name: "London Calling", release_year: 1979, created_at: "2015-04-16 17:45:34",
+updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde",
+release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">]>
 >>
 ```
 Now the number of albums that were published from 1965 onwards:
@@ -1124,7 +1159,8 @@ the string “on”:
 
 ```bash
 >> Album.where( 'name like ? AND release_year > ?', '%on%', 1970 ).count
-   (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE (name like '%on%' AND release_year > 1970)
+   (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE (name like '%on%' AND
+   release_year > 1970)
 => 3
 >>
 ```
@@ -1181,16 +1217,50 @@ display the current SQL query.
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> a = Album.where(release_year: 1965..1968)
-  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1965 AND 1968)
-=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE
+  ("albums"."release_year" BETWEEN 1965 AND 1968)
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts
+Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at:
+"2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway
+61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34",
+updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul",
+release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">]>
 >> a.class
 => Album::ActiveRecord_Relation
 >> a = a.order(:release_year)
-  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1965 AND 1968)  ORDER BY "albums"."release_year" ASC
-=> #<ActiveRecord::Relation [#<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE
+  ("albums"."release_year" BETWEEN 1965 AND 1968)  ORDER BY
+  "albums"."release_year" ASC
+=> #<ActiveRecord::Relation [#<Album id: 4, name: "Highway 61 Revisited",
+release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name:
+"Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at:
+"2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year:
+1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year:
+1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 10, name: "The Beatles", release_year: 1968, created_at:
+"2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
 >> a = a.limit(3)
-  Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1965 AND 1968)  ORDER BY "albums"."release_year" ASC LIMIT 3
-=> #<ActiveRecord::Relation [#<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+  Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE
+  ("albums"."release_year" BETWEEN 1965 AND 1968)  ORDER BY
+  "albums"."release_year" ASC LIMIT 3
+=> #<ActiveRecord::Relation [#<Album id: 4, name: "Highway 61 Revisited",
+release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">]>
 >> exit
 $
 ```
@@ -1211,10 +1281,12 @@ Let's take the sum of all release years of the albums that came out in the
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Album.where(release_year: 1970..1979).sum(:release_year)
-   (1.5ms)  SELECT SUM("albums"."release_year") FROM "albums" WHERE ("albums"."release_year" BETWEEN 1970 AND 1979)
+   (1.5ms)  SELECT SUM("albums"."release_year") FROM "albums" WHERE
+   ("albums"."release_year" BETWEEN 1970 AND 1979)
 => 5922
 >> Album.where(release_year: 1970..1979).order(:name).sum(:release_year)
-   (0.3ms)  SELECT SUM("albums"."release_year") FROM "albums" WHERE ("albums"."release_year" BETWEEN 1970 AND 1979)
+   (0.3ms)  SELECT SUM("albums"."release_year") FROM "albums" WHERE
+   ("albums"."release_year" BETWEEN 1970 AND 1979)
 => 5922
 >> exit
 $
@@ -1230,7 +1302,7 @@ altogether.
 > In case you are asking yourself why the first query took 1.5ms and the
 > second 0.3ms: ActiveRecord cached the results of the first SQL request.
 
-### order and reverse_order
+### `order` and `reverse_order`
 
 To sort a database query, you can use the method `order`.
 
@@ -1240,8 +1312,22 @@ Example: all albums from the 60s, sorted by name:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Album.where(release_year: 1960..1969).order(:name)
-  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)  ORDER BY "albums"."name" ASC
-=> #<ActiveRecord::Relation [#<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE
+  ("albums"."release_year" BETWEEN 1960 AND 1969)  ORDER BY "albums"."name"
+  ASC
+=> #<ActiveRecord::Relation [#<Album id: 9, name: "Blonde on Blonde",
+release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name:
+"Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at:
+"2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year:
+1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year:
+1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 10, name: "The Beatles", release_year: 1968, created_at:
+"2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
 >>
 ```
 
@@ -1250,13 +1336,27 @@ defined via `order`:
 
 ```bash
 >> Album.where(release_year: 1960..1969).order(:name).reverse_order
-  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)  ORDER BY "albums"."name" DESC
-=> #<ActiveRecord::Relation [#<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE
+  ("albums"."release_year" BETWEEN 1960 AND 1969)  ORDER BY "albums"."name"
+  DESC
+=> #<ActiveRecord::Relation [#<Album id: 10, name: "The Beatles",
+release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band",
+release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet
+Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at:
+"2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited",
+release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
 >> exit
 $
 ```
 
-### limit
+### `limit`
 
 The result of any search can be limited to a certain range via the method
 `limit`.
@@ -1265,8 +1365,18 @@ The first 5 albums from the 60s:
 
 ```bash
 >> Album.where(release_year: 1960..1969).limit(5)
-  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969) LIMIT 5
-=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+  Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE
+  ("albums"."release_year" BETWEEN 1960 AND 1969) LIMIT 5
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts
+Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at:
+"2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway
+61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34",
+updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul",
+release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">]>
 >>
 ```
 
@@ -1274,13 +1384,23 @@ All albums sorted by name, then the first 5 of those:
 
 ```bash
 >> Album.order(:name).limit(5)
-  Album Load (0.4ms)  SELECT  "albums".* FROM "albums"  ORDER BY "albums"."name" ASC LIMIT 5
-=> #<ActiveRecord::Relation [#<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 8, name: "London Calling", release_year: 1979, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+  Album Load (0.4ms)  SELECT  "albums".* FROM "albums"  ORDER BY
+  "albums"."name" ASC LIMIT 5
+=> #<ActiveRecord::Relation [#<Album id: 9, name: "Blonde on Blonde",
+release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at:
+"2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 8,
+name: "London Calling", release_year: 1979, created_at: "2015-04-16 17:45:34",
+updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds",
+release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">]>
 >> exit
 $
 ```
 
-#### offset
+#### `offset`
 
 With the method `offset`, you can define the starting position of the method
 limit.
@@ -1312,7 +1432,19 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> Album.group(:release_year)
   Album Load (0.3ms)  SELECT "albums".* FROM "albums" GROUP BY "albums"."release_year"
-=> #<ActiveRecord::Relation [#<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 6, name: "What's Going On", release_year: 1971, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 8, name: "London Calling", release_year: 1979, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+=> #<ActiveRecord::Relation [#<Album id: 5, name: "Rubber Soul", release_year:
+1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">,
+#<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at:
+"2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 1,
+name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at:
+"2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10,
+name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34",
+updated_at: "2015-04-16 17:45:34">, #<Album id: 6, name: "What's Going On",
+release_year: 1971, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 7, name: "Exile on Main St.", release_year: 1972,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 8, name: "London Calling", release_year: 1979, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">]>
 >> exit
 $
 ```
@@ -1329,11 +1461,16 @@ via the method `pluck`.
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Album.where(release_year: 1960..1969).pluck(:name)
-   (0.1ms)  SELECT "albums"."name" FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-=> ["Sgt. Pepper's Lonely Hearts Club Band", "Pet Sounds", "Revolver", "Highway 61 Revisited", "Rubber Soul", "Blonde on Blonde", "The Beatles"]
+   (0.1ms)  SELECT "albums"."name" FROM "albums" WHERE
+   ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> ["Sgt. Pepper's Lonely Hearts Club Band", "Pet Sounds", "Revolver",
+"Highway 61 Revisited", "Rubber Soul", "Blonde on Blonde", "The Beatles"]
 >> Album.where(release_year: 1960..1969).pluck(:name, :release_year)
-   (0.3ms)  SELECT "albums"."name", "albums"."release_year" FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-=> [["Sgt. Pepper's Lonely Hearts Club Band", 1967], ["Pet Sounds", 1966], ["Revolver", 1966], ["Highway 61 Revisited", 1965], ["Rubber Soul", 1965], ["Blonde on Blonde", 1966], ["The Beatles", 1968]]
+   (0.3ms)  SELECT "albums"."name", "albums"."release_year" FROM "albums"
+   WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> [["Sgt. Pepper's Lonely Hearts Club Band", 1967], ["Pet Sounds", 1966],
+["Revolver", 1966], ["Highway 61 Revisited", 1965], ["Rubber Soul", 1965],
+["Blonde on Blonde", 1966], ["The Beatles", 1968]]
 >> exit
 $
 ```
@@ -1350,7 +1487,8 @@ doesn't exist already. Both have to be chained to a `where` search.
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Album.where(name: 'Test')
-  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE "albums"."name" = ?  [["name", "Test"]]
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE "albums"."name" =
+  ?  [["name", "Test"]]
 => #<ActiveRecord::Relation []>
 >> test = Album.where(name: 'Test').first_or_create
   Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."name" = ?  ORDER BY "albums"."id" ASC LIMIT 1  [["name", "Test"]]
@@ -1381,10 +1519,12 @@ Loading development environment (Rails 4.2.1)
    (0.2ms)  SELECT AVG("albums"."release_year") FROM "albums"
 => "1968.5"
 >> Album.where( :release_year => 1960..1969 ).average(:release_year)
-   (0.1ms)  SELECT AVG("albums"."release_year") FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+   (0.1ms)  SELECT AVG("albums"."release_year") FROM "albums" WHERE
+   ("albums"."release_year" BETWEEN 1960 AND 1969)
 => #<BigDecimal:7fd76fc908d0,'0.1966142857 14286E4',27(36)>
 >> Album.where( :release_year => 1960..1969 ).average(:release_year).to_s
-   (0.3ms)  SELECT AVG("albums"."release_year") FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+   (0.3ms)  SELECT AVG("albums"."release_year") FROM "albums" WHERE
+   ("albums"."release_year" BETWEEN 1960 AND 1969)
 => "1966.14285714286"
 >> exit
 $
@@ -1471,11 +1611,26 @@ if you add a `puts`):
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Album.where(release_year: 1960..1969)
-  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway 61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul", release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE
+  ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts
+Club Band", release_year: 1967, created_at: "2015-04-16 17:45:34", updated_at:
+"2015-04-16 17:45:34">, #<Album id: 2, name: "Pet Sounds", release_year: 1966,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 3, name: "Revolver", release_year: 1966, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album id: 4, name: "Highway
+61 Revisited", release_year: 1965, created_at: "2015-04-16 17:45:34",
+updated_at: "2015-04-16 17:45:34">, #<Album id: 5, name: "Rubber Soul",
+release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
+17:45:34">, #<Album id: 9, name: "Blonde on Blonde", release_year: 1966,
+created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">, #<Album
+id: 10, name: "The Beatles", release_year: 1968, created_at: "2015-04-16
+17:45:34", updated_at: "2015-04-16 17:45:34">]>
 >> Album.where(release_year: 1960..1969).explain
-  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
-=> EXPLAIN for: SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)
+  Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE
+  ("albums"."release_year" BETWEEN 1960 AND 1969)
+=> EXPLAIN for: SELECT "albums".* FROM "albums" WHERE ("albums"."release_year"
+BETWEEN 1960 AND 1969)
 0|0|0|SCAN TABLE albums
 
 >> exit
@@ -1497,7 +1652,9 @@ Loading development environment (Rails 4.2.1)
 >> Album.where(release_year: 1960..1969).find_each do |album|
 ?>   puts album.name.upcase
 >> end
-  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1969)  ORDER BY "albums"."id" ASC LIMIT 1000
+  Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE
+  ("albums"."release_year" BETWEEN 1960 AND 1969)  ORDER BY "albums"."id" ASC
+  LIMIT 1000
 SGT. PEPPER'S LONELY HEARTS CLUB BAND
 PET SOUNDS
 REVOLVER
@@ -1705,7 +1862,7 @@ conflict depending on your business logic. Please make sure to add a
 WebGUI.
 
 `has_many` – 1:n Association
----------------------------
+----------------------------
 
 In order to explain `has_many`, let's create a bookshelf application. In this
 database, there is a model with books and a model with authors. As a book can
@@ -2930,17 +3087,16 @@ schema.
 Polymorphic Associations
 ------------------------
 
-Already the word "polymorphic" will probably make you tense up. What can
-it mean? Here is what the website
+Already the word "polymorphic" will probably make you tense up. What can it
+mean? Here is what the website
 <http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html>
-tells us: “Polymorphic associations on models are not restricted on what
-types of models they can be associated with.” Well, there you go - as
-clear as mud! ;-)
+tells us: “Polymorphic associations on models are not restricted on what types
+of models they can be associated with.” Well, there you go - as clear as mud!
+;-)
 
-I am showing you an example in which we create a model for cars (`Car`)
-and a model for bicycles (`Bike`). To describe a car or bike, we use a
-model to tag it (`Tag`). A car and a bike can have any number of `tags`. The
-application:
+I am showing you an example in which we create a model for cars (`Car`) and a
+model for bicycles (`Bike`). To describe a car or bike, we use a model to tag
+it (`Tag`). A car and a bike can have any number of `tags`. The application:
 
 ```bash
 $ rails new example
@@ -2964,10 +3120,9 @@ $
 ```
 
 `Car` and `Bike` are clear. For `Tag` we use the migration shortcut
-`taggable:references{polymorphic}` to generate the fields `taggable_type`
-and `taggable_id`, to give ActiveRecord an opportunity to save the
-assignment for the polymorphic association. We have to enter it
-accordingly in the model.
+`taggable:references{polymorphic}` to generate the fields `taggable_type` and
+`taggable_id`, to give ActiveRecord an opportunity to save the assignment for
+the polymorphic association. We have to enter it accordingly in the model.
 
 The model generator already filed the `app/models/tag.rb` file with the
 configuration for the polymorphic association:
@@ -2980,8 +3135,7 @@ class Tag < ActiveRecord::Base
 end
 ```
 
-For the other models we have to add the polymorphic association
-manually:
+For the other models we have to add the polymorphic association manually:
 
 `app/models/car.rb`
 
@@ -3000,15 +3154,15 @@ end
 ```
 
 For Car and Bike we use an additional `:as: :taggable` when defining
-`has_many`. For Tag we use `belongs_to :taggable, polymorphic: true` to indicate 
-the polymorphic association to ActiveRecord.
+`has_many`. For Tag we use `belongs_to :taggable, polymorphic: true` to
+indicate the polymorphic association to ActiveRecord.
 
 > **Tip**
 >
-> The suffix “*able*” in the name “*taggable*” is commonly used in
-> Rails, but not obligatory. For creating the association we now not
-> only need the ID of the entry, but also need to know which *model* it
-> actually is. So the term “*taggable\_type*” makes sense.
+> The suffix “*able*” in the name “*taggable*” is commonly used in Rails, but
+> not obligatory. For creating the association we now not only need the ID of
+> the entry, but also need to know which *model* it actually is. So the term
+> “*taggable_type*” makes sense.
 
 Let's go into the *console* and create a car and a bike:
 
@@ -3017,14 +3171,20 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> beetle = Car.create(name: 'Beetle')
    (0.1ms)  begin transaction
-  SQL (0.8ms)  INSERT INTO "cars" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "Beetle"], ["created_at", "2015-04-17 13:39:54.793336"], ["updated_at", "2015-04-17 13:39:54.793336"]]
+  SQL (0.8ms)  INSERT INTO "cars" ("name", "created_at", "updated_at") VALUES
+  (?, ?, ?)  [["name", "Beetle"], ["created_at", "2015-04-17
+  13:39:54.793336"], ["updated_at", "2015-04-17 13:39:54.793336"]]
    (0.8ms)  commit transaction
-=> #<Car id: 1, name: "Beetle", created_at: "2015-04-17 13:39:54", updated_at: "2015-04-17 13:39:54">
+=> #<Car id: 1, name: "Beetle", created_at: "2015-04-17 13:39:54", updated_at:
+"2015-04-17 13:39:54">
 >> mountainbike = Bike.create(name: 'Mountainbike')
    (0.1ms)  begin transaction
-  SQL (0.3ms)  INSERT INTO "bikes" ("name", "created_at", "updated_at") VALUES (?, ?, ?)  [["name", "Mountainbike"], ["created_at", "2015-04-17 13:39:55.896512"], ["updated_at", "2015-04-17 13:39:55.896512"]]
+  SQL (0.3ms)  INSERT INTO "bikes" ("name", "created_at", "updated_at") VALUES
+  (?, ?, ?)  [["name", "Mountainbike"], ["created_at", "2015-04-17
+  13:39:55.896512"], ["updated_at", "2015-04-17 13:39:55.896512"]]
    (9.0ms)  commit transaction
-=> #<Bike id: 1, name: "Mountainbike", created_at: "2015-04-17 13:39:55", updated_at: "2015-04-17 13:39:55">
+=> #<Bike id: 1, name: "Mountainbike", created_at: "2015-04-17 13:39:55",
+updated_at: "2015-04-17 13:39:55">
 >>
 ```
 
@@ -3033,14 +3193,22 @@ Now we define for each a tag with the color of the corresponding object:
 ```bash
 >> beetle.tags.create(name: 'blue')
    (0.1ms)  begin transaction
-  SQL (1.0ms)  INSERT INTO "tags" ("name", "taggable_id", "taggable_type", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "blue"], ["taggable_id", 1], ["taggable_type", "Car"], ["created_at", "2015-04-17 13:41:04.984444"], ["updated_at", "2015-04-17 13:41:04.984444"]]
+  SQL (1.0ms)  INSERT INTO "tags" ("name", "taggable_id", "taggable_type",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "blue"],
+  ["taggable_id", 1], ["taggable_type", "Car"], ["created_at", "2015-04-17
+  13:41:04.984444"], ["updated_at", "2015-04-17 13:41:04.984444"]]
    (0.9ms)  commit transaction
-=> #<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:04", updated_at: "2015-04-17 13:41:04">
+=> #<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car",
+created_at: "2015-04-17 13:41:04", updated_at: "2015-04-17 13:41:04">
 >> mountainbike.tags.create(name: 'black')
    (0.1ms)  begin transaction
-  SQL (0.7ms)  INSERT INTO "tags" ("name", "taggable_id", "taggable_type", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "black"], ["taggable_id", 1], ["taggable_type", "Bike"], ["created_at", "2015-04-17 13:41:17.315318"], ["updated_at", "2015-04-17 13:41:17.315318"]]
+  SQL (0.7ms)  INSERT INTO "tags" ("name", "taggable_id", "taggable_type",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "black"],
+  ["taggable_id", 1], ["taggable_type", "Bike"], ["created_at", "2015-04-17
+  13:41:17.315318"], ["updated_at", "2015-04-17 13:41:17.315318"]]
    (8.2ms)  commit transaction
-=> #<Tag id: 2, name: "black", taggable_id: 1, taggable_type: "Bike", created_at: "2015-04-17 13:41:17", updated_at: "2015-04-17 13:41:17">
+=> #<Tag id: 2, name: "black", taggable_id: 1, taggable_type: "Bike",
+created_at: "2015-04-17 13:41:17", updated_at: "2015-04-17 13:41:17">
 >>
 ```
 
@@ -3049,9 +3217,13 @@ For the `beetle`, we add another `Tag`:
 ```bash
 >> beetle.tags.create(name: 'Automatic')
    (0.1ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "tags" ("name", "taggable_id", "taggable_type", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "Automatic"], ["taggable_id", 1], ["taggable_type", "Car"], ["created_at", "2015-04-17 13:41:51.042746"], ["updated_at", "2015-04-17 13:41:51.042746"]]
+  SQL (0.4ms)  INSERT INTO "tags" ("name", "taggable_id", "taggable_type",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["name", "Automatic"],
+  ["taggable_id", 1], ["taggable_type", "Car"], ["created_at", "2015-04-17
+  13:41:51.042746"], ["updated_at", "2015-04-17 13:41:51.042746"]]
    (9.2ms)  commit transaction
-=> #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:51", updated_at: "2015-04-17 13:41:51">
+=> #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car",
+created_at: "2015-04-17 13:41:51", updated_at: "2015-04-17 13:41:51">
 >>
 ```
 
@@ -3060,7 +3232,13 @@ Let's have a look at all Tag items:
 ```bash
 >> Tag.all
   Tag Load (0.3ms)  SELECT "tags".* FROM "tags"
-=> #<ActiveRecord::Relation [#<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:04", updated_at: "2015-04-17 13:41:04">, #<Tag id: 2, name: "black", taggable_id: 1, taggable_type: "Bike", created_at: "2015-04-17 13:41:17", updated_at: "2015-04-17 13:41:17">, #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:51", updated_at: "2015-04-17 13:41:51">]>
+=> #<ActiveRecord::Relation [#<Tag id: 1, name: "blue", taggable_id: 1,
+taggable_type: "Car", created_at: "2015-04-17 13:41:04", updated_at:
+"2015-04-17 13:41:04">, #<Tag id: 2, name: "black", taggable_id: 1,
+taggable_type: "Bike", created_at: "2015-04-17 13:41:17", updated_at:
+"2015-04-17 13:41:17">, #<Tag id: 3, name: "Automatic", taggable_id: 1,
+taggable_type: "Car", created_at: "2015-04-17 13:41:51", updated_at:
+"2015-04-17 13:41:51">]>
 >>
 ```
 
@@ -3068,8 +3246,14 @@ And now all tags of the beetle:
 
 ```bash
 >> beetle.tags
-  Tag Load (0.3ms)  SELECT "tags".* FROM "tags" WHERE "tags"."taggable_id" = ? AND "tags"."taggable_type" = ?  [["taggable_id", 1], ["taggable_type", "Car"]]
-=> #<ActiveRecord::Associations::CollectionProxy [#<Tag id: 1, name: "blue", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:04", updated_at: "2015-04-17 13:41:04">, #<Tag id: 3, name: "Automatic", taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:51", updated_at: "2015-04-17 13:41:51">]>
+  Tag Load (0.3ms)  SELECT "tags".* FROM "tags" WHERE "tags"."taggable_id" = ?
+  AND "tags"."taggable_type" = ?  [["taggable_id", 1], ["taggable_type",
+  "Car"]]
+=> #<ActiveRecord::Associations::CollectionProxy [#<Tag id: 1, name: "blue",
+taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:04",
+updated_at: "2015-04-17 13:41:04">, #<Tag id: 3, name: "Automatic",
+taggable_id: 1, taggable_type: "Car", created_at: "2015-04-17 13:41:51",
+updated_at: "2015-04-17 13:41:51">]>
 >>
 ```
 
@@ -3077,9 +3261,12 @@ Of course you can also check which object the last Tag belongs to:
 
 ```bash
 >> Tag.last.taggable
-  Tag Load (0.3ms)  SELECT  "tags".* FROM "tags"  ORDER BY "tags"."id" DESC LIMIT 1
-  Car Load (0.4ms)  SELECT  "cars".* FROM "cars" WHERE "cars"."id" = ? LIMIT 1  [["id", 1]]
-=> #<Car id: 1, name: "Beetle", created_at: "2015-04-17 13:39:54", updated_at: "2015-04-17 13:39:54">
+  Tag Load (0.3ms)  SELECT  "tags".* FROM "tags"  ORDER BY "tags"."id" DESC
+  LIMIT 1
+  Car Load (0.4ms)  SELECT  "cars".* FROM "cars" WHERE "cars"."id" = ? LIMIT 1
+  [["id", 1]]
+=> #<Car id: 1, name: "Beetle", created_at: "2015-04-17 13:39:54", updated_at:
+"2015-04-17 13:39:54">
 >> exit
 ```
 
@@ -3090,15 +3277,15 @@ association makes more sense in this case.
 
 ### Options
 
-Polymorphic associations can be configured with the same options as a
-normal [Section "has_many - 1:n Association"](#has95many-1n-association) model.
+Polymorphic associations can be configured with the same options as a normal
+[Section "has_many - 1:n Association"](#has95many-1n-association) model.
 
 Delete/Destroy a Record
 -----------------------
 
 To remove a database record, you can use the methods `destroy` and `delete`.
-It's quite easy to confuse these two terms, but they are different and
-after a while you get used to it.
+It's quite easy to confuse these two terms, but they are different and after a
+while you get used to it.
 
 As an example, we use the following Rails application:
 
@@ -3131,12 +3318,12 @@ class Author < ActiveRecord::Base
 end
 ```
 
-### destroy
+### `destroy`
 
-With `destroy` you can remove a record and any existing dependencies are
-also taken into account (see for example `:dependent => :destroy` in [the section called "Options"](#options)).
-Simply put: to be on the safe side, it's better to use `destroy` because
-then the Rails system does more for you.
+With `destroy` you can remove a record and any existing dependencies are also
+taken into account (see for example `:dependent => :destroy` in [the section
+called "Options"](#options)).  Simply put: to be on the safe side, it's better
+to use `destroy` because then the Rails system does more for you.
 
 Let's create a record and then destroy it again:
 
@@ -3145,18 +3332,23 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> book = Book.create(title: 'Homo faber')
    (0.1ms)  begin transaction
-  SQL (0.7ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:49:58.092997"], ["updated_at", "2015-04-17 13:49:58.092997"]]
+  SQL (0.7ms)  INSERT INTO "books" ("title", "created_at", "updated_at")
+  VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17
+  13:49:58.092997"], ["updated_at", "2015-04-17 13:49:58.092997"]]
    (9.0ms)  commit transaction
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 13:49:58", updated_at: "2015-04-17 13:49:58">
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 13:49:58",
+updated_at: "2015-04-17 13:49:58">
 >> Book.count
    (0.3ms)  SELECT COUNT(*) FROM "books"
 => 1
 >> book.destroy
    (0.1ms)  begin transaction
-  Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 1]]
+  Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE
+  "authors"."book_id" = ?  [["book_id", 1]]
   SQL (0.3ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 1]]
    (9.0ms)  commit transaction
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 13:49:58", updated_at: "2015-04-17 13:49:58">
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 13:49:58",
+updated_at: "2015-04-17 13:49:58">
 >> Book.count
    (0.5ms)  SELECT COUNT(*) FROM "books"
 => 0
@@ -3166,25 +3358,35 @@ As we are using the option `dependent: :destroy` in the Book model, we
 can also automatically remove all authors:
 
 ```bash
->> Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
+>> Book.create(title: 'Homo faber').authors.create(first_name: 'Max',
+>> last_name: 'Frisch')
    (0.1ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:50:43.062148"], ["updated_at", "2015-04-17 13:50:43.062148"]]
+  SQL (0.4ms)  INSERT INTO "books" ("title", "created_at", "updated_at")
+  VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17
+  13:50:43.062148"], ["updated_at", "2015-04-17 13:50:43.062148"]]
    (9.1ms)  commit transaction
    (0.1ms)  begin transaction
-  SQL (0.3ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 2], ["created_at", "2015-04-17 13:50:43.083211"], ["updated_at", "2015-04-17 13:50:43.083211"]]
+  SQL (0.3ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"],
+  ["last_name", "Frisch"], ["book_id", 2], ["created_at", "2015-04-17
+  13:50:43.083211"], ["updated_at", "2015-04-17 13:50:43.083211"]]
    (0.9ms)  commit transaction
-=> #<Author id: 1, book_id: 2, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 13:50:43", updated_at: "2015-04-17 13:50:43">
+=> #<Author id: 1, book_id: 2, first_name: "Max", last_name: "Frisch",
+created_at: "2015-04-17 13:50:43", updated_at: "2015-04-17 13:50:43">
 >> Author.count
    (0.2ms)  SELECT COUNT(*) FROM "authors"
 => 1
 >> Book.first.destroy
-  Book Load (0.3ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC LIMIT 1
+  Book Load (0.3ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" ASC
+  LIMIT 1
    (0.1ms)  begin transaction
-  Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 2]]
+  Author Load (0.1ms)  SELECT "authors".* FROM "authors" WHERE
+  "authors"."book_id" = ?  [["book_id", 2]]
   SQL (0.3ms)  DELETE FROM "authors" WHERE "authors"."id" = ?  [["id", 1]]
   SQL (0.1ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 2]]
    (9.1ms)  commit transaction
-=> #<Book id: 2, title: "Homo faber", created_at: "2015-04-17 13:50:43", updated_at: "2015-04-17 13:50:43">
+=> #<Book id: 2, title: "Homo faber", created_at: "2015-04-17 13:50:43",
+updated_at: "2015-04-17 13:50:43">
 >> Author.count
    (0.2ms)  SELECT COUNT(*) FROM "authors"
 => 0
@@ -3192,78 +3394,90 @@ can also automatically remove all authors:
 ```
 
 When removing records, please always consider the difference between the
-content of the database table and the value of the currently removed
-object. The instance is *frozen* after removing the database field. So
-it is no longer in the database, but still present in the program, yet
-it can no longer be modified there. It is read-only. To check, you can
-use the method `frozen?`:
+content of the database table and the value of the currently removed object.
+The instance is *frozen* after removing the database field. So it is no longer
+in the database, but still present in the program, yet it can no longer be
+modified there. It is read-only. To check, you can use the method `frozen?`:
 
 ```bash
 >> book = Book.create(title: 'Homo faber')
    (0.2ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:51:41.460050"], ["updated_at", "2015-04-17 13:51:41.460050"]]
+  SQL (0.5ms)  INSERT INTO "books" ("title", "created_at", "updated_at")
+  VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17
+  13:51:41.460050"], ["updated_at", "2015-04-17 13:51:41.460050"]]
    (8.9ms)  commit transaction
-=> #<Book id: 3, title: "Homo faber", created_at: "2015-04-17 13:51:41", updated_at: "2015-04-17 13:51:41">
+=> #<Book id: 3, title: "Homo faber", created_at: "2015-04-17 13:51:41",
+updated_at: "2015-04-17 13:51:41">
 >> book.destroy
    (0.1ms)  begin transaction
-  Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE "authors"."book_id" = ?  [["book_id", 3]]
+  Author Load (0.2ms)  SELECT "authors".* FROM "authors" WHERE
+  "authors"."book_id" = ?  [["book_id", 3]]
   SQL (0.5ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 3]]
    (9.2ms)  commit transaction
-=> #<Book id: 3, title: "Homo faber", created_at: "2015-04-17 13:51:41", updated_at: "2015-04-17 13:51:41">
+=> #<Book id: 3, title: "Homo faber", created_at: "2015-04-17 13:51:41",
+updated_at: "2015-04-17 13:51:41">
 >> Book.count
    (0.2ms)  SELECT COUNT(*) FROM "books"
 => 0
 >> book
-=> #<Book id: 3, title: "Homo faber", created_at: "2015-04-17 13:51:41", updated_at: "2015-04-17 13:51:41">
+=> #<Book id: 3, title: "Homo faber", created_at: "2015-04-17 13:51:41",
+updated_at: "2015-04-17 13:51:41">
 >> book.frozen?
 => true
 >>
 ```
 
-The record has been removed from the database, but the object with all
-its data is still present in the running Ruby program. So could we then
-revive the entire record? The answer is yes, but it will then be a new
-record:
+The record has been removed from the database, but the object with all its
+data is still present in the running Ruby program. So could we then revive the
+entire record? The answer is yes, but it will then be a new record:
 
 ```bash
 >> Book.create(title: book.title)
    (0.1ms)  begin transaction
-  SQL (0.3ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:52:51.438501"], ["updated_at", "2015-04-17 13:52:51.438501"]]
+  SQL (0.3ms)  INSERT INTO "books" ("title", "created_at", "updated_at")
+  VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17
+  13:52:51.438501"], ["updated_at", "2015-04-17 13:52:51.438501"]]
    (8.7ms)  commit transaction
-=> #<Book id: 4, title: "Homo faber", created_at: "2015-04-17 13:52:51", updated_at: "2015-04-17 13:52:51">
+=> #<Book id: 4, title: "Homo faber", created_at: "2015-04-17 13:52:51",
+updated_at: "2015-04-17 13:52:51">
 >> exit
 ```
 
-### delete
+### `delete`
 
 With `delete` you can remove a record directly from the database. Any
-dependencies to other records in the *model* are not taken into account.
-The method `delete` only deletes that one row in the database and nothing
-else.
+dependencies to other records in the *model* are not taken into account.  The
+method `delete` only deletes that one row in the database and nothing else.
 
-Let's create a book with one author and then remove the book with
-`delete`:
+Let's create a book with one author and then remove the book with `delete`:
 
 ```bash
 $ rails db:reset
   [...]
 $ rails console
 Loading development environment (Rails 4.2.1)
->> Book.create(title: 'Homo faber').authors.create(first_name: 'Max', last_name: 'Frisch')
+>> Book.create(title: 'Homo faber').authors.create(first_name: 'Max',
+>> last_name: 'Frisch')
    (0.5ms)  begin transaction
   SQL (0.6ms)  INSERT INTO "books" ("title", "created_at", "updated_at") VALUES (?, ?, ?)  [["title", "Homo faber"], ["created_at", "2015-04-17 13:54:46.188830"], ["updated_at", "2015-04-17 13:54:46.188830"]]
    (9.2ms)  commit transaction
    (0.0ms)  begin transaction
-  SQL (0.4ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"], ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17 13:54:46.234460"], ["updated_at", "2015-04-17 13:54:46.234460"]]
+  SQL (0.4ms)  INSERT INTO "authors" ("first_name", "last_name", "book_id",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?, ?)  [["first_name", "Max"],
+  ["last_name", "Frisch"], ["book_id", 1], ["created_at", "2015-04-17
+  13:54:46.234460"], ["updated_at", "2015-04-17 13:54:46.234460"]]
    (0.8ms)  commit transaction
-=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch", created_at: "2015-04-17 13:54:46", updated_at: "2015-04-17 13:54:46">
+=> #<Author id: 1, book_id: 1, first_name: "Max", last_name: "Frisch",
+created_at: "2015-04-17 13:54:46", updated_at: "2015-04-17 13:54:46">
 >> Author.count
    (0.2ms)  SELECT COUNT(*) FROM "authors"
 => 1
 >> Book.last.delete
-  Book Load (0.2ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id" DESC LIMIT 1
+  Book Load (0.2ms)  SELECT  "books".* FROM "books"  ORDER BY "books"."id"
+  DESC LIMIT 1
   SQL (1.5ms)  DELETE FROM "books" WHERE "books"."id" = ?  [["id", 1]]
-=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 13:54:46", updated_at: "2015-04-17 13:54:46">
+=> #<Book id: 1, title: "Homo faber", created_at: "2015-04-17 13:54:46",
+updated_at: "2015-04-17 13:54:46">
 >> Author.count
    (0.2ms)  SELECT COUNT(*) FROM "authors"
 => 1
@@ -3274,26 +3488,25 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-The record of the book 'Homo faber' is deleted, but the author is still
-in the database.
+The record of the book 'Homo faber' is deleted, but the author is still in the
+database.
 
-As with `destroy`, an object also gets frozen when you use `delete` (see [the section called "destroy"](#destroy)).
-The record is already removed from the database, but the object itself
-is still there.
+As with `destroy`, an object also gets frozen when you use `delete` (see [the
+section called "destroy"](#destroy)). The record is already removed from the
+database, but the object itself is still there.
 
 Transactions
 ------------
 
 In the world of databases, the term transaction refers to a block of SQL
-statements that must be executed together and without interruption. If
-an error should occur within the transaction, the database is reset to
-the state before the start of the transaction.
+statements that must be executed together and without interruption. If an
+error should occur within the transaction, the database is reset to the state
+before the start of the transaction.
 
-Now and again, there are areas of application where you need to carry
-out a database transaction. The classic example is transferring money
-from one account to another. That only makes sense if both actions
-(debiting one account and crediting the recipient's account) are
-executed.
+Now and again, there are areas of application where you need to carry out a
+database transaction. The classic example is transferring money from one
+account to another. That only makes sense if both actions (debiting one
+account and crediting the recipient's account) are executed.
 
 A transaction follows this pattern:
 
@@ -3307,27 +3520,27 @@ end
 
 Transactions are a complex topic. If you want to find out more, you can
 consult the ri help on the shell via `ri
-  ActiveRecord::Transactions::ClassMethods`.
+ActiveRecord::Transactions::ClassMethods`.
 
 > **Important**
 >
 > The methods `save` and `destroy` are automatically executed within the
-> transaction *wrapper*. That way, Rails ensures that no undefined state
-> can arise for these two methods.
+> transaction *wrapper*. That way, Rails ensures that no undefined state can
+> arise for these two methods.
 
 > **Warning**
 >
-> Transactions are not natively supported by all databases. In that
-> case, the code will still work, but you no longer have the security of
-> the transaction.
+> Transactions are not natively supported by all databases. In that case, the
+> code will still work, but you no longer have the security of the
+> transaction.
 
 Scopes
 ------
 
-When programming Rails applications, it is sometimes clearer and simpler
-to define frequent searches as separate methods. In Rails speak, these
-are referred to as *NamedScope*. These NamedScopes can be chained, just
-like other methods.
+When programming Rails applications, it is sometimes clearer and simpler to
+define frequent searches as separate methods. In Rails speak, these are
+referred to as *NamedScope*. These NamedScopes can be chained, just like other
+methods.
 
 ### Preparation
 
@@ -3337,7 +3550,8 @@ We are building our own little online shop:
 $ rails new shop
   [...]
 $ cd shop
-$ rails generate model product name 'price:decimal{7,2}' weight:integer in_stock:boolean expiration_date:date
+$ rails generate model product name 'price:decimal{7,2}' weight:integer
+in_stock:boolean expiration_date:date
   [...]
 $ rake db:migrate
   [...]
@@ -3347,13 +3561,20 @@ $
 Please populate the file `db/seeds.rb` with the following content:
 
 ```ruby
-Product.create(name: 'Milk (1 liter)', weight: 1000, in_stock: true, price: 0.45, expiration_date: Date.today + 14.days)
-Product.create(name: 'Butter (250 g)', weight: 250, in_stock: true, price: 0.75, expiration_date: Date.today + 14.days)
-Product.create(name: 'Flour (1 kg)', weight: 1000, in_stock: false, price: 0.45, expiration_date: Date.today + 100.days)
-Product.create(name: 'Jelly Babies (6 x 300 g)', weight: 1500, in_stock: true, price: 4.96, expiration_date: Date.today + 1.year)
-Product.create(name: 'Super-Duper Cake Mix', in_stock: true, price: 11.12, expiration_date: Date.today + 1.year)
-Product.create(name: 'Eggs (12)', in_stock: true, price: 2, expiration_date: Date.today + 7.days)
-Product.create(name: 'Peanuts (8 x 200 g bag)', in_stock: false, weight: 1600, price: 17.49, expiration_date: Date.today + 1.year)
+Product.create(name: 'Milk (1 liter)', weight: 1000, in_stock: true, price:
+0.45, expiration_date: Date.today + 14.days)
+Product.create(name: 'Butter (250 g)', weight: 250, in_stock: true, price:
+0.75, expiration_date: Date.today + 14.days)
+Product.create(name: 'Flour (1 kg)', weight: 1000, in_stock: false, price:
+0.45, expiration_date: Date.today + 100.days)
+Product.create(name: 'Jelly Babies (6 x 300 g)', weight: 1500, in_stock: true,
+price: 4.96, expiration_date: Date.today + 1.year)
+Product.create(name: 'Super-Duper Cake Mix', in_stock: true, price: 11.12,
+expiration_date: Date.today + 1.year)
+Product.create(name: 'Eggs (12)', in_stock: true, price: 2, expiration_date:
+Date.today + 7.days)
+Product.create(name: 'Peanuts (8 x 200 g bag)', in_stock: false, weight: 1600,
+price: 17.49, expiration_date: Date.today + 1.year)
 ```
 
 Now drop the database and repopulate it with the `db/seeds.rb`:
@@ -3417,10 +3638,12 @@ in stock:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Product.cheap.count
-   (0.3ms)  SELECT COUNT(*) FROM "products" WHERE ("products"."price" BETWEEN 0 AND 1)
+   (0.3ms)  SELECT COUNT(*) FROM "products" WHERE ("products"."price" BETWEEN
+   0 AND 1)
 => 3
 >> Product.cheap.available.count
-   (0.3ms)  SELECT COUNT(*) FROM "products" WHERE ("products"."price" BETWEEN 0 AND 1) AND "products"."in_stock" = 't'
+   (0.3ms)  SELECT COUNT(*) FROM "products" WHERE ("products"."price" BETWEEN
+   0 AND 1) AND "products"."in_stock" = 't'
 => 2
 >> exit
 $
@@ -3428,10 +3651,9 @@ $
 
 ### Passing in Arguments
 
-If you need a NamedScope that can also process parameters, then that is
-no problem either. The following example outputs products that are
-cheaper than the specified value. The `app/models/product.rb` looks like
-this:
+If you need a NamedScope that can also process parameters, then that is no
+problem either. The following example outputs products that are cheaper than
+the specified value. The `app/models/product.rb` looks like this:
 
 ```ruby
 class Product < ActiveRecord::Base
@@ -3461,30 +3683,32 @@ class Product < ActiveRecord::Base
 end
 ```
 
-With this NamedScope we can not only find all products that are in
-stock, but also create new products that contain the value `true` in the
-field `in_stock`:
+With this NamedScope we can not only find all products that are in stock, but
+also create new products that contain the value `true` in the field
+`in_stock`:
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> product = Product.available.build
-=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: true, expiration_date: nil, created_at: nil, updated_at: nil>
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: true,
+expiration_date: nil, created_at: nil, updated_at: nil>
 >> product.in_stock
 => true
 >> exit
 $
 ```
 
-This works with the method build (see [the section called "build"](#build)) and create (see [the section called "create"](#create)).
+This works with the method build (see [the section called "build"](#build))
+and create (see [the section called "create"](#create)).
 
 Validation
 ----------
 
 Non-valid records are frequently a source of errors in programs. With
-`validates`, Rails offers a quick and easy way of validating them. That
-way you can be sure that only meaningful records will find their way
-into your database.
+`validates`, Rails offers a quick and easy way of validating them. That way
+you can be sure that only meaningful records will find their way into your
+database.
 
 ### Preparation
 
@@ -3494,7 +3718,8 @@ Let's create a new application for this chapter:
 $ rails new shop
   [...]
 $ cd shop
-$ rails generate model product name 'price:decimal{7,2}' weight:integer in_stock:boolean expiration_date:date
+$ rails generate model product name 'price:decimal{7,2}' weight:integer
+in_stock:boolean expiration_date:date
   [...]
 $ rake db:migrate
   [...]
@@ -3503,24 +3728,29 @@ $
 
 ### The Basic Idea
 
-For each model, there is a matching model file in the directory
-`app/models/`. In this Ruby code, we can not only define database
-dependencies, but also implement all validations. The advantage: Every
-programmer knows where to find it.
+For each model, there is a matching model file in the directory `app/models/`.
+In this Ruby code, we can not only define database dependencies, but also
+implement all validations. The advantage: Every programmer knows where to find
+it.
 
-Without any validation, we can create an empty record in a model without
-a problem:
+Without any validation, we can create an empty record in a model without a
+problem:
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Product.create
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "products" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", "2015-04-17 17:52:34.495378"], ["updated_at", "2015-04-17 17:52:34.495378"]]
+  SQL (0.5ms)  INSERT INTO "products" ("created_at", "updated_at") VALUES (?,
+  ?)  [["created_at", "2015-04-17 17:52:34.495378"], ["updated_at",
+  "2015-04-17 17:52:34.495378"]]
    (9.3ms)  commit transaction
-=> #<Product id: 1, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: "2015-04-17 17:52:34", updated_at: "2015-04-17 17:52:34">
+=> #<Product id: 1, name: nil, price: nil, weight: nil, in_stock: nil,
+expiration_date: nil, created_at: "2015-04-17 17:52:34", updated_at:
+"2015-04-17 17:52:34">
 >> puts Product.first.to_yaml
-  Product Load (0.3ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" ASC LIMIT 1
+  Product Load (0.3ms)  SELECT  "products".* FROM "products"  ORDER BY
+  "products"."id" ASC LIMIT 1
 --- !ruby/object:Product
 raw_attributes:
   id: 1
@@ -3630,9 +3860,9 @@ But in practice, this record with no content doesn't make any sense. A
 validations in ActiveRecord. Then you can ensure as programmer that only
 records that are valid for you are saved in your database.
 
-To make the mechanism easier to understand, I am going to jump ahead a
-bit and use the `presence` helper. Please fill your
-`app/model/product.rb` with the following content:
+To make the mechanism easier to understand, I am going to jump ahead a bit and
+use the `presence` helper. Please fill your `app/model/product.rb` with the
+following content:
 
 ```ruby
 class Product < ActiveRecord::Base
@@ -3652,33 +3882,37 @@ Loading development environment (Rails 4.2.1)
 >> product = Product.create
    (0.1ms)  begin transaction
    (0.1ms)  rollback transaction
-=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil,
+expiration_date: nil, created_at: nil, updated_at: nil>
 >>
 ```
 
-Watch out for the `rollback transaction` part and the misssing `id` of
-the `Product` object! Rails began the transaction of creating a new record
-but for some reason it couldn't do it. So it had to rollback the
-transaction. The validation method intervened before the record was
-saved. So validating happens before saving.
+Watch out for the `rollback transaction` part and the misssing `id` of the
+`Product` object! Rails began the transaction of creating a new record but for
+some reason it couldn't do it. So it had to rollback the transaction. The
+validation method intervened before the record was saved. So validating
+happens before saving.
 
 Can we access the errors? Yes, via the method `errors` or with
 `errors.messages` we can look at the errors that occurred:
 
 ```bash
 >> product.errors
-=> #<ActiveModel::Errors:0x007ff515a71680 @base=#<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>, @messages={:name=>["can't be blank"], :price=>["can't be blank"]}>
+=> #<ActiveModel::Errors:0x007ff515a71680 @base=#<Product id: nil, name: nil,
+price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil,
+updated_at: nil>, @messages={:name=>["can't be blank"], :price=>["can't be
+blank"]}>
 >> product.errors.messages
 => {:name=>["can't be blank"], :price=>["can't be blank"]}
 >>
 ```
 
-This error message was defined for a human and English-speaking user
-(more on this and how the errors can be translated into another language
-in [Chapter 10, Internationalization](chapter10-i18n.html)).
+This error message was defined for a human and English-speaking user (more on
+this and how the errors can be translated into another language in [Chapter
+10, Internationalization](chapter10-i18n.html)).
 
-Only once we assign a value to the attributes `name` and `price`, we can
-save the object:
+Only once we assign a value to the attributes `name` and `price`, we can save
+the object:
 
 ```bash
 >> product.name = 'Milk (1 liter)'
@@ -3687,34 +3921,39 @@ save the object:
 => 0.45
 >> product.save
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Milk (1 liter)"], ["price", 0.45], ["created_at", "2015-04-17 17:59:09.293831"], ["updated_at", "2015-04-17 17:59:09.293831"]]
+  SQL (0.5ms)  INSERT INTO "products" ("name", "price", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["name", "Milk (1 liter)"], ["price",
+  0.45], ["created_at", "2015-04-17 17:59:09.293831"], ["updated_at",
+  "2015-04-17 17:59:09.293831"]]
    (9.0ms)  commit transaction
 => true
 >>
 ```
 
-#### valid?
+#### `valid?`
 
-The method valid? indicates in boolean form if an object is valid. So
-you can check the validity already before you save:
+The method `valid?` indicates in boolean form if an object is valid. So you
+can check the validity already before you save:
 
 ```bash
 >> product = Product.new
-=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil,
+expiration_date: nil, created_at: nil, updated_at: nil>
 >> product.valid?
 => false
 >>
 ```
 
-#### save( validate: false )
+#### `save( validate: false )`
 
-As so often in life, you can find a way around everything. If you pass
-the parameter `:validate => false` to the method `save`, the data of
-`Validation` is saved:
+As so often in life, you can find a way around everything. If you pass the
+parameter `:validate => false` to the method `save`, the data of `Validation`
+is saved:
 
 ```bash
 >> product = Product.new
-=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil,
+expiration_date: nil, created_at: nil, updated_at: nil>
 >> product.valid?
 => false
 >> product.save
@@ -3723,7 +3962,9 @@ the parameter `:validate => false` to the method `save`, the data of
 => false
 >> product.save(validate: false)
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "products" ("created_at", "updated_at") VALUES (?, ?)  [["created_at", "2015-04-17 18:01:46.173590"], ["updated_at", "2015-04-17 18:01:46.173590"]]
+  SQL (0.5ms)  INSERT INTO "products" ("created_at", "updated_at") VALUES (?,
+  ?)  [["created_at", "2015-04-17 18:01:46.173590"], ["updated_at",
+  "2015-04-17 18:01:46.173590"]]
    (9.1ms)  commit transaction
 => true
 >> exit
@@ -3732,9 +3973,9 @@ $
 
 > **Warning**
 >
-> I assume that you understand the problems involved here. Please only
-> use this option if there is a good reason to do so. Otherwise you
-> might as well do without the whole validation process.
+> I assume that you understand the problems involved here. Please only use
+> this option if there is a good reason to do so. Otherwise you might as well
+> do without the whole validation process.
 
 ### presence
 
