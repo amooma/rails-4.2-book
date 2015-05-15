@@ -145,8 +145,6 @@ $ rails generate scaffold product name 'price:decimal{7,2}'
 $
 ```
 
-### Creating the Database with Sample Data
-
 As you can see, `rails generate scaffold` has already created the model.
 So we can directly call `rake db:migrate`:
 
@@ -180,11 +178,14 @@ $
 
 ### The Routes
 
-`rails generate scaffold` has created a route (more on this later in [Chapter 6, Routes](chapter06-routing.html)),
-a controller and several views for us (see [Section "Creating HTML Dynamically with erb"](chapter03-first-steps-with-rails.html#creating-html-dynamically-with-erb)). We could also have done
-all of this manually. Scaffolding is merely an automatism that does the
-work for us for some basic things. This is assuming that you always want
-to view, create and delete records.
+`rails generate scaffold` has created a route (more on this later in [Chapter
+6, Routes](chapter06-routing.html)), a controller and several views for us
+(see [Section "Creating HTML Dynamically with
+erb"](chapter03-first-steps-with-rails.html#creating-html-dynamically-with-erb)).
+
+We could also have done all of this manually. Scaffolding is merely an
+automatism that does the work for us for some basic things. This is assuming
+that you always want to view, create and delete records.
 
 Without diving too deeply into the topic routes, let's just have a quick
 look at the available routes for our example. You need to run
@@ -211,9 +212,9 @@ application. All routes invoke actions (in other words, methods) in the
 ### The Controller
 
 Now it's about time we had a look at the file
-`app/controllers/products_controller.rb`. Scaffold automatically creates
-the methods index, show, new, create, update and destroy. These methods
-or actions are called by the routes.
+`app/controllers/products_controller.rb`. Scaffold automatically creates the
+methods index, show, new, create, update and destroy. These methods or actions
+are called by the routes.
 
 Here is the content of `app/controllers/products_controller.rb`
 
@@ -248,7 +249,8 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
-        format.html { redirect_to @product, notice: 'Product was successfully created.' }
+        format.html { redirect_to @product, notice: 'Product was successfully
+        created.' }
         format.json { render :show, status: :created, location: @product }
       else
         format.html { render :new }
@@ -262,11 +264,13 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
-        format.html { redirect_to @product, notice: 'Product was successfully updated.' }
+        format.html { redirect_to @product, notice: 'Product was successfully
+        updated.' }
         format.json { render :show, status: :ok, location: @product }
       else
         format.html { render :edit }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.json { render json: @product.errors, status:
+        :unprocessable_entity }
       end
     end
   end
@@ -276,7 +280,8 @@ class ProductsController < ApplicationController
   def destroy
     @product.destroy
     respond_to do |format|
-      format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
+      format.html { redirect_to products_url, notice: 'Product was
+      successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -287,7 +292,8 @@ class ProductsController < ApplicationController
       @product = Product.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white
+    # list through.
     def product_params
       params.require(:product).permit(:name, :price)
     end
@@ -296,11 +302,11 @@ end
 
 Let us take a moment and go through this controller.
 
-#### set\_product
+#### `set_product`
 
 A `before_action` calls a private method to set an instance variable
-`@product` for the actions :show, :edit, :update and :destroy. That DRYs
-it up nicely:
+`@product` for the actions :show, :edit, :update and :destroy. That DRYs it up
+nicely:
 
 ```ruby
 before_action :set_product, only: [:show, :edit, :update, :destroy]
@@ -315,7 +321,7 @@ private
 [...]
 ```
 
-#### index
+#### `index`
 
 The `index` method sets the instance variable `@products`. It contains the
 result of `Product.all`.
@@ -328,11 +334,10 @@ def index
 end
 ```
 
-#### show
+#### `show`
 
 The `show` method doesn't do anything. the `set_product` `before_action`
-already set the instance variable `@product`. So there is not more to
-do.
+already set the instance variable `@product`. So there is not more to do.
 
 ```ruby
 # GET /products/1
@@ -341,7 +346,7 @@ def show
 end
 ```
 
-#### new
+#### `new`
 
 The `new` method creates a new instance of Product and saves it in the
 instance variable `@product`.
@@ -353,7 +358,7 @@ def new
 end
 ```
 
-#### edit
+#### `edit`
 
 The `edit` method doesn't do anything. the `set_product` `before_action`
 already set the instance variable `@product`. So there is not more to
@@ -365,7 +370,7 @@ def edit
 end
 ```
 
-#### create
+#### `create`
 
 The `create` method uses `Product.new` to create a new instance of Product
 and stores it in `@product`. The private method `product_params` is used
@@ -381,24 +386,27 @@ def create
 
   respond_to do |format|
     if @product.save
-      format.html { redirect_to @product, notice: 'Product was successfully created.' }
+      format.html { redirect_to @product, notice: 'Product was successfully
+      created.' }
       format.json { render :show, status: :created, location: @product }
     else
       format.html { render :new }
-      format.json { render json: @product.errors, status: :unprocessable_entity }
+      format.json { render json: @product.errors, status:
+      :unprocessable_entity }
     end
   end
 end
 
 [...]
 
-# Never trust parameters from the scary internet, only allow the white list through.
+# Never trust parameters from the scary internet, only allow the white list
+# through.
 def product_params
   params.require(:product).permit(:name, :price)
 end
 ```
 
-#### update
+#### `update`
 
 The `update` method tries to update @product with the `product_params`. The
 private method `product_params` is used to filter the trusted parameters
@@ -412,24 +420,27 @@ occured the `edit` action will be rendered.
 def update
   respond_to do |format|
     if @product.update(product_params)
-      format.html { redirect_to @product, notice: 'Product was successfully updated.' }
+      format.html { redirect_to @product, notice: 'Product was successfully
+      updated.' }
       format.json { render :show, status: :ok, location: @product }
     else
       format.html { render :edit }
-      format.json { render json: @product.errors, status: :unprocessable_entity }
+      format.json { render json: @product.errors, status:
+      :unprocessable_entity }
     end
   end
 end
 
 [...]
 
-# Never trust parameters from the scary internet, only allow the white list through.
+# Never trust parameters from the scary internet, only allow the white list
+# through.
 def product_params
   params.require(:product).permit(:name, :price)
 end
 ```
 
-#### destroy
+#### `destroy`
 
 The `destroy` method destroys `@product` and redirects an html request to
 the `index` action.
@@ -440,7 +451,8 @@ the `index` action.
 def destroy
   @product.destroy
   respond_to do |format|
-    format.html { redirect_to products_url, notice: 'Product was successfully destroyed.' }
+    format.html { redirect_to products_url, notice: 'Product was successfully
+    destroyed.' }
     format.json { head :no_content }
   end
 end
@@ -469,7 +481,8 @@ $ rails server
 > **Note**
 >
 > If you get a warning from your built-in firewall now, this shows that
-> you have worked through [Chapter 3, First Steps with Rails](chapter03-first-steps-with-rails.htlm) properly. ;-)
+> you have worked through [Chapter 3, First Steps with
+> Rails](chapter03-first-steps-with-rails.htlm) properly. ;-)
 
 Now a little drum roll... dramatic suspense... launch the web browser
 and go to the URL <http://localhost:3000/products>. You can see the list
@@ -519,12 +532,12 @@ $
 There are two different file extensions. The `html.erb` is for HTML
 requests and the `json.jbuilder` is for JSON requests.
 
-For `index`, `edit`, `new` and `show` the corresponding views are located there.
-As `new` and `edit` both require a form for editing the data, this is stored
-in the partial `_form.html.erb` (see [the section called "Partials"](chapter03-first-steps-with-rails.html#partials)) in accordance with the principle
-of DRY (**D**on't **R**epeat **Y**ourself) and integrated in
-`new.html.erb` and `edit.html.erb` with a `<%= render 'form'
-        %>`.
+For `index`, `edit`, `new` and `show` the corresponding views are located
+there.  As `new` and `edit` both require a form for editing the data, this is
+stored in the partial `_form.html.erb` (see [the section called
+"Partials"](chapter03-first-steps-with-rails.html#partials)) in accordance
+with the principle of DRY (**D**on't **R**epeat **Y**ourself) and integrated
+in `new.html.erb` and `edit.html.erb` with a `<%= render 'form' %>`.
 
 Let's open the file `app/views/products/index.html.erb`:
 
@@ -549,7 +562,8 @@ Let's open the file `app/views/products/index.html.erb`:
         <td><%= product.price %></td>
         <td><%= link_to 'Show', product %></td>
         <td><%= link_to 'Edit', edit_product_path(product) %></td>
-        <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', product, method: :delete, data: { confirm:
+        'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -562,17 +576,17 @@ Let's open the file `app/views/products/index.html.erb`:
 
 You are now an old hand when it comes to ERB, so you'll be able to read
 and understand the code without any problems. If in doubt, have a quick
-look at [the section called "Programming in an erb File"](chapter03-first-steps-with-rails.html#programming-in-an-erb-file).
+look at [the section called "Programming in an erb
+File"](chapter03-first-steps-with-rails.html#programming-in-an-erb-file).
 
-#### link\_to
+#### `link_to`
 
-In the views generated by the scaffold generator, you first came across
-the helper `link_to`. This creates `<a hre
-        ...>` links. You can of course also enter a link manually via
-`<a href="...">` in the erb, but for linrks within a Rails project,
-`link_to` is more practical, because you can use the names of the routes
-as a target. The code becomes much easier to read. In the above example,
-there are the following routes:
+In the views generated by the scaffold generator, you first came across the
+helper `link_to`. This creates `<a hre ...>` links. You can of course also
+enter a link manually via `<a href="...">` in the erb, but for linrks within a
+Rails project, `link_to` is more practical, because you can use the names of
+the routes as a target. The code becomes much easier to read. In the above
+example, there are the following routes:
 
 ```bash
 $ rake routes
@@ -588,26 +602,25 @@ edit_product GET    /products/:id/edit(.:format) products#edit
 $
 ```
 
-The first part of this route is the name of the route. With a new call,
-this is `new_product`. A link to `new_product` looks like this in the
-erb code (you can see it at the end of the file
-`app/views/products/index.html.erb`):
+The first part of this route is the name of the route. With a new call, this
+is `new_product`. A link to `new_product` looks like this in the erb code (you
+can see it at the end of the file `app/views/products/index.html.erb`):
 
-```ruby
+```erb
 <%= link_to 'New Product', new_product_path %>
 ```
 
 In the HTML code of the generated page (<http://localhost:3000/products>)
 you can see the result:
 
-```html
+```erb
 <%= link_to 'New Product', new_product_path %>
 ```
 
 With `link_to` you can also link to resources within a RESTful resource.
-Again, you can find examples for this in
-`app/views/products/index.html.erb`. In the table, a `show`, an `edit`
-and a `destroy` link is rendered for each `product`:
+Again, you can find examples for this in `app/views/products/index.html.erb`.
+In the table, a `show`, an `edit` and a `destroy` link is rendered for each
+`product`:
 
 ```erb
 <tbody>
@@ -617,28 +630,27 @@ and a `destroy` link is rendered for each `product`:
       <td><%= product.price %></td>
       <td><%= link_to 'Show', product %></td>
       <td><%= link_to 'Edit', edit_product_path(product) %></td>
-      <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <td><%= link_to 'Destroy', product, method: :delete, data: { confirm:
+      'Are you sure?' } %></td>
     </tr>
   <% end %>
 </tbody>
 ```
 
-From the resource and the selected route, Rails automatically determines
-the required URL and the required HTTP verb (in other words, whether it
-is a POST, GET, PUT or DELETE). For index and show calls, you need to
-observe the difference between singular and plural.
-`link_to 'Show', product` links to a single record and
-`link_to 'Show', products_path` links to the index view.
+From the resource and the selected route, Rails automatically determines the
+required URL and the required HTTP verb (in other words, whether it is a POST,
+GET, PUT or DELETE). For index and show calls, you need to observe the
+difference between singular and plural. `link_to 'Show', product` links to a
+single record and `link_to 'Show', products_path` links to the index view.
 
-Whether the name of the route is used with or without the suffix `_path`
-in `link_to` depends on whether Rails can "derive" the route from the
-other specified information. If only one object is specified (in our
-example, the variable `product`), then Rails automatically assumes that
-it is a show route.
+Whether the name of the route is used with or without the suffix `_path` in
+`link_to` depends on whether Rails can "derive" the route from the other
+specified information. If only one object is specified (in our example, the
+variable `product`), then Rails automatically assumes that it is a show route.
 
 Examples:
 
-| Rubycode | Explanation |  
+| ERD-Code | Explanation |  
 | ---- | ----------------- |  
 | `link_to 'Show', Product.first`  | Link to the first product.| 
 | `link_to 'New Product', new_product_path` | Link to the Web interface where a new product can be created. | 
@@ -646,17 +658,17 @@ Examples:
 | `link_to 'Destroy', Product.first, method: :delete` | Link to deleting the first product. |
 
 
-#### form\_for
+#### `form_for`
 
-In the partial used by `new` and `edit`,
-`app/views/products/_form.html.erb`, you will find the following code
-for the product form:
+In the partial used by `new` and `edit`, `app/views/products/_form.html.erb`,
+you will find the following code for the product form:
 
 ```erb
 <%= form_for(@product) do |f| %>
   <% if @product.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this
+      product from being saved:</h2>
 
       <ul>
       <% @product.errors.full_messages.each do |message| %>
@@ -680,14 +692,12 @@ for the product form:
 <% end %>
 ```
 
-In a block, the helper `form_for` takes care of creating the HTML form
-via which the user can enter the data for the record or edit it. If you
-delete a complete `<div
-        class="field">` element here, this can no longer be used for
-input in the web interface. I am not going to comment on all possible
-form field variations at this point. The most frequently used ones will
-appear in examples later on and be explained then (if they are not
-self-explanatory).
+In a block, the helper `form_for` takes care of creating the HTML form via
+which the user can enter the data for the record or edit it. If you delete a
+complete `<div class="field">` element here, this can no longer be used for
+input in the web interface. I am not going to comment on all possible form
+field variations at this point. The most frequently used ones will appear in
+examples later on and be explained then (if they are not self-explanatory).
 
 > **Note**
 >
@@ -700,7 +710,8 @@ are displayed in the following code at the head of the form:
 ```erb
 <% if @product.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this
+      product from being saved:</h2>
 
       <ul>
       <% @product.errors.full_messages.each do |message| %>
@@ -727,23 +738,22 @@ Rails will show this Flash Error:
 
 #### Access via JSON
 
-By default, Rails' scaffolding generates not just access via HTML for
-"human" users, but also a direct interface for machines. The same
-methods `index`, `show`, `new`, `create`, `update` and `destroy` can be called via
-this interface, but in a format that is easier to read for machines. As
-an example, we will demonstrate the `index` action via which all data can
-be read in one go. With the same idea, data can be removed (`destroy`) or
-edited (`update`).
+By default, Rails' scaffolding generates not just access via HTML for "human"
+users, but also a direct interface for machines. The same methods `index`,
+`show`, `new`, `create`, `update` and `destroy` can be called via this
+interface, but in a format that is easier to read for machines. As an example,
+we will demonstrate the `index` action via which all data can be read in one
+go. With the same idea, data can be removed (`destroy`) or edited (`update`).
 
 JSON (see
 [http://en.wikipedia.org/wiki/Json](http://de.wikipedia.org/wiki/JavaScript_Object_Notation))
 seems to be the new cool kid. So we use JSON.
 
-If you do not require machine-readable access to data, you can skip
-these examples. But then you should also delete all lines with
-`format.json` in the `respond_to` blocks of your controllers, to be on
-the safe side. Otherwise you still have an interface to the data that
-you may just forget and that constitutes a potential security gap.
+If you do not require machine-readable access to data, you can skip these
+examples. But then you should also delete all lines with `format.json` in the
+`respond_to` blocks of your controllers, to be on the safe side. Otherwise you
+still have an interface to the data that you may just forget and that
+constitutes a potential security gap.
 
 ##### JSON as Default
 
@@ -770,20 +780,20 @@ end
 ```
 
 You can use your browser to fetch the JSON output. Just open
-<http://localhost:3000/products.json> and view the result. I installed a
-JSON view extension in my Chrome browser to get a nicer format.
+<http://localhost:3000/products.json> and view the result. I installed a JSON
+view extension in my Chrome browser to get a nicer format.
 
 ![products index json](images/screenshots/chapter05/products_index_json.jpg "Products index json")
 
-If you do not want the JSON output, you need to delete the
-`json.jbuilder` files.
+If you do not want the JSON output, you need to delete the `json.jbuilder`
+files.
 
 ##### JSON and XML Together
 
-If you ever need a JSON and XML interface in a Rails application, you
-just need to specify both variants in the controller in the block
-`respond_to`. Here is an example with the
-`app/controllers/products_controller.rb` in the `index` action:
+If you ever need a JSON and XML interface in a Rails application, you just
+need to specify both variants in the controller in the block `respond_to`.
+Here is an example with the `app/controllers/products_controller.rb` in the
+`index` action:
 
 ```ruby
 # GET /products
@@ -803,18 +813,17 @@ end
 When Should You Use Scaffolding?
 --------------------------------
 
-You should never use scaffolding just for the sake of it. There are
-Rails developers who never use scaffolding and always build everything
-manually. I find scaffolding quite useful for quickly getting into a new
-project. But it is always just the beginning.
+You should never use scaffolding just for the sake of it. There are Rails
+developers who never use scaffolding and always build everything manually. I
+find scaffolding quite useful for quickly getting into a new project. But it
+is always just the beginning.
 
 ### Example for a Minimal Project
 
-Let's assume we need a web page quickly with which we can list products
-and represent them individually. But we do not require an editing or
-deleting function. In that case, a large part of the code created via
-scaffold would be useless and have to be deleted. Let's try it out as
-follows:
+Let's assume we need a web page quickly with which we can list products and
+represent them individually. But we do not require an editing or deleting
+function. In that case, a large part of the code created via scaffold would be
+useless and have to be deleted. Let's try it out as follows:
 
 ```bash
 $ rails new read-only-shop
