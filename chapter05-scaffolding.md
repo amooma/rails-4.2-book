@@ -4,35 +4,36 @@ Scaffolding and REST
 Introduction
 ------------
 
-Scaffolding means purely and simply that a basic *scaffold* for an
-application is created via a generator. This scaffold not only contains
-the *model* but also a simple Web GUI (*views*) and of course a
-*controller*. The programming paradigm used for this is REST
-(Representational State Transfer).
+Scaffolding means purely and simply that a basic *scaffold* for an application
+is created via a generator. This scaffold not only contains the *model* but
+also a simple Web GUI (*views*) and of course a *controller*. The programming
+paradigm used for this is REST (Representational State Transfer).
 
 You can find a definition of REST at
-<http://en.wikipedia.org/wiki/Representational_state_transfer>. My super
-short version: the inventor Roy Fielding described in 2000 how you can
-access data with a simple set of rules within the concept of CRUD (see
+<http://en.wikipedia.org/wiki/Representational_state_transfer>. My super short
+version: the inventor Roy Fielding described in 2000 how you can access data
+with a simple set of rules within the concept of CRUD (see
 <http://en.wikipedia.org/wiki/Create,_read,_update_and_delete>) and the
 specification of the Hypertext Transfer Protocol (HTTP). CRUD is the
 abbreviation for Create (SQL: INSERT), Read (SQL: SELECT), Update (SQL:
-UPDATE) and Delete (SQL: Delete). This created URLs that are easy to
-read for humans and have a certain logic. In this chapter, you will see
-examples showing the individual paths for the different CRUD functions.
+UPDATE) and Delete (SQL: Delete). This created URLs that are easy to read for
+humans and have a certain logic. In this chapter, you will see examples
+showing the individual paths for the different CRUD functions.
 
-I think the greatest frustration with Rail arises regularly from the
-fact that many beginners use scaffolding to get quick results without
-having proper basic knowledge of Ruby and without knowing what
-ActiveRecord is. They don't know what to do next. Fortunately, you have
-worked your way through [Chapter 2, Ruby Basics](chapter02-ruby-basics.html), [Chapter 3, First Steps with Rails](chapter03-first-steps-with-rails.html) and [Chapter 4, ActiveRecord](chapter04-activerecord.html), so you will be able to understand
+I think the greatest frustration with Rail arises regularly from the fact that
+many beginners use scaffolding to get quick results without having proper
+basic knowledge of Ruby and without knowing what ActiveRecord is. They don't
+know what to do next. Fortunately, you have worked your way through [Chapter
+2, Ruby Basics](chapter02-ruby-basics.html), [Chapter 3, First Steps with
+Rails](chapter03-first-steps-with-rails.html) and [Chapter 4,
+ActiveRecord](chapter04-activerecord.html), so you will be able to understand
 and use scaffolding straight away.
 
 > **Note**
 >
-> This chapter is an introduction to scaffolding, not an encyclopedia
-> that covers all variations. Our focus is on the basic idea and on
-> getting beginners started. The same applies to REST.
+> This chapter is an introduction to scaffolding, not an encyclopedia that
+> covers all variations. Our focus is on the basic idea and on getting
+> beginners started. The same applies to REST.
 
 Generating a Scaffold
 ---------------------
@@ -51,71 +52,11 @@ Let's look at the scaffolding options:
 
 ```bash
 $ rails generate scaffold
-^C^C/Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:156:in `fork': Interrupt
-  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:156:in `serve'
-  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:131:in `block in run'
-  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:125:in `loop'
-  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application.rb:125:in `run'
-  from /Users/xyz/.rvm/gems/ruby-2.2.0/gems/spring-1.3.4/lib/spring/application/boot.rb:18:in `<top (required)>'
-  from /Users/xyz/.rvm/rubies/ruby-2.2.0/lib/ruby/site_ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in `require'
-  from /Users/xyz/.rvm/rubies/ruby-2.2.0/lib/ruby/site_ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in `require'
-  from -e:1:in `<main>'
-MAC-00020:shop xyz$ rails generate scaffold
 Usage:
-  rails generate scaffold NAME [field[:type][:index] field[:type][:index]] [options]
+  rails generate scaffold NAME [field[:type][:index] field[:type][:index]]
+  [options]
 
-Options:
-      [--skip-namespace], [--no-skip-namespace]  # Skip namespace (affects only isolated applications)
-      [--force-plural], [--no-force-plural]      # Forces the use of the given model name
-  -o, --orm=NAME                                 # Orm to be invoked
-                                                 # Default: active_record
-      [--model-name=MODEL_NAME]                  # ModelName to be used
-      [--resource-route], [--no-resource-route]  # Indicates when to generate resource route
-                                                 # Default: true
-  -y, [--stylesheets], [--no-stylesheets]        # Generate Stylesheets
-                                                 # Default: true
-  -se, [--stylesheet-engine=STYLESHEET_ENGINE]   # Engine for Stylesheets
-                                                 # Default: scss
-      [--assets], [--no-assets]                  # Indicates when to generate assets
-                                                 # Default: true
-  -c, --scaffold-controller=NAME                 # Scaffold controller to be invoked
-                                                 # Default: scaffold_controller
-
-ActiveRecord options:
-      [--migration], [--no-migration]    # Indicates when to generate migration
-                                         # Default: true
-      [--timestamps], [--no-timestamps]  # Indicates when to generate timestamps
-                                         # Default: true
-      [--parent=PARENT]                  # The parent class for the generated model
-      [--indexes], [--no-indexes]        # Add indexes for references and belongs_to columns
-                                         # Default: true
-  -t, [--test-framework=NAME]            # Test framework to be invoked
-                                         # Default: test_unit
-
-TestUnit options:
-      [--fixture], [--no-fixture]   # Indicates when to generate fixture
-                                    # Default: true
-  -r, [--fixture-replacement=NAME]  # Fixture replacement to be invoked
-
-ScaffoldController options:
-      [--helper], [--no-helper]  # Indicates when to generate helper
-                                 # Default: true
-  -e, [--template-engine=NAME]   # Template engine to be invoked
-                                 # Default: erb
-      [--jbuilder]               # Indicates when to generate jbuilder
-                                 # Default: true
-
-Asset options:
-  -j, [--javascripts], [--no-javascripts]       # Generate JavaScripts
-                                                # Default: true
-  -je, [--javascript-engine=JAVASCRIPT_ENGINE]  # Engine for JavaScripts
-                                                # Default: coffee
-
-Runtime options:
-  -f, [--force]                    # Overwrite files that already exist
-  -p, [--pretend], [--no-pretend]  # Run but do not make any changes
-  -q, [--quiet], [--no-quiet]      # Suppress status output
-  -s, [--skip], [--no-skip]        # Skip files that already exist
+[...]
 
 Description:
     Scaffolds an entire resource, from model and migration to controller and
@@ -162,10 +103,10 @@ Examples:
 $
 ```
 
-I'll keep it short: for our current state of knowledge, we can use
-`rails generate scaffold` just like `rails
-    generate model` (see [Section "Creating Database/"Model""](chapter04-activerecord.html#creating-databasemodel)). Let's now create the scaffold for the
-products:
+I'll keep it short: for our current state of knowledge, we can use `rails
+generate scaffold` just like `rails generate model` (see [Section "Creating
+Database/"Model""](chapter04-activerecord.html#creating-databasemodel)). Let's
+now create the scaffold for the products:
 
 ```bash
 $ rails generate scaffold product name 'price:decimal{7,2}'
