@@ -458,11 +458,6 @@ def destroy
 end
 ```
 
-#### JSON
-
-The default scaffold generator creates a setup for HTML and JSON
-requests.
-
 ### The Views
 
 Now we start the Rails web server:
@@ -738,7 +733,7 @@ Rails will show this Flash Error:
 
 #### Access via JSON
 
-By default, Rails' scaffolding generates not just access via HTML for "human"
+By default, Rails' scaffolding generates not just access via HTML for human
 users, but also a direct interface for machines. The same methods `index`,
 `show`, `new`, `create`, `update` and `destroy` can be called via this
 interface, but in a format that is easier to read for machines. As an example,
@@ -749,11 +744,16 @@ JSON (see
 [http://en.wikipedia.org/wiki/Json](http://de.wikipedia.org/wiki/JavaScript_Object_Notation))
 seems to be the new cool kid. So we use JSON.
 
-If you do not require machine-readable access to data, you can skip these
-examples. But then you should also delete all lines with `format.json` in the
-`respond_to` blocks of your controllers, to be on the safe side. Otherwise you
-still have an interface to the data that you may just forget and that
-constitutes a potential security gap.
+If you do not require machine-readable access to data, you can remove these
+lines in the file `Gemfile` (followed by the command `bundle`).
+
+```ruby
+# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder       
+gem 'jbuilder', '~> 2.0'
+```
+
+Of course you can delete the `format.json` lines manually too. But please
+don't forget to delete the JSON view files too.
 
 ##### JSON as Default
 
