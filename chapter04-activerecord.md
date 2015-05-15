@@ -404,7 +404,7 @@ In [the section "Migrations"](#migrations) we will provide more information on
 the individual data types and discuss available options. Don't forget, this is
 a book for beginners, so this section just gives a brief overview.
 
-### Naming Conventions (Country vs. country vs. countries)
+### Naming Conventions (`Country` vs. `country` vs. `countries`)
 
 Rails newbies often find it hard to figure out when to use upper and lower
 case, for example, `Country` or `country` (one is a class, the other one a
@@ -511,7 +511,7 @@ Actually, I would like to show you first how to view records, but there we
 have another chicken and egg problem. So first, here is how you can create a
 new record with `ActiveRecord`.
 
-### create
+### `create`
 
 The most frequently used method for creating a new record is `create`.
 
@@ -554,22 +554,17 @@ The method `create` can handle a number of different syntax constructs. If
 you want to create a single record, you can do this with or without
 {}-brackets within the the ()-brackets:
 
--   `Country.create(name: 'Germany', population:
-                81831000)`
+-   `Country.create(name: 'Germany', population: 81831000)`
 
--   `Country.create({name: 'Germany', population:
-                81831000})`
+-   `Country.create({name: 'Germany', population: 81831000})`
 
 Similarly, you can describe the attributes differently:
 
--   `Country.create(:name => 'Germany', :population
-                => 81831000)`
+-   `Country.create(:name => 'Germany', :population => 81831000)`
 
--   `Country.create('name' => 'Germany', 'population'
-                => 81831000)`
+-   `Country.create('name' => 'Germany', 'population' => 81831000)`
 
--   `Country.create( name: 'Germany', population: 81831000
-                )`
+-   `Country.create( name: 'Germany', population: 81831000)`
 
 You can also pass an array of hashes to create and use this approach to
 create several records at once:
@@ -578,7 +573,7 @@ create several records at once:
 Country.create([{name: 'Germany'}, {name: 'France'}])
 ```
 
-### new
+### `new`
 
 In addition to `create` there is also `new`. But you have to use `save` to
 save an object created with `new` (which has both advantages and
@@ -1421,7 +1416,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-### group
+### `group`
 
 With the method `group`, you can return the result of a query in grouped form.
 
@@ -2019,7 +2014,7 @@ Entering the `book_id` manually in this way is of course not very
 practical and susceptible to errors. That's why there is the method
 [the section called "create"](#create).
 
-#### 'create'
+#### `create`
 
 Now we try doing the same as in [the section called "Manually"](#manually),
 but this time we use a bit of ActiveRecord magic. We can use the method
@@ -2113,7 +2108,7 @@ book_id: 1, first_name: nil, last_name: "B", created_at: "2015-04-17
 $
 ```
 
-#### 'build'
+#### `build`
 
 The method `build` resembles `create`. But the record is not saved. This
 only happens after a `save`:
@@ -3281,8 +3276,8 @@ association makes more sense in this case.
 Polymorphic associations can be configured with the same options as a normal
 [Section "has_many - 1:n Association"](#has95many-1n-association) model.
 
-Delete/Destroy a Record
------------------------
+`Delete`/`Destroy` a Record
+---------------------------
 
 To remove a database record, you can use the methods `destroy` and `delete`.
 It's quite easy to confuse these two terms, but they are different and after a
@@ -4120,7 +4115,7 @@ validates :name,
 > For all error messages, please note [Chapter 10,
 > Internationalization](chapter10-i18n.html)..
 
-##### is
+##### `is`
 
 Is exactly the specified number of characters long. Example:
 
