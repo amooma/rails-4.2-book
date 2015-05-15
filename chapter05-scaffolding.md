@@ -942,10 +942,6 @@ If we now start the server `rails server` and go to the URL
 The same message will be displayed in the log:
 
 ```bash
-$ rake routes
-  Prefix Verb URI Pattern             Controller#Action
-products GET  /products(.:format)     products#index
- product GET  /products/:id(.:format) products#show
 $ rails server
 => Booting WEBrick
 => Rails 4.2.1 application starting in development on http://localhost:3000
