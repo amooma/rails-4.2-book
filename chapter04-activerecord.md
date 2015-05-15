@@ -2560,7 +2560,8 @@ $
 And a model for individual items of an order:
 
 ```bash
-$ rails generate model line_item order_id:integer product_id:integer quantity:integer
+$ rails generate model line_item order:references product:references
+quantity:integer
   [...]
 $ 
 ```
@@ -2599,7 +2600,7 @@ class Product < ActiveRecord::Base
 end
 ```
 
-Finally, the file `app/models/line_item.rb:`
+The file `app/models/line_item.rb:` has been filled by the generator:
 
 ```ruby
 class LineItem < ActiveRecord::Base
@@ -3977,7 +3978,7 @@ $
 > this option if there is a good reason to do so. Otherwise you might as well
 > do without the whole validation process.
 
-### presence
+### `presence`
 
 In our model `product` there are a few fields that must be filled in in
 any case. We can achieve this via `presence`.
@@ -4003,7 +4004,8 @@ Loading development environment (Rails 4.2.1)
 >> product = Product.create
    (0.1ms)  begin transaction
    (0.1ms)  rollback transaction
-=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+=> #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil,
+expiration_date: nil, created_at: nil, updated_at: nil>
 >> product.errors.messages
 => {:name=>["can't be blank"], :price=>["can't be blank"]}
 >>
@@ -4018,18 +4020,21 @@ Only once we have entered all the data, the record can be saved:
 => 0.45
 >> product.save
    (0.1ms)  begin transaction
-  SQL (0.6ms)  INSERT INTO "products" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Milk (1 liter)"], ["price", 0.45], ["created_at", "2015-04-17 18:04:26.587946"], ["updated_at", "2015-04-17 18:04:26.587946"]]
+  SQL (0.6ms)  INSERT INTO "products" ("name", "price", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["name", "Milk (1 liter)"], ["price",
+  0.45], ["created_at", "2015-04-17 18:04:26.587946"], ["updated_at",
+  "2015-04-17 18:04:26.587946"]]
    (9.2ms)  commit transaction
 => true
 >> exit
 $
 ```
 
-### length
+### `length`
 
-With `length` you can limit the length of a specific attribute. It's
-easiest to explain using an example. Let us limit the maximum length of
-the name to 20 and the minimum to 2.
+With `length` you can limit the length of a specific attribute. It's easiest
+to explain using an example. Let us limit the maximum length of the name to 20
+and the minimum to 2.
 
 `app/models/product.rb`
 
@@ -4053,7 +4058,9 @@ Loading development environment (Rails 4.2.1)
 >> product = Product.create(:name => 'M', :price => 0.45)
    (0.1ms)  begin transaction
    (0.1ms)  rollback transaction
-=> #<Product id: nil, name: "M", price: #<BigDecimal:7ff735513400,'0.45E0',9(27)>, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+=> #<Product id: nil, name: "M", price:
+#<BigDecimal:7ff735513400,'0.45E0',9(27)>, weight: nil, in_stock: nil,
+expiration_date: nil, created_at: nil, updated_at: nil>
 >> product.errors.messages
 => {:name=>["is too short (minimum is 2 characters)"]}
 >>
@@ -4063,7 +4070,7 @@ Loading development environment (Rails 4.2.1)
 
 `length` can be called with the following options.
 
-##### minimum
+##### `minimum`
 
 The minimum length of an attribute. Example:
 
@@ -4073,7 +4080,7 @@ validates :name,
           length: { minimum: 2 }
 ```
 
-###### too\_short
+###### `too_short`
 
 Defines the error message of :minimum. Default: "is too short (min is %d
 characters)". Example:
@@ -4085,7 +4092,7 @@ validates :name,
           too_short: "must have at least %{count} characters"}
 ```
 
-##### maximum
+##### `maximum`
 
 The maximum length of an attribute. Example:
 
@@ -4095,7 +4102,7 @@ validates :name,
           length: { maximum: 20 }
 ```
 
-###### too\_long
+###### `too_long`
 
 Defines the error message of :maximum. Default: "is too long (maximum is
 %d characters)". Example:
@@ -4110,7 +4117,8 @@ validates :name,
 
 > **Note**
 >
-> For all error messages, please note [Chapter 10, Internationalization](chapter10-i18n.html)..
+> For all error messages, please note [Chapter 10,
+> Internationalization](chapter10-i18n.html)..
 
 ##### is
 
@@ -4122,7 +4130,7 @@ validates :name,
           length: { is: 8 }
 ```
 
-##### :in or :within
+##### `:in` or `:within`
 
 Defines a length interval. The first number specifies the minimum number
 of the range and the second the maximum. Example:
@@ -4133,7 +4141,7 @@ validates :name,
           length: { in: 2..20 }
 ```
 
-##### tokenizer
+##### `tokenizer`
 
 You can use this to define how the attribute should be split for
 counting. Default: `lambda{ |value| value.split(//) }` (individual
@@ -4146,7 +4154,7 @@ validates :content,
           tokenizer: lambda {|str| str.scan(/\w+/)}
 ```
 
-### numericality
+### `numericality`
 
 With `numericality` you can check if an attribute is a number. It's easier
 to explain if we use an example.
@@ -4176,7 +4184,7 @@ Loading development environment (Rails 4.2.1)
 >> product = Product.create(name: 'Milk (1 liter)', price: 0.45, weight: 'abc')
    (0.1ms)  begin transaction
    (0.1ms)  rollback transaction
-=> #<Product id: nil, name: "Milk (1 liter)", price: #<BigDecimal:7fca1ec90ed8,'0.45E0',9(27)>, weight: 0, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+=> #<Product id: nQil, name: "Milk (1 liter)", price: #<BigDecimal:7fca1ec90ed8,'0.45E0',9(27)>, weight: 0, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
 >> product.errors.messages
 => {:weight=>["is not a number"]}
 >> exit
@@ -4192,7 +4200,7 @@ $
 
 `numericality` can be called with the following options.
 
-##### only\_integer
+##### `only_integer`
 
 The attribute can only contain an integer. Default: false. Example:
 
@@ -4201,7 +4209,7 @@ validates :weight,
           numericality: { only_integer: true }
 ```
 
-##### greater\_than
+##### `greater_than`
 
 The number saved in the attribute must be greater than the specified
 value. Example:
@@ -4211,7 +4219,7 @@ validates :weight,
           numericality: { greater_than: 100 }
 ```
 
-##### greater\_than\_or\_equal\_to
+##### `greater_than_or_equal_to`
 
 The number saved in the attribute must be greater than or equal to the
 specified value. Example:
@@ -4221,7 +4229,7 @@ validates :weight,
           numericality: { greater_than_or_equal_to: 100 }
 ```
 
-##### equal\_to
+##### `equal_to`
 
 Defines a specific value that the attribute must have. Example:
 
@@ -4230,7 +4238,7 @@ validates :weight,
           numericality: { equal_to: 100 }
 ```
 
-##### less\_than
+##### `less_than`
 
 The number saved in the attribute must be less than the specified value.
 Example:
@@ -4240,7 +4248,7 @@ validates :weight,
           numericality: { less_than: 100 }
 ```
 
-##### less\_than\_or\_equal\_to
+##### `less_than_or_equal_to`
 
 The number saved in the attribute must be less than or equal to the
 specified value. Example:
@@ -4250,7 +4258,7 @@ validates :weight,
           numericality: { less_than_or_equal_to: 100 }
 ```
 
-##### odd
+##### `odd`
 
 The number saved in the attribute must be an odd number. Example:
 
@@ -4259,7 +4267,7 @@ validates :weight,
           numericality: { odd: true }
 ```
 
-##### even
+##### `even`
 
 The number saved in the attribute must be an even number. Example:
 
@@ -4268,7 +4276,7 @@ validates :weight,
           numericality: { even: true }
 ```
 
-### uniqueness
+### `uniqueness`
 
 With uniqueness you can define that the value of this attribute must be
 unique in the database. If you want a product in the database to have a
@@ -4291,13 +4299,19 @@ then we get an error message:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Product.last
-  Product Load (0.2ms)  SELECT  "products".* FROM "products"  ORDER BY "products"."id" DESC LIMIT 1
-=> #<Product id: 4, name: "Milk (1 liter)", price: #<BigDecimal:7fdccb1960b8,'0.45E0',9(27)>, weight: nil, in_stock: nil, expiration_date: nil, created_at: "2015-04-17 18:04:26", updated_at: "2015-04-17 18:04:26">
+  Product Load (0.2ms)  SELECT  "products".* FROM "products"  ORDER BY
+  "products"."id" DESC LIMIT 1
+=> #<Product id: 4, name: "Milk (1 liter)", price:
+#<BigDecimal:7fdccb1960b8,'0.45E0',9(27)>, weight: nil, in_stock: nil,
+expiration_date: nil, created_at: "2015-04-17 18:04:26", updated_at:
+"2015-04-17 18:04:26">
 >> product = Product.create(name: 'Milk (1 liter)')
    (0.1ms)  begin transaction
-  Product Exists (0.2ms)  SELECT  1 AS one FROM "products" WHERE "products"."name" = 'Milk (1 liter)' LIMIT 1
+  Product Exists (0.2ms)  SELECT  1 AS one FROM "products" WHERE
+  "products"."name" = 'Milk (1 liter)' LIMIT 1
    (0.1ms)  rollback transaction
-=> #<Product id: nil, name: "Milk (1 liter)", price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+=> #<Product id: nil, name: "Milk (1 liter)", price: nil, weight: nil,
+in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
 >> product.errors.messages
 => {:name=>["has already been taken"]}
 >> exit
@@ -4316,7 +4330,7 @@ $
 
 `uniqueness` can be called with the following options.
 
-##### scope
+##### `scope`
 
 Defines a scope for the uniqueness. If we had a differently structured
 phone number database (with just one field for the phone number), then
@@ -4329,7 +4343,7 @@ validates :name,
         uniqueness: { scope: :user_id }
 ``` 
 
-##### case\_sensitive
+##### `case_sensitive`
 
 Checks for uniqueness of upper and lower case as well. Default: false.
 Example:
@@ -4340,7 +4354,7 @@ validates :name,
           uniqueness: { case_sensitive: true }
 ```
 
-### inclusion
+### `inclusion`
 
 With `inclusion` you can define from which values the content of this
 attribute can be created. For our example, we can demonstrate it using
@@ -4368,7 +4382,8 @@ Loading development environment (Rails 4.2.1)
 >> product = Product.create(name: 'Milk low-fat (1 liter)')
    (0.1ms)  begin transaction
    (0.1ms)  rollback transaction
-=> #<Product id: nil, name: "Milk low-fat (1 liter)", price: nil, weight: nil, in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
+=> #<Product id: nil, name: "Milk low-fat (1 liter)", price: nil, weight: nil,
+in_stock: nil, expiration_date: nil, created_at: nil, updated_at: nil>
 >> product.errors.messages
 => {:in_stock=>["is not included in the list"]}
 >> exit
@@ -4385,7 +4400,7 @@ $
 
 `inclusion` can be called with the following option.
 
-##### message
+##### `message`
 
 For outputting custom error messages. Default: "is not included in the
 list". Example:
@@ -4398,12 +4413,14 @@ validates :in_stock,
 
 > **Note**
 >
-> For all error messages, please note [Chapter 10, Internationalization](chapter10-i18n.html).
+> For all error messages, please note [Chapter 10,
+> Internationalization](chapter10-i18n.html).
 
-### exclusion
+### `exclusion`
 
-`exclusion` is the inversion of [the section called "inclusion"](#inclusion). You can define from which values the
-content of this attribute must not be created.
+`exclusion` is the inversion of [the section called "inclusion"](#inclusion).
+You can define from which values the content of this attribute must not be
+created.
 
 `app/models/product.rb`
 
@@ -4427,7 +4444,7 @@ end
 
 `exclusion` can be called with the following option.
 
-##### message
+##### `message`
 
 For outputting custom error messages. Example:
 
@@ -4439,9 +4456,10 @@ validates :in_stock,
 
 > **Note**
 >
-> For all error messages, please note [Chapter 10, Internationalization](chapter10-i18n.html).
+> For all error messages, please note [Chapter 10,
+> Internationalization](chapter10-i18n.html).
 
-### format
+### `format`
 
 With `format` you can define via a regular expression (see
 <http://en.wikipedia.org/wiki/Regular_expression>) how the content of an
@@ -4478,13 +4496,14 @@ validates :email,
 
 > **Note**
 >
-> For all error messages, please note [Chapter 10, Internationalization](chapter10-i18n.html).
+> For all error messages, please note [Chapter 10,
+> Internationalization](chapter10-i18n.html).
 
 ### General Validation Options
 
 There are some options that can be used for all validations.
 
-#### allow\_nil
+#### `allow_nil`
 
 Allows the value `nil`. Example:
 
@@ -4494,7 +4513,7 @@ validates :email,
           allow_nil: true
 ```
 
-#### allow\_blank
+#### `allow_blank`
 
 As `allow_nil`, but additionally with an empty string. Example:
 
@@ -4504,7 +4523,7 @@ validates :email,
           allow_blank: true
 ```
 
-#### on
+#### `on`
 
 With `on`, a validation can be limited to the events `create`, `update`
 or `safe`. In the following example, the validation only takes effect
@@ -4531,9 +4550,11 @@ def today_is_monday?
 end
 ```
 
-##### proc
+##### `proc`
 
-`:proc` calls a `Proc` object.
+`:proc` calls a `Proc` object. The functionality of a `Proc` object is beyond
+the scope of this book. I give you an example how to use it without describing
+the magic behind.
 
 ```ruby
 validates :name,
@@ -4564,7 +4585,7 @@ $
 
 Then we specify in the `app/model/reservation.rb` that the attributes
 `start_date` and `end_date` must be present in any case, plus we use the
-method reservation\_dates\_must\_make\_sense to make sure that the
+method `reservation_dates_must_make_sense` to make sure that the
 `start_date` is before the `end_date`:
 
 ```ruby
@@ -4596,7 +4617,8 @@ Let's test the validation in the console:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> reservation = Reservation.new(start_date: Date.today, end_date: Date.today)
-=> #<Reservation id: nil, start_date: "2015-04-17", end_date: "2015-04-17", room_type: nil, created_at: nil, updated_at: nil>
+=> #<Reservation id: nil, start_date: "2015-04-17", end_date: "2015-04-17",
+room_type: nil, created_at: nil, updated_at: nil>
 >> reservation.valid?
 => false
 >> reservation.errors.messages
@@ -4607,7 +4629,10 @@ Loading development environment (Rails 4.2.1)
 => true
 >> reservation.save
    (0.1ms)  begin transaction
-  SQL (0.6ms)  INSERT INTO "reservations" ("start_date", "end_date", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["start_date", "2015-04-17"], ["end_date", "2015-04-18"], ["created_at", "2015-04-17 18:46:34.684392"], ["updated_at", "2015-04-17 18:46:34.684392"]]
+  SQL (0.6ms)  INSERT INTO "reservations" ("start_date", "end_date",
+  "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["start_date",
+  "2015-04-17"], ["end_date", "2015-04-18"], ["created_at", "2015-04-17
+  18:46:34.684392"], ["updated_at", "2015-04-17 18:46:34.684392"]]
    (9.5ms)  commit transaction
 => true
 >> exit
@@ -4623,12 +4648,11 @@ documentation at
 Migrations
 ----------
 
-SQL database tables are generated in Rails with *migrations* and they
-should also be changed with *migrations*. If you create a model with
-`rails generate model`, a corresponding migration file is automatically
-created in the directory `db/migrate/`. I am going to show you the
-principle using the example of a shop application. Let's create one
-first:
+SQL database tables are generated in Rails with *migrations* and they should
+also be changed with *migrations*. If you create a model with `rails generate
+model`, a corresponding migration file is automatically created in the
+directory `db/migrate/`. I am going to show you the principle using the
+example of a shop application. Let's create one first:
 
 ```bash
 $ rails new shop
@@ -4640,7 +4664,8 @@ $
 Then we create a Product model:
 
 ```bash
-$ rails generate model product name 'price:decimal{7,2}' weight:integer in_stock:boolean expiration_date:date
+$ rails generate model product name 'price:decimal{7,2}' weight:integer
+in_stock:boolean expiration_date:date
       invoke  active_record
       create    db/migrate/20150417184823_create_products.rb
       create    app/models/product.rb
@@ -4670,10 +4695,9 @@ end
 ```
 
 The method `change` creates and deletes the database table in case of a
-rollback. The migration files have embedded the current time in the file
-name and are processed in chronological order during a migration (in
-other words, when you call `rake
-  db:migrate`).
+rollback. The migration files have embedded the current time in the file name
+and are processed in chronological order during a migration (in other words,
+when you call `rake db:migrate`).
 
 ```bash
 $ rake db:migrate
@@ -4708,10 +4732,9 @@ $ rake db:migrate
 $
 ```
 
-After a while we realise that we want to save not just the weight for
-some products, but also the height. So we need another database field.
-There is an easy to remember syntax for this, `rails generate migration
-  add_*`:
+After a while we realise that we want to save not just the weight for some
+products, but also the height. So we need another database field. There is an
+easy to remember syntax for this, `rails generate migration add_*`:
 
 ```bash
 $ rails generate migration addHeightToProduct height:integer
@@ -4751,7 +4774,8 @@ field `updated_at`:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Product.column_names
-=> ["id", "name", "price", "weight", "in_stock", "expiration_date", "created_at", "updated_at", "height"]
+=> ["id", "name", "price", "weight", "in_stock", "expiration_date",
+"created_at", "updated_at", "height"]
 >> exit
 $
 ```
@@ -4762,9 +4786,8 @@ $
 > `app/models/product.rb`, otherwise you will not have access to the
 > `height` attribute.
 
-What if you want to look at the previous state of things? No problem.
-You can easily go back to the previous version with `rake
-  db:rollback`:
+What if you want to look at the previous state of things? No problem.  You can
+easily go back to the previous version with `rake db:rollback`:
 
 ```bash
 $ rake db:rollback
@@ -4800,9 +4823,10 @@ $ ls db/migrate/
 $
 ```
 
-You can go to a specific migration via `rake db:migrate
-  VERSION=` and add the appropriate version number after the equals
-sign. The zero represents the version zero, in other words the start.
+You can go to a specific migration via `rake db:migrate VERSION=` and add the
+appropriate version number after the equals sign. The number zero represents
+the version zero, in other words the start.  
+
 Let's try it out:
 
 ```bash
@@ -4854,13 +4878,13 @@ production:
 ```
 
 Three different databases are defined there in YAML format (see
-<http://www.yaml.org/> or <http://en.wikipedia.org/wiki/YAML>). For us,
-only the `development` database is relevant for now (first item). By
-default, Rails usesSQLite3 there. SQLite3 may not be the correct choice
-for the analysis of the weather data collected worldwide, but for a
-quick and straightforward development of Rails applications you will
-quickly learn to appreciate it. In the production environment, you can
-later still switch to "big" databases such as MySQL or PostgreSQL.
+<http://www.yaml.org/> or <http://en.wikipedia.org/wiki/YAML>). For us, only
+the `development` database is relevant for now (first item). By default, Rails
+usesSQLite3 there. SQLite3 may not be the correct choice for the analysis of
+the weather data collected worldwide, but for a quick and straightforward
+development of Rails applications you will quickly learn to appreciate it. In
+the production environment, you can later still switch to "big" databases such
+as MySQL or PostgreSQL.
 
 To satisfy your curiosity, we have a quick look at the database with the
 command line tool `sqlite3`:
@@ -4895,7 +4919,10 @@ Enter ".help" for usage hints.
 sqlite> .tables
 products           schema_migrations
 sqlite> .schema products
-CREATE TABLE "products" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "price" decimal(7,2), "weight" integer, "in_stock" boolean, "expiration_date" date, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "height" integer);
+CREATE TABLE "products" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+"name" varchar, "price" decimal(7,2), "weight" integer, "in_stock" boolean,
+"expiration_date" date, "created_at" datetime NOT NULL, "updated_at" datetime
+NOT NULL, "height" integer);
 sqlite> .quit
 ```
 
@@ -4964,7 +4991,8 @@ end
 > our case (an index for the attribute `name`) the command would look
 > like this:
 >
->     $ rails generate model product name:string:index 'price:decimal{7,2}' weight:integer in_stock:boolean expiration_date:date --force
+>     $ rails generate model product name:string:index 'price:decimal{7,2}'
+>     weight:integer in_stock:boolean expiration_date:date --force
 >         invoke  active_record
 >         create    db/migrate/20150417191435_create_products.rb
 >         create    app/models/product.rb
@@ -5127,9 +5155,13 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> User.create(login: 'smith', email: 'SMITH@example.com')
    (0.1ms)  begin transaction
-  SQL (0.5ms)  INSERT INTO "users" ("login", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["login", "smith"], ["email", "smith@example.com"], ["created_at", "2015-04-17 19:22:20.928994"], ["updated_at", "2015-04-17 19:22:20.928994"]]
+  SQL (0.5ms)  INSERT INTO "users" ("login", "email", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["login", "smith"], ["email",
+  "smith@example.com"], ["created_at", "2015-04-17 19:22:20.928994"],
+  ["updated_at", "2015-04-17 19:22:20.928994"]]
    (9.0ms)  commit transaction
-=> #<User id: 1, email: "smith@example.com", login: "smith", created_at: "2015-04-17 19:22:20", updated_at: "2015-04-17 19:22:20">
+=> #<User id: 1, email: "smith@example.com", login: "smith", created_at:
+"2015-04-17 19:22:20", updated_at: "2015-04-17 19:22:20">
 >> exit
 ```
 
@@ -5177,6 +5209,7 @@ class Order < ActiveRecord::Base
   end
 end
 ```
+
 And now we check in the console if a new order object automatically
 contains the quantity 1:
 
@@ -5184,7 +5217,8 @@ contains the quantity 1:
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> order = Order.new
-=> #<Order id: nil, product_id: nil, quantity: 1, created_at: nil, updated_at: nil>
+=> #<Order id: nil, product_id: nil, quantity: 1, created_at: nil, updated_at:
+nil>
 >> order.quantity
 => 1
 >> exit
