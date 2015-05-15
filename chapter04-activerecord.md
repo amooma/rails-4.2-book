@@ -4661,7 +4661,7 @@ $ cd shop
 $
 ```
 
-Then we create a Product model:
+Then we generate a Product model:
 
 ```bash
 $ rails generate model product name 'price:decimal{7,2}' weight:integer
@@ -4991,23 +4991,12 @@ end
 > our case (an index for the attribute `name`) the command would look
 > like this:
 >
->     $ rails generate model product name:string:index 'price:decimal{7,2}'
->     weight:integer in_stock:boolean expiration_date:date --force
->         invoke  active_record
->         create    db/migrate/20150417191435_create_products.rb
->         create    app/models/product.rb
->         invoke    test_unit
->         create      test/models/product_test.rb
->         create      test/fixtures/products.yml
+>     $ rails generate model product name:string:index
 >     $ cat db/migrate/20150417191435_create_products.rb
 >     class CreateProducts < ActiveRecord::Migration
 >       def change
 >         create_table :products do |t|
 >           t.string :name
->           t.decimal :price, precision: 7, scale: 2
->           t.integer :weight
->           t.boolean :in_stock
->           t.date :expiration_date
 >     
 >           t.timestamps null: false
 >         end
@@ -5016,14 +5005,7 @@ end
 >     end
 >     $
 
-### Miscellaneous
-
-This book is aimed at beginners, so I cannot discuss the topic migrations in
-great depth. The main focus is on understanding the mechanics in principle.
-But there are a few details that are so important that I want to mention them
-here.
-
-#### Automatically Added Fields (`id`, `created_at` and `updated_at`)
+### Automatically Added Fields (`id`, `created_at` and `updated_at`)
 
 Rails kindly adds the following fields automatically in the default
 migration:
@@ -5067,15 +5049,8 @@ topic migration:
 
 -   <http://www.dizzy.co.uk/ruby_on_rails/cheatsheets/rails-migrations>
 
-Miscellaneous
--------------
-
-In this section, I am going to show you some examples of topics and questions
-that are important for your everyday work, but as a whole go beyond the scope
-of this book aimed at beginners. They provide recipes for solving specific
-ActiveRecord problems.
-
-### Callbacks
+Callbacks
+---------
 
 Callbacks are defined programming hooks in the life of an ActiveRecord object.
 You can find a list of all callbacks at
@@ -5175,7 +5150,8 @@ automatically send an e-mail to a newly created user. In [the section called
 "Default Values"](#default-values) you will find an example for defining a
 default value for a new object via an `after_initialize` callback.
 
-### Default Values
+Default Values
+--------------
 
 If you need specific default values for an ActiveRecord object, you can easily
 implement this with the `after_initialize` callback. This method is called by
