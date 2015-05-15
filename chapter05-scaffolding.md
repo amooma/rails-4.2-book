@@ -953,31 +953,35 @@ $ rails server
 
 
 Started GET "/products" for ::1 at 2015-04-19 17:19:34 +0200
-  ActiveRecord::SchemaMigration Load (0.1ms)  SELECT "schema_migrations".* FROM "schema_migrations"
+  ActiveRecord::SchemaMigration Load (0.1ms)  SELECT "schema_migrations".*
+  FROM "schema_migrations"
 Processing by ProductsController#index as HTML
   Product Load (0.2ms)  SELECT "products".* FROM "products"
   Rendered products/index.html.erb within layouts/application (22.3ms)
 Completed 500 Internal Server Error in 55ms (ActiveRecord: 0.7ms)
 
-ActionView::Template::Error (undefined method `edit_product_path' for #<#<Class:0x007fa95920b278>:0x007fa959209ea0>):
+ActionView::Template::Error (undefined method `edit_product_path' for
+#<#<Class:0x007fa95920b278>:0x007fa959209ea0>):
     17:         <td><%= product.name %></td>
     18:         <td><%= product.price %></td>
     19:         <td><%= link_to 'Show', product %></td>
     20:         <td><%= link_to 'Edit', edit_product_path(product) %></td>
-    21:         <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    21:         <td><%= link_to 'Destroy', product, method: :delete, data: {
+    confirm: 'Are you sure?' } %></td>
     22:       </tr>
     23:     <% end %>
-  app/views/products/index.html.erb:20:in `block in _app_views_products_index_html_erb__3218631573957912904_70182660610380'
-  app/views/products/index.html.erb:15:in `_app_views_products_index_html_erb__3218631573957912904_70182660610380'
-
+  app/views/products/index.html.erb:20:in `block in
+  _app_views_products_index_html_erb__3218631573957912904_70182660610380'
+  app/views/products/index.html.erb:15:in
+  `_app_views_products_index_html_erb__3218631573957912904_70182660610380'
 [...]
 ```
 
-The error message states that we call an undefined method
-`edit_product_path` in the view `app/views/products/index.html.erb`. As
-we only route `index` and `show` now, there are no more `edit`, `destroy` or `new`
-methods any more. So we need to adapt the file
-`app/views/products/index.html.erb` in the editor as follows:
+The error message states that we call an undefined method `edit_product_path`
+in the view `app/views/products/index.html.erb`. As we only route `index` and
+`show` now, there are no more `edit`, `destroy` or `new` methods any more. So
+we need to adapt the file `app/views/products/index.html.erb` in the editor as
+follows:
 
 ```erb
 <table>
@@ -1001,8 +1005,8 @@ methods any more. So we need to adapt the file
 </table>
 ```
 
-And while we are at it, we also edit the
-`app/views/products/show.html.erb` accordingly:
+And while we are at it, we also edit the `app/views/products/show.html.erb`
+accordingly:
 
 ```erb
 <p>
@@ -1018,22 +1022,21 @@ And while we are at it, we also edit the
 <%= link_to 'Back', products_path %>
 ```
 
-Now our application is finished. Start the Rails server with
-`rails server` and open the URL <http://localhost:3000/products> in the
-browser.
+Now our application is finished. Start the Rails server with `rails server`
+and open the URL <http://localhost:3000/products> in the browser.
 
 ![read only products index](images/screenshots/chapter05/read-only-products-index.jpg "ReadOnlyProducts index")
 
 > **Note**
 >
-> In this example, I am not commenting on the required changes in the
-> tests, as this is not an exercise for test driven development but
-> meant to demonstrate a way of working with scaffolding. TDD developers
-> will quickly be able to adapt the tests.
+> In this example, I am not commenting on the required changes in the tests,
+> as this is not an exercise for test driven development but meant to
+> demonstrate a way of working with scaffolding. TDD developers will quickly
+> be able to adapt the tests.
 
 ### Conclusion
 
-Have a go and try it out. Try working with scaffolds one time and
-without them the next. Then you will soon get a feel for whether it fits
-into your working method or not. I find that scaffolding makes my work
-much easier for standard applications.
+Have a go and try it out. Try working with scaffolds one time and without them
+the next. Then you will soon get a feel for whether it fits into your working
+method or not. I find that scaffolding makes my work much easier for standard
+applications.
