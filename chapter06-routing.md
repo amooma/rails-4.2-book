@@ -4,7 +4,10 @@ Routes
 Introduction
 ------------
 
-In [Section "Creating HTML Dynamically with erb"](chapter03-first-steps-with-rails.html#creating-html-dynamically-with-erb) and [Chapter 5, Scaffolding and REST](chapter05-scaffolding.html) we have already come across *routes*. The routes contained in
+In [Section "Creating HTML Dynamically with
+erb"](chapter03-first-steps-with-rails.html#creating-html-dynamically-with-erb)
+and [Chapter 5, Scaffolding and REST](chapter05-scaffolding.html) we have
+already come across *routes*. The routes contained in
 `config/routes.rb` define what happens in the Rails application when a
 user of a Rails application fetches a URL. A route can be static and
 dynamic and pass any dynamic values with variables to the controller. If
@@ -34,7 +37,8 @@ You don't have any routes defined!
 
 Please add some routes in config/routes.rb.
 
-For more information about routes, see the Rails guide: http://guides.rubyonrails.org/routing.html.
+For more information about routes, see the Rails guide:
+http://guides.rubyonrails.org/routing.html.
 ```
 
 That's what I call a good error message. It's a new Rails project, there
@@ -77,20 +81,17 @@ $
 The pages can be accessed at the following URLs after starting the Rails
 server with `rails server`:
 
--   <http://localhost:300/home/index>
+-   <http://localhost:3000/home/index>
 
-    for `home_index GET /home/index(.:format)
-              home#index`
+    for `home_index GET /home/index(.:format) home#index`
 
--   <http://localhost:300/home/ping>
+-   <http://localhost:3000/home/ping>
 
-    for `home_ping GET /home/ping(.:format)
-              home#ping`
+    for `home_ping GET /home/ping(.:format) home#ping`
 
--   <http://localhost:300/home/pong>
+-   <http://localhost:3000/home/pong>
 
-    for `home_pong GET /home/pong(.:format)
-              home#pong`
+    for `home_pong GET /home/pong(.:format) home#pong`
 
 ![home ping](images/screenshots/chapter06/home_ping.jpg "Home ping")
 
