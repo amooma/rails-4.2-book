@@ -4,13 +4,13 @@ Internationalization
 Introduction
 ------------
 
-If you are in the lucky situation of only creating web pages in English,
-then you can skip this chapter completely. For you, everything is set up
-correctly by default. But even if you want to create a web page that
-only uses one language (other than English), you will need to dive into
-this chapter. It is not enough to just translate the views. Because
-already if you use scaffolding, you will need to take care of the
-English and therefore not yet translated validation errors.
+If you are in the lucky situation of only creating web pages in English, then
+you can skip this chapter completely. For you, everything is set up correctly
+by default. But even if you want to create a web page that only uses one
+language (other than English), you will need to dive into this chapter. It is
+not enough to just translate the views. Because already if you use
+scaffolding, you will need to take care of the English and therefore not yet
+translated validation errors.
 
 The class `I18n` is responsible for anything to do with translation in the
 Rails application. It offers two important methods for this purpose:
@@ -27,19 +27,19 @@ Rails application. It offers two important methods for this purpose:
 
 With `I18n.locale` you define the language you want to use in the current
 call. In the configuration file `config/application.rb`, the entry
-`config.i18n.default_locale` sets the default value for `I18n.locale`. If
-you do not make any changes there, this value is set by default to `:en`
-for English.
+`config.i18n.default_locale` sets the default value for `I18n.locale`. If you
+do not make any changes there, this value is set by default to `:en` for
+English.
 
-For special cases such as displaying numbers, currencies and times,
-there are special helpers available. For example, if you want to create
-a German web page, you can ensure that the number 1000.23 can be
-correctly displayed with a decimal comma as "1.000,23" on the German
-page and with a decimal point on an English web page as "1,000.23".
+For special cases such as displaying numbers, currencies and times, there are
+special helpers available. For example, if you want to create a German web
+page, you can ensure that the number 1000.23 can be correctly displayed with a
+decimal comma as "1.000,23" on the German page and with a decimal point on an
+English web page as "1,000.23".
 
-Let's create an example application which includes the rails-i18n gem by
-Sven Fuchs (<https://github.com/svenfuchs/i18n>). The gem provides a
-couple of language files with translations and format info.
+Let's create an example application which includes the rails-i18n gem by Sven
+Fuchs (<https://github.com/svenfuchs/i18n>). The gem provides a couple of
+language files with translations and format info.
 
 ```bash
 $ rails new webshop
@@ -77,8 +77,8 @@ With `I18n.t` you can retrieve previously defined translations. The
 translations are saved by default in YAML format in the directory
 `config/locales/`. Technically, you do not have to use YAML as format.
 
-In `config/locales/` you can find an example file
-`config/locales/en.yml` with the following content:
+In `config/locales/` you can find an example file `config/locales/en.yml` with
+the following content:
 
 ```yml
 en:
@@ -105,11 +105,12 @@ de:
   hello: "Hallo Welt"
 ```
 
-Now you have to tell rails to load this file by commenting one line 
-from `config/application.rb` in.
+Now you have to tell rails to load this file by commenting one line from
+`config/application.rb` in.
 
 ```ruby
-config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+config.i18n.load_path += Dir[Rails.root.join('my', 'locales',
+'*.{rb,yml}').to_s]
 ```
 
 In the console we can set the system language with `I18n.locale = :de`
@@ -129,8 +130,8 @@ Loading development environment (Rails 4.2.1)
 
 `I18n.t` looks by default for the entry in the language defined in
 `I18n.locale`. It does not matter if you are working with `I18n.t` or
-`I18n.translate`. Nor does it matter if you are searching for a symbol or
-a string:
+`I18n.translate`. Nor does it matter if you are searching for a symbol or a
+string:
 
 ```bash
 >> I18n.locale = :en
@@ -145,10 +146,10 @@ a string:
 ```
 
 If a translation does not exist, you get an error message that says
-"`translation missing:`". This also applies if a translation is only
-missing in one language (then all other languages will work, but for the
-missing translation you will get the error message). In that case, you
-can define a default with `:default => 'any default value'`:
+"`translation missing:`". This also applies if a translation is only missing
+in one language (then all other languages will work, but for the missing
+translation you will get the error message). In that case, you can define a
+default with `:default => 'any default value'`:
 
 ```bash
 >> I18n.t 'asdfasdfasdf'
@@ -159,8 +160,8 @@ can define a default with `:default => 'any default value'`:
 $
 ```
 
-In the YAML structure you can also specify several levels. Please amend
-the `config/locale/en.yml` as follows:
+In the YAML structure you can also specify several levels. Please amend the
+`config/locale/en.yml` as follows:
 
 ```yml
 en:
@@ -172,8 +173,8 @@ en:
       test: "An other test"
 ```
 
-You can display the different levels within the string with dots or with
-a `:scope` for the symbols. You can also mix both options.
+You can display the different levels within the string with dots or with a
+`:scope` for the symbols. You can also mix both options.
 
 ```bash
 $ rails console
@@ -190,10 +191,11 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-It is up to you which structure you choose to save your translations in
-the YAML files. But the structure described in [Section "A Rails Application in Only One Language: German"](#a-rails-application-in-only-one-language-german) does make some things
-easier and that's why we are going to use it for this application as
-well.
+It is up to you which structure you choose to save your translations in the
+YAML files. But the structure described in [Section "A Rails Application in
+Only One Language: German"](#a-rails-application-in-only-one-language-german)
+does make some things easier and that's why we are going to use it for this
+application as well.
 
 #### Using I18n.t in the View
 
@@ -210,18 +212,19 @@ In the view, you can use I18n.t as follows:
 
 <%= I18n.t 'aaa.bbb.test' %>
 
-<%= link_to I18n.t('views.destroy'), book, confirm: I18n.t('views.are_you_sure'), method: :delete %>
+<%= link_to I18n.t('views.destroy'), book, confirm:
+I18n.t('views.are_you_sure'), method: :delete %>
 ```
 
 ### Localized Views
 
-In Rails, there is a useful option of saving several variations of a
-view as "localized views", each of which represents a different
-language. This technique is independent of the potential use of `I18n.t`
-in these views. The file name results from the view name, the language
-code (for example, `de` for German) and `html.erb` for ERB pages. Each
-of these are separated by a dot. So the German variation of the
-`index.html.erb` page would get the file name `index.de.html.erb`.
+In Rails, there is a useful option of saving several variations of a view as
+"localized views", each of which represents a different language. This
+technique is independent of the potential use of `I18n.t` in these views. The
+file name results from the view name, the language code (for example, `de` for
+German) and `html.erb` for ERB pages. Each of these are separated by a dot. So
+the German variation of the `index.html.erb` page would get the file name
+`index.de.html.erb`.
 
 Your views directory could then look like this:
 
@@ -239,7 +242,6 @@ Your views directory could then look like this:
 |-------new.de.html.erb
 |-------show.html.erb
 |-------show.de.html.erb
-|-------
 |-----page
 |-------index.html.erb
 |-------index.de.html.erb
@@ -253,12 +255,13 @@ the file `config/application.rb`.
 A Rails Application in Only One Language: German
 ------------------------------------------------
 
-In a Rails application aimed only at German users, it is unfortunately
-not enough to just translate all the views into German. The approach is
-in many respects similar to a multi-lingual Rails application (see [Section "Multilingual Rails Application"](#multilingual-rails-application)).
-Correspondingly, there will be a certain amount of repetition. I am
-going to show you the steps you need to watch out for by using a simple
-application as example.
+In a Rails application aimed only at German users, it is unfortunately not
+enough to just translate all the views into German. The approach is in many
+respects similar to a multi-lingual Rails application (see [Section
+"Multilingual Rails Application"](#multilingual-rails-application)).
+Correspondingly, there will be a certain amount of repetition. I am going to
+show you the steps you need to watch out for by using a simple application as
+example.
 
 Let's go through all the changes using the example of this bibliography
 application:
@@ -267,7 +270,8 @@ application:
 $ rails new bibliography
   [...]
 $ cd bibliography
-$ rails generate scaffold book title number_of_pages:integer 'price:decimal{7,2}'
+$ rails generate scaffold book title number_of_pages:integer
+'price:decimal{7,2}'
   [...]
 $ rake db:migrate
   [...]
@@ -298,8 +302,10 @@ structure is not a technical requirement, but makes it easier to keep
 track of things if your application becomes big:
 
 ```ruby
-config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'models', '*', '*.yml').to_s]
-config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'views', '*', '*.yml').to_s]
+config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'models',
+'*', '*.yml').to_s]
+config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'views',
+'*', '*.yml').to_s]
 config.i18n.default_locale = :de
 ```
 
@@ -317,7 +323,9 @@ repository at <https://github.com/svenfuchs/rails-i18n>:
 
 ```bash
 $ cd config/locales
-$ curl -O https://raw.githubusercontent.com/svenfuchs/rails-i18n/master/rails/locale/de.yml
+$ curl -O
+  https://raw.githubusercontent.com/svenfuchs/rails-i18n/master/rails/
+  locale/de.yml
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  5027  100  5027    0     0  14877      0 --:--:-- --:--:-- --:--:-- 14916
@@ -326,22 +334,21 @@ $
 
 > **Note**
 >
-> If you know how Bundler works, you can also insert the line
-> `gem 'rails-i18n'` into the file `Gemfile` and then execute
-> `bundle install`. This gives you all language files from the
-> repository.
+> If you know how Bundler works, you can also insert the line `gem
+> 'rails-i18n'` into the file `Gemfile` and then execute `bundle install`.
+> This gives you all language files from the repository.
 
-In the file `config/locales/de.yml`, you have all required formats and
-generic wordings for German that you need for a normal Rails application
-(for example, days of the week, currency symbols, etc). Have a look at
-it with your favorite editor to get a first impression.
+In the file `config/locales/de.yml`, you have all required formats and generic
+wordings for German that you need for a normal Rails application (for example,
+days of the week, currency symbols, etc). Have a look at it with your favorite
+editor to get a first impression.
 
 Next, we need to tell Rails that a model 'book' is not called 'book' in
-German, but 'Buch'. The same applies to all attributes. So we create the
-file `config/locales/models/book/de.yml` with the following structure.
-As side effect, we get the methods `Model.model_name.human` and
-`Model.human_attribute_name(attribute)`, with which we can insert the
-model and attribute names in the view.
+German, but 'Buch'. The same applies to all attributes. So we create the file
+`config/locales/models/book/de.yml` with the following structure.  As side
+effect, we get the methods `Model.model_name.human` and
+`Model.human_attribute_name(attribute)`, with which we can insert the model
+and attribute names in the view.
 
 ```yml
 de:
@@ -376,8 +383,8 @@ de:
       new:
         title: Neues Buch
       flash_messages:
-        book_was_successfully_created: 'Das Buch wurde erfolgreich angelegt.'
-        book_was_successfully_updated: 'Das Buch wurde erfolgreich aktualisiert.'
+        book_was_successfully_created: 'Das Buch wurde angelegt.'
+        book_was_successfully_updated: 'Das Buch wurde aktualisiert.'
 ```
 
 Now we still need to integrate a "few" changes into the views. We use
@@ -394,7 +401,8 @@ information on `I18n.t` in [the section called I18n.t](#i18n.t).
 <%= form_for(@book) do |f| %>
   <% if @book.errors.any? %>
     <div id="error_explanation">
-      <h2><%= t 'activerecord.errors.template.header', :model => Book.model_name.human, :count => @book.errors.count %></h2>
+      <h2><%= t 'activerecord.errors.template.header', :model =>
+      Book.model_name.human, :count => @book.errors.count %></h2>
       <ul>
       <% @book.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -457,7 +465,8 @@ information on `I18n.t` in [the section called I18n.t](#i18n.t).
         <td><%= number_to_currency(book.price) %></td>
         <td><%= link_to I18n.t('views.show'), book %></td>
         <td><%= link_to I18n.t('views.edit'), edit_book_path(book) %></td>
-        <td><%= link_to I18n.t('views.destroy'), book, method: :delete, data: { confirm: I18n.t('views.are_you_sure')} %></td>
+        <td><%= link_to I18n.t('views.destroy'), book, method: :delete, data:
+        { confirm: I18n.t('views.are_you_sure')} %></td>
       </tr>
     <% end %>
   </tbody>
@@ -542,7 +551,8 @@ class BooksController < ApplicationController
 
     respond_to do |format|
       if @book.save
-        format.html { redirect_to @book, notice: I18n.t('views.book.flash_messages.book_was_successfully_created') }
+        format.html { redirect_to @book, notice:
+        I18n.t('views.book.flash_messages.book_was_successfully_created') }
         format.json { render action: 'show', status: :created, location: @book }
       else
         format.html { render action: 'new' }
@@ -556,11 +566,13 @@ class BooksController < ApplicationController
   def update
     respond_to do |format|
       if @book.update(book_params)
-        format.html { redirect_to @book, notice: I18n.t('views.book.flash_messages.book_was_successfully_updated') }
+        format.html { redirect_to @book, notice:
+        I18n.t('views.book.flash_messages.book_was_successfully_updated') }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @book.errors, status: :unprocessable_entity }
+        format.json { render json: @book.errors, status: :unprocessable_entity
+        }
       end
     end
   end
@@ -588,24 +600,24 @@ class BooksController < ApplicationController
 end
 ```
 
-Now you can use the views generated by the scaffold generator entirely
-in German. The structure of the YAML files shown here can of course be
-adapted to your own preferences. The texts in the views and the
-controller are displayed with `I18n.t`. At this point you could of course
-also integrate the German text directly if the application is purely in
-German.
+Now you can use the views generated by the scaffold generator entirely in
+German. The structure of the YAML files shown here can of course be adapted to
+your own preferences. The texts in the views and the controller are displayed
+with `I18n.t`. At this point you could of course also integrate the German
+text directly if the application is purely in German.
 
 ### Paths in German
 
-Our bibliography is completely in German, but the URLs are still in
-English. If we want to make all books available at the URL
+Our bibliography is completely in German, but the URLs are still in English.
+If we want to make all books available at the URL
 <http://localhost:3000/buecher> instead of the URL
-<http://localhost:3000/books> then we need to add the following entry to
-the `config/routes.rb`:
+<http://localhost:3000/books> then we need to add the following entry to the
+`config/routes.rb`:
 
 ```ruby
 Bibliography::Application.routes.draw do
-  resources :books, path: 'buecher', path_names: { new: 'neu', edit: 'editieren' }
+  resources :books, path: 'buecher', path_names: { new: 'neu', edit:
+  'editieren' }
 end
 ```
 
@@ -626,14 +638,16 @@ edit_book GET    /buecher/:id/editieren(.:format) books#edit
 $          
 ```
 
-The brilliant thing with Rails routes is that you do not need to do
-anything else. The rest is managed transparently by the routing engine.
+The brilliant thing with Rails routes is that you do not need to do anything
+else. The rest is managed transparently by the routing engine.
 
 Multilingual Rails Application
 ------------------------------
 
 The approach for multilingual Rails applications is very similar to the
-monoligual, all-German Rails application described in [Section "A Rails Application in Only One Language: German"](#a-rails-application-in-only-one-language-german). But we need to
+monoligual, all-German Rails application described in [Section "A Rails
+Application in Only One Language:
+German"](#a-rails-application-in-only-one-language-german). But we need to
 define YAML language files for all required languages and tell the Rails
 application which language it should currently use. We do this via
 `I18n.locale`.
@@ -683,36 +697,35 @@ example:
 ```
 
 If we start the Rails server with `rails server` and go to
-<http://localhost:3000/> in the browser, then we see the following web
-page:
+<http://localhost:3000/> in the browser, then we see the following web page:
 
 ![I18n ganze seite page index](images/screenshots/chapter10/i18n_ganze_seite_page_index.jpg "I18n ganze seite page index")
 
-As you can see, the default is set to "en" for English. Stop the Rails
-server with CTRL-C and change the setting for the default language to
-German in the file `config/application.rb`:
+As you can see, the default is set to "en" for English. Stop the Rails server
+with CTRL-C and change the setting for the default language to German in the
+file `config/application.rb`:
 
 ```ruby
 config.i18n.default_locale = :de
 ```
 
-If you then start the Rails server and again go to
-<http://localhost:3000/> in the web browser, you will see the following
-web page:
+If you then start the Rails server and again go to <http://localhost:3000/> in
+the web browser, you will see the following web page:
 
 ![I18n ganze seite page index default locale de](images/screenshots/chapter10/i18n_ganze_seite_page_index_default_locale_de.jpg "I18n ganze seite page index default locale de")
 
-The web page has not changed, but as output of `<%=
-      I18n.locale %>` you now get '`de`' for German (Deutsch), not
-'`en`' for English as before.
+The web page has not changed, but as output of `<%= I18n.locale %>` you now
+get '`de`' for German (Deutsch), not '`en`' for English as before.
 
 Please stop the Rails server with CTRL-C and change the setting for the
 default language to `en` for English in the file
 `config/application.rb`:
 
 ```ruby
-# The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-# config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+# The default locale is :en and all translations from config/locales/*.rb,yml
+# are auto loaded.
+# config.i18n.load_path += Dir[Rails.root.join('my', 'locales',
+# '*.{rb,yml}').to_s]
 config.i18n.default_locale = :en
 ```
 
@@ -737,11 +750,11 @@ following content:
 
 #### Setting I18n.locale via URL Path Prefix
 
-The more stylish way of setting the language is to add it as prefix to
-the URL. This enables search engines to manage different language
-versions better. We want <http://localhost:3000/de> to display the German
-version of our homepage and <http://localhost:3000/en> the English
-version. The first step is adapting the `config/routes.rb`
+The more stylish way of setting the language is to add it as prefix to the
+URL. This enables search engines to manage different language versions better.
+We want <http://localhost:3000/de> to display the German version of our
+homepage and <http://localhost:3000/en> the English version. The first step is
+adapting the `config/routes.rb`
 
 ```ruby
 Webshop::Application.routes.draw do
@@ -755,8 +768,8 @@ end
 ```
 
 Next, we need to set a `before_action` in the
-`app/controllers/application_controller.rb`. This filter sets the
-parameter locale set by the route as `I18n.locale`:
+`app/controllers/application_controller.rb`. This filter sets the parameter
+locale set by the route as `I18n.locale`:
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -773,7 +786,8 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-Now you have to allow the new locales to be loaded. Add this line to your `config/application.rb`
+Now you have to allow the new locales to be loaded. Add this line to your
+`config/application.rb`
 
 ```ruby
 config.i18n.available_locales = [:en, :de]
@@ -789,16 +803,14 @@ Of course we can also go to <http://localhost:3000/de/page/index>:
 ![I18n de page index](images/screenshots/chapter10/i18n_path_prefix_de_page_index.jpg "I18n de page index")
 
 If we go to <http://localhost:3000/en> and
-<http://localhost:3000/en/page/index> we get the English version of each
-page.
+<http://localhost:3000/en/page/index> we get the English version of each page.
 
-But now we have a problem: by using the prefix, we initially get to a
-page with the correct language, but what if we want to link from that
-page to another page in our Rails project? Then we would need to
-manually insert the prefix into the link. Who wants that? Obviously
-there is a clever solution for this problem. We can set global default
-parameters for URL generation by defining a method called
-`default_url_options` in our controller.
+But now we have a problem: by using the prefix, we initially get to a page
+with the correct language, but what if we want to link from that page to
+another page in our Rails project? Then we would need to manually insert the
+prefix into the link. Who wants that? Obviously there is a clever solution for
+this problem. We can set global default parameters for URL generation by
+defining a method called `default_url_options` in our controller.
 
 So we just need to add this method in
 `app/controllers/application_controller.rb`:
@@ -823,16 +835,16 @@ end
 ```
 
 As a result, all links created with `link_to` and `url_for` (on which
-`link_to` is based) are automatically expanded by the parameter `locale`.
-You do not need to do anything else. All links generated via the
-scaffold generator are automatically changed accordingly.
+`link_to` is based) are automatically expanded by the parameter `locale`.  You
+do not need to do anything else. All links generated via the scaffold
+generator are automatically changed accordingly.
 
 ##### Navigation Example
 
-To give the user the option of switching easily between the different
-language versions, it makes sense to offer two links at the top of the
-web page. We don't want the current language to be displayed as active
-link. This can be achieved as follows for all views in the file
+To give the user the option of switching easily between the different language
+versions, it makes sense to offer two links at the top of the web page. We
+don't want the current language to be displayed as active link. This can be
+achieved as follows for all views in the file
 `app/views/layouts/application.html.erb`:
 
 ```erb
@@ -840,7 +852,8 @@ link. This can be achieved as follows for all views in the file
 <html>
 <head>
   <title>Webshop</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', media: 'all',
+  'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
@@ -864,13 +877,13 @@ The navigation is then displayed at the top of the page.
 
 #### Setting I18n.locale via Accept Language HTTP Header of Browser
 
-When a user goes to your web page for the first time, you ideally want
-to immediately display the web page in the correct language for that
-user. To do this, you can read out the accept language field in the HTTP
-header. In every web browser, the user can set his preferred language
-(see <http://www.w3.org/International/questions/qa-lang-priorities>).
-The browser automatically informs the web server and consequently Ruby
-on Rails of this value.
+When a user goes to your web page for the first time, you ideally want to
+immediately display the web page in the correct language for that user. To do
+this, you can read out the accept language field in the HTTP header. In every
+web browser, the user can set his preferred language (see
+<http://www.w3.org/International/questions/qa-lang-priorities>).  The browser
+automatically informs the web server and consequently Ruby on Rails of this
+value.
 
 Please edit the `app/controllers/application_controller.rb` as follows:
 
@@ -884,7 +897,8 @@ class ApplicationController < ActionController::Base
 
   private
   def extract_locale_from_accept_language_header
-    http_accept_language = request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
+    http_accept_language =
+    request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first
     if ['de', 'en'].include? http_accept_language
       http_accept_language
     else
@@ -893,12 +907,15 @@ class ApplicationController < ActionController::Base
   end
 
   def set_locale
-    I18n.locale = extract_locale_from_accept_language_header || I18n.default_locale
+    I18n.locale = extract_locale_from_accept_language_header ||
+    I18n.default_locale
   end
 end
 ```
 
-And please do not forget to clean the settings in [the section called "I18n.locale via URL Path Prefix"](#setting-i18nlocale-via-url-path-prefix) out of the `config/routes.rb`:
+And please do not forget to clean the settings in [the section called
+"I18n.locale via URL Path Prefix"](#setting-i18nlocale-via-url-path-prefix)
+out of the `config/routes.rb`:
 
 ```ruby
 Webshop::Application.routes.draw do
@@ -907,18 +924,16 @@ Webshop::Application.routes.draw do
 end
 ```
 
-Now you always get the output in the language defined in the web
-browser. Please note that
-`request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first` does not
-catch all cases. For example, you should make sure that you support the
-specified language in your Rails application in the first place. There
-are some ready-made gems that can easily do this job for you. Have a
-look at
-<https://www.ruby-toolbox.com/categories/i18n#http_accept_language> to
-find them.
+Now you always get the output in the language defined in the web browser.
+Please note that `request.env['HTTP_ACCEPT_LANGUAGE'].scan(/^[a-z]{2}/).first`
+does not catch all cases. For example, you should make sure that you support
+the specified language in your Rails application in the first place. There are
+some ready-made gems that can easily do this job for you. Have a look at
+<https://www.ruby-toolbox.com/categories/i18n#http_accept_language> to find
+them.
 
 #### Saving I18n.locale in a Session
-xe
+
 Often you want to save the value of `I18n.locale` in a session (see [Section "Sessions"](chapter08-cookies-and-sessions.html#sessions)).
 
 > **Note**
@@ -926,8 +941,8 @@ Often you want to save the value of `I18n.locale` in a session (see [Section "Se
 > The approach described here for sessions will of course work just the
 > same with cookies. See [Section "Cookies"](chapter08-cookies-and-sessions.html#cookies).
 
-To set the value, let's create a controller in our web shop as example:
-the controller `SetLanguage` with the two actions `english` and `german`:
+To set the value, let's create a controller in our web shop as example: the
+controller `SetLanguage` with the two actions `english` and `german`:
 
 ```bash
 $ rails generate controller SetLanguage english german
@@ -996,7 +1011,8 @@ link. This can be achieved as follows for all views in the file
 <html>
 <head>
   <title>Webshop</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag    "application", media: "all",
+  "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
@@ -1020,15 +1036,15 @@ The navigation is then displayed at the top of the page.
 
 #### Setting I18n.locale via Domain Extension
 
-If you have several domains with the extensions typical for the
-corresponding languages, you can of course also use these extensions to
-set the language. For example, if a user visits the page
-<http://www.example.com> he would see the English version, if he goes to
-<http://www.example.de> then the German version would be displayed.
+If you have several domains with the extensions typical for the corresponding
+languages, you can of course also use these extensions to set the language.
+For example, if a user visits the page <http://www.example.com> he would see
+the English version, if he goes to <http://www.example.de> then the German
+version would be displayed.
 
 To achieve this, we would need to go into the
-`app/controllers/application_controller.rb` and insert a `before_action`
-that analyses the accessed domain and sets the `I18n.locale` :
+`app/controllers/application_controller.rb` and insert a `before_action` that
+analyses the accessed domain and sets the `I18n.locale` :
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -1066,22 +1082,20 @@ end
 
 #### Which Approach is the Best?
 
-I believe that a combination of the approaches described above will lead
-to the best result. When I first visit a web page I am happy if I find
-that the accept language HTTP header of my browser is read and
-implemented correctly. But it is also nice to be able to change the
-language later on in the user configuration (in particular for badly
-translated pages, English language is often better). And ultimately it
-has to be said that a page that is easy to represent is worth a lot for
-a search engine, and this also goes for the languages. Rails gives you
-the option of easily using all variations and even enables you to
-combine them together.
+I believe that a combination of the approaches described above will lead to
+the best result. When I first visit a web page I am happy if I find that the
+accept language HTTP header of my browser is read and implemented correctly.
+But it is also nice to be able to change the language later on in the user
+configuration (in particular for badly translated pages, English language is
+often better). And ultimately it has to be said that a page that is easy to
+represent is worth a lot for a search engine, and this also goes for the
+languages. Rails gives you the option of easily using all variations and even
+enables you to combine them together.
 
 ### Multilingual Scaffolds
 
-As an example, we use a mini webshop in which we translate a product
-scaffold. The aim is to make the application available in German and
-English.
+As an example, we use a mini webshop in which we translate a product scaffold.
+The aim is to make the application available in German and English.
 
 The Rails application:
 
@@ -1111,8 +1125,9 @@ class Product < ActiveRecord::Base
 end
 ```
 
-When selecting the language for the user, we use the URL prefix
-variation described in [the section called "Setting I18n.locale via URL Path Prefix"](#setting-i18nlocale-via-url-path-prefix). We use the following
+When selecting the language for the user, we use the URL prefix variation
+described in [the section called "Setting I18n.locale via URL Path
+Prefix"](#setting-i18nlocale-via-url-path-prefix). We use the following
 `app/controllers/application_controller.rb`
 
 ```ruby
@@ -1155,7 +1170,8 @@ Then we insert the links for the navigation in the
 <html>
 <head>
   <title>Webshop</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag    "application", media: "all",
+  "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
@@ -1214,9 +1230,12 @@ automatically, you need to insert the following lines in the file
 `config/application.rb`:
 
 ```ruby
-# The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'models', '*', '*.yml').to_s]
-config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'views', '*', '*.yml').to_s]
+# The default locale is :en and all translations from config/locales/*.rb,yml
+# are auto loaded.
+config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'models',
+'*', '*.yml').to_s]
+config.i18n.load_path += Dir[Rails.root.join('config', 'locales', 'views',
+'*', '*.yml').to_s]
 config.i18n.default_locale = :en
 ```
 
@@ -1258,8 +1277,8 @@ de:
       new:
         title: Neues Produkt
       flash_messages:
-        product_was_successfully_created: 'Das Produkt wurde erfolgreich angelegt.'
-        product_was_successfully_updated: 'Das Produkt wurde erfolgreich aktualisiert.'
+        product_was_successfully_created: 'Das Produkt wurde angelegt.'
+        product_was_successfully_updated: 'Das Produkt wurde aktualisiert.'
 ```
 
 Finally, we copy a ready-made default translation by Sven Fuchs from his
@@ -1267,7 +1286,8 @@ github repository <https://github.com/svenfuchs/rails-i18n>:
 
 ```bash
 $ cd config/locales/
-$ curl -O https://raw.githubusercontent.com/svenfuchs/rails-i18n/master/rails/locale/de.yml
+$ curl -O https://raw.githubusercontent.com/svenfuchs/rails-i18n/
+  master/rails/locale/de.yml
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100  5027  100  5027    0     0  15756      0 --:--:-- --:--:-- --:--:-- 15758
@@ -1276,10 +1296,9 @@ $
 
 > **Note**
 >
-> If you know how Bundler works you can also insert the line
-> `gem 'rails-i18n'` into the file `Gemfile` and then execute `bundle
->             install`. This gives you all language files from the
-> repository.
+> If you know how Bundler works you can also insert the line `gem
+> 'rails-i18n'` into the file `Gemfile` and then execute `bundle install`.
+> This gives you all language files from the repository.
 
 The file `config/locales/de.yml` contains all required formats and
 generic phrases for German that we need for a normal Rails application
@@ -1310,8 +1329,8 @@ en:
       new:
         title: New product
       flash_messages:
-        product_was_successfully_created: 'Product was successfully created.'
-        product_was_successfully_updated: 'Product was successfully updated.'
+        product_was_successfully_created: 'Product was created.'
+        product_was_successfully_updated: 'Product was updated.'
 ```
 
 #### Equipping Views with I18n.t
@@ -1329,7 +1348,8 @@ of form errors are automatically read in from
 <%= form_for(@product) do |f| %>
   <% if @product.errors.any? %>
     <div id="error_explanation">
-      <h2><%= t 'activerecord.errors.template.header', model: Product.model_name.human, count: @product.errors.count %></h2>
+      <h2><%= t 'activerecord.errors.template.header', model:
+      Product.model_name.human, count: @product.errors.count %></h2>
 
       <ul>
       <% @product.errors.full_messages.each do |msg| %>
@@ -1373,12 +1393,11 @@ heading and the links at the bottom of the page with I18n.t:
 
 ##### index.html.erb
 
-In the file `app/views/products/index.html.erb` we need to change
-practically every line. In the table header I use
-`human_attribute_name()`, but you could also do it directly with `I18n.t`.
-The price of the product is specified with the helper
-`number_to_currency`. In a real application, we would have to specify a
-defined currency at this point as well.
+In the file `app/views/products/index.html.erb` we need to change practically
+every line. In the table header I use `human_attribute_name()`, but you could
+also do it directly with `I18n.t`. The price of the product is specified with
+the helper `number_to_currency`. In a real application, we would have to
+specify a defined currency at this point as well.
 
 ```erb
 <h1><%= t 'views.product.index.listing_products' %></h1>
@@ -1402,8 +1421,10 @@ defined currency at this point as well.
         <td><%= product.description %></td>
         <td><%= number_to_currency(product.price) %></td>
         <td><%= link_to I18n.t('views.show'), product %></td>
-        <td><%= link_to I18n.t('views.edit'), edit_product_path(product) %></td>
-        <td><%= link_to I18n.t('views.destroy'), product, method: :delete, data: { confirm: I18n.t('views.are_you_sure')} %></td>
+        <td><%= link_to I18n.t('views.edit'), edit_product_path(product)
+        %></td>
+        <td><%= link_to I18n.t('views.destroy'), product, method: :delete,
+        data: { confirm: I18n.t('views.are_you_sure')} %></td>
       </tr>
     <% end %>
   </tbody>
@@ -1459,8 +1480,8 @@ translated with `I18n.t`. As with the index view, we again use
 #### Translating Flash Messages in the Controller
 
 Finally, we need to translate the two flash messages in the
-`app/controllers/products_controller.rb` for creating (create) and
-updating (update) records, again via I18n.t:
+`app/controllers/products_controller.rb` for creating (create) and updating
+(update) records, again via I18n.t:
 
 ```ruby
 class ProductsController < ApplicationController
@@ -1493,11 +1514,15 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
-        format.html { redirect_to @product, notice: I18n.t('views.product.flash_messages.product_was_successfully_created') }
-        format.json { render action: 'show', status: :created, location: @product }
+        format.html { redirect_to @product, notice:
+        I18n.t('views.product.flash_messages.product_was_successfully_created')
+        }
+        format.json { render action: 'show', status: :created, location:
+        @product }
       else
         format.html { render action: 'new' }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.json { render json: @product.errors, status:
+        :unprocessable_entity }
       end
     end
   end
@@ -1507,11 +1532,14 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
-        format.html { redirect_to @product, notice: I18n.t('views.product.flash_messages.product_was_successfully_updated') }
+        format.html { redirect_to @product, notice:
+        I18n.t('views.product.flash_messages.product_was_successfully_updated')
+        }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
+        format.json { render json: @product.errors, status:
+        :unprocessable_entity }
       end
     end
   end
@@ -1532,7 +1560,8 @@ class ProductsController < ApplicationController
       @product = Product.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white
+    # list through.
     def product_params
       params.require(:product).permit(:name, :description, :price)
     end
