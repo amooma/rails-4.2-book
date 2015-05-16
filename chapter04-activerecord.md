@@ -1379,9 +1379,10 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-### Calculations
+Calculations
+------------
 
-#### `average`
+### `average`
 
 With the method `average`, you can calculate the average of the values in a
 particular column of the table. Our data material is of course not really
@@ -1409,7 +1410,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-#### `count`
+### `count`
 
 The name says it all: the method `count` counts the number of records.
 
@@ -1426,7 +1427,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-#### `maximum`
+### `maximum`
 
 With the method `maximum`, you can output the item with the highest value
 within a query.
@@ -1443,7 +1444,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-#### `minimum`
+### `minimum`
 
 With the method `minimum`, you can output the item with the lowest value
 within a query.
@@ -1460,7 +1461,7 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-#### `sum`
+### `sum`
 
 With the method `sum`, you can calculate the sum of all items in a
 specific column of the database query.
@@ -1477,7 +1478,8 @@ Loading development environment (Rails 4.2.1)
 $
 ```
 
-### SQL EXPLAIN
+SQL EXPLAIN
+-----------
 
 Most SQL databases can provide detailled information on a SQL query with the
 command EXPLAIN. This does not make much sense for our mini application, but
@@ -1516,7 +1518,8 @@ BETWEEN 1960 AND 1969)
 $
 ```
 
-### Batches
+Batches
+-------
 
 ActiveRecord stores the results of a query in Memory. With very large
 tables and results that can become a performance issue. To address this
