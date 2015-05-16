@@ -52,60 +52,17 @@ $ rails generate model
 Usage:
   rails generate model NAME [field[:type][:index] field[:type][:index]] [options]
 
-Options:
-      [--skip-namespace], [--no-skip-namespace]  # Skip namespace (affects only isolated applications)
-      [--force-plural], [--no-force-plural]      # Forces the use of the given model name
-  -o, --orm=NAME                                 # Orm to be invoked
-                                                 # Default: active_record
-
-ActiveRecord options:
-      [--migration], [--no-migration]    # Indicates when to generate migration
-                                         # Default: true
-      [--timestamps], [--no-timestamps]  # Indicates when to generate timestamps
-                                         # Default: true
-      [--parent=PARENT]                  # The parent class for the generated model
-      [--indexes], [--no-indexes]        # Add indexes for references and belongs_to columns
-                                         # Default: true
-  -t, [--test-framework=NAME]            # Test framework to be invoked
-                                         # Default: test_unit
-
-TestUnit options:
-      [--fixture], [--no-fixture]   # Indicates when to generate fixture
-                                    # Default: true
-  -r, [--fixture-replacement=NAME]  # Fixture replacement to be invoked
-
-Runtime options:
-  -f, [--force]                    # Overwrite files that already exist
-  -p, [--pretend], [--no-pretend]  # Run but do not make any changes
-  -q, [--quiet], [--no-quiet]      # Suppress status output
-  -s, [--skip], [--no-skip]        # Skip files that already exist
+[...]
 
 Description:
     Stubs out a new model. Pass the model name, either CamelCased or
     under_scored, and an optional list of attribute pairs as arguments.
 
-    Attribute pairs are field:type arguments specifying the
-    model's attributes. Timestamps are added by default, so you don't have to
-    specify them by hand as 'created_at:datetime updated_at:datetime'.
+    Attribute pairs are field:type arguments specifying the model's
+    attributes. Timestamps are added by default, so you don't have to specify
+    them by hand as 'created_at:datetime updated_at:datetime'.
 
-    As a special case, specifying 'password:digest' will generate a
-    password_digest field of string type, and configure your generated model and
-    tests for use with ActiveModel has_secure_password (assuming the default ORM
-    and test framework are being used).
-
-    You don't have to think up every attribute up front, but it helps to
-    sketch out a few so you can start working with the model immediately.
-
-    This generator invokes your configured ORM and test framework, which
-    defaults to ActiveRecord and TestUnit.
-
-    Finally, if --parent option is given, it's used as superclass of the
-    created model. This allows you create Single Table Inheritance models.
-
-    If you pass a namespaced model name (e.g. admin/account or Admin::Account)
-    then the generator will create a module with a table_name_prefix method
-    to prefix the model's table name with the module name (e.g. admin_accounts)
-
+[...]
 Available field types:
 
     Just after the field name you can specify a type like text or boolean.
@@ -113,9 +70,9 @@ Available field types:
 
         `rails generate model post title:string body:text`
 
-    will generate a title column with a varchar type and a body column with a text
-    type. If no type is specified the string type will be used by default.
-    You can use the following types:
+    will generate a title column with a varchar type and a body column with a
+    text type. If no type is specified the string type will be used by
+    default.  You can use the following types:
 
         integer
         primary_key
@@ -129,65 +86,7 @@ Available field types:
         time
         datetime
 
-    You can also consider `references` as a kind of type. For instance, if you run:
-
-        `rails generate model photo title:string album:references`
-
-    It will generate an `album_id` column. You should generate these kinds of fields when
-    you will use a `belongs_to` association, for instance. `references` also supports
-    polymorphism, you can enable polymorphism like this:
-
-        `rails generate model product supplier:references{polymorphic}`
-
-    For integer, string, text and binary fields, an integer in curly braces will
-    be set as the limit:
-
-        `rails generate model user pseudo:string{30}`
-
-    For decimal, two integers separated by a comma in curly braces will be used
-    for precision and scale:
-
-        `rails generate model product 'price:decimal{10,2}'`
-
-    You can add a `:uniq` or `:index` suffix for unique or standard indexes
-    respectively:
-
-        `rails generate model user pseudo:string:uniq`
-        `rails generate model user pseudo:string:index`
-
-    You can combine any single curly brace option with the index options:
-
-        `rails generate model user username:string{30}:uniq`
-        `rails generate model product supplier:references{polymorphic}:index`
-
-    If you require a `password_digest` string column for use with
-    has_secure_password, you should specify `password:digest`:
-
-        `rails generate model user password:digest`
-
-Examples:
-    `rails generate model account`
-
-        For ActiveRecord and TestUnit it creates:
-
-            Model:      app/models/account.rb
-            Test:       test/models/account_test.rb
-            Fixtures:   test/fixtures/accounts.yml
-            Migration:  db/migrate/XXX_create_accounts.rb
-
-    `rails generate model post title:string body:text published:boolean`
-
-        Creates a Post model with a string title, text body, and published flag.
-
-    `rails generate model admin/account`
-
-        For ActiveRecord and TestUnit it creates:
-
-            Module:     app/models/admin.rb
-            Model:      app/models/admin/account.rb
-            Test:       test/models/admin/account_test.rb
-            Fixtures:   test/fixtures/admin/accounts.yml
-            Migration:  db/migrate/XXX_create_admin_accounts.rb
+[...]
 ```
 
 The usage description `rails generate model NAME [field[:type][:index]
@@ -456,12 +355,6 @@ Which database is used by default? Let's have a quick look at the
 configuration file for the database (`config/database.yml`):
 
 ```yml
-# SQLite version 3.x
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
 default: &default
   adapter: sqlite3
   pool: 5
@@ -470,39 +363,30 @@ default: &default
 development:
   <<: *default
   database: db/development.sqlite3
-
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: db/test.sqlite3
-
-production:
-  <<: *default
-  database: db/production.sqlite3
 ```
 
 As we are working in `development` mode, Rails has created a new SQLite3
 database `db/development.sqlite3` as a result of `rake db:migrate` and
 will save all data there.
 
-Fans of command line clients can use `sqlite3` for viewing this
-database:
-
-```bash
-$ sqlite3 db/development.sqlite3
-SQLite version 3.8.5 2014-08-15 22:37:57
-Enter ".help" for usage hints.
-sqlite> .tables
-countries          schema_migrations
-sqlite> .schema countries
-CREATE TABLE "countries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-"name" varchar, "population" integer, "created_at" datetime NOT NULL,
-"updated_at" datetime NOT NULL);
-sqlite> .exit
-$
-```
+> **Note**
+>
+> Fans of command line clients can use `sqlite3` for viewing this
+> database:
+>
+> ```bash
+> $ sqlite3 db/development.sqlite3
+> SQLite version 3.8.5 2014-08-15 22:37:57
+> Enter ".help" for usage hints.
+> sqlite> .tables
+> countries          schema_migrations
+> sqlite> .schema countries
+> CREATE TABLE "countries" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+> "name" varchar, "population" integer, "created_at" datetime NOT NULL,
+> "updated_at" datetime NOT NULL);
+> sqlite> .exit
+> $
+> ```
 
 Adding Records
 --------------
@@ -927,7 +811,7 @@ For describing queries, we create a new Rails project:
 ```bash
 $ rails new jukebox
   [...]
-$  cd jukebox
+$ cd jukebox
 $ rails generate model Album name release_year:integer
   [...]
 $ rake db:migrate
