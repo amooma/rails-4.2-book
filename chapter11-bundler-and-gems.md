@@ -5,23 +5,23 @@ Gems
 ----
 
 Gems constitute the package management in the world of Ruby. If a Ruby
-developer wants to offer a specific feature or a certain program or
-collection of programs to other Ruby developers, he can create a "gem"
-from these. This gem can then be installed via `gem
-    install`. How to create a gem and where it can be hosted goes beyond
-the scope of this introduction chapter. The important thing for our
-purposes is that for example Rails in itself is also available as gem.
+developer wants to offer a specific feature or a certain program or collection
+of programs to other Ruby developers, he can create a "gem" from these. This
+gem can then be installed via `gem install`. How to create a gem and where it
+can be hosted goes beyond the scope of this introduction chapter. The
+important thing for our purposes is that for example Rails in itself is also
+available as gem.
 
 Bundler
 -------
 
-In a Rails project, different gems are used (see [Section "Gems"](#gems)) and a developer can
-also add further gems. Bundler helps the developer to install all these
-gems in the right version and to take into account important
-dependencies. In previous Rails versions, you as developer had to always
-call a `bundle install` after a `rails new`. Now, this is done
-automatically within `rails new`. In the output you can see which gems
-are installed by `bundle install`:
+In a Rails project, different gems are used (see [Section "Gems"](#gems)) and
+a developer can also add further gems. Bundler helps the developer to install
+all these gems in the right version and to take into account important
+dependencies. In previous Rails versions, you as developer had to always call
+a `bundle install` after a `rails new`. Now, this is done automatically within
+`rails new`. In the output you can see which gems are installed by `bundle
+install`:
 
 ```bash
 $ rails new webshop
@@ -37,49 +37,7 @@ Using minitest 5.6.1
 Using thread_safe 0.3.5
 Using tzinfo 1.2.2
 Using activesupport 4.2.1
-Using builder 3.2.2
-Using erubis 2.7.0
-Using mini_portile 0.6.2
-Using nokogiri 1.6.6.2
-Using rails-deprecated_sanitizer 1.0.3
-Using rails-dom-testing 1.0.6
-Using loofah 2.0.1
-Using rails-html-sanitizer 1.0.2
-Using actionview 4.2.1
-Using rack 1.6.0
-Using rack-test 0.6.3
-Using actionpack 4.2.1
-Using globalid 0.3.5
-Using activejob 4.2.1
-Using mime-types 2.5
-Using mail 2.6.3
-Using actionmailer 4.2.1
-Using activemodel 4.2.1
-Using arel 6.0.0
-Using activerecord 4.2.1
-Using debug_inspector 0.0.2
-Using binding_of_caller 0.7.2
-Using bundler 1.8.5
-Using columnize 0.9.0
-Using byebug 4.0.5
-Using coffee-script-source 1.9.1.1
-Using execjs 2.5.2
-Using coffee-script 2.4.1
-Using thor 0.19.1
-Using railties 4.2.1
-Using coffee-rails 4.1.0
-Using multi_json 1.11.0
-Using jbuilder 2.2.13
-Using jquery-rails 4.0.3
-Using sprockets 3.0.3
-Using sprockets-rails 2.2.4
-Using rails 4.2.1
-Using rdoc 4.2.0
-Using sass 3.4.13
-Using tilt 1.4.1
-Using sass-rails 5.0.3
-Using sdoc 0.4.1
-Using spring 1.3.5
+[...]
 Using sqlite3 1.3.10
 Using turbolinks 2.5.3
 Using uglifier 2.7.1
@@ -113,7 +71,8 @@ gem 'coffee-rails', '~> 4.1.0'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
+# Turbolinks makes following links in your web application faster. Read more:
+# https://github.com/rails/turbolinks
 gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.0'
@@ -130,17 +89,18 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger
+  # console
   gem 'byebug'
 
-  # Access an IRB console on exception pages or by using <%= console %> in views
+  # Access an IRB console on exception pages or by using <%= console %> in
+  # views
   gem 'web-console', '~> 2.0'
 
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  # Spring speeds up development by keeping your application running in the
+  # background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-
-
 ```
 
 The format used is easy to explain: the word `gem` is followed by the
@@ -150,22 +110,21 @@ the gem.
 For example, the line `gem 'rails', '4.2.1'` stands for "install the gem
 with the name `rails` in the version 4.2.1".
 
-With `~>` before the version number you can determine that the newest
-version after this version number should be installed. As a result, the
-last digit is incremented, so for example `gem 'rails',
-    '~> 4.0.0'` would correspondingly install a Rails 4.0.1, but not a
-4.1 (for the latter, you would need to specify `gem 'rails', '~>
-    4.1'`).
+With `~>` before the version number you can determine that the newest version
+after this version number should be installed. As a result, the last digit is
+incremented, so for example `gem 'rails', '~> 4.0.0'` would correspondingly
+install a Rails 4.0.1, but not a 4.1 (for the latter, you would need to
+specify `gem 'rails', '~> 4.1'`).
 
 > **Important**
 >
-> You have the option of installing certain gems only in certain
-> environments. To do so, you need to enclose the corresponding lines in
-> a `group :name do` loop.
+> You have the option of installing certain gems only in certain environments.
+> To do so, you need to enclose the corresponding lines in a `group :name do`
+> loop.
 
-Apart from the file `Gemfile` there is also the file `Gemfile.lock` and
-the exact versions of the installed gems are listed there. In the above
-example, it looks like this:
+Apart from the file `Gemfile` there is also the file `Gemfile.lock` and the
+exact versions of the installed gems are listed there. In the above example,
+it looks like this:
 
 ```ruby
 GEM
@@ -190,122 +149,7 @@ GEM
       erubis (~> 2.7.0)
       rails-dom-testing (~> 1.0, >= 1.0.5)
       rails-html-sanitizer (~> 1.0, >= 1.0.1)
-    activejob (4.2.1)
-      activesupport (= 4.2.1)
-      globalid (>= 0.3.0)
-    activemodel (4.2.1)
-      activesupport (= 4.2.1)
-      builder (~> 3.1)
-    activerecord (4.2.1)
-      activemodel (= 4.2.1)
-      activesupport (= 4.2.1)
-      arel (~> 6.0)
-    activesupport (4.2.1)
-      i18n (~> 0.7)
-      json (~> 1.7, >= 1.7.7)
-      minitest (~> 5.1)
-      thread_safe (~> 0.3, >= 0.3.4)
-      tzinfo (~> 1.1)
-    arel (6.0.0)
-    binding_of_caller (0.7.2)
-      debug_inspector (>= 0.0.1)
-    builder (3.2.2)
-    byebug (4.0.5)
-      columnize (= 0.9.0)
-    coffee-rails (4.1.0)
-      coffee-script (>= 2.2.0)
-      railties (>= 4.0.0, < 5.0)
-    coffee-script (2.4.1)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.9.1.1)
-    columnize (0.9.0)
-    debug_inspector (0.0.2)
-    erubis (2.7.0)
-    execjs (2.5.2)
-    globalid (0.3.5)
-      activesupport (>= 4.1.0)
-    i18n (0.7.0)
-    jbuilder (2.2.13)
-      activesupport (>= 3.0.0, < 5)
-      multi_json (~> 1.2)
-    jquery-rails (4.0.3)
-      rails-dom-testing (~> 1.0)
-      railties (>= 4.2.0)
-      thor (>= 0.14, < 2.0)
-    json (1.8.2)
-    loofah (2.0.1)
-      nokogiri (>= 1.5.9)
-    mail (2.6.3)
-      mime-types (>= 1.16, < 3)
-    mime-types (2.5)
-    mini_portile (0.6.2)
-    minitest (5.6.1)
-    multi_json (1.11.0)
-    nokogiri (1.6.6.2)
-      mini_portile (~> 0.6.0)
-    rack (1.6.0)
-    rack-test (0.6.3)
-      rack (>= 1.0)
-    rails (4.2.1)
-      actionmailer (= 4.2.1)
-      actionpack (= 4.2.1)
-      actionview (= 4.2.1)
-      activejob (= 4.2.1)
-      activemodel (= 4.2.1)
-      activerecord (= 4.2.1)
-      activesupport (= 4.2.1)
-      bundler (>= 1.3.0, < 2.0)
-      railties (= 4.2.1)
-      sprockets-rails
-    rails-deprecated_sanitizer (1.0.3)
-      activesupport (>= 4.2.0.alpha)
-    rails-dom-testing (1.0.6)
-      activesupport (>= 4.2.0.beta, < 5.0)
-      nokogiri (~> 1.6.0)
-      rails-deprecated_sanitizer (>= 1.0.1)
-    rails-html-sanitizer (1.0.2)
-      loofah (~> 2.0)
-    railties (4.2.1)
-      actionpack (= 4.2.1)
-      activesupport (= 4.2.1)
-      rake (>= 0.8.7)
-      thor (>= 0.18.1, < 2.0)
-    rake (10.4.2)
-    rdoc (4.2.0)
-    sass (3.4.13)
-    sass-rails (5.0.3)
-      railties (>= 4.0.0, < 5.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (~> 1.1)
-    sdoc (0.4.1)
-      json (~> 1.7, >= 1.7.7)
-      rdoc (~> 4.0)
-    spring (1.3.5)
-    sprockets (3.0.3)
-      rack (~> 1.0)
-    sprockets-rails (2.2.4)
-      actionpack (>= 3.0)
-      activesupport (>= 3.0)
-      sprockets (>= 2.8, < 4.0)
-    sqlite3 (1.3.10)
-    thor (0.19.1)
-    thread_safe (0.3.5)
-    tilt (1.4.1)
-    turbolinks (2.5.3)
-      coffee-rails
-    tzinfo (1.2.2)
-      thread_safe (~> 0.1)
-    uglifier (2.7.1)
-      execjs (>= 0.3.0)
-      json (>= 1.8.0)
-    web-console (2.1.2)
-      activemodel (>= 4.0)
-      binding_of_caller (>= 0.7.2)
-      railties (>= 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
+      [...]
 
 PLATFORMS
   ruby
@@ -326,14 +170,13 @@ DEPENDENCIES
 ```
 
 The advantage of `Gemfile.lock` is that it makes it possible for several
-developers to work on the same Rails project independently from one
-another and to still be sure that they are all working with the same gem
-versions. If a file is `Gemfile.lock`, this will be used by the Bundler.
-This is also useful for deploying the Rails project later on a web
-server.
+developers to work on the same Rails project independently from one another
+and to still be sure that they are all working with the same gem versions. If
+a file is `Gemfile.lock`, this will be used by the Bundler.  This is also
+useful for deploying the Rails project later on a web server.
 
-Thanks to this mechanism you can use and develop several Rails projects
-with different gem version numbers in parallel.
+Thanks to this mechanism you can use and develop several Rails projects with
+different gem version numbers in parallel.
 
 ### bundle update
 
@@ -399,7 +242,6 @@ gem 'rails', '4.2.0'
 
 to this:
 
-
 ```ruby
 [...]
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -407,9 +249,9 @@ gem 'rails', '4.2.1'
 [...]
 ```
 
-After this change, you can use `bundle update
-      rails` to install the new Rails version (required dependencies are
-automatically taken into account by Bundler):
+After this change, you can use `bundle update rails` to install the new Rails
+version (required dependencies are automatically taken into account by
+Bundler):
 
 ```bash
 $ bundle update rails
@@ -421,15 +263,14 @@ $
 
 > **Important**
 >
-> After every gem update, you should first run `rake
->         test` to make sure that a new gem version does not add any
-> unwanted side effects.
+> After every gem update, you should first run `rake test` to make sure that a
+> new gem version does not add any unwanted side effects.
 
 ### bundle outdated
 
 If you want to know which of the gems used by your Rails project are now
-available in a new version, you can do this via the command
-`bundle outdated`. Example:
+available in a new version, you can do this via the command `bundle outdated`.
+Example:
 
 ```bash
 $ bundle outdated
@@ -443,13 +284,14 @@ Outdated gems included in the bundle:
 
 ### bundle exec
 
-`bundle exec` is probably one of the commands Rails developers hate the
-most. It is required whenever a program such as `rake` is used in a
-Rails project and is present in a different version than the rest of the
-system. The resulting error message is always easy to implement:
+`bundle exec` is probably one of the commands Rails developers hate the most.
+It is required whenever a program such as `rake` is used in a Rails project
+and is present in a different version than the rest of the system. The
+resulting error message is always easy to implement:
 
 ```bash
-You have already activated rake 0.10, but your Gemfile requires rake 0.9.2.2. Using bundle exec may solve this.
+You have already activated rake 0.10, but your Gemfile requires rake 0.9.2.2.
+Using bundle exec may solve this.
 ```
 
 In this case, it helps to invoke the command with a preceding
@@ -461,9 +303,9 @@ $ bundle exec rake db:migrate
 
 #### binstubs
 
-In some environments, using `bundle exec` is too complicated. In that
-case, you can install programs with the correct version via
-`bundle install --binstubs` in the directory bin:
+In some environments, using `bundle exec` is too complicated. In that case,
+you can install programs with the correct version via `bundle install
+--binstubs` in the directory bin:
 
 ```bash
 $ bundle install --binstubs
@@ -475,49 +317,7 @@ Using thread_safe 0.3.5
 Using tzinfo 1.2.2
 Using activesupport 4.2.1
 Using builder 3.2.2
-Using erubis 2.7.0
-Using mini_portile 0.6.2
-Using nokogiri 1.6.6.2
-Using rails-deprecated_sanitizer 1.0.3
-Using rails-dom-testing 1.0.6
-Using loofah 2.0.1
-Using rails-html-sanitizer 1.0.2
-Using actionview 4.2.1
-Using rack 1.6.0
-Using rack-test 0.6.3
-Using actionpack 4.2.1
-Using globalid 0.3.5
-Using activejob 4.2.1
-Using mime-types 2.5
-Using mail 2.6.3
-Using actionmailer 4.2.1
-Using activemodel 4.2.1
-Using arel 6.0.0
-Using activerecord 4.2.1
-Using debug_inspector 0.0.2
-Using binding_of_caller 0.7.2
-Using columnize 0.9.0
-Using byebug 4.0.5
-Using coffee-script-source 1.9.1.1
-Using execjs 2.5.2
-Using coffee-script 2.4.1
-Using thor 0.19.1
-Using railties 4.2.1
-Using coffee-rails 4.1.0
-Using multi_json 1.11.0
-Using jbuilder 2.2.13
-Using jquery-rails 4.0.3
-Using bundler 1.8.5
-Using sprockets 3.0.3
-Using sprockets-rails 2.2.4
-Using rails 4.2.1
-Using rdoc 4.2.0
-Using sass 3.4.13
-Using tilt 1.4.1
-Using sass-rails 5.0.3
-Using sdoc 0.4.1
-Using spring 1.3.5
-Using sqlite3 1.3.10
+[...]
 Using turbolinks 2.5.3
 Using uglifier 2.7.1
 Using web-console 2.1.2
