@@ -4,37 +4,35 @@ Cookies and Sessions
 Cookies
 -------
 
-With a cookie, you can store information on the web browser's system, in
-form of strings as key-value pairs that the web server has previously
-sent to this browser. The information is later sent back from the
-browser to the server in the HTTP header. A cookie (if configured
-accordingly) is deleted from the browser system neither by restarting
-the browser nor by restarting the whole system. Of course, the browser's
-user can manually delete the cookie.
+With a cookie, you can store information on the web browser's system, in form
+of strings as key-value pairs that the web server has previously sent to this
+browser. The information is later sent back from the browser to the server in
+the HTTP header. A cookie (if configured accordingly) is deleted from the
+browser system neither by restarting the browser nor by restarting the whole
+system. Of course, the browser's user can manually delete the cookie.
 
 > **Note**
 >
-> A browser does not have to accept cookies and it does not have to save
-> them either. But we live in a world where almost every page uses
-> cookies. So most users will have enabled the cookie functionality. For
-> more information on cookies, please visit Wikipedia at
+> A browser does not have to accept cookies and it does not have to save them
+> either. But we live in a world where almost every page uses cookies. So most
+> users will have enabled the cookie functionality. For more information on
+> cookies, please visit Wikipedia at
 > <http://en.wikipedia.org/wiki/Http_cookie.>
 
 > **Tip**
 >
-> A cookie can only have a limited size (the maximum is 4 kB). You
-> should remember that the information of the saved cookies is sent from
-> the browser to the server. So you should only use cookies for storing
-> small amounts of data (for example, a customer number) to avoid the
-> protocol overhead becoming too big.
+> A cookie can only have a limited size (the maximum is 4 kB). You should
+> remember that the information of the saved cookies is sent from the browser
+> to the server. So you should only use cookies for storing small amounts of
+> data (for example, a customer number) to avoid the protocol overhead
+> becoming too big.
 
-Rails provides a hash with the name `cookies[]` that we can use
-transparently. Rails automatically takes care of the technological
-details in the background.
+Rails provides a hash with the name `cookies[]` that we can use transparently.
+Rails automatically takes care of the technological details in the background.
 
-To demonstrate how cookies work, we are going to build a Rails
-application that places a cookie on a page, reads it out on another page
-and displays the content, and the cookie is deleted on a third page.
+To demonstrate how cookies work, we are going to build a Rails application
+that places a cookie on a page, reads it out on another page and displays the
+content, and the cookie is deleted on a third page.
 
 ```bash
 $ rails new cookie_jar
@@ -83,12 +81,12 @@ And the view file `app/views/home/show_cookies.html.erb` as follows:
 ```
 
 Start the Rails server with `rails server` and go to the URL
-<http://localhost:3000/home/show_cookies> in your browser. You will not
-see any values.
+<http://localhost:3000/home/show_cookies> in your browser. You will not see
+any values.
 
-Now go to the URL <http://localhost:3000/home/set_cookies> and then back
-to <http://localhost:3000/home/show_cookies>. Now you will see the values
-that we have set in the method `set_cookies`.
+Now go to the URL <http://localhost:3000/home/set_cookies> and then back to
+<http://localhost:3000/home/show_cookies>. Now you will see the values that we
+have set in the method `set_cookies`.
 
 By requesting the page <http://localhost:3000/home/delete_cookies> you can
 delete the cookies again.
@@ -100,20 +98,21 @@ delete the cookies again.
 
 > **Warning**
 >
-> The content of a normally cookie in the browser is easy to read and to
-> be manipulated by the user. It is not encrypted, so it should not
-> contain any passwords or similar data. Nor is it advisable to save
-> shopping baskets in an unsigned (see [the section called "Signed Cookies"](#signed-cookies)) cookie, otherwise the user
-> could change the prices in this shopping basket himself.
+> The content of a normally cookie in the browser is easy to read and to be
+> manipulated by the user. It is not encrypted, so it should not contain any
+> passwords or similar data. Nor is it advisable to save shopping baskets in
+> an unsigned (see [the section called "Signed Cookies"](#signed-cookies))
+> cookie, otherwise the user could change the prices in this shopping basket
+> himself.
 
 ### Permanent Cookies
 
-Cookies are normally set to give the application a way of recognizing
-users when they visit again later. Between these visits to the website,
-much time can go by and the user may well close the browser in the
-meantime. To store cookies for longer than the current browser session,
-you can use the method permanent. Our above example can be expanded by
-adding this method in the `app/controllers/home_controller.rb`:
+Cookies are normally set to give the application a way of recognizing users
+when they visit again later. Between these visits to the website, much time
+can go by and the user may well close the browser in the meantime. To store
+cookies for longer than the current browser session, you can use the method
+permanent. Our above example can be expanded by adding this method in the
+`app/controllers/home_controller.rb`:
 
 ```ruby
 class HomeController < ApplicationController
@@ -136,21 +135,20 @@ end
 
 > **Important**
 >
-> "permanent" here does not really mean permanent. You cannot set a
-> cookie permanently. When you set a cookie, it always needs a "valid
-> until" stamp that the browser can use to automatically delete old
-> cookies. With the method permanent this value is set to today's date
-> in 20 years. This is practically the same as permanent.
+> "permanent" here does not really mean permanent. You cannot set a cookie
+> permanently. When you set a cookie, it always needs a "valid until" stamp
+> that the browser can use to automatically delete old cookies. With the
+> method permanent this value is set to today's date in 20 years. This is
+> practically the same as permanent.
 
 ### Signed Cookies
 
-With normally placed cookies, you have no option on the application side
-to find out if the user of the application has changed the cookie. This
-can quickly lead to security problems, as changing the content of a
-cookie in the browser is no great mystery. The solution is signing the
-cookies with a key that is only known to us. This key is automatically
-created via a random generator with each `rails
-      new` and is located in the file
+With normally placed cookies, you have no option on the application side to
+find out if the user of the application has changed the cookie. This can
+quickly lead to security problems, as changing the content of a cookie in the
+browser is no great mystery. The solution is signing the cookies with a key
+that is only known to us. This key is automatically created via a random
+generator with each `rails new` and is located in the file
 `config/initializers/secret_token.rb`:
 
 ```ruby
@@ -194,28 +192,30 @@ but not the value.
 Sessions
 --------
 
-As HTTP is a stateless protocol, we encounter special problems when
-developing applications. An individual web page has no connection to the
-next web page and they do not know of one another. But as you want to
-register only once on many websites, not over and over again on each
-individual page, this can pose a problem. The solution is called session
-and Rails offers it to the programmer transparently as a `session[]`
-hash. Rails automatically creates a new session for each new visitor of
-the web page. This session is saved by default as cookie (see [Section "Cookies"](chapter08-cookies-and-sessions.html) and so
-it is subject to the 4 kB limit. But you can also store the sessions in
-the database (see [the section called "Saving Sessions in the Database"](#saving-sessions-in-the-database)). An independent and unique session ID is created
-automatically and the cookie is deleted by default when the web browser
-is closed.
+As HTTP is a stateless protocol, we encounter special problems when developing
+applications. An individual web page has no connection to the next web page
+and they do not know of one another. But as you want to register only once on
+many websites, not over and over again on each individual page, this can pose
+a problem. The solution is called session and Rails offers it to the
+programmer transparently as a `session[]` hash. Rails automatically creates a
+new session for each new visitor of the web page. This session is saved by
+default as cookie (see [Section
+"Cookies"](chapter08-cookies-and-sessions.html) and so it is subject to the 4
+kB limit. But you can also store the sessions in the database (see [the
+section called "Saving Sessions in the
+Database"](#saving-sessions-in-the-database)). An independent and unique
+session ID is created automatically and the cookie is deleted by default when
+the web browser is closed.
 
-The beauty of a Rails session is that we can not just save strings there
-as with cookies, but also hashes and arrays. So you can for example use
-it to conveniently implement a shopping cart in an online shop.
+The beauty of a Rails session is that we can not just save strings there as
+with cookies, but also hashes and arrays. So you can for example use it to
+conveniently implement a shopping cart in an online shop.
 
 ### Breadcrumbs via Session
 
-As an example, we create an application with a controller and three
-views. When a view is visited, the previously visited views are
-displayed in a little list.
+As an example, we create an application with a controller and three views.
+When a view is visited, the previously visited views are displayed in a little
+list.
 
 The basic application:
 
@@ -228,10 +228,10 @@ $ rails generate controller Home ping pong index
 $
 ```
 
-First we create a method with which we can save the last three URLs in
-the session and set an instance variable `@breadcrumbs,` to be able to
-neatly retrieve the values in the view. To that end, we set up a
-`before_filter` in the `app/controllers/home_controller.rb`:
+First we create a method with which we can save the last three URLs in the
+session and set an instance variable `@breadcrumbs,` to be able to neatly
+retrieve the values in the view. To that end, we set up a `before_filter` in
+the `app/controllers/home_controller.rb`:
 
 ```ruby
 class HomeController < ApplicationController
@@ -274,7 +274,8 @@ last entries at the top of each page:
 <html>
 <head>
   <title>Breadcrumbs</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= stylesheet_link_tag    'application', media: 'all',
+  'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
@@ -297,20 +298,20 @@ last entries at the top of each page:
 <html>
 ```
 
-Now you can start the Rails server with `rails
-      server` and go to <http://localhost:3000/home/ping>,
-<http://localhost:3000/home/ping> or <http://localhost:3000/home/index> and
-at the top you will then always see the pages that you have visited
-before. Of course, this only works on the second page, because you do
-not yet have a history on the first page you visit.
+Now you can start the Rails server with `rails server` and go to
+<http://localhost:3000/home/ping>, <http://localhost:3000/home/ping> or
+<http://localhost:3000/home/index> and at the top you will then always see the
+pages that you have visited before. Of course, this only works on the second
+page, because you do not yet have a history on the first page you visit.
 
 ### reset\_session
 
-Occasionally, there are situations where you want to reset a session (in
-other words, delete the current session and start again with a new,
-fresh session). For example, if you log out of a web application, the
-session will be reset. This is easily done and we can quickly integrate
-it into our breadcrumb application (see [the section called "Breadcrumbs via Session"](#breadcrumbs-via-session)):
+Occasionally, there are situations where you want to reset a session (in other
+words, delete the current session and start again with a new, fresh session).
+For example, if you log out of a web application, the session will be reset.
+This is easily done and we can quickly integrate it into our breadcrumb
+application (see [the section called "Breadcrumbs via
+Session"](#breadcrumbs-via-session)):
 
 ```bash
 $ rails generate controller Home reset -s
@@ -378,29 +379,28 @@ So you can delete the current session by going to the URL
 
 > **Note**
 >
-> It is not just important to invoke `reset_session`, but you need to
-> also set the instance variable `@breadcrumbs` to `nil`. Otherwise, the
-> old breadcrumbs would still appear in the view..
+> It is not just important to invoke `reset_session`, but you need to also set
+> the instance variable `@breadcrumbs` to `nil`. Otherwise, the old
+> breadcrumbs would still appear in the view..
 
 ### Saving Sessions in the Database
 
-Saving the entire session data in a cookie on the user's browser is not
-always the best solution. Amongst others, the limit of 4 kB can pose a
-problem. But it's no big obstacle, we can relocate the storing of the
-session from the cookie to the database with the Active Record Session
-Store gem (<https://github.com/rails/activerecord-session_store>). Then
-the session ID is of course still saved in a cookie, but the whole other
-session data is stored in the database on the server.
+Saving the entire session data in a cookie on the user's browser is not always
+the best solution. Amongst others, the limit of 4 kB can pose a problem. But
+it's no big obstacle, we can relocate the storing of the session from the
+cookie to the database with the Active Record Session Store gem
+(<https://github.com/rails/activerecord-session_store>). Then the session ID
+is of course still saved in a cookie, but the whole other session data is
+stored in the database on the server.
 
-To install the gem we have to add the following line at the end of the
-file `Gemfile`
+To install the gem we have to add the following line at the end of the file
+`Gemfile`
 
 ```ruby
 gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 ```
 
-After that we have to run `bundle
-      install`
+After that we have to run `bundle install`
 
 ```bash
 $ bundle install
@@ -411,15 +411,15 @@ Resolving dependencies...
 Using rake 10.4.2
 [...]
 Using railties 4.2.1
-Using activerecord-session_store 0.1.1 from git://github.com/rails/activerecord-session_store.git (at master)
+Using activerecord-session_store 0.1.1 from
+git://github.com/rails/activerecord-session_store.git (at master)
 Using debug_inspector 0.0.2
 [...]
 $
 ```
 
-After that we have to run `rails generate
-      active_record:session_migration` and `rake
-      db:migrate` to create the needed table in the database.
+After that we have to run `rails generate active_record:session_migration` and
+`rake db:migrate` to create the needed table in the database.
 
 ```bash
 $  rails generate active_record:session_migration
