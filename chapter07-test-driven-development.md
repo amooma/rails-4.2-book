@@ -118,14 +118,16 @@ Run options: --seed 149
 Finished in 0.320838s, 21.8179 runs/s, 31.1684 assertions/s.
 
   1) Failure:
-UsersControllerTest#test_should_create_user [/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:20]:
+UsersControllerTest#test_should_create_user
+[/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:20]:
 "User.count" didn't change by 1.
 Expected: 3
   Actual: 2
 
 
   2) Failure:
-UsersControllerTest#test_should_update_user [/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:39]:
+UsersControllerTest#test_should_update_user
+[/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:39]:
 Expected response to be a <redirect>, but was <200>
 
 7 runs, 10 assertions, 2 failures, 0 errors, 0 skips
@@ -236,14 +238,16 @@ occurred:
 
 ```bash
   1) Failure:
-UsersControllerTest#test_should_create_user [/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:20]:
+UsersControllerTest#test_should_create_user
+[/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:20]:
 "User.count" didn't change by 1.
 Expected: 3
   Actual: 2
 
 
   2) Failure:
-UsersControllerTest#test_should_update_user [/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:39]:
+UsersControllerTest#test_should_update_user
+[/Users/xyz/rails/project-42/webshop/test/controllers/users_controller_test.rb:39]:
 Expected response to be a <redirect>, but was <200>
 ```
 
@@ -273,7 +277,9 @@ class UsersControllerTest < ActionController::TestCase
 
   test "should create user" do
     assert_difference('User.count') do
-      post :create, user: { birthday: @user.birthday, first_name: @user.first_name, last_name: @user.last_name, login_name: @user.login_name }
+      post :create, user: { birthday: @user.birthday, first_name:
+      @user.first_name, last_name: @user.last_name, login_name:
+      @user.login_name }
     end
 
     assert_redirected_to user_path(assigns(:user))
@@ -290,7 +296,9 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "should update user" do
-    patch :update, id: @user, user: { birthday: @user.birthday, first_name: @user.first_name, last_name: @user.last_name, login_name: @user.login_name }
+    patch :update, id: @user, user: { birthday: @user.birthday, first_name:
+    @user.first_name, last_name: @user.last_name, login_name: @user.login_name
+    }
     assert_redirected_to user_path(assigns(:user))
   end
 
@@ -360,7 +368,9 @@ Let's look more closely at the two problems from earlier. First,
 ```ruby
 test "should create user" do
   assert_difference('User.count') do
-    post :create, user: { birthday: @user.birthday, first_name: @user.first_name, last_name: @user.last_name, login_name: @user.login_name }
+    post :create, user: { birthday: @user.birthday, first_name:
+    @user.first_name, last_name: @user.last_name, login_name: @user.login_name
+    }
   end
 
   assert_redirected_to user_path(assigns(:user))
@@ -370,16 +380,16 @@ end
 The block `assert_difference('User.count') do ... end` expects a change
 by the code contained within it. `User.count` after should result in +1.
 
-The last line `assert_redirected_to
-      user_path(assigns(:user))` checks if after the newly created
-record the redirection to the corresponding view `show` occurs.
+The last line `assert_redirected_to user_path(assigns(:user))` checks if after
+the newly created record the redirection to the corresponding view `show`
+occurs.
 
-The second error occurred with `should update
-      user`:
+The second error occurred with `should update user`:
 
 ```ruby
 test "should update user" do
-  patch :update, id: @user, user: { birthday: @user.birthday, first_name: @user.first_name, last_name: @user.last_name, login_name: @user.login_name }
+  patch :update, id: @user, user: { birthday: @user.birthday, first_name:
+  @user.first_name, last_name: @user.last_name, login_name: @user.login_name }
   assert_redirected_to user_path(assigns(:user))
 end
 ```
@@ -536,8 +546,10 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "the two fixture users are valid" do
-    assert User.new(last_name: users(:one).last_name, login_name: users(:one).login_name ).valid?, 'First fixture is not valid.'
-    assert User.new(last_name: users(:two).last_name, login_name: users(:two).login_name ).valid?, 'Second fixture is not valid.'
+    assert User.new(last_name: users(:one).last_name, login_name:
+    users(:one).login_name ).valid?, 'First fixture is not valid.'
+    assert User.new(last_name: users(:two).last_name, login_name:
+    users(:two).login_name ).valid?, 'Second fixture is not valid.'
   end
 end
 ```
@@ -574,8 +586,9 @@ with every test.
 
 ### Static Fixtures
 
-The simplest variant for fixtures is static data. The fixture for `User`
-used in [Section "Example for a User in a Web Shop"](#example-for-a-user-in-a-web-shop) statically looks as follows:
+The simplest variant for fixtures is static data. The fixture for `User` used
+in [Section "Example for a User in a Web
+Shop"](#example-for-a-user-in-a-web-shop) statically looks as follows:
 
 ```yml
 one:
@@ -591,12 +604,12 @@ You simple write the data in YAML format into the corresponding file.
 
 ### Fixtures with ERB
 
-Static YAML fixtures are sometimes too unintelligent. In these cases,
-you can work with ERB (see [the section called "Programming in an erb File"](chapter03-first-steps-with-rails.html#programming-in-an-erb-file)).
+Static YAML fixtures are sometimes too unintelligent. In these cases, you can
+work with ERB (see [the section called "Programming in an erb
+File"](chapter03-first-steps-with-rails.html#programming-in-an-erb-file)).
 
-If we want to dynamically enter today's day 20 years ago for the
-birthdays, then we can simply do it with ERB in
-`test/fixtures/users.yml`
+If we want to dynamically enter today's day 20 years ago for the birthdays,
+then we can simply do it with ERB in `test/fixtures/users.yml`
 
 ```yml
 one:
@@ -658,8 +671,8 @@ The magic of the integration test lies amongst others in the method
 `post_via_redirect`, with which you can carry on after a post in the
 test. This method is only available within an integration test.
 
-All integration tests can be executed with `rake
-    test:integration`. Let's have a go:
+All integration tests can be executed with `rake test:integration`. Let's have
+a go:
 
 ```bash
 $ rake test:integration
