@@ -102,11 +102,11 @@ the action/method `index`. These routes are defined in the file
     Home index ping pong` has automatically inserted the following lines
 there:
 
-      get "home/index"
-
-      get "home/ping"
-
-      get "home/pong"
+```ruby
+get "home/index"
+get "home/ping"
+get "home/pong"
+```
 
 ### Naming a Route
 
@@ -345,7 +345,8 @@ contraints would look like this:
 Blog::Application.routes.draw do
   resources :posts
 
-  get ':year(/:month(/:day))', to: 'posts#index', constraints: { year: /\d{4}/, month: /\d{2}/, day: /\d{2}/ }
+  get ':year(/:month(/:day))', to: 'posts#index', constraints: { year:
+  /\d{4}/, month: /\d{2}/, day: /\d{2}/ }
 end
 ```
 
@@ -372,12 +373,17 @@ which catch these URLs and redirect them to the correct ones.
 Blog::Application.routes.draw do
   resources :posts
 
-  get ':year/:month/:day', to: redirect("/%{year}/0%{month}/0%{day}"), constraints: { year: /\d{4}/, month: /\d{1}/, day: /\d{1}/ }
-  get ':year/:month/:day', to: redirect("/%{year}/0%{month}/%{day}"), constraints: { year: /\d{4}/, month: /\d{1}/, day: /\d{2}/ }
-  get ':year/:month/:day', to: redirect("/%{year}/%{month}/0%{day}"), constraints: { year: /\d{4}/, month: /\d{2}/, day: /\d{1}/ }
-  get ':year/:month', to: redirect("/%{year}/0%{month}"), constraints: { year: /\d{4}/, month: /\d{1}/ }
+  get ':year/:month/:day', to: redirect("/%{year}/0%{month}/0%{day}"),
+  constraints: { year: /\d{4}/, month: /\d{1}/, day: /\d{1}/ }
+  get ':year/:month/:day', to: redirect("/%{year}/0%{month}/%{day}"),
+  constraints: { year: /\d{4}/, month: /\d{1}/, day: /\d{2}/ }
+  get ':year/:month/:day', to: redirect("/%{year}/%{month}/0%{day}"),
+  constraints: { year: /\d{4}/, month: /\d{2}/, day: /\d{1}/ }
+  get ':year/:month', to: redirect("/%{year}/0%{month}"), constraints: { year:
+  /\d{4}/, month: /\d{1}/ }
 
-  get ':year(/:month(/:day))', to: 'posts#index', constraints: { year: /\d{4}/, month: /\d{2}/, day: /\d{2}/ }
+  get ':year(/:month(/:day))', to: 'posts#index', constraints: { year:
+  /\d{4}/, month: /\d{2}/, day: /\d{2}/ }
 end
 ```
 
@@ -415,11 +421,8 @@ If you comment out the last line there, you can define your
 ```ruby
 Shop::Application.routes.draw do
   get "home/index"
-
   get "home/ping"
-
   get "home/pong"
-
   root 'home#index'
 end
 ```
@@ -490,7 +493,7 @@ $
 You have already encountered these RESTful routes in [Chapter 5, Scaffolding and REST](chapter05-scaffolding.html). They are
 required for displaying and editing records.
 
-### Selecting Specific Routes with only: or except:
+### Selecting Specific Routes with `only:` or `except:`
 
 If you only want to use specific routes from the finished set of RESTful
 routes, you can limit them with `:only` or `:except`.
@@ -669,11 +672,14 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @comment }
+        format.html { redirect_to @comment, notice: 'Comment was successfully
+        created.' }
+        format.json { render action: 'show', status: :created, location:
+        @comment }
       else
         format.html { render action: 'new' }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        format.json { render json: @comment.errors, status:
+        :unprocessable_entity }
       end
     end
   end
@@ -683,11 +689,13 @@ class CommentsController < ApplicationController
   def update
     respond_to do |format|
       if @comment.update(comment_params)
-        format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
+        format.html { redirect_to @comment, notice: 'Comment was successfully
+        updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
+        format.json { render json: @comment.errors, status:
+        :unprocessable_entity }
       end
     end
   end
@@ -712,7 +720,8 @@ class CommentsController < ApplicationController
       @comment = @post.comments.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    # Never trust parameters from the scary internet, only allow the white
+    # list through.
     def comment_params
       params.require(:comment).permit(:post_id, :content)
     end
@@ -732,7 +741,8 @@ Please note that you need to change the `form_for` call to
 <%= form_for([@post, @comment]) do |f| %>
   <% if @comment.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this
+      comment from being saved:</h2>
 
       <ul>
       <% @comment.errors.full_messages.each do |msg| %>
@@ -784,7 +794,8 @@ Please note that you need to change the `form_for` call to
         <td><%= comment.content %></td>
         <td><%= link_to 'Show', [@post, comment] %></td>
         <td><%= link_to 'Edit', edit_post_comment_path(@post, comment) %></td>
-        <td><%= link_to 'Destroy', [@post, comment], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', [@post, comment], method: :delete, data: {
+        confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -826,11 +837,11 @@ Please note that you need to change the `form_for` call to
 
 Please go ahead and have a go at experimenting with the URLs listed
 under rake routes. You can now generate a new post with
-`/posts/new` and a new comment for this post with `/posts/:post_id/comments/new`.
+`/posts/new` and a new comment for this post with
+`/posts/:post_id/comments/new`.
 
-If you want to see all comments of the first post you can access that
-with the URL <http://localhost:3000/posts/1/comments>. It would look like
-this:
+If you want to see all comments of the first post you can access that with the
+URL <http://localhost:3000/posts/1/comments>. It would look like this:
 
 ![Listing comments](images/screenshots/chapter06/posts_1_comments.jpg "listing comments")
 
