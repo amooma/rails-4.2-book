@@ -514,13 +514,13 @@ You can probably guess, but let's have a look at the directory
 ```bash
 $ find app/views/products/
 app/views/products/
-app/views/products//_form.html.erb
-app/views/products//edit.html.erb
-app/views/products//index.html.erb
-app/views/products//index.json.jbuilder
-app/views/products//new.html.erb
-app/views/products//show.html.erb
-app/views/products//show.json.jbuilder
+app/views/products/_form.html.erb
+app/views/products/edit.html.erb
+app/views/products/index.html.erb
+app/views/products/index.json.jbuilder
+app/views/products/new.html.erb
+app/views/products/show.html.erb
+app/views/products/show.json.jbuilder
 $
 ```
 
