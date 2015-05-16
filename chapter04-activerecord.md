@@ -987,6 +987,36 @@ combine the method `where` with the method `first`:
 $
 ```
 
+#### `not`
+
+The method `not` provides a way to search for the exact oposite of a `where`
+query. Example:
+
+```bash
+$ rails console
+Loading development environment (Rails 4.2.1)
+>> Album.where.not(release_year: 1968)
+  Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" != ?)  [["release_year", 1968]]
+=> #<ActiveRecord::Relation [#<Album id: 1, name: "Sgt. Pepper's Lonely Hearts
+Club Band", release_year: 1967, created_at: "2015-05-16 07:59:32", updated_at:
+"2015-05-16 07:59:32">, #<Album id: 2, name: "Pet Sounds", release_year: 1966,
+created_at: "2015-05-16 07:59:32", updated_at: "2015-05-16 07:59:32">, #<Album
+id: 3, name: "Revolver", release_year: 1966, created_at: "2015-05-16 07:59:32",
+updated_at: "2015-05-16 07:59:32">, #<Album id: 4, name: "Highway 61
+Revisited", release_year: 1965, created_at: "2015-05-16 07:59:32", updated_at:
+"2015-05-16 07:59:32">, #<Album id: 5, name: "Rubber Soul", release_year: 1965,
+created_at: "2015-05-16 07:59:32", updated_at: "2015-05-16 07:59:32">, #<Album
+id: 6, name: "What's Going On", release_year: 1971, created_at: "2015-05-16
+07:59:32", updated_at: "2015-05-16 07:59:32">, #<Album id: 7, name: "Exile on
+Main St.", release_year: 1972, created_at: "2015-05-16 07:59:32", updated_at:
+"2015-05-16 07:59:32">, #<Album id: 8, name: "London Calling", release_year:
+1979, created_at: "2015-05-16 07:59:32", updated_at: "2015-05-16 07:59:32">,
+#<Album id: 9, name: "Blonde on Blonde", release_year: 1966, created_at:
+"2015-05-16 07:59:32", updated_at: "2015-05-16 07:59:32">]>
+>> exit
+$
+```
+
 #### SQL Queries with `where`
 
 Sometimes there is no other way and you just have to define and execute your
