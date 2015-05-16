@@ -1,12 +1,11 @@
 Action Mailer
 =============
 
-Even if we mainly use Ruby on Rails to generate web pages, it sometimes
-is useful to be able to send an e-mail.
+Even if we mainly use Ruby on Rails to generate web pages, it sometimes is
+useful to be able to send an e-mail.
 
-So let's go and build an example with minimal user management for a web
-shop that automatically sends an e-mail to the user when a new user is
-created:
+So let's go and build an example with minimal user management for a web shop
+that automatically sends an e-mail to the user when a new user is created:
 
 ```bash
 $ rails new webshop
@@ -19,9 +18,9 @@ $ rake db:migrate
 $
 ```
 
-For the user model we create a minimal validation in the
-`app/models/user.rb`, so that we can be sure that each user has a name
-and a syntactically correct e-mail address.
+For the user model we create a minimal validation in the `app/models/user.rb`,
+so that we can be sure that each user has a name and a syntactically correct
+e-mail address.
 
 ```ruby
 class User < ActiveRecord::Base
@@ -34,27 +33,16 @@ class User < ActiveRecord::Base
 end
 ```
 
-There is a generator with the name `mailer` that creates the files
-required for mailing. First, we have a look at the output of the
-`rails generate mailer`, without passing any further arguments:
+There is a generator with the name `mailer` that creates the files required
+for mailing. First, we have a look at the output of the `rails generate
+mailer`, without passing any further arguments:
 
 ```bash
 $ rails generate mailer
 Usage:
   rails generate mailer NAME [method method] [options]
 
-Options:
-      [--skip-namespace], [--no-skip-namespace]  # Skip namespace (affects only isolated applications)
-  -e, [--template-engine=NAME]                   # Template engine to be invoked
-                                                 # Default: erb
-  -t, [--test-framework=NAME]                    # Test framework to be invoked
-                                                 # Default: test_unit
-
-Runtime options:
-  -f, [--force]                    # Overwrite files that already exist
-  -p, [--pretend], [--no-pretend]  # Run but do not make any changes
-  -q, [--quiet], [--no-quiet]      # Suppress status output
-  -s, [--skip], [--no-skip]        # Skip files that already exist
+[...]
 
 Description:
 ============
@@ -104,15 +92,15 @@ confirmation e-mail for a new account:
 ```ruby
 class Notification < ApplicationMailer
   def new_account(user)
-        @user = user
-        mail(to: user.email, subject: "The account #{user.name} is active.")
-    end
+    @user = user
+    mail(to: user.email, subject: "The account #{user.name} is active.")
+  end
 end
 ```
 
 Now we create the view for this method. The file name
-`app/views/notification/new_account.text.erb` is composed from the
-method name and the ending `text.erb`.
+`app/views/notification/new_account.text.erb` is composed from the method name
+and the ending `text.erb`.
 
 ```erb
 Hello <%= @user.name %>,
@@ -123,9 +111,9 @@ Have a great day!
   A Robot
 ```
 
-As we want to send this e-mail afer the create of a User, we still need
-add an `after_create` callback which triggers the delivery. That is done
-in `app/models/user.rb`:
+As we want to send this e-mail afer the create of a User, we still need add an
+`after_create` callback which triggers the delivery. That is done in
+`app/models/user.rb`:
 
 ```ruby
 class User < ActiveRecord::Base
@@ -153,10 +141,17 @@ $ rails console
 Loading development environment (Rails 4.2.1)
 >> User.create(name: 'Wintermeyer', email: 'stefan.wintermeyer@amooma.de')
    (0.1ms)  begin transaction
-  SQL (1.6ms)  INSERT INTO "users" ("name", "email", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["name", "Wintermeyer"], ["email", "stefan.wintermeyer@amooma.de"], ["created_at", "2015-04-29 16:37:13.138548"], ["updated_at", "2015-04-29 16:37:13.138548"]]
-Enqueued ActionMailer::DeliveryJob (Job ID: f27145aa-7486-4414-adc5-bd9de3fad056) to Inline(mailers) with arguments: "Notification", "new_account", "deliver_now", gid://webshop/User/1
-  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."id" = ? LIMIT 1  [["id", 1]]
-Performing ActionMailer::DeliveryJob from Inline(mailers) with arguments: "Notification", "new_account", "deliver_now", gid://webshop/User/1
+  SQL (1.6ms)  INSERT INTO "users" ("name", "email", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["name", "Wintermeyer"], ["email",
+  "stefan.wintermeyer@amooma.de"], ["created_at", "2015-04-29
+  16:37:13.138548"], ["updated_at", "2015-04-29 16:37:13.138548"]]
+Enqueued ActionMailer::DeliveryJob (Job ID:
+f27145aa-7486-4414-adc5-bd9de3fad056) to Inline(mailers) with arguments:
+"Notification", "new_account", "deliver_now", gid://webshop/User/1
+  User Load (0.3ms)  SELECT  "users".* FROM "users" WHERE "users"."id" = ?
+  LIMIT 1  [["id", 1]]
+Performing ActionMailer::DeliveryJob from Inline(mailers) with arguments:
+"Notification", "new_account", "deliver_now", gid://webshop/User/1
   Rendered notification/new_account.text.erb within layouts/mailer (3.0ms)
 
 Notification#new_account: processed outbound mail in 287.6ms
@@ -181,14 +176,14 @@ Have a great day!
 
 Performed ActionMailer::DeliveryJob from Inline(mailers) in 309.01ms
    (1.2ms)  commit transaction
-=> #<User id: 1, name: "Wintermeyer", email: "stefan.wintermeyer@amooma.de", created_at: "2015-04-29 16:37:13", updated_at: "2015-04-29 16:37:13">
+=> #<User id: 1, name: "Wintermeyer", email: "stefan.wintermeyer@amooma.de",
+created_at: "2015-04-29 16:37:13", updated_at: "2015-04-29 16:37:13">
 >> exit
 $
 ```
 
-That was straightforward. In the development mode we see the e-mail in
-the log. In production mode it would be send to the configured SMTP
-gateway.
+That was straightforward. In the development mode we see the e-mail in the
+log. In production mode it would be send to the configured SMTP gateway.
 
 Configuring the E-Mail Server
 -----------------------------
@@ -198,11 +193,10 @@ the e-mails.
 
 ### Sending via Local Sendmail
 
-If you want to send the e-mails in the traditional way via local
-`sendmail`, then you need to insert the following lines into your
-configuration file `config/environments/development.rb` (for the
-development environment) or `config/environments/production.rb` (for
-your production environment):
+If you want to send the e-mails in the traditional way via local `sendmail`,
+then you need to insert the following lines into your configuration file
+`config/environments/development.rb` (for the development environment) or
+`config/environments/production.rb` (for your production environment):
 
 ```ruby
 config.action_mailer.delivery_method = :sendmail
@@ -212,11 +206,10 @@ config.action_mailer.raise_delivery_errors = true
 
 ### Sending via Direct SMTP
 
-If you want to send the e-mail directly via a SMTP server (for example
-Google Mail), then you need to insert the following lines into your
-configuration file `config/environments/development.rb` (for the
-development environment) or `config/environments/production.rb` (for
-your production environment):
+If you want to send the e-mail directly via a SMTP server (for example Google
+Mail), then you need to insert the following lines into your configuration
+file `config/environments/development.rb` (for the development environment) or
+`config/environments/production.rb` (for your production environment):
 
 ```ruby
 config.action_mailer.delivery_method = :smtp
@@ -243,10 +236,10 @@ problem. Here is an example for expanding the file
 ```ruby
 class Notification < ApplicationMailer
   def new_account(user)
-        @user = user
-        headers["X-Priority"] = '3'
-        mail(to: user.email, subject: "The account #{user.name} is active.")
-    end
+    @user = user
+    headers["X-Priority"] = '3'
+    mail(to: user.email, subject: "The account #{user.name} is active.")
+  end
 end
 ```
 
@@ -308,7 +301,8 @@ Rendered notification/new_account.text.erb within layouts/mailer (0.6ms)
 Notification#new_account: processed outbound mail in 33.0ms
 [ActiveJob] [ActionMailer::DeliveryJob] [a819b266-e084-4b26-9041-7e24aa5e2a9f] 
 Sent mail to stefan.wintermeyer@amooma.de (7.4ms)
-[ActiveJob] [ActionMailer::DeliveryJob] [a819b266-e084-4b26-9041-7e24aa5e2a9f] Date: Wed, 29 Apr 2015 18:48:00 +0200
+[ActiveJob] [ActionMailer::DeliveryJob] [a819b266-e084-4b26-9041-7e24aa5e2a9f]
+Date: Wed, 29 Apr 2015 18:48:00 +0200
 From: from@example.com
 To: stefan.wintermeyer@amooma.de
 Message-ID: <55410b401413d_599d3fefddc601f855944@MAC-00020.local.mail>
@@ -361,8 +355,8 @@ Content-Transfer-Encoding: 7bit
 ```
 
 Rails has automatically generated an e-mail in the MIME format
-`multipart/alternative`, as the view was present both in the format
-`html.erb` and `text.erb`.
+`multipart/alternative`, as the view was present both in the format `html.erb`
+and `text.erb`.
 
 Attachments
 -----------
@@ -375,26 +369,28 @@ As an example we add in `app/mailers/notification.rb` the Rails image
 ```ruby
 class Notification < ApplicationMailer
   def new_account(user)
-        @user = user
-        attachments['rails.png'] = File.read("#{Rails.root}/app/assets/images/rails.png")
-        mail(to: user.email, subject: "The account #{user.name} is active.")
-    end
+    @user = user
+    attachments['rails.png'] =
+      File.read("#{Rails.root}/app/assets/images/rails.png")
+    mail(to: user.email, subject: "The account #{user.name} is active.")
+  end
 end
 ```
 
 ### Inline Attachments
 
-For *inline attachments* in HTML e-mails, you need to use the method
-inline when calling `attachments`. In our example controller
+For *inline attachments* in HTML e-mails, you need to use the method inline
+when calling `attachments`. In our example controller
 `app/mailers/notification.rb`:
 
 ```ruby
 class Notification < ApplicationMailer
   def new_account(user)
-        @user = user
-        attachments.inline['rails.png'] = File.read("#{Rails.root}/app/assets/images/rails.png")
-        mail(to: user.email, subject: "The account #{user.name} is active.")
-    end
+    @user = user
+    attachments.inline['rails.png'] =
+      File.read("#{Rails.root}/app/assets/images/rails.png")
+    mail(to: user.email, subject: "The account #{user.name} is active.")
+  end
 end
 ```
 
@@ -423,9 +419,5 @@ In the HTML e-mail, you can access the hash `attachments[]` via
 Further Information
 -------------------
 
-The Rails online documentation has a very extensive entry on
-ActionMailer at
+The Rails online documentation has a very extensive entry on ActionMailer at
 <http://guides.rubyonrails.org/action_mailer_basics.html>.
-
-Ryan Bates offers an excellent screencast about this topic at
-<http://railscasts.com/episodes/206-action-mailer-in-rails-3>.
