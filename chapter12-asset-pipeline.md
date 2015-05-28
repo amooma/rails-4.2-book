@@ -57,16 +57,21 @@ The file `app/assets/javascripts/application.js` has the following
 content:
 
 ```js
-// This is a manifest file that'll be compiled into application.js, which will include all the files
+// This is a manifest file that'll be compiled into application.js, which will
+// include all the files
 // listed below.
 //
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or any plugin's vendor/assets/javascripts directory can be referenced here using a relative path.
+// Any JavaScript/Coffee file within this directory, lib/assets/javascripts,
+// vendor/assets/javascripts,
+// or any plugin's vendor/assets/javascripts directory can be referenced here
+// using a relative path.
 //
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
+// It's not advisable to add code directly here, but if you do, it'll appear
+// at the bottom of the
 // compiled file.
 //
-// Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
+// Read Sprockets README
+// (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 //
 //= require jquery
@@ -78,8 +83,7 @@ content:
 In the `application.js`, the jQuery files defined in the `jquery-rails`
 gem are automatically integrated (for further information on jQuery,
 please visit <http://jquery.com/>). Plus all other files in this
-directory are integrated via `require_tree
-        .` as shown above.
+directory are integrated via `require_tree .` as shown above.
 
 The not yet optimized result can be viewed in the development
 environment at the URL <http://localhost:3000/assets/application.js>.
@@ -91,15 +95,21 @@ content:
 
 ```css
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * This is a manifest file that'll be compiled into application.css, which
+ * will include all the files
  * listed below.
  *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets,
+ * vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here
+ * using a relative path.
  *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * You're free to add application-wide styles to this file and they'll appear
+ * at the bottom of the
+ * compiled file so the styles you add here take precedence over styles
+ * defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally
+ * better to create a new
  * file per style scope.
  *
  *= require_tree .
@@ -114,13 +124,14 @@ automatically integrated.
 
 When using the asset pipeline, you need to remember that you have to
 precompile the assets before starting the Rails server in the production
-environment. This happens via the command `rake
-      assets:precompile:`
+environment. This happens via the command `rake assets:precompile:`
 
 ```bash
 $ rake assets:precompile
-I, [2015-05-01T12:08:50.495102 #54978]  INFO -- : Writing /Users/xyz/rails/project-42/webshop/public/assets/application-de263cb0b9ed1b2c6e56cf8f36fd1343e239eaf144bd34e177c6662f53e61b6c.js
-I, [2015-05-01T12:08:50.555494 #54978]  INFO -- : Writing /Users/xyz/rails/project-42/webshop/public/assets/application-2ce57dd752eee536a0fac4e4b9697f94e5d411eedfa49f1bb3312a22e63cf443.css
+I, [2015-05-01T12:08:50.495102 #54978]  INFO -- : Writing
+/Users/xyz/rails/project-42/webshop/public/assets/application-de263cb0b9ed1b2c6e56cf8f36fd1343e239eaf144bd34e177c6662f53e61b6c.js
+I, [2015-05-01T12:08:50.555494 #54978]  INFO -- : Writing
+/Users/xyz/rails/project-42/webshop/public/assets/application-2ce57dd752eee536a0fac4e4b9697f94e5d411eedfa49f1bb3312a22e63cf443.css
 ```
 
 > **Note**
@@ -149,10 +160,9 @@ things up a bit more.
 
 > **Note**
 >
-> The difference in file size is enormous. The file `application.js`
-> created in the development environment has a file size of 296 KB. The
-> file `js.gz` created by `rake
->         assets:precompile` is only 88 KB. Users of cellphones in
+> The difference in file size is enormous. The file `application.js` created
+> in the development environment has a file size of 296 KB. The file `js.gz`
+> created by `rake assets:precompile` is only 88 KB. Users of cellphones in
 > particular will be grateful for smaller file sizes.
 >
 > The speed advantage incidentally lies not just in the file size, but
@@ -216,16 +226,20 @@ the view for the file `app/assets/javascripts/application.js`:
 In development mode, the following HTML code results from this:
 
 ```html
-<link href="/assets/application.css?body=1" media="all" rel="stylesheet" type="text/css" />
-<link href="/assets/products.css?body=1" media="all" rel="stylesheet" type="text/css" />
-<link href="/assets/scaffolds.css?body=1" media="all" rel="stylesheet" type="text/css" />
+<link href="/assets/application.css?body=1" media="all" rel="stylesheet"
+type="text/css" />
+<link href="/assets/products.css?body=1" media="all" rel="stylesheet"
+type="text/css" />
+<link href="/assets/scaffolds.css?body=1" media="all" rel="stylesheet"
+type="text/css" />
 ```
 
 In production mode, you get an HTML code that points to a precompiled
 file with fingerprint:
 
 ```html
-<link href="/assets/application-0149f820dbdd285aa65e241569d8c256.css" media="all" rel="stylesheet" type="text/css" />
+<link href="/assets/application-0149f820dbdd285aa65e241569d8c256.css"
+media="all" rel="stylesheet" type="text/css" />
 ```
 
 ### Coding Link to a CSS File
@@ -251,7 +265,8 @@ In production mode, you get an HTML code that points to a precompiled
 file with fingerprint:
 
 ```html
-<script src="/assets/application-f8ca698e63b86d217c88772a65d2d20e.js" type="text/javascript"></script>
+<script src="/assets/application-f8ca698e63b86d217c88772a65d2d20e.js"
+type="text/javascript"></script>
 ```
 
 ### Defaults in the application.html.erb
@@ -265,7 +280,8 @@ for these JavaScript and stylesheet files:
 <html>
 <head>
   <title>Webshop</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= stylesheet_link_tag    "application", media: "all",
+  "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
 </head>
