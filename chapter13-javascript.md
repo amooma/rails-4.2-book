@@ -1,20 +1,18 @@
 JavaScript
 ==========
 
-The focus of this chapter is not on explaining JavaScript. The aim is to
-show you as a Rails programmer how you can integrate JavaScript in a
-Rails application. Correspondingly, the chapters do not explain
-JavaScript in detail. I am assuming that you can read and understand
-JavaScript. If not, it may be better to skip this chapter. You can
-happily get by without JavaScript.
+The focus of this chapter is not on explaining JavaScript. The aim is to show
+you as a Rails programmer how you can integrate JavaScript in a Rails
+application. Correspondingly, the chapters do not explain JavaScript in
+detail. I am assuming that you can read and understand JavaScript. If not, it
+may be better to skip this chapter. You can happily get by without JavaScript.
 
 ### jQuery
 
-By default, Rails 4 uses the jQuery Javascript library
-(<http://jquery.com/>). If you do not require this library, you should
-delete the following items from the file
-`app/assets/javascripts/application.js` within the asset pipeline (see
-[Section "Asset Pipeline"](chapter12-asset-pipeline.html)):
+By default, Rails 4 uses the jQuery Javascript library (<http://jquery.com/>).
+If you do not require this library, you should delete the following items from
+the file `app/assets/javascripts/application.js` within the asset pipeline
+(see [Section "Asset Pipeline"](chapter12-asset-pipeline.html)):
 
 ```js
 //= require jquery
@@ -29,13 +27,13 @@ documentation at <http://learn.jquery.com/>
 
 ### CoffeeScript
 
-For many Rails developers, CoffeeScript is the best thing invented since
-the introduction of sliced bread. CoffeeScript is a simple programming
-language that is converted to JavaScript via the asset pipeline. I am
-going to use JavaScript and CoffeeScript in this chapter. If you would
-like to know more about CoffeeScript, please look at the CoffeeScript
-documentation at <http://coffeescript.org/> and as so often there is
-also an excellent Railscast on CoffeeScript available at
+For many Rails developers, CoffeeScript is the best thing invented since the
+introduction of sliced bread. CoffeeScript is a simple programming language
+that is converted to JavaScript via the asset pipeline. I am going to use
+JavaScript and CoffeeScript in this chapter. If you would like to know more
+about CoffeeScript, please look at the CoffeeScript documentation at
+<http://coffeescript.org/> and as so often there is also an excellent
+Railscast on CoffeeScript available at
 <http://railscasts.com/episodes/267-coffeescript-basics.>
 
 JavaScript Helpers
@@ -46,8 +44,8 @@ available.
 
 ### javascript\_tag
 
-The easiest way of using JavaScript in a view is via`
-      javascript_tag`.
+The easiest way of using JavaScript one-liners in a view is via
+`javascript_tag`.
 
 With the following line in the view, you can execute an alert when the
 page is accessed:
@@ -81,7 +79,8 @@ like this:
 The generated HTML code:
 
 ```html
-<a href="#" onclick="alert('Just an example.'); return false;">trigger alert</a>
+<a href="#" onclick="alert('Just an example.'); return false;">trigger
+alert</a>
 ```
 
 ### button\_to\_function
@@ -99,28 +98,29 @@ like this:
 The generated HTML code:
 
 ```html
-<input onclick="alert('Just an example.');" type="button" value="trigger alert" />
+<input onclick="alert('Just an example.');" type="button" value="trigger
+alert" />
 ```
 
 Example
 -------
 
-The easiest way of explaining how you go about programming with
-JavaScript and the asset pipeline in a Rails project is by using a
-little example. As always, the main focus is not on creating an
-amazingly meaningful application. ;-)
+The easiest way of explaining how you go about programming with JavaScript and
+the asset pipeline in a Rails project is by using a little example. As always,
+the main focus is not on creating an amazingly meaningful application. ;-)
 
 ### Changing Form Depending on Input
 
-Let's build a room reservation where you can book a single or double
-room and then have to enter either one or two guest names in the same
-form. The basic structure:
+Let's build a room reservation where you can book a single or double room and
+then have to enter either one or two guest names in the same form. The basic
+structure:
 
 ```bash
 $ rails new hotel
   [...]
 $ cd hotel
-$ rails generate scaffold reservation start:date end:date room_type:string guest_name1 guest_name2
+$ rails generate scaffold reservation start:date end:date room_type:string
+guest_name1 guest_name2
   [...]
 $ rake db:migrate
   [...]
@@ -165,7 +165,8 @@ Here is the whole new code for `app/views/reservations/_form.html.erb`
 <%= form_for(@reservation) do |f| %>
   <% if @reservation.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@reservation.errors.count, "error") %> prohibited this reservation from being saved:</h2>
+      <h2><%= pluralize(@reservation.errors.count, "error") %> prohibited this
+      reservation from being saved:</h2>
 
       <ul>
       <% @reservation.errors.full_messages.each do |message| %>
@@ -185,7 +186,8 @@ Here is the whole new code for `app/views/reservations/_form.html.erb`
   </div>
   <div class="field">
     <%= f.label :room_type %><br>
-    <%= f.select :room_type, options_for_select(['single room', 'double room']) %>
+    <%= f.select :room_type, options_for_select(['single room', 'double
+    room']) %>
   </div>
   <div class="field">
     <%= f.label :guest_name1 %><br>
@@ -311,7 +313,8 @@ The resulting HTML:
 
 ```html
 [...]
-<form accept-charset="UTF-8" action="/people" class="new_person" id="new_person" method="post">
+<form accept-charset="UTF-8" action="/people" class="new_person"
+id="new_person" method="post">
   [...]
     <input id="person_first_name" name="person[first_name]" type="text" />
   [...]
@@ -334,9 +337,15 @@ method to uploads the data to the URL `/people`. The log shows:
 ```bash
 Started POST "/people" for ::1 at 2015-05-02 18:27:09 +0200
 Processing by PeopleController#create as HTML
-  Parameters: {"utf8"=>"✓", "authenticity_token"=>"du/D7PTzfkKTVTdP5dHkin3qKS9GFDJDKcm57opVX+dJ1uFczjisX/HZcmgt4MwFgr/IBvof3j3NXpA1vAdTkg==", "person"=>{"first_name"=>"Stefan", "last_name"=>"Wintermeyer"}, "commit"=>"Create Person"}
+  Parameters: {"utf8"=>"✓",
+  "authenticity_token"=>"du/D7PTzfkKTVTdP5dHkin3qKS9GFDJDKcm57opVX+dJ1uFczjisX/HZcmgt4MwFgr/IBvof3j3NXpA1vAdTkg==",
+  "person"=>{"first_name"=>"Stefan", "last_name"=>"Wintermeyer"},
+  "commit"=>"Create Person"}
    (0.1ms)  begin transaction
-  SQL (0.7ms)  INSERT INTO "people" ("first_name", "last_name", "created_at", "updated_at") VALUES (?, ?, ?, ?)  [["first_name", "Stefan"], ["last_name", "Wintermeyer"], ["created_at", "2015-05-02 16:27:09.952641"], ["updated_at", "2015-05-02 16:27:09.952641"]]
+  SQL (0.7ms)  INSERT INTO "people" ("first_name", "last_name", "created_at",
+  "updated_at") VALUES (?, ?, ?, ?)  [["first_name", "Stefan"], ["last_name",
+  "Wintermeyer"], ["created_at", "2015-05-02 16:27:09.952641"], ["updated_at",
+  "2015-05-02 16:27:09.952641"]]
    (0.9ms)  commit transaction
 Redirected to http://localhost:3000/people/1
 Completed 302 Found in 14ms (ActiveRecord: 1.7ms)
@@ -359,7 +368,8 @@ def create
   @person = Person.new(person_params)
   [...]
     if @person.save
-      format.html { redirect_to @person, notice: 'Person was successfully created.' }
+      format.html { redirect_to @person, notice: 'Person was successfully
+      created.' }
     [...]
     end
   end
@@ -378,8 +388,7 @@ Rails application. The params are checked in the `person_params` method
 which is a whitelist. That is done so the user can not just inject
 params which we don't want to be injected.
 
-Once `@person` is saved a `redirect_to`
-      @person` is triggered. That would be
+Once `@person` is saved a `redirect_to @person` is triggered. That would be
 <http://localhost:3000/people/1> in this example.
 
 ### Present the new Data
@@ -391,7 +400,8 @@ file
 Started GET "/people/1" for ::1 at 2015-05-02 18:27:09 +0200
 Processing by PeopleController#show as HTML
   Parameters: {"id"=>"1"}
-  Person Load (0.4ms)  SELECT  "people".* FROM "people" WHERE "people"."id" = ? LIMIT 1  [["id", 1]]
+  Person Load (0.4ms)  SELECT  "people".* FROM "people" WHERE "people"."id" =
+  ? LIMIT 1  [["id", 1]]
   Rendered people/show.html.erb within layouts/application (1.9ms)
 Completed 200 OK in 83ms (Views: 69.2ms | ActiveRecord: 0.4ms)
 ```
@@ -408,12 +418,12 @@ Which gets handled be the show method in
 Generic Forms
 -------------
 
-A form doesn't have to be hardwired to an ActiveRecord object. You can
-use the `form_tag` helper to create a form by youself. I use the example
-of [http://guides.rubyonrails.org/form\_helpers.html
-    ](http://guides.rubyonrails.org/form_helpers.html
-    )(which is the official Rails guide about forms) to show how to
-create a search form which is not connected to a model:
+A form doesn't have to be hardwired to an ActiveRecord object. You can use the
+`form_tag` helper to create a form by youself. I use the example of
+[http://guides.rubyonrails.org/form\_helpers.html
+](http://guides.rubyonrails.org/form_helpers.html)(which is the official Rails
+guide about forms) to show how to create a search form which is not connected
+to a model:
 
 ```erb
 <%= form_tag("/search", method: "get") do %>
