@@ -71,7 +71,8 @@ $ rails new phone_book
 $ cd phone_book
 $ rails generate scaffold company name
   [...]
-$ rails generate scaffold employee company_id:integer last_name first_name phone_number
+$ rails generate scaffold employee company_id:integer last_name first_name
+phone_number
   [...]
 $ rake db:migrate
   [...]
@@ -145,7 +146,8 @@ employees in the Index view and all the employees in the Show view.
         <td><%= company.employees.count %></td>
         <td><%= link_to 'Show', company %></td>
         <td><%= link_to 'Edit', edit_company_path(company) %></td>
-        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm:
+        'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -235,17 +237,15 @@ $ rake db:seed
 $
 ```
 
-You can start the application with `rails
-        server` and retrieve the example data with a web browser by
-going to the URLs <http://localhost:3000/companies> and
-<http://localhost:3000/companies/1>.
+You can start the application with `rails server` and retrieve the example
+data with a web browser by going to the URLs <http://localhost:3000/companies>
+and <http://localhost:3000/companies/1>.
 
 ### Normal Speed of the Pages to Optimize
 
 In this chapter, we optimize the following web pages. Start the Rails
-application in development mode with `rails
-      server`. The relevant numbers of course depend on the hardware you
-are using.
+application in development mode with `rails server`. The relevant numbers of
+course depend on the hardware you are using.
 
 ```bash
 $ rails server
@@ -259,10 +259,10 @@ $ rails server
 ```
 
 To access the web pages, we use the command line tool curl
-(<http://curl.haxx.se/>). Of course you can also access the web pages
-with other web browsers. We look at the time shown in the Rails log for
-creating the page. In reality, you need to add the time it takes for the
-page to be delivered to the web browser.
+(<http://curl.haxx.se/>). Of course you can also access the web pages with
+other web browsers. We look at the time shown in the Rails log for creating
+the page. In reality, you need to add the time it takes for the page to be
+delivered to the web browser.
 
 #### List of All Companies (Index View)
 
@@ -297,10 +297,10 @@ top of the page) will not be loaded again on your second visit. Your
 browser already has these files in the cache, which saves loading time
 and bandwidth.
 
-Within the Rails framework, our aim is answering the question "Has a
-page changed?" already in the controller. Because normally, most of the
-time is spent on rendering the page in the view. I'd like to repeat
-that: Most of the time is spent on rendering the page in the view!
+Within the Rails framework, our aim is answering the question "Has a page
+changed?" already in the controller. Because normally, most of the time is
+spent on rendering the page in the view. I'd like to repeat that: Most of the
+time is spent on rendering the page in the view!
 
 ### Last-Modified
 
@@ -348,7 +348,8 @@ specify this time as well, then we do not get the web page back, but a
 `304 Not Modified` message:
 
 ```bash
-$ curl -I http://localhost:3000/companies/1 --header 'If-Modified-Since: Sun, 03 May 2015 18:38:05 GMT'
+$ curl -I http://localhost:3000/companies/1 --header 'If-Modified-Since: Sun,
+03 May 2015 18:38:05 GMT'
 HTTP/1.1 304 Not Modified
  [...]
 $
@@ -360,7 +361,8 @@ In the Rails log, we find this:
 Started HEAD "/companies/1" for 127.0.0.1 at 2015-05-03 20:51:02 +0200
 Processing by CompaniesController#show as */*
   Parameters: {"id"=>"1"}
-  Company Load (0.1ms)  SELECT  "companies".* FROM "companies" WHERE "companies"."id" = ? LIMIT 1  [["id", 1]]
+  Company Load (0.1ms)  SELECT  "companies".* FROM "companies" WHERE
+  "companies"."id" = ? LIMIT 1  [["id", 1]]
 Completed 304 Not Modified in 2ms (ActiveRecord: 0.1ms)
 ```
 
@@ -371,18 +373,17 @@ able to see the page much more quickly.
 
 ### Etag
 
-Sometimes the `update_at` field of a particular object is not meaningful
-on its own. For example, if you have a web page where users can log in
-and this page then generates web page contents based on a role model, it
-can happen that user A as admin is able to see an Edit link that is not
-displayed to user B as normal user. In such a scenario, the
-Last-Modified header explained in [the section called "Last Modified"](#last-modified) does not help.
+Sometimes the `update_at` field of a particular object is not meaningful on
+its own. For example, if you have a web page where users can log in and this
+page then generates web page contents based on a role model, it can happen
+that user A as admin is able to see an Edit link that is not displayed to user
+B as normal user. In such a scenario, the Last-Modified header explained in
+[the section called "Last Modified"](#last-modified) does not help.
 
-In these cases, we can use the etag header. The etag is generated by the
-web server and delivered when the web page is first visited. If the user
-visits the same URL again, the browser can then check if the
-corresponding web page has changed by sending a `If-None-Match:` query
-to the web server.
+In these cases, we can use the etag header. The etag is generated by the web
+server and delivered when the web page is first visited. If the user visits
+the same URL again, the browser can then check if the corresponding web page
+has changed by sending a `If-None-Match:` query to the web server.
 
 Please edit the `index` and `show` methods in the controller file
 `app/controllers/companies_controller.rb` as follows:
@@ -402,17 +403,16 @@ def show
 end
 ```
 
-A special Rails feature comes into play for the etag: Rails
-automatically sets a new CSRF token for each new visitor of the website.
-This prevents cross-site request forgery attacks (see
-<http://en.wikipedia.org/wiki/Cross_site_request_forgery>). But it also
-means that each new user of a web page gets a new etag for the same
-page. To ensure that the same users also get identical CSRF tokens,
-these are stored in a cookie by the web browser and consequently sent
-back to the web server every time the web page is visited. The curl we
-used for developing does not do this by default. But we can tell curl
-that we want to save all cookies in a file and transmit these cookies
-later if a request is received.
+A special Rails feature comes into play for the etag: Rails automatically sets
+a new CSRF token for each new visitor of the website.  This prevents
+cross-site request forgery attacks (see
+<http://en.wikipedia.org/wiki/Cross_site_request_forgery>). But it also means
+that each new user of a web page gets a new etag for the same page. To ensure
+that the same users also get identical CSRF tokens, these are stored in a
+cookie by the web browser and consequently sent back to the web server every
+time the web page is visited. The curl we used for developing does not do this
+by default. But we can tell curl that we want to save all cookies in a file
+and transmit these cookies later if a request is received.
 
 For saving, we use the `-c cookies.txt` parameter.
 
@@ -456,7 +456,8 @@ We now use this etag to find out in the request with `If-None-Match` if
 the version we have cached is still up to date:
 
 ```bash
-$ curl -I http://localhost:3000/companies -b cookies.txt --header 'If-None-Match: "a8a30e6dcdb4380f169dd18911cd6a51"'
+$ curl -I http://localhost:3000/companies -b cookies.txt --header
+'If-None-Match: "a8a30e6dcdb4380f169dd18911cd6a51"'
 HTTP/1.1 304 Not Modified
 X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 1; mode=block
@@ -472,7 +473,8 @@ We get a `304 Not Modified` in response. Let's look at the Rails log:
 ```bash
 Started HEAD "/companies" for 127.0.0.1 at 2015-05-03 21:00:01 +0200
 Processing by CompaniesController#index as */*
-  Cache digest for app/views/companies/index.html.erb: 5365a42330adb48b855f7488b0d25b29
+  Cache digest for app/views/companies/index.html.erb:
+  5365a42330adb48b855f7488b0d25b29
   Company Load (0.2ms)  SELECT "companies".* FROM "companies"
 Completed 304 Not Modified in 5ms (ActiveRecord: 0.2ms)
 ```
@@ -525,12 +527,12 @@ This approach ensures that a correct content is delivered.
 
 ### stale?
 
-Up to now, we have always assumed that only HTML pages are deliverd. So
-we were able to use `fresh_when` and then do without the
-`respond_to do |format|` block. But HTTP caching is not limited to HTML
-pages. Yet if we render JSON (for example) as well and want to deliver
-it via HTTP caching, we need to use the method stale?. Using stale?
-resembles using the method `fresh_when`. Example:
+Up to now, we have always assumed that only HTML pages are deliverd. So we
+were able to use `fresh_when` and then do without the `respond_to do |format|`
+block. But HTTP caching is not limited to HTML pages. Yet if we render JSON
+(for example) as well and want to deliver it via HTTP caching, we need to use
+the method stale?. Using stale?  resembles using the method `fresh_when`.
+Example:
 
 ```ruby
 def show
@@ -545,12 +547,12 @@ end
 
 ### Using Proxies (public)
 
-Up to now, we always assumed that we are using a cache on the web
-browser. But on the Internet, there are many proxies that are often
-closer to the user and can therefore useful for caching in case of
-non-personalized pages. If our example was a publicly accessible phone
-book, then we could activate the free services of the proxies with the
-parameter `public: true` in `fresh_when` or stale?.
+Up to now, we always assumed that we are using a cache on the web browser. But
+on the Internet, there are many proxies that are often closer to the user and
+can therefore useful for caching in case of non-personalized pages. If our
+example was a publicly accessible phone book, then we could activate the free
+services of the proxies with the parameter `public: true` in `fresh_when` or
+stale?.
 
 Example:
 
@@ -596,8 +598,9 @@ cache this web page.
 
 ### Cache-Control With Time Limit
 
-When using `Etag` and `Last-Modified` we assume in [the section called "Etag"](#etag) and [the section called "Last Modified"](#last-modified) that the web
-browser definitely checks once more with the web server if the cached
+When using `Etag` and `Last-Modified` we assume in [the section called
+"Etag"](#etag) and [the section called "Last Modified"](#last-modified) that
+the web browser definitely checks once more with the web server if the cached
 version of a web page is still current. This is a very safe approach.
 
 But you can take the optimization one step further by predicting the
@@ -615,17 +618,16 @@ corresponding line in the `Etag` and `Last-Modified` examples:
 Cache-Control: max-age=0, private, must-revalidate
 ```
 
-The item `must-revalidate` tells the web browser that it should
-definitely check back with the web server to see if a web page has
-changed in the meantime. The second parameter `private` means that only
-the web browser is allowed to cache this page. Any proxies on the way
-are not permitted to cache this page.
+The item `must-revalidate` tells the web browser that it should definitely
+check back with the web server to see if a web page has changed in the
+meantime. The second parameter `private` means that only the web browser is
+allowed to cache this page. Any proxies on the way are not permitted to cache
+this page.
 
-If we decide for our phone book that the web page is going to stay
-unchanged for at least 2 minutes, then we can expand the code example by
-adding the method `expires_in`. The controller
-`app/controllers/companies.rb` would then contain the following code for
-the method show:
+If we decide for our phone book that the web page is going to stay unchanged
+for at least 2 minutes, then we can expand the code example by adding the
+method `expires_in`. The controller `app/controllers/companies.rb` would then
+contain the following code for the method show:
 
 ```ruby
 # GET /companies/1
@@ -636,8 +638,7 @@ def show
 end
 ```
 
-Now we get a different cache control information in response to a
-request:
+Now we get a different cache control information in response to a request:
 
 ```bash
 $ curl -I http://localhost:3000/companies/1
@@ -653,18 +654,18 @@ Cache-Control: max-age=120, public
 [...]
 ```
 
-The two minutes are specified in seconds (`max-age=120`) and we no
-longer need `must-revalidate`. So in the next 120 seconds, the web
-browser does not need to check back with the web server to see if the
-content of this page has changed.
+The two minutes are specified in seconds (`max-age=120`) and we no longer need
+`must-revalidate`. So in the next 120 seconds, the web browser does not need
+to check back with the web server to see if the content of this page has
+changed.
 
 > **Note**
 >
-> This mechanism is also used by the asset pipeline. Assets created
-> there in the production environment can be identified clearly by the
-> checksum in the file name and can be cached for a very long time both
-> in the web browser and in public proxies. That's why we have the
-> following section in the nginx configuration file in [Chapter "Web Server in Production Mode"]():
+> This mechanism is also used by the asset pipeline. Assets created there in
+> the production environment can be identified clearly by the checksum in the
+> file name and can be cached for a very long time both in the web browser and
+> in public proxies. That's why we have the following section in the nginx
+> configuration file in [Chapter "Web Server in Production Mode"]():
 >
 >     location ^~ /assets/ {
 >       gzip_static on;
@@ -675,12 +676,14 @@ content of this page has changed.
 Fragment Caching
 ----------------
 
-With fragment caching you can cache individual parts of a view. You can
-safely use it in combination with [Section "HTTP-Caching"](#http-caching) and [Section "Page Caching"](#page-caching). The advantages once again are
-a reduction of server load and faster web page generation, which means
-increased usability.
+With fragment caching you can cache individual parts of a view. You can safely
+use it in combination with [Section "HTTP-Caching"](#http-caching) and
+[Section "Page Caching"](#page-caching). The advantages once again are a
+reduction of server load and faster web page generation, which means increased
+usability.
 
-Please install a new example application (see [the section called "A Simple Example Application"](#a-simple-example-application)).
+Please install a new example application (see [the section called "A Simple
+Example Application"](#a-simple-example-application)).
 
 ### Enabling Fragment Caching in Development Mode
 
@@ -699,8 +702,7 @@ In production mode, fragment caching is enabled by default.
 On the page <http://localhost:3000/companies>, a very computationally
 intensive table with all companies is rendered. We can cache this table
 as a whole. To do so, we need to enclose the table in a
-`<% cache('name_of_cache') do %> ... <% end
-      %>` block:
+`<% cache('name_of_cache') do %> ... <% end %>` block:
 
 ```erb
 <% cache('name_of_cache') do %>
@@ -732,7 +734,8 @@ Please edit the file `app/views/companies/index.html.erb` as follows:
         <td><%= company.employees.count %></td>
         <td><%= link_to 'Show', company %></td>
         <td><%= link_to 'Edit', edit_company_path(company) %></td>
-        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm:
+        'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -744,12 +747,13 @@ Please edit the file `app/views/companies/index.html.erb` as follows:
 <%= link_to 'New Company', new_company_path %>
 ```
 
-Then you can start the Rails server with `rails
-      server` and go to the URL <http://localhost:3000/companies>. In the
-development log, you will now see the following entry:
+Then you can start the Rails server with `rails server` and go to the URL
+<http://localhost:3000/companies>. In the development log, you will now see
+the following entry:
 
 ```bash
-Write fragment views/table_of_all_companies/f29cc422be54f7b98dfb461505742e7b (16.9ms)
+Write fragment views/table_of_all_companies/f29cc422be54f7b98dfb461505742e7b
+(16.9ms)
   Rendered companies/index.html.erb within layouts/application (89.6ms)
 Completed 200 OK in 291ms (Views: 261.7ms | ActiveRecord: 10.7ms)
 ```
@@ -760,7 +764,8 @@ If you repeatedly go to the same page, you will get a different result
 in the log:
 
 ```bash
-Read fragment views/table_of_all_companies/f29cc422be54f7b98dfb461505742e7b (0.2ms)
+Read fragment views/table_of_all_companies/f29cc422be54f7b98dfb461505742e7b
+(0.2ms)
   Rendered companies/index.html.erb within layouts/application (1.7ms)
 Completed 200 OK in 36ms (Views: 35.6ms | ActiveRecord: 0.0ms)
 ```
@@ -771,8 +776,9 @@ a fifth of the processing time!
 ### Deleting Fragment Cache
 
 With the method `expire_fragment` you can clear specific fragment caches.
-Basically, we can build this idea into the model in the same way as
-shown in [the section called "Deleting Page Chaces Autmatically"](#deleting-page-caches-automatically).
+Basically, we can build this idea into the model in the same way as shown in
+[the section called "Deleting Page Chaces
+Autmatically"](#deleting-page-caches-automatically).
 
 The model file `app/models/company.rb` would then look like this:
 
@@ -828,48 +834,54 @@ class Employee < ActiveRecord::Base
 end
 ```
 
-Deleting specific fragment caches often involves a lot of effort in
-terms of programming. One, you often miss things and two, in big
-projects it's not easy to keep track of all the different cache names.
-Often it is easier to automatically create names via the method
-`cache_key`. These then expire automatically in the cache (see [the section called "Auto-Expiring Caches"](#auto-expiring-caches)).
+Deleting specific fragment caches often involves a lot of effort in terms of
+programming. One, you often miss things and two, in big projects it's not easy
+to keep track of all the different cache names.  Often it is easier to
+automatically create names via the method `cache_key`. These then expire
+automatically in the cache (see [the section called "Auto-Expiring
+Caches"](#auto-expiring-caches)).
 
 ### Auto-Expiring Caches
 
-Managing fragment caching is rather complex with the naming convention
-used in [the section called "Caching Table of Index View"](#caching-table-of-index-view). On the one hand, you can be sure that the cache does not have
-any superfluous ballast if you have programmed neatly, but on the other,
-it does not really matter. A cache is structured in such a way that it
-deletes old and no longer required elements on its own. If we use a
-mechanism that gives a fragment cache a unique name, as in the asset
-pipeline (see [Chapter "Asset Pipeline"](chapter12-asset-pipeline.html)), then we would not need to go to all the trouble of
-deleting fragment caches.
+Managing fragment caching is rather complex with the naming convention used in
+[the section called "Caching Table of Index
+View"](#caching-table-of-index-view). On the one hand, you can be sure that
+the cache does not have any superfluous ballast if you have programmed neatly,
+but on the other, it does not really matter. A cache is structured in such a
+way that it deletes old and no longer required elements on its own. If we use
+a mechanism that gives a fragment cache a unique name, as in the asset
+pipeline (see [Chapter "Asset Pipeline"](chapter12-asset-pipeline.html)), then
+we would not need to go to all the trouble of deleting fragment caches.
 
-That is precisely what the method `cache_key` is for. `cache_key` gives
-you a unique name for an element. Let's try it in the console. First, we
-get the always identical `cache_key` of the first company item two times
-in a row ("companies/1-20150503192915968370000"), then we touch the item
-(a touch sets the attribute `updated_at` to the current time) and
-finally we output the new `cache_key`
-("companies/1-20150503192915968370000"):
+That is precisely what the method `cache_key` is for. `cache_key` gives you a
+unique name for an element. Let's try it in the console. First, we get the
+always identical `cache_key` of the first company item two times in a row
+("companies/1-20150503192915968370000"), then we touch the item (a touch sets
+the attribute `updated_at` to the current time) and finally we output the new
+`cache_key` ("companies/1-20150503192915968370000"):
 
 ```bash
 $ rails console
 Loading development environment (Rails 4.2.1)
 >> Company.first.cache_key
-  Company Load (0.2ms)  SELECT  "companies".* FROM "companies"  ORDER BY "companies"."id" ASC LIMIT 1
+  Company Load (0.2ms)  SELECT  "companies".* FROM "companies"  ORDER BY
+  "companies"."id" ASC LIMIT 1
 => "companies/1-20150503192915968370000"
 >> Company.first.cache_key
-  Company Load (0.3ms)  SELECT  "companies".* FROM "companies"  ORDER BY "companies"."id" ASC LIMIT 1
+  Company Load (0.3ms)  SELECT  "companies".* FROM "companies"  ORDER BY
+  "companies"."id" ASC LIMIT 1
 => "companies/1-20150503192915968370000"
 >> Company.first.touch
-  Company Load (0.2ms)  SELECT  "companies".* FROM "companies"  ORDER BY "companies"."id" ASC LIMIT 1
+  Company Load (0.2ms)  SELECT  "companies".* FROM "companies"  ORDER BY
+  "companies"."id" ASC LIMIT 1
    (0.2ms)  begin transaction
-  SQL (0.7ms)  UPDATE "companies" SET "updated_at" = '2015-05-03 19:51:56.619048' WHERE "companies"."id" = ?  [["id", 1]]
+  SQL (0.7ms)  UPDATE "companies" SET "updated_at" = '2015-05-03
+  19:51:56.619048' WHERE "companies"."id" = ?  [["id", 1]]
    (1.1ms)  commit transaction
 => true
 >> Company.first.cache_key
-  Company Load (0.3ms)  SELECT  "companies".* FROM "companies"  ORDER BY "companies"."id" ASC LIMIT 1
+  Company Load (0.3ms)  SELECT  "companies".* FROM "companies"  ORDER BY
+  "companies"."id" ASC LIMIT 1
 => "companies/1-20150503195156619048000"
 >> exit
 $
@@ -898,7 +910,8 @@ Let's use this knowledge to edit the index view in the file
         <td><%= company.employees.count %></td>
         <td><%= link_to 'Show', company %></td>
         <td><%= link_to 'Edit', edit_company_path(company) %></td>
-        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', company, method: :delete, data: { confirm:
+        'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -950,8 +963,9 @@ config.cache_store = :mem_cache_store
 The combination of appropriately used auto-expiring caches and memcached
 is an excellent recipe for a successful web page.
 
-For a description of how to install a Rails production system with
-memcached, please read [Chapter Web Server in Production Mode](chapter15-production-webserver.html).
+For a description of how to install a Rails production system with memcached,
+please read [Chapter Web Server in Production
+Mode](chapter15-production-webserver.html).
 
 #### Other Cache Stores
 
@@ -972,40 +986,40 @@ it is still available as a gem.
 
 With page caching, it's all about placing a complete HTML page (in other
 words, the render result of a view) into a subdirectory of the `public`
-directory and to have it delivered directly from there by the web server
-(for example Nginx) whenever the web page is visited next. Additionally,
-you can also save a compressed gz version of the HTML page there. A
-production web server will automatically deliver files below `public`
-itself and can also be configured so that any gz files present are
-delivered directly.
+directory and to have it delivered directly from there by the web server (for
+example Nginx) whenever the web page is visited next. Additionally, you can
+also save a compressed gz version of the HTML page there. A production web
+server will automatically deliver files below `public` itself and can also be
+configured so that any gz files present are delivered directly.
 
-In complex views that may take 500ms or even more for rendering, the
-amount of time you save is of course considerable. As web page operator,
-you once more save valuable server resources and can service more
-visitors with the same hardware. The web page user profits from a faster
-delivery of the web page.
+In complex views that may take 500ms or even more for rendering, the amount of
+time you save is of course considerable. As web page operator, you once more
+save valuable server resources and can service more visitors with the same
+hardware. The web page user profits from a faster delivery of the web page.
 
 > **Warning**
 >
-> When programming your Rails application, please ensure that you also
-> update this page itself, or delete it! You will find a description in
-> [the section called "Deleting Page Caches Automatically"](#deleting-page-caches-automatically). Otherwise, you end up with an outdated cache later.
+> When programming your Rails application, please ensure that you also update
+> this page itself, or delete it! You will find a description in [the section
+> called "Deleting Page Caches
+> Automatically"](#deleting-page-caches-automatically). Otherwise, you end up
+> with an outdated cache later.
 >
-> Please also ensure that page caching rejects all URL parameters by
-> default. For example, if you try to go to
+> Please also ensure that page caching rejects all URL parameters by default.
+> For example, if you try to go to
 > <http://localhost:3000/companies?search=abc> this automatically becomes
 > <http://localhost:3000/companies>. But that can easily be fixed with a
 > better route logic.
 
-Please install a fresh example application (see [the section called "A Simple Example Application"](#a-simple-example-application)) and add the gem with
-the following line in Gemfile.
+Please install a fresh example application (see [the section called "A Simple
+Example Application"](#a-simple-example-application)) and add the gem with the
+following line in Gemfile.
 
 ```ruby
 gem 'actionpack-page_caching'
 ```
 
-Now install it with the command `bundle
-    install`.
+Now install it with the command `bundle install`.
 
 ```bash
 $ bundle install
@@ -1013,11 +1027,12 @@ $ bundle install
 $
 ```
 
-Lastly you have to tell Rails where to store the cache files. Please add
-the following line in your `config/application.rb` file:
+Lastly you have to tell Rails where to store the cache files. Please add the
+following line in your `config/application.rb` file:
 
 ```ruby
-config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public/deploy"
+config.action_controller.page_cache_directory =
+"#{Rails.root.to_s}/public/deploy"
 ```
 
 ### Activating Page Caching in Development Mode
@@ -1045,17 +1060,18 @@ of doing it in your environment by youself.
 > **Tip**
 >
 > As a quick and dirty hack for development you can set the
-> `page_cache_directory` to public. Than your development system will
-> deliver the cached page.
+> `page_cache_directory` to public. Than your development system will deliver
+> the cached page.
 >
->     config.action_controller.page_cache_directory = "#{Rails.root.to_s}/public"
+>     config.action_controller.page_cache_directory =
+>     "#{Rails.root.to_s}/public"
 
 ### Caching Company Index and Show View
 
-Enabling page caching happens in the controller. If we want to cache the
-show view for Company, we need to go to the controller
-`app/controllers/companies_controller.rb` and enter the command
-`caches_page :show` at the top:
+Enabling page caching happens in the controller. If we want to cache the show
+view for Company, we need to go to the controller
+`app/controllers/companies_controller.rb` and enter the command `caches_page
+:show` at the top:
 
 ```ruby
 class CompaniesController < ApplicationController
@@ -1091,21 +1107,19 @@ public
 └── robots.txt
 ```
 
-The file `public/deploy/companies/1.html` has been created by page
-caching.
+The file `public/deploy/companies/1.html` has been created by page caching.
 
-From now on, the web server will only deliver the cached versions when
-these pages are accessed.
+From now on, the web server will only deliver the cached versions when these
+pages are accessed.
 
 #### gz Versions
 
-If you use page cache, you should also cache directly zipped gz files.
-You can do this via the option `:gzip => true` or use a specific
-compression parameter as symbol instead of `true` (for example
-`:best_compression`).
+If you use page cache, you should also cache directly zipped gz files.  You
+can do this via the option `:gzip => true` or use a specific compression
+parameter as symbol instead of `true` (for example `:best_compression`).
 
-The controller `app/controllers/companies_controller.rb` would then look
-like this at the beginning:
+The controller `app/controllers/companies_controller.rb` would then look like
+this at the beginning:
 
 ```ruby
 class CompaniesController < ApplicationController
@@ -1114,8 +1128,8 @@ class CompaniesController < ApplicationController
 [...]
 ```
 
-This automatically saves a compressed and an uncompressed version of
-each page cache:
+This automatically saves a compressed and an uncompressed version of each page
+cache:
 
 ```bash
 public
@@ -1132,13 +1146,14 @@ public
 
 #### The File Extension .html
 
-Rails saves the page accessed at <http://localhost:3000/companies> under
-the file name `companies.html`. So the upstream web server will find and
-deliver this file if you go to <http://localhost:3000/companies.html>, but
-not if you try to go to <http://localhost:3000/companies>, because the
-extension `.html` at the end of the URI is missing.
+Rails saves the page accessed at <http://localhost:3000/companies> under the
+file name `companies.html`. So the upstream web server will find and deliver
+this file if you go to <http://localhost:3000/companies.html>, but not if you
+try to go to <http://localhost:3000/companies>, because the extension `.html`
+at the end of the URI is missing.
 
-If you are using the Nginx server as described in [Chapter "Web Server in Production Mode"](chapter15-production-webserver.html), the easiest way is
+If you are using the Nginx server as described in [Chapter "Web Server in
+Production Mode"](chapter15-production-webserver.html), the easiest way is
 adapting the `try_files` instruction in the Nginx configuration file as
 follows:
 
@@ -1151,25 +1166,24 @@ accessed URI exists.
 
 ### Deleting Page Caches Automatically
 
-As soon as the data used in the view changes, the saved cache files have
-to be deleted. Otherwise, the cache would no longer be up to date.
+As soon as the data used in the view changes, the saved cache files have to be
+deleted. Otherwise, the cache would no longer be up to date.
 
-According to the official Rails documentation, the solution for this
-problem is the class ActionController::Caching::Sweeper. But this
-approach, described at
-<http://guides.rubyonrails.org/caching_with_rails.html#sweepers>, has a
-big disadvantage: it is limited to actions that happen within the
-controller. So if an action is triggered via URL by the web browser, the
-corresponding cache is also changed or deleted. But if an object is
-deleted in the console, for example, the sweeper would not realize this.
-For that reason, I am going to show you an approach that does not use a
-sweeper, but works directly in the model with ActiveRecord callbacks.
+According to the official Rails documentation, the solution for this problem
+is the class ActionController::Caching::Sweeper. But this approach, described
+at <http://guides.rubyonrails.org/caching_with_rails.html#sweepers>, has a big
+disadvantage: it is limited to actions that happen within the controller. So
+if an action is triggered via URL by the web browser, the corresponding cache
+is also changed or deleted. But if an object is deleted in the console, for
+example, the sweeper would not realize this.  For that reason, I am going to
+show you an approach that does not use a sweeper, but works directly in the
+model with ActiveRecord callbacks.
 
 In our phone book application, we always need to delete the cache for
 <http://localhost:3000/companies> and
 <http://localhost:3000/companies/company_id> when editing a company. When
-editing an employee, we also have to delete the corresponding cache for
-the relevant employee.
+editing an employee, we also have to delete the corresponding cache for the
+relevant employee.
 
 #### Models
 
@@ -1238,21 +1252,20 @@ end
 Preheating
 ----------
 
-Now that you have read your way through the caching chapter, here is a
-final tip: preheat your cache!
+Now that you have read your way through the caching chapter, here is a final
+tip: preheat your cache!
 
-For example, if you have a web application in a company and you know
-that at 9 o'clock in the morning, all employees are going to log in and
-then access this web application, then it's a good idea to let your web
-server go through all those views a few hours in advance with cron-job.
-At night, your server is probably bored anyway.
+For example, if you have a web application in a company and you know that at 9
+o'clock in the morning, all employees are going to log in and then access this
+web application, then it's a good idea to let your web server go through all
+those views a few hours in advance with cron-job.  At night, your server is
+probably bored anyway.
 
-Check out the behavior patterns of your users. With public web pages,
-this can be done for example via Google Analytics
-(<http://www.google.com/analytics/>). You will find that at certain
-times of the day, there is a lot more traffic going in. If you have a
-quiet phase prior to this, you can use it to warm up your cache.
+Check out the behavior patterns of your users. With public web pages, this can
+be done for example via Google Analytics (<http://www.google.com/analytics/>).
+You will find that at certain times of the day, there is a lot more traffic
+going in. If you have a quiet phase prior to this, you can use it to warm up
+your cache.
 
-The purpose of preheating is once more saving server ressources and
-achieving better quality for the user, as the web page is displayed more
-quickly.
+The purpose of preheating is once more saving server ressources and achieving
+better quality for the user, as the web page is displayed more quickly.
