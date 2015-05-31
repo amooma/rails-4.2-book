@@ -20,11 +20,12 @@ this one myself. To avoid it this book starts with the basics of Ruby
 Ruby guru after reading it but you'll understand the basic ideas and that is
 important.
 
-Please follow my Twitter account at https://twitter.com/wintermeyer for
-updates about Ruby on Rails.
+Please do not hesitate to contact me if you need Ruby on Rails training or
+consulting.
 
-I'm always thankful for feedback by e-mail (stefan.wintermeyer@amooma.de) and
-any good rating on Amazon helps to pave the road for a 5.0 version.
+I'm always thankful for feedback by e-mail (stefan.wintermeyer@amooma.de) or
+Twitter (https://twitter.com/wintermeyer). And any good rating on Amazon helps
+paving the road to a 5.0 version.
 
 Have fun with Ruby on Rails!
 
