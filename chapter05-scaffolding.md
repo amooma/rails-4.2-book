@@ -937,7 +937,7 @@ products GET  /products(.:format)     products#index
 If we now start the server `rails server` and go to the URL
 <http://localhost:3000/products>, we get an error message.
 
-![products index json](images/screenshots/chapter05/products_index_json.jpg "Products index json")
+![products index json](images/screenshots/chapter05/products_routes_error.jpg "Products index json")
 
 The same message will be displayed in the log:
 

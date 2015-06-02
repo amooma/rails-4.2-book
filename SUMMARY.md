@@ -12,7 +12,7 @@
 * [Internationalization](chapter10-i18n.md)
 * [Bundler and Gems](chapter11-bundler-and-gems.md)
 * [Asset Pipeline](chapter12-asset-pipeline.md)
-* [Javascrip](chapter13-javascript.md)
+* [JavaScript](chapter13-javascript.md)
 * [Caching](chapter14-caching.md)
 * [Production Webserver](chapter15-production-webserver.md)
 * [Tips and Tricks](chapter16-tips-and-tricks.md)
