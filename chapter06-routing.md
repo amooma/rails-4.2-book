@@ -509,7 +509,6 @@ end
 
 With `rake routes` we can check the result:
 
-    $
 ```ruby
 $ rake routes
 Prefix Verb URI Pattern          Controller#Action
