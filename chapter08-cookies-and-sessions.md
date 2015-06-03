@@ -84,9 +84,13 @@ Start the Rails server with `rails server` and go to the URL
 <http://localhost:3000/home/show_cookies> in your browser. You will not see
 any values.
 
+![Show Cookies empty](images/screenshots/chapter08/show_cookies_empty.jpg "Show Cookies empty")
+
 Now go to the URL <http://localhost:3000/home/set_cookies> and then back to
 <http://localhost:3000/home/show_cookies>. Now you will see the values that we
 have set in the method `set_cookies`.
+
+![Show Cookies set](images/screenshots/chapter08/show_cookies_set.jpg "Show Cookies set")
 
 By requesting the page <http://localhost:3000/home/delete_cookies> you can
 delete the cookies again.
@@ -299,10 +303,12 @@ last entries at the top of each page:
 ```
 
 Now you can start the Rails server with `rails server` and go to
-<http://localhost:3000/home/ping>, <http://localhost:3000/home/ping> or
+<http://localhost:3000/home/ping>, <http://localhost:3000/home/pong> or
 <http://localhost:3000/home/index> and at the top you will then always see the
 pages that you have visited before. Of course, this only works on the second
 page, because you do not yet have a history on the first page you visit.
+
+![Breadcrumbs session example](images/screenshots/chapter08/breadcrumbs_session_beispiel.jpg "Breadcrumbs session example")
 
 ### reset\_session
 
