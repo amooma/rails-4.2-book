@@ -1,0 +1,18 @@
+= Rails 4.2 for Autodidacts
+Stefan Wintermeyer
+v1.1, 2015-11-04
+:icons: font
+:toc: right
+:doctype: book
+:producer: Stefan Wintermeyer
+:keywords: Ruby on Rails, Rails, Ruby, Framework, MVC
+:copyright: Stefan Wintermeyer
+:imagesdir: images
+
+include::chapter01-installing.adoc[]
+
+include::chapter02-ruby-basics.adoc[]
+
+include::chapter03-first-steps-with-rails.adoc[]
+
+include::chapter04-activerecord.adoc[]
