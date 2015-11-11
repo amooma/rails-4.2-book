@@ -20,3 +20,5 @@ include::chapter04-activerecord.adoc[]
 include::chapter05-scaffolding.adoc[]
 
 include::chapter06-routing.adoc[]
+
+include::chapter07-test-driven-development.adoc[]
