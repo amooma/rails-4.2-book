@@ -22,3 +22,5 @@ include::chapter05-scaffolding.adoc[]
 include::chapter06-routing.adoc[]
 
 include::chapter07-test-driven-development.adoc[]
+
+include::chapter08-cookies-and-sessions.adoc[]
