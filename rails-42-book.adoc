@@ -16,3 +16,5 @@ include::chapter02-ruby-basics.adoc[]
 include::chapter03-first-steps-with-rails.adoc[]
 
 include::chapter04-activerecord.adoc[]
+
+include::chapter05-scaffolding.adoc[]
