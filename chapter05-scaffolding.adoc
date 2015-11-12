@@ -545,7 +545,7 @@ link:chapter03-first-steps-with-rails.html#partials[the section called
 
 Let’s open the file `app/views/products/index.html.erb`:
 
-[source,html]
+[source,erb]
 .app/views/products/index.html.erb
 ----
 <p id="notice"><%= notice %></p>
@@ -617,7 +617,7 @@ this is `new_product`. A link to `new_product` looks like this in the
 erb code (you can see it at the end of the file
 `app/views/products/index.html.erb`):
 
-[source,html]
+[source,erb]
 ----
 <%= link_to 'New Product', new_product_path %>
 ----
@@ -625,7 +625,7 @@ erb code (you can see it at the end of the file
 In the HTML code of the generated page (http://localhost:3000/products)
 you can see the result:
 
-[source,html]
+[source,erb]
 ----
 <%= link_to 'New Product', new_product_path %>
 ----
@@ -635,7 +635,7 @@ Again, you can find examples for this in
 `app/views/products/index.html.erb`. In the table, a `show`, an `edit`
 and a `destroy` link is rendered for each `product`:
 
-[source,html]
+[source,erb]
 ----
 <tbody>
   <% @products.each do |product| %>
@@ -689,7 +689,7 @@ In the partial used by `new` and `edit`,
 `app/views/products/_form.html.erb`, you will find the following code
 for the product form:
 
-[source,html]
+[source,erb]
 .app/views/products/_form.html.erb
 ----
 <%= form_for(@product) do |f| %>
@@ -734,7 +734,7 @@ NOTE: You can find an overview of all form helpers at
 When using validations in the model, any validation errors that occur
 are displayed in the following code at the head of the form:
 
-[source,html]
+[source,erb]
 ----
 <% if @product.errors.any? %>
     <div id="error_explanation">
@@ -1021,7 +1021,7 @@ we only route `index` and `show` now, there are no more `edit`,
 `destroy` or `new` methods any more. So we need to adapt the file
 `app/views/products/index.html.erb` in the editor as follows:
 
-[source,html]
+[source,erb]
 .app/views/products/index.html.erb
 ----
 <table>
@@ -1048,7 +1048,7 @@ we only route `index` and `show` now, there are no more `edit`,
 And while we are at it, we also edit the
 `app/views/products/show.html.erb` accordingly:
 
-[source,html]
+[source,erb]
 .app/views/products/show.html.erb
 ----
 <p>

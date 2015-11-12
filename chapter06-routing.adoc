@@ -832,7 +832,7 @@ Please note that you need to change the `form_for` call to
 <% end %>
 ----
 
-[source,html]
+[source,erb]
 .app/views/comments/edit.html.erb
 ----
 <h1>Editing comment</h1>
@@ -876,7 +876,7 @@ Please note that you need to change the `form_for` call to
 <%= link_to 'New Comment', new_post_comment_path(@post) %>
 ----
 
-[source,html]
+[source,erb]
 .app/views/comments/new.html.erb
 ----
 <h1>New comment</h1>
@@ -886,7 +886,7 @@ Please note that you need to change the `form_for` call to
 <%= link_to 'Back', post_comments_path(@post) %>
 ----
 
-[source,html]
+[source,erb]
 .app/views/comments/show.html.erb
 ----
 <p id="notice"><%= notice %></p>

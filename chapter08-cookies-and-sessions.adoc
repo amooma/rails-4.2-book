@@ -70,7 +70,7 @@ end
 
 And the view file `app/views/home/show_cookies.html.erb` as follows:
 
-[source,html]
+[source,erb]
 .app/views/home/show_cookies.html.erb
 ----
 <table>
@@ -288,7 +288,7 @@ end
 Now we use the `app/views/layouts/application.html.erb` to display these
 last entries at the top of each page:
 
-[source,html]
+[source,erb]
 .app/views/layouts/application.html.erb
 ----
 <!DOCTYPE html>

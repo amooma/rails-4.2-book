@@ -196,7 +196,7 @@ The directory name `public` and the files it contains already look very
 much like static pages. Let's have a go and create the file
 `public/hello-world.html` with the following content:
 
-[source,html]
+[source,erb]
 .public/hello-world.html
 ----
 <html>
@@ -339,7 +339,7 @@ $
 Phew... that's a lot of stuff being created. Amongst others, the file
 `app/views/example/test.html.erb`. Let's have a closer look at it:
 
-[source,html]
+[source,erb]
 .app/views/example/test.html.erb
 ----
 <h1>Example#test</h1>
@@ -566,7 +566,7 @@ Let's use an example, to make sure it all makes sense. We use `each` to
 iterate through the Range `(0..5)`. Edit the
 `app/views/example/test.html.erb` as follows:
 
-[source,html]
+[source,erb]
 .app/views/example/test.html.erb
 ----
 <p>Loop from 0 to 5:
@@ -582,7 +582,7 @@ image::screenshots/chapter03/erb_einfache_schleife.jpg[ERB loop]
 
 Let's now have a look at the HTML source code in the browser:
 
-[source,html]
+[source,erb]
 ----
 <!DOCTYPE html>
 <html>
@@ -637,7 +637,7 @@ of the later HTML page. By default, an automatically generated
 `app/views/layouts/application.html.erb` is always rendered around it.
 Let's have a closer look at it:
 
-[source,html]
+[source,erb]
 .app/views/layouts/application.html.erb
 ----
 <!DOCTYPE html>
@@ -658,7 +658,7 @@ Let's have a closer look at it:
 
 The interesting bit is the line
 
-[source,html]
+[source,erb]
 <%= yield %>
 
 With `<%= yield %>` the view file is included here. The lines with the
@@ -672,7 +672,7 @@ determine the basic layout for the entire Rails application. If you want
 to enter a `<hr>` for each page and above it a text, then you can do
 this between the `<%= yield %>` and the `<body>` tag:
 
-[source,html]
+[source,erb]
 .app/views/layouts/application.html.erb
 ----
 <!DOCTYPE html>
@@ -736,7 +736,7 @@ end
 In the view file `app/views/example/test.html.erb` we can then access
 this instance variable:
 
-[source,html]
+[source,erb]
 .app/views/example/test.html.erb
 ----
 <p>
@@ -772,7 +772,7 @@ As an example, we now add a mini footer to our page in a separate
 partial. Copy the following content into the new file
 `app/views/example/_footer.html.erb`:
 
-[source,html]
+[source,erb]
 .app/views/example/_footer.html.erb
 ----
 <hr>
@@ -789,7 +789,7 @@ NOTE: Yes, this is not the MVC way of doing it. `Date.today.year`
 We edit the file `app/views/example/test.html.erb` as follows and insert
 the partial via the command render:
 
-[source,html]
+[source,erb]
 .app/views/example/test.html.erb
 ----
 <p>Loop from 0 to 5:
@@ -827,7 +827,7 @@ for recurring and shared content and create a file `_footer.html.erb` in
 this directory. You would then integrate this file into the `erb` code
 via the line
 
-[source,html]
+[source,erb]
 <%= render "shared/footer" %>
 
 [[passing-variables-to-a-partial]]
@@ -840,7 +840,7 @@ variables. Let's stick with the copyright example. If we want to pass
 the start year as value, we can integrate this by adding the following
 in the file `app/views/example/_footer.html.erb`:
 
-[source,html]
+[source,erb]
 .app/views/example/_footer.html.erb
 ----
 <hr>
@@ -851,7 +851,7 @@ Copyright <%= start_year %> - <%= Date.today.year %> the Easter Bunny.
 
 So let's change the file `app/views/example/test.html.erb` as follows:
 
-[source,html]
+[source,erb]
 .app/views/example/test.html.erb
 ----
 <p>Loop from 0 to 5:
@@ -873,7 +873,7 @@ somewhere else you may need the same partial, but without the local
 variable. We can take care of this in the partial itself with an if
 statement:
 
-[source,html]
+[source,erb]
 ----
 <hr>
 <p>
@@ -1092,7 +1092,7 @@ browser to go to http://localhost:3000/game/ping. We are redirected from
 ping to pong. But the flash message "Ping-Pong!" is nowhere to be seen.
 We first need to expand `app/views/layouts/application.html.erb`:
 
-[source,html]
+[source,erb]
 .app/views/layouts/application.html.erb
 ----
 <!DOCTYPE html>
@@ -1363,7 +1363,7 @@ end
 
 With this helper, we can then apply the following code in a view:
 
-[source,html]
+[source,erb]
 ----
 <p>
   <b>Rating:</b> <%= render_stars(5) %>
@@ -1411,7 +1411,7 @@ In any view you can use the `debug` helper to render an object with the
 YAML format within a `<pre>` tag. To display the value of `@foo` you can
 use the following line in your view:
 
-[source,html]
+[source,erb]
 ----
 <%= debug @foo %>
 ----
