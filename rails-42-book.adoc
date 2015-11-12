@@ -38,3 +38,5 @@ include::chapter13-javascript.adoc[]
 include::chapter14-caching.adoc[]
 
 include::chapter15-production-webserver.adoc[]
+
+include::chapter16-tips-and-tricks.adoc[]
