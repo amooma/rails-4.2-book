@@ -432,7 +432,7 @@ def person_params
 end
 ----
 
-A new instance variable `@person` is created. It represense a new Person
+A new instance variable `@person` is created. It represents a new Person
 which was created with the params that were send from the browser to the
 Rails application. The params are checked in the `person_params` method
 which is a whitelist. That is done so the user can not just inject

@@ -1597,7 +1597,7 @@ There are many ways of locking a database. By default, Rails uses
 “optimistic locking” of records. To activate locking you need to have an
 attribute with the name `lock_version` which has to be an integer. To
 show how it works I'll create a new Rails project with a `Product`
-model. Than I'll try to change the price of the first `Product` on two
+model. Then I'll try to change the price of the first `Product` on two
 different instances. The second change will raise an
 ActiveRecord::StaleObjectError.
 

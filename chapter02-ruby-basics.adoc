@@ -66,7 +66,7 @@ $
 ----
 
 A program line in a Ruby program does not have to end with a semicolon.
-The Ruby interpreter is even so intelligent that is recognizes if a
+The Ruby interpreter is even so intelligent that it recognizes if a
 program line was split over two or more lines for the sake of
 readability. I will spare you the corresponding examples and am only
 mentioning this so you don't say or think later, "is it okay like this?"
@@ -1104,7 +1104,7 @@ Local Variables (`aaa` or `_aaa`)
 
 Local variables either start with a lower case letter or an underscore
 (`_`). Their scope is limited to the current environment (for example
-the current method). The follwing example defines two methods which use
+the current method). The following example defines two methods which use
 the same local variable radius. Because they are local they don't
 interact with each other:
 

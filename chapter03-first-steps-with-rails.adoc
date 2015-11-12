@@ -253,7 +253,7 @@ With `Ctrl+C` you can stop the Rails server.
 Creating HTML Dynamically with erb
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The the content of an `erb` file will propably seem familiar to you. It
+The content of an `erb` file will propably seem familiar to you. It
 is a mixture of HTML and Ruby code (`erb` stands for *e*mbedded *R*uby).
 erb pages are rendered as Views. This is the first time for us to get in
 touch with the MVC model. We need a controller to use a view. That can
@@ -557,7 +557,7 @@ you explicitly use something like `print` or `puts`).
 * <%= … %>
 +
 Executes the Ruby code it contains and outputs the result as a String.
-If is is not a String the methode `to_s` will be called.
+If is is not a String the method `to_s` will be called.
 
 IMPORTANT: The output of `<%= ... %>`` is automatically escaped.
            So you don't need to worry about "dangerous" HTML.
