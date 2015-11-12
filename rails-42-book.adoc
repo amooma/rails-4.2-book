@@ -26,3 +26,5 @@ include::chapter07-test-driven-development.adoc[]
 include::chapter08-cookies-and-sessions.adoc[]
 
 include::chapter09-actionmailer.adoc[]
+
+include::chapter10-i18n.adoc[]

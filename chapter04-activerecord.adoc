@@ -300,7 +300,7 @@ Database Configuration
 Which database is used by default? Let's have a quick look at the
 configuration file for the database (`config/database.yml`):
 
-[source,ruby]
+[source,yaml]
 .config/database.yml
 ----
 default: &default
@@ -4921,7 +4921,7 @@ table names automatically get the plural of the _model_s (`Person` vs.
 `people`). But in which database are the tables created? This is defined
 in the configuration file `config/database.yml`:
 
-[source,ruby]
+[source,yaml]
 .config/database.yml
 ----
 # SQLite version 3.x
