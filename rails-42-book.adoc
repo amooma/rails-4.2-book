@@ -30,3 +30,5 @@ include::chapter09-actionmailer.adoc[]
 include::chapter10-i18n.adoc[]
 
 include::chapter11-bundler-and-gems.adoc[]
+
+include::chapter12-asset-pipeline.adoc[]
