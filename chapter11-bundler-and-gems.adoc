@@ -18,8 +18,7 @@ example Rails in itself is also available as gem.
 Bundler
 ~~~~~~~
 
-In a Rails project, different gems are used (see link:#gems[Section
-"Gems"]) and a developer can also add further gems. Bundler helps the
+In a Rails project, different gems are used and a developer can also add further gems. Bundler helps the
 developer to install all these gems in the right version and to take
 into account important dependencies. In previous Rails versions, you as
 developer had to always call a `bundle install` after a `rails new`.

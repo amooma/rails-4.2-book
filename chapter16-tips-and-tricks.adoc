@@ -274,9 +274,9 @@ in the variation you want.
 Model Template
 ^^^^^^^^^^^^^^
 
-The basic idea is the same as with the controller in
-link:#scaffold-controller-template[the section called ``Scaffold
-Controller Template'']: it’s all about adapting the model created by the
+The basic idea is the same as with the controller in section
+xref:scaffold-controller-template["Scaffold
+Controller Template"]: it’s all about adapting the model created by the
 Rails generator to your own needs.
 
 The model template used by `rails generate model` and therefore also by

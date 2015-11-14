@@ -16,8 +16,8 @@ jQuery
 By default, Rails 4 uses the jQuery Javascript library
 (http://jquery.com/). If you do not require this library, you should
 delete the following lines from the file
-`app/assets/javascripts/application.js` within the asset pipeline (see
-link:chapter12-asset-pipeline.html[Section "Asset Pipeline"]):
+`app/assets/javascripts/application.js` within the asset pipeline (see the section
+xref:asset-pipeline["Asset Pipeline"]):
 
 [source,javascript]
 ----

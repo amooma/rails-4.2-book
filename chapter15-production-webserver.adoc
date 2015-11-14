@@ -648,7 +648,7 @@ Loading Updated Versions of the Rails Project
 If you want to activate Updates to the Rails project, you need to copy
 them into the directory `/home/deployer/blog` and log in as user
 `deployer` to run `rake assets:precompile` (see
-link:chapter12-asset-pipeline.html[Chapter "Asset Pipeline"]).
+xref:asset-pipeline["Asset Pipeline"]).
 
 [subs="quotes"]
 ----

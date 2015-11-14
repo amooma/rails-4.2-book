@@ -12,21 +12,19 @@ NOTE: This is referred to as object-relational-mapping or _ORM_.
       http://en.wikipedia.org/wiki/Object_relational_mapping.
 
 One of the recipes for the success of Rails is surely the fact that is
-uses `ActiveRecord`. The programming and use “feels Ruby like” and it is
+uses `ActiveRecord`. The programming and use "feels Ruby like" and it is
 much less susceptible to errors than pure SQL. When working with this
 chapter, it helps if you have some knowledge of SQL, but this is not
 required and also not essential for working with `ActiveRecord`.
 
 This chapter is a self-contained unit. But the knowledge provided in
-link:chapter02-ruby-basics.html[Chapter 2, Ruby basics] and
-link:chapter03-first-steps-with-rails.html[Chapter 3, First steps with
-rails] is required. Without these basics, you will not have any fun with
+xref:ruby-basics["Ruby basics"] and
+xref:first-steps-with-rails["First steps with
+rails"] is required. Without these basics, you will not have any fun with
 this chapter!
 
 NOTE: This chapter is only about ActiveRecord. So I am not going to
-      integrate any tests
-      (see link:chapter07-test-driven-development.html[Chapter 7,Tests]),
-      to keep the examples as simple as possible.
+      integrate any tests to keep the examples as simple as possible.
 
 [[creating-databasemodel]]
 Creating Database/“Model”
@@ -122,7 +120,7 @@ $
 ----
 
 NOTE: You will find more details on migrations in
-      link:#migrations[the section Migrations].
+      xref:migrations[the section "Migrations"].
 
 Let's have a look at the file `app/models/country.rb`:
 
@@ -167,8 +165,8 @@ Getters and Setters
 ^^^^^^^^^^^^^^^^^^^
 
 To read and write values of a SQL table row you can use by ActiveRecord
-provided getters and setters link:#getters-and-setters[the section
-called "Getters and Setters"]. These `attr_accessors` are automatically
+provided xref:getters-and-setters[getters and setters].
+These `attr_accessors` are automatically
 created. The getter of the field `updated_at` for a given `Country` with
 the name `germany` would be `germany.updated_at`.
 
@@ -266,7 +264,7 @@ end
 ----
 ====
 
-In link:#migrations[the section "Migrations"] we will provide more
+In xref:#migrations["Migrations"] we will provide more
 information on the individual data types and discuss available options.
 Don't forget, this is a book for beginners, so this section just gives a
 brief overview.
@@ -493,7 +491,7 @@ $
 ----
 
 TIP: For already existing records, you can also check for changes with
-     the method `changed?` (see link:#changed[the section called "changed?"]).
+     the method `changed?` (see xref:changed["changed?"]).
 
 [[first-last-and-all]]
 first, last and all
@@ -591,10 +589,7 @@ called LazyLoading). Until than it stores the request in a
 The result of `Country.all` is actually an `Array` of `Country`.
 
 If `Country.all` returns an array, then we should also be able to use
-iterators (see link:chapter02.ruby-basics.html#iterators[the section
-called "Iterators"] and
-link:chapter02-ruby-basics.html#iterator-each[the section called
-"Iterator each"]), right? Yes, of course! That is the beauty of it. Here
+xref:iterators[iterators] and xref:iterator-each[each], right? Yes, of course! That is the beauty of it. Here
 is a little experiment with each:
 
 [subs="quotes"]
@@ -649,10 +644,8 @@ feeding default values easily and quickly to a fresh installation. This
 is a normal Ruby program within the Rails environment. You have full
 access to all classes and methods of your application.
 
-So you do not need to enter everything manually with `rails console` in
-order to make the records created in link:#create[the section called
-"create"] available in a new Rails application, but you can simply use
-the following file `db/seeds.rb`:
+You don't need to enter everything manually with `rails console` to xref:create[create] all initial records in a new Rails application.
+You can use the following file `db/seeds.rb`:
 
 [source,ruby]
 ----
@@ -867,7 +860,7 @@ $
 ----
 
 WARNING: The method `find` generates an exception if the ID you are
-         searching for does not have a record in the database. If in doubt, you should use `where` (see link:#where[the section called "where"]).
+         searching for does not have a record in the database. If in doubt, you should use `where` (see xref:where[where]).
 
 [[where]]
 where
@@ -894,8 +887,7 @@ Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at:
 >>
 ----
 
-You can also use where to search for _ranges_ (see
-link:chapter02-ruby-basics.html#range[the section called "Range"]):
+You can also use where to search for xref:range[ranges]:
 
 [subs="quotes"]
 ----
@@ -1472,8 +1464,8 @@ Editing a Record
 ~~~~~~~~~~~~~~~~
 
 Adding data is quite nice, but often you want to edit a record. To show
-how that's done I use the album database from
-link:#searching-and-finding-with-queries[Section "Searching and Finding
+how that's done I use the album database from the
+xref:searching-and-finding-with-queries[section "Searching and Finding
 with Queries"].
 
 [[simple-editing]]
@@ -1547,7 +1539,7 @@ With the method `update_attributes` you can change several attributes of
 an object in one go and then immediately save them automatically.
 
 Let's use this method within the example used in
-link:#simple-editing[the section called "Simple Editing"]:
+xref:simple-editing[the section "Simple Editing"]:
 
 [subs="quotes"]
 ----
@@ -1845,15 +1837,13 @@ $
 ----
 
 Entering the `book_id` manually in this way is of course not very
-practical and susceptible to errors. That's why there is the method
-link:#create[the section called "create"].
+practical and susceptible to errors. The next section describes a better way.
 
 [[create-1]]
 create
 ++++++
 
-Now we try doing the same as in link:#manually[the section called
-"Manually"], but this time we use a bit of ActiveRecord magic. We can
+We can
 use the method `create` of `authors` to add new authors to each `Book`
 object. These automatically get the correct `book_id`:
 
@@ -2099,9 +2089,7 @@ Searching For Records
 ^^^^^^^^^^^^^^^^^^^^^
 
 Before we can start searching, we again need defined example data.
-Please fill the file `db/seeds.rb` with the following content (its the
-same as we used in link:##accessing-records[the section called "Accesing
-Records"]):
+Please fill the file `db/seeds.rb` with the following content:
 
 [source,ruby]
 .db/seeds.rb
@@ -2197,8 +2185,7 @@ last_name: "Frisch", created_at: "2015-04-17 09:13:31", updated_at:
 includes
 ++++++++
 
-`includes` is very similar to the method `joins` (see link:#joins[the
-section called "joins"]). Again, you can use it to search within a 1:n
+`includes` is very similar to the method `joins` (see xref:joins[joins]). Again, you can use it to search within a 1:n
 association. Let's once more search for all books with an author whose
 surname is 'Mann':
 
@@ -2246,8 +2233,7 @@ delete and destroy
 ^^^^^^^^^^^^^^^^^^
 
 With the methods `destroy`, `destroy_all`, `delete` and `delete_all` you
-can delete records, as described in link:#deletedestroy-a-record[Section
-"Delete/Destroy a Record"]. In the context of `has_many`, this means
+can delete records, as described in xref:deletedestroy-a-record["Delete/Destroy a Record"]. In the context of `has_many`, this means
 that you can delete the `Author` records associated with a `Book` in one
 go:
 
@@ -2373,7 +2359,7 @@ $
 ----
 
 IMPORTANT: Please always remember the difference between the methods
-           `destroy` (see link:#destroy[the section called "destroy"]) and `delete` (see link:#delete[the section called "delete"]). This association only works with the method `destroy`.
+           `destroy` (see xref:destroy["destroy"]) and `delete` (see xref:delete[the "delete"]). This association only works with the method `destroy`.
 
 [[has_many-..-through-...]]
 has_many .., through: ...
@@ -2386,7 +2372,7 @@ and take care of the association with the books via an intermediary
 table. For this purpose, there is `has_many ..., through:  :...`.
 
 This kind of association is called Many-to-Many (n:n) and we'll discuss
-it in detail in link:#many-to-many-nn-association[Section "Many-to-Many
+it in detail in the section xref:many-to-many-nn-association["Many-to-Many
 - n:n Association"].
 
 [[many-to-many-nn-association]]
@@ -2499,9 +2485,8 @@ The Association Works Transparent
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As we implement the associations via `has_many`, most things will
-already be familiar to you from link:#has95many-1n-association[Section
-"has_many - 1:n Association"]. I am going to discuss a few examples. For
-more details, see link:#has95many-1n-association[Section "has_many - 1:n
+already be familiar to you from the section xref:has95many-1n-association["has_many - 1:n Association"]. I am going to discuss a few examples. For
+more details, see the section xref:has95many-1n-association["has_many - 1:n
 Association"].
 
 First we populate our product database with the following values:
@@ -2745,8 +2730,7 @@ updated_at: "2015-04-17 11:55:08">]>
 >>
 ----
 
-Of course, we can also work with a `joins` (see link:#joins[the section
-called "joins"]) and search for all orders that contain the product
+Of course, we can also work with a `joins` (see xref:joins["joins"]) and search for all orders that contain the product
 "Milk (1 liter)":
 
 [subs="quotes"]
@@ -2766,8 +2750,7 @@ created_at: "2015-04-17 11:55:08", updated_at: "2015-04-17 11:55:08">]>
 has_one – 1:1 Association
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Similar to `has_many` (see link:#has95many-1n-association[Section
-"has_many - 1:n Association"]), the method `has_one` also creates a
+Similar to `has_many` (see xref:#has95many-1n-association["has_many - 1:n Association"]), the method `has_one` also creates a
 logical relation between two models. But in contrast to `has_many`, one
 record is only ever associated with exactly one other record in
 `has_one.` In most practical cases of application, it logically makes
@@ -2777,11 +2760,9 @@ here.
 
 TIP: You can probably safely skip `has_one` without losing any sleep.
 
-In the examples, I assume that you have already read and understood
-link:#has95many-1n-association[Section "has_many - 1:n Association"]. I
-am not going to explain methods like `build` (see link:#build[the
-section called "build"]) again but assume that you already know the
-basics.
+In the examples, I assume that you have already read and understood the section
+xref:has95many-1n-association["has_many - 1:n Association"]. I
+am not going to explain methods like `build` (see xref:build["build"]) again but assume that you already know the basics.
 
 [[preparation-1]]
 Preparation
@@ -2842,7 +2823,7 @@ Options
 +++++++
 
 The options of `has_one` are similar to those of `has_many`. So for
-details, please refer to link:#options[the section called "Options"] or
+details, please refer to xref:options["Options"] or
 http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_one.
 
 [[console-examples]]
@@ -3214,8 +3195,7 @@ Options
 ^^^^^^^
 
 Polymorphic associations can be configured with the same options as a
-normal link:#has95many-1n-association[Section "has_many - 1:n
-Association"] model.
+normal xref:#has95many-1n-association[has_many association].
 
 [[deletedestroy-a-record]]
 Delete/Destroy a Record
@@ -3263,7 +3243,7 @@ destroy
 
 With `destroy` you can remove a record and any existing dependencies are
 also taken into account (see for example `:dependent => :destroy` in
-link:#options[the section called "Options"]). Simply put: to be on the
+the section xref:options["options"]). Simply put: to be on the
 safe side, it's better to use `destroy` because then the Rails system
 does more for you.
 
@@ -3437,7 +3417,7 @@ The record of the book 'Homo faber' is deleted, but the author is still
 in the database.
 
 As with `destroy`, an object also gets frozen when you use `delete` (see
-link:#destroy[the section called "destroy"]). The record is already
+xref:destroy["destroy"]). The record is already
 removed from the database, but the object itself is still there.
 
 [[transactions]]
@@ -3665,8 +3645,7 @@ expiration_date: nil, created_at: nil, updated_at: nil>
 >> **exit**
 ----
 
-This works with the method build (see link:#build[the section called
-"build"]) and create (see link:#create[the section called "create"]).
+This works with the method `build` (see xref:build["build"]) and `create` (see xref:create["create"]).
 
 [[validation]]
 Validation
@@ -3884,9 +3863,7 @@ blank"]}>
 >>
 ----
 
-This error message was defined for a human and English-speaking user
-(more on this and how the errors can be translated into another language
-in link:chapter10-i18n.html[Chapter 10, Internationalization]).
+This error message was defined for a human and English-speaking user.
 
 Only once we assign a value to the attributes `name` and `price`, we can
 save the object:
@@ -4111,8 +4088,8 @@ validates :name,
           too_long: "must have at most %{count} characters" }
 ----
 
-NOTE: For all error messages, please note
-      link:chapter10-i18n.html[Chapter 10, Internationalization].
+NOTE: For all error messages, please note the chapter
+      xref:internationalization[Internationalization].
 
 [[is]]
 is
@@ -4443,15 +4420,14 @@ validates :in_stock,
                           message: 'this one is not allowed' }
 ----
 
-NOTE: For all error messages, please note
-      link:chapter10-i18n.html[Chapter 10, Internationalization].
+NOTE: For all error messages, please note the chapter
+      xref:internationalization[Internationalization].
 
 [[exclusion]]
 exclusion
 ^^^^^^^^^
 
-`exclusion` is the inversion of link:#inclusion[the section called
-"inclusion"]. You can define from which values the content of this
+`exclusion` is the inversion of xref:inclusion[inclusion]. You can define from which values the content of this
 attribute must not be created.
 
 [source,ruby]
@@ -4488,8 +4464,8 @@ validates :in_stock,
                        message: 'this one is not allowed' }
 ----
 
-NOTE: For all error messages, please note
-      link:chapter10-i18n.html[Chapter 10, Internationalization].
+NOTE: For all error messages, please note the chapter
+      xref:internationalization[Internationalization].
 
 [[format]]
 format
@@ -4530,8 +4506,8 @@ validates :email,
                        message: 'is not a valid email address' }
 ----
 
-NOTE: For all error messages, please note
-      link:chapter10-i18n.html[Chapter 10, Internationalization].
+NOTE: For all error messages, please note the chapter
+      xref:internationalization[Internationalization].
 
 [[general-validation-options]]
 General Validation Options
@@ -5230,10 +5206,10 @@ Even though the e-mail address was entered partly with a capital
 letters, ActiveRecord has indeed converted all letters automatically to
 lower case via the `before_save` callback.
 
-In link:chapter09-actionmailer.html[Chapter 9, Action Mailer] you will
+In the chapter xref:action-mailer["Action Mailer"] you will
 find an example for the same model where we use an `after_create`
-callback to automatically send an e-mail to a newly created user. In
-link:#default-values[the section called "Default Values"] you will find
+callback to automatically send an e-mail to a newly created user. In the section
+xref:default-values["Default Values"] you will find
 an example for defining a default value for a new object via an
 `after_initialize` callback.
 

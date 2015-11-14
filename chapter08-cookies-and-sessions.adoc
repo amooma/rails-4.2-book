@@ -108,9 +108,7 @@ until you close the browser completely.
 WARNING: The content of a normally cookie in the browser is easy to read and to
          be manipulated by the user. It is not encrypted, so it should not
          contain any passwords or similar data. Nor is it advisable to save
-         shopping baskets in an unsigned (see link:#signed-cookies[the section
-         called "Signed Cookies"]) cookie, otherwise the user could change the
-         prices in this shopping basket himself.
+         shopping baskets in an unsigned cookie, otherwise the user could change the prices in this shopping basket himself.
 
 [[permanent-cookies]]
 Permanent Cookies
@@ -213,11 +211,9 @@ register only once on many websites, not over and over again on each
 individual page, this can pose a problem. The solution is called session
 and Rails offers it to the programmer transparently as a `session[]`
 hash. Rails automatically creates a new session for each new visitor of
-the web page. This session is saved by default as cookie (see
-link:chapter08-cookies-and-sessions.html[Section "Cookies"] and so it
+the web page. This session is saved by default as cookie and so it
 is subject to the 4 kB limit. But you can also store the sessions in the
-database (see link:#saving-sessions-in-the-database[the section called
-"Saving Sessions in the Database"]). An independent and unique session
+database (see the section xref:saving-sessions-in-the-database["Saving Sessions in the Database"]). An independent and unique session
 ID is created automatically and the cookie is deleted by default when
 the web browser is closed.
 
@@ -337,9 +333,7 @@ Occasionally, there are situations where you want to reset a session (in
 other words, delete the current session and start again with a new,
 fresh session). For example, if you log out of a web application, the
 session will be reset. This is easily done and we can quickly integrate
-it into our breadcrumb application (see
-link:#breadcrumbs-via-session[the section called "Breadcrumbs via
-Session"]):
+it into our breadcrumb application:
 
 [subs="quotes"]
 ----

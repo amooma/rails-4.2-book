@@ -27,10 +27,9 @@ I think the greatest frustration with Rail arises regularly from the
 fact that many beginners use scaffolding to get quick results without
 having proper basic knowledge of Ruby and without knowing what
 ActiveRecord is. They don’t know what to do next. Fortunately, you have
-worked your way through link:chapter02-ruby-basics.html[Chapter 2, Ruby
-Basics], link:chapter03-first-steps-with-rails.html[Chapter 3, First
-Steps with Rails] and link:chapter04-activerecord.html[Chapter 4,
-ActiveRecord], so you will be able to understand and use scaffolding
+worked your way through the chapters xref:ruby-basics["Ruby
+Basics"], xref:first-steps-with-rails["First
+Steps with Rails"] and xref:activerecord["ActiveRecord"], so you will be able to understand and use scaffolding
 straight away.
 
 NOTE: This chapter is an introduction to scaffolding, not an encyclopedia that
@@ -71,9 +70,7 @@ Examples:
 ----
 
 I’ll keep it short: for our current state of knowledge, we can use
-`rails generate scaffold` just like `rails generate model` (see
-link:chapter04-activerecord.html#creating-databasemodel[Section
-``Creating Database/''Model``'']). Let’s now create the scaffold for the
+`rails generate scaffold` just like `rails generate model`. Let’s now create the scaffold for the
 products:
 
 [subs="quotes"]
@@ -150,11 +147,9 @@ $ **rake db:seed**
 The Routes
 ^^^^^^^^^^
 
-`rails generate scaffold` has created a route (more on this later in
-link:chapter06-routing.html[Chapter 6, Routes]), a controller and
-several views for us (see
-link:chapter03-first-steps-with-rails.html#creating-html-dynamically-with-erb[Section
-``Creating HTML Dynamically with erb'']).
+`rails generate scaffold` has created a route (more on this later in the chapter
+xref:routes["Routes"]), a controller and
+several views for us.
 
 We could also have done all of this manually. Scaffolding is merely an
 automatism that does the work for us for some basic things. This is
@@ -537,9 +532,7 @@ requests and the `json.jbuilder` is for JSON requests.
 
 For `index`, `edit`, `new` and `show` the corresponding views are
 located there. As `new` and `edit` both require a form for editing the
-data, this is stored in the partial `_form.html.erb` (see
-link:chapter03-first-steps-with-rails.html#partials[the section called
-``Partials'']) in accordance with the principle of DRY (*D*on’t *R*epeat
+data, this is stored in the partial `_form.html.erb` in accordance with the principle of DRY (*D*on’t *R*epeat
 *Y*ourself) and integrated in `new.html.erb` and `edit.html.erb` with a
 `<%= render 'form' %>`.
 
@@ -581,10 +574,7 @@ Let’s open the file `app/views/products/index.html.erb`:
 ----
 
 You are now an old hand when it comes to ERB, so you’ll be able to read
-and understand the code without any problems. If in doubt, have a quick
-look at
-link:chapter03-first-steps-with-rails.html#programming-in-an-erb-file[the
-section called "Programming in an erb File"].
+and understand the code without any problems.
 
 [[link_to]]
 link_to

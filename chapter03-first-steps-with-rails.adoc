@@ -3,7 +3,7 @@ First Steps with Rails
 ----------------------
 
 Now that you have painstakingly read your way through
-link:chapter02-ruby-basics.html[Chapter 2 - Ruby Basics] we can move on
+xref:ruby-basics[Ruby Basics] we can move on
 to a more exciting bit. In this chapter, we will start our first Ruby on
 Rails project and find our way into the topic step by step.
 
@@ -244,8 +244,8 @@ production environment, you would usually put a classic web server such
 as Apache or Nginx infront of the Rails server. Which is capable of
 autonomously delivering static files from the `public` directory. You'll
 learn how to set up a production webserver in
-link:chapter15-production-webserver.html[Chapter 15, Web Server in
-Production Mode].
+xref:web-server-in-production-mode["Web Server in
+Production Mode"].
 
 With `Ctrl+C` you can stop the Rails server.
 
@@ -346,9 +346,9 @@ Phew... that's a lot of stuff being created. Amongst others, the file
 <p>Find me in app/views/example/test.html.erb</p>
 ----
 
-It's HTML, but for it to be a valid HTML page, something is “missing” at
-the top and bottom (the missing HTML "rest" will be explained in
-link:#layouts[the section called "Layouts"]). We launch the web server
+It's HTML, but for it to be a valid HTML page, something is "missing" at
+the top and bottom (the missing HTML will be explained in the
+xref:layouts[Layouts section]). We launch the web server
 to test it:
 
 [subs="quotes"]
@@ -455,8 +455,7 @@ Rails.application.routes.draw do
 ----
 
 The `config/routes.rb` file includes a lot of examples. Give it a read
-when you have time. We'll dive into that later
-link:chapter06-routing.html[Chapter 6, Routes].
+when you have time. We'll dive into that later (xref:routes[Routes]).
 
 IMPORTANT: A static file in the directory `public` always has higher
            priority than a route in the `config/routes.rb`! So if we
@@ -526,9 +525,7 @@ Yes, both the number 1 and the result of 1 + 1 is a `Fixnum`. What
 happened? Rails is so intelligent that it automatically calls all
 objects in a view (that is the file `test.html.erb`) that are not
 already a string via the method `.to_s`, which always converts the
-content of the object to a string
-(link:chapter02-ruby-basics.html#method-to-s-for-your-own-classes[the
-section called “Method to_s for Your Own Classes”]). Once more, a brief
+content of the object to a string. Once more, a brief
 trip to `irb`:
 
 [subs="quotes"]
@@ -622,7 +619,7 @@ Q & A
 [qanda]
 I don't understand anything. I can't cope with the Ruby code. Could you please explain it again?::
   Is it possible that you have not completely worked your way through
-  link:chapter02-ruby-basics.md[Chapter 2, _Ruby Basics_]? Please do take
+  xref:routes[Ruby Basics]? Please do take
   your time with it and have another thorough look. Otherwise, the rest
   won't make any sense here.
 I can understand the Ruby code and the HTML output. But I don't get why some HTML code was rendered around it if I didn't even write that HTML code. Where does it come from, and can I influence it?::
@@ -664,7 +661,7 @@ The interesting bit is the line
 With `<%= yield %>` the view file is included here. The lines with the
 stylesheets, the JavaScript and the `csrf_meta_tags` can stay as they are
 for now. We'll have a look into that in
-link:chapter12-asset-pipeline.html[chapter12 Asset pipeline]. No need to
+xref:asset-pipeline[Asset pipeline]. No need to
 bother with that right now.
 
 The file `app/views/layouts/application.html.erb` enables you to
@@ -713,7 +710,7 @@ have a value in the controller that I want to display in the view, then
 I need a mechanism for this. This is referred to as _instance variable_
 and always starts with a `@`. If you are not 100 % sure any more which
 variable has which _scope_, then please have another quick look at
-link:chapter02-ruby-basics.html#scope-of-variables[the section called
+xref:scope-of-variables[the section called
 “Scope of Variables”].
 
 In the following example, we insert an instance variable for the current
@@ -1050,7 +1047,7 @@ anyone would associate the term “_Flash_” with more or less colorful web
 pages that were implemented with the Adobe Shockwave Flash Plug-in. But
 in Ruby on Rails, flash messages are something completely different.
 They are messages that are displayed, for example on the new page after
-a redirect (see link:#redirects[Section 3.4, “Redirects”]).
+a redirect (see xref:redirects[section Redirects]).
 
 Flash messages are good friends with redirects. The two often work
 together in a team to give the user feedback on an action he just
@@ -1059,7 +1056,7 @@ when a user has logged in. Often the user is redirected back to the
 original page and gets the message “You are now logged in.”
 
 As an example, we are once more constructing the ping pong scenario from
-link:#redirects[Section 3.4, “Redirects”]:
+xref:redirects[section "Redirects"]:
 
 [subs="quotes"]
 ----
@@ -1161,13 +1158,13 @@ The Rails Console
 ~~~~~~~~~~~~~~~~~
 
 The _console_ in Rails is nothing more than an `irb` (see
-link:chapter02-ruby-basics.html#irb[Section 2.3, “irb”]) built around
+xref:irb[section "irb"]) built around
 the Rails environment. The console is very useful both for developing
 and for administration purposes, because the whole Rails environment is
 represented and available.
 
 For our working environment, we again use a variation of the ping pong
-scenario from link:#redirects[Section 3.4, “Redirects”]:
+scenario from xref:redirects[section "Redirects"]:
 
 [subs="quotes"]
 ----
@@ -1233,7 +1230,7 @@ Loading development environment (Rails 4.2.4)
 $
 ----
 
-Already in link:chapter04-activerecord.html[Chapter 4, ActiveRecord] we
+Already in xref:activerecord[chapter "ActiveRecord"] we
 are going to be working lots with the console and will soon begin to
 appreciate the possibilities it offers.
 
@@ -1540,9 +1537,9 @@ Model
 
 "Model" in this case means data model. By default, Rails applications
 are an ActiveRecord data model (see
-link:chapter04-activerecord.html[Chapter 4, AktiveRecord]).
+xref:activerecord[chapter "ActiveRecord"]).
 
-All models can be found in the directory `app/models/.`
+All models can be found in the directory `app/models/`.
 
 [[view]]
 View
@@ -1560,7 +1557,7 @@ Controller
 ^^^^^^^^^^
 
 Once a web page call has ended up in a route (see
-link:chapter06-routing.html[Chapter 6, Routes]), it goes from there to
+xref:routes[chapter "Routes"]), it goes from there to
 the controller. The route specifies a certain method (action) as target.
 This method can then fulfil the desired tasks (such as finding a
 specific set of data and saving it in an instance variable) and then

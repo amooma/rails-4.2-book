@@ -210,7 +210,7 @@ $
 
 It is up to you which structure you choose to save your translations in
 the YAML files. But the structure described in
-link:#a-rails-application-in-only-one-language-german[Section "A Rails
+xref:a-rails-application-in-only-one-language-german["A Rails
 Application in Only One Language: German"] does make some things easier
 and that’s why we are going to use it for this application as well.
 
@@ -281,8 +281,8 @@ A Rails Application in Only One Language: German
 
 In a Rails application aimed only at German users, it is unfortunately
 not enough to just translate all the views into German. The approach is
-in many respects similar to a multi-lingual Rails application (see
-link:#multilingual-rails-application[Section "Multilingual Rails
+in many respects similar to a multi-lingual Rails application (see the section
+xref:#multilingual-rails-application["Multilingual Rails
 Application"]). Correspondingly, there will be a certain amount of
 repetition. I am going to show you the steps you need to watch out for
 by using a simple application as example.
@@ -424,8 +424,7 @@ the `I18n.t` helper that can also be abbreviated with `t` in the view.
 I18n.t reads out the corresponding item from the YAML file. In the case
 of a purely monolingual German application, we could also write the
 German text directly into the view, but with this method we can more
-easily switch to multilingual use if required. You can find more
-information on `I18n.t` in link:#i18n.t[the section called I18n.t].
+easily switch to multilingual use if required.
 
 [source,erb]
 .app/views/books/_form.html.erb
@@ -684,8 +683,8 @@ Multilingual Rails Application
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The approach for multilingual Rails applications is very similar to the
-monoligual, all-German Rails application described in
-link:#a-rails-application-in-only-one-language-german[Section "A Rails
+monoligual, all-German Rails application described in the section
+xref:a-rails-application-in-only-one-language-german["A Rails
 Application in Only One Language: German"]. But we need to define YAML
 language files for all required languages and tell the Rails application
 which language it should currently use. We do this via `I18n.locale`.
@@ -992,9 +991,8 @@ class ApplicationController < ActionController::Base
 end
 ----
 
-And please do not forget to clean the settings in
-link:#setting-i18nlocale-via-url-path-prefix[the section called
-"I18n.locale via URL Path Prefix"] out of the `config/routes.rb`:
+And please do not forget to clean the settings from the section
+xref:setting-i18nlocale-via-url-path-prefix["I18n.locale via URL Path Prefix"] out of the `config/routes.rb`:
 
 [source,ruby]
 .config/routes.rb
@@ -1019,13 +1017,10 @@ find them.
 Saving I18n.locale in a Session
 +++++++++++++++++++++++++++++++
 
-Often you want to save the value of `I18n.locale` in a session (see
-link:chapter08-cookies-and-sessions.html#sessions[Section
-"Sessions"]).
+Often you want to save the value of `I18n.locale` in a xref:sessions[session].
 
 NOTE: The approach described here for sessions will of course work just the
-      same with cookies. See
-      link:chapter08-cookies-and-sessions.html#cookies[Section "Cookies"].
+      same with cookies.
 
 To set the value, let’s create a controller in our web shop as example:
 the controller `SetLanguage` with the two actions `english` and
@@ -1240,8 +1235,7 @@ end
 ----
 
 When selecting the language for the user, we use the URL prefix
-variation described in link:#setting-i18nlocale-via-url-path-prefix[the
-section called "Setting I18n.locale via URL Path Prefix"]. We use the
+variation described in the section xref:setting-i18nlocale-via-url-path-prefix["Setting I18n.locale via URL Path Prefix"]. We use the
 following `app/controllers/application_controller.rb`
 
 [source,ruby]

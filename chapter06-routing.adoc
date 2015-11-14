@@ -6,10 +6,8 @@ Introduction
 ~~~~~~~~~~~~
 
 In
-link:chapter03-first-steps-with-rails.html#creating-html-dynamically-with-erb[Section
-"Creating HTML Dynamically with erb"] and
-link:chapter05-scaffolding.html[Chapter "Scaffolding and REST"] we have
-already came across _routes_. The routes contained in `config/routes.rb`
+xref:creating-html-dynamically-with-erb["Creating HTML Dynamically with erb"] and
+xref:scaffolding-and-rest["Scaffolding and REST"] we came across _routes_. The routes contained in `config/routes.rb`
 define what happens in the Rails application when a user of a Rails
 application fetches a URL. A route can be static and dynamic and pass
 any dynamic values with variables to the controller. If several routes
@@ -118,8 +116,8 @@ Naming a Route
 ^^^^^^^^^^^^^^
 
 A route should also always have an internal name which doesn’t change.
-In link:#http-get-requests-for-singular-resources[Section ``HTTP Get
-Requests for Singular Resources''] there is the following route:
+In the section xref:http-get-requests-for-singular-resources["HTTP Get
+Requests for Singular Resources"] there is the following route:
 
 [source,ruby]
 ----
@@ -338,7 +336,7 @@ image:screenshots/chapter06/posts_2011_10_01.jpg[posts
 Constraints
 ^^^^^^^^^^^
 
-In link:#parameters[the section called ``Parameters''] I showed you how
+In the section xref:parameters["Parameters"] I showed you how
 you can read out parameters from the URL and pass them to the
 controller. Unfortunately, the entry defined there in the
 `config/routes.rb`
@@ -387,11 +385,11 @@ Blog::Application.routes.draw do
 end
 ----
 
-WARNING: Please note that you cannot use regex anchors such as ``^'' in regular
+WARNING: Please note that you cannot use regex anchors such as "^" in regular
          expressions in a constraint.
 
 If we go to the URL again with this configuration, Rails gives us an
-error message ``No route matches'':
+error message "No route matches":
 
 image:screenshots/chapter06/ein_beispiel_dafuer_no_route_matches.jpg[no
 route match,title="No route error"]
@@ -432,7 +430,7 @@ can also enter single-digit days and months and still ends up in the
 right place, or is redirected to the correct format.
 
 NOTE: Redirects in the `config/routes.rb` are by default http redirects with
-      the code 301 (``Moved Permanently''). So even search engines will profit
+      the code 301 ("Moved Permanently"). So even search engines will profit
       from this.
 
 [[root-to-welcomeindex]]
@@ -539,8 +537,8 @@ edit_post GET    /posts/:id/edit(.:format) posts#edit
 $
 ----
 
-You have already encountered these RESTful routes in
-link:chapter05-scaffolding.html[Chapter 5, Scaffolding and REST]. They
+You have already encountered these RESTful routes in the chapter
+xref:creating-html-dynamically-with-erb["Scaffolding and REST"]. They
 are required for displaying and editing records.
 
 [[selecting-specific-routes-with-only-or-except]]
@@ -606,10 +604,8 @@ WARNING: When using `only` and `except`, please make sure you also adapt the
 Nested Resources
 ^^^^^^^^^^^^^^^^
 
-Nested resources refer to routes of resources that work with a
-association (see
-link:chapter04-activerecord.html#has95many-1n-association[Section
-``has_many - 1:n Association'']). These can be addressed precisely via
+Nested resources refer to routes of resources that work with an
+association. These can be addressed precisely via
 routes. Let’s create a second resource, `comment`:
 
 [subs="quotes"]
@@ -982,7 +978,7 @@ Generally, you should never nest more deeply than one level and nested
 resources should feel natural. After a while, you will get a feel for
 it. In my opinion, the most important point about RESTful routes is that
 they should feel logical. If you phone a fellow Rails programmer and say
-``I’ve got a resource post and a resource comment here'', then both
+"I’ve got a resource post and a resource comment here", then both
 parties should immediately be clear on how you address these resources
 via REST and how you can nest them.
 

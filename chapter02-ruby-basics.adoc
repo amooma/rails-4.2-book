@@ -477,7 +477,7 @@ $
 ----
 
 I will explain the difference between instance and class methods in more
-detail in link:#class-methods-and-instance-methods[the section called
+detail in xref:class-methods-and-instance-methods[the section called
 "Class Methods and Instance Methods"]. Another chicken and egg problem.
 
 [[private-methods]]
@@ -2186,7 +2186,7 @@ $
 
 Of course, hashes can store not just strings as objects in the values,
 but - as with arrays - also classes that you define yourself (see
-link:#arrays[the section called "Arrays"]).
+xref:arrays[the section called "Arrays"]).
 
 [[symbols]]
 Symbols

@@ -65,8 +65,8 @@ $ **rake db:migrate**
 $
 ----
 
-You already know all about scaffolds (if not, please go and read
-link:chapter05-scaffolding.html[Section "Scaffolding and REST"] first)
+You already know all about scaffolds (if not, please go and read the chapter
+xref:scaffolding-and-rest["Scaffolding and REST"] first)
 so you know what the application we have just created does. The scaffold
 created a few tests (they are easy to recognise because the word `test`
 is in the file name).
@@ -94,8 +94,8 @@ The output `7 tests, 13 assertions, 0 failures, 0 errors, 0     skips` looks
 good. By default, a test will run correctly in a standard scaffold.
 
 Let’s now edit the `app/models/user.rb` and insert a few validations (if
-these are not entirely clear to you, please read
-link:chapter04-activerecord.html#validation[Section "Validation"]):
+these are not entirely clear to you, please read the section
+xref:validation["Validation"]):
 
 [source,ruby]
 .app/models/user.rb
@@ -586,7 +586,7 @@ Static Fixtures
 ^^^^^^^^^^^^^^^
 
 The simplest variant for fixtures is static data. The fixture for `User`
-used in link:#example-for-a-user-in-a-web-shop[Section "Example for a
+used in xref:example-for-a-user-in-a-web-shop["Example for a
 User in a Web Shop"] statically looks as follows:
 
 [source,yaml]
@@ -608,9 +608,7 @@ Fixtures with ERB
 ^^^^^^^^^^^^^^^^^
 
 Static YAML fixtures are sometimes too unintelligent. In these cases,
-you can work with ERB (see
-link:chapter03-first-steps-with-rails.html#programming-in-an-erb-file[the
-section called "Programming in an erb File"]).
+you can work with ERB.
 
 If we want to dynamically enter today’s day 20 years ago for the
 birthdays, then we can simply do it with ERB in
