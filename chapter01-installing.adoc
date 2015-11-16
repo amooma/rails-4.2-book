@@ -111,7 +111,7 @@ xyz@debian:~$ **curl -sSL https://get.rvm.io | bash**
 xyz@debian:~$ **source /home/xyz/.rvm/scripts/rvm**
 xyz@debian:~$ **rvm install 2.2**
 [...]
-xyz@debian:~$ **gem install rails -v '~> 4.2.0'**
+xyz@debian:~$ **gem install rails -v 4.2.4**
 [...]
 xyz@debian:~$
 ----
@@ -190,7 +190,7 @@ commands.
 ----
 $ **rvm install 2.2**
 [...]
-$ **gem install rails -v '~> 4.2.0'**
+$ **gem install rails -v 4.2.4**
 [...]
 $
 ----
