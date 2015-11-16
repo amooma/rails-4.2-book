@@ -170,8 +170,7 @@ information on the class String:
 [subs="quotes"]
 ----
 $ **ri String**
-= String < Object
-[...]
+  [...]
 $
 ----
 
