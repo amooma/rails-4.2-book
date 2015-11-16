@@ -191,7 +191,7 @@ So I am changing two things in the
 
 Here is the whole new code for `app/views/reservations/_form.html.erb`
 
-[source.erb]
+[source,erb]
 .app/views/reservations/_form.html.erb
 ----
 <%= form_for(@reservation) do |f| %>
