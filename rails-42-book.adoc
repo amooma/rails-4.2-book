@@ -2,12 +2,13 @@
 Stefan Wintermeyer
 v4.2.1, 2015-11-12
 :icons: font
-:toc: right
+:iconsdir: /usr/local/etc/asciidoc/images/icons
 :doctype: book
 :producer: Stefan Wintermeyer
 :keywords: Ruby on Rails, Rails, Ruby, Framework, MVC
 :copyright: Stefan Wintermeyer
-:imagesdir: images
+:imagesdir: /Users/stefan/Github/rails-4.2-book/images
+:front-cover-image: images/cover.png
 
 [[preface]]
 Preface
