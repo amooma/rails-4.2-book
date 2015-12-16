@@ -1,10 +1,8 @@
 [[tips-and-tricks]]
-Tips and Tricks
----------------
+= Tips and Tricks
 
 [[abbreviations]]
-Abbreviations
-~~~~~~~~~~~~~
+== Abbreviations
 
 There are a handful of abbreviations that make your life as a developer
 much easier. In the rest of this book, I have always used the full
@@ -22,8 +20,7 @@ Shorthand notation: `rails s`
 Shorthand notation: `rails g scaffold`
 
 [[templates]]
-Templates
-~~~~~~~~~
+== Templates
 
 Once you have been working with Rails for a while, you will always make
 the same changes after calling `rails generate     scaffold` or
@@ -40,12 +37,11 @@ TIP: 15 minutes spent optimizing a template in accordance with your
      project!
 
 [[scaffold-controller-template]]
-Scaffold Controller Template
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Scaffold Controller Template
 
 Let’s assume you want to create a scaffold User:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate scaffold User first_name last_name login**
       [...]
@@ -271,8 +267,7 @@ Each time you now use `rails generate scaffold`, you get the controller
 in the variation you want.
 
 [[model-template]]
-Model Template
-^^^^^^^^^^^^^^
+=== Model Template
 
 The basic idea is the same as with the controller in section
 xref:scaffold-controller-template["Scaffold
@@ -327,25 +322,22 @@ end
 ----
 
 [[further-rails-documentation]]
-Further Rails Documentation
----------------------------
+== Further Rails Documentation
 
 [[online]]
-Online
-~~~~~~
+=== Online
 
 Here is a list of important websites on the topic Ruby on Rails:
 
-* http://guides.rubyonrails.org
-+
+http://guides.rubyonrails.org::
 A couple of very good official guides.
-* http://rubyonrails.org/
-+
+
+http://rubyonrails.org/::
 The project page of Ruby on Rails offers many links for further
 documentation. Please note: some parts of the documentation are now
 obsolete. Please check if what you are reading is related specifically
 to Rails 3.2 or to older Rails versions.
-* http://railscasts.com/
-+
+
+http://railscasts.com/::
 Ryan Bates used to publish a new screencast every Monday on a topic associated
 with Rails. Unfortunately he hasn't published screencasts for some time now but the page still has valuable old ones

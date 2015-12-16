@@ -1,6 +1,5 @@
 [[activerecord]]
-ActiveRecord
-------------
+= ActiveRecord
 
 `ActiveRecord` is a level of abstraction that offers access to a SQL
 database. `ActiveRecord` implements the architectural pattern _Active
@@ -27,8 +26,7 @@ NOTE: This chapter is only about ActiveRecord. So I am not going to
       integrate any tests to keep the examples as simple as possible.
 
 [[creating-databasemodel]]
-Creating Database/“Model”
-~~~~~~~~~~~~~~~~~~~~~~~~~
+== Creating Database/“Model”
 
 NOTE: Model in this context refers to the data model of
       Model-View-Controller (MVC).
@@ -36,7 +34,7 @@ NOTE: Model in this context refers to the data model of
 As a first example, let's take a list of countries in Europe. First, we
 create a new Rails project:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new europe**
   [...]
@@ -46,7 +44,7 @@ $
 
 Next, let's have a look at the help page for `rails generate model`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model**
 Usage:
@@ -70,7 +68,7 @@ name, it is assumed to be a `string`.
 
 Let's create the _model_ `country`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model Country name population:integer**
       invoke  active_record
@@ -109,7 +107,7 @@ roll-back.
 With the command `rake db:migrate` we can apply the migrations, in other
 words, create the corresponding database table:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate**
 == 20150415194714 CreateCountries: migrating
@@ -135,15 +133,14 @@ Hmmm ... the class `Country` is a child of `ActiveRecord::Base`. Makes sense,
 as we are discussing ActiveRecord in this chapter. ;-)
 
 [[the-attributes-id-created_at-and-updated_at]]
-The Attributes `id`, `created_at` and `updated_at`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== The Attributes `id`, `created_at` and `updated_at`
 
 Even if you cannot see it in the migration, we also get the attributes
 `id`, `created_at` und `updated_at` by default for each ActiveRecord
 model. In the Rails console, we can output the attributes of the class
 `Country` by using the class method `column_names`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -161,8 +158,7 @@ record.
 `id` is automatically incremented by 1 for each record.
 
 [[getters-and-setters]]
-Getters and Setters
-^^^^^^^^^^^^^^^^^^^
+=== Getters and Setters
 
 To read and write values of a SQL table row you can use by ActiveRecord
 provided xref:getters-and-setters[getters and setters].
@@ -171,8 +167,7 @@ created. The getter of the field `updated_at` for a given `Country` with
 the name `germany` would be `germany.updated_at`.
 
 [[possible-data-types-in-activerecord]]
-Possible Data Types in ActiveRecord
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Possible Data Types in ActiveRecord
 
 ActiveRecord is a _layer_ between Ruby and various relational databases.
 Unfortunately, many SQL databases have different perspectives regarding
@@ -239,7 +234,7 @@ need to observe the special syntax (you have to use `'` if you are using the bas
 
 Example for creating a price with a decimal:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model product name \'price:decimal{7,2}'**
   [...]
@@ -270,14 +265,13 @@ Don't forget, this is a book for beginners, so this section just gives a
 brief overview.
 
 [[naming-conventions-country-vs.-country-vs.-countries]]
-Naming Conventions (`Country` vs. `country` vs. `countries`)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Naming Conventions (`Country` vs. `country` vs. `countries`)
 
 ActiveRecord automatically uses the English plural forms. So for the
 class `Country`, it's `countries`. If you are not sure about a term, you can
 also work with the `class` and `method` name.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Country.name.tableize**
 => "countries"
@@ -292,8 +286,7 @@ are not sure, you can find out the correct notation with the methods
 shown above.
 
 [[database-configuration]]
-Database Configuration
-^^^^^^^^^^^^^^^^^^^^^^
+=== Database Configuration
 
 Which database is used by default? Let's have a quick look at the
 configuration file for the database (`config/database.yml`):
@@ -320,7 +313,7 @@ will save all data there.
 Fans of command line clients can use `sqlite3` for viewing this
 database:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **sqlite3 db/development.sqlite3**
 SQLite version 3.8.5 2014-08-15 22:37:57
@@ -337,23 +330,21 @@ $
 ====
 
 [[adding-records]]
-Adding Records
-~~~~~~~~~~~~~~
+== Adding Records
 
 Actually, I would like to show you first how to view records, but there
 we have another chicken and egg problem. So first, here is how you can
 create a new record with `ActiveRecord`.
 
 [[create]]
-`create`
-^^^^^^^^
+=== `create`
 
 The most frequently used method for creating a new record is `create`.
 
 Let's try creating a country in the console with the command
 `Country.create(name: 'Germany', population: 81831000)`
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -374,7 +365,7 @@ ActiveRecord saves the new record and outputs the executed SQL command
 in the development environment. But to make absolutely sure it works,
 let's have a last look with the command line client `sqlite3`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **sqlite3 db/development.sqlite3**
 SQLite version 3.8.5 2014-08-15 22:37:57
@@ -386,8 +377,7 @@ $
 ----
 
 [[syntax]]
-Syntax
-++++++
+==== Syntax
 
 The method `create` can handle a number of different syntax constructs.
 If you want to create a single record, you can do this with or without
@@ -411,14 +401,13 @@ Country.create([{name: 'Germany'}, {name: 'France'}])
 ----
 
 [[new]]
-`new`
-^^^^^
+=== `new`
 
 In addition to `create` there is also `new`. But you have to use `save`
 to save an object created with `new` (which has both advantages and
 disadvantages):
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -444,7 +433,7 @@ nil>
 You can also pass parameters for the new record directly to the method
 `new`, just as with `create`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **belgium = Country.new(name: 'Belgium', population: 10839905)**
 => #<Country id: nil, name: "Belgium", population: 10839905, created_at: nil,
@@ -460,8 +449,7 @@ $
 ----
 
 [[new_record]]
-`new_record?`
-^^^^^^^^^^^^^
+=== `new_record?`
 
 With the method `new_record?` you can find out if a record has already
 been saved or not. If a `new` object has been created with new and not
@@ -470,7 +458,7 @@ yet been saved, then the result of `new_record?` is `true`. After a
 
 Example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -494,14 +482,13 @@ TIP: For already existing records, you can also check for changes with
      the method `changed?` (see xref:changed["changed?"]).
 
 [[first-last-and-all]]
-first, last and all
-~~~~~~~~~~~~~~~~~~~
+== first, last and all
 
 In certain cases, you may need the first record, or the last one, or
 perhaps even all records. Conveniently, there is a ready-made method for
 each case. Let's start with the easiest ones: `first` and `last`.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -520,7 +507,7 @@ Loading development environment (Rails 4.2.1)
 
 And now all at once with `all`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Country.all**
   Country Load (0.3ms)  SELECT "countries".* FROM "countries" =>
@@ -539,7 +526,7 @@ But the objects created by `first`, `last` and `all` are different.
 `first` and `last` return an object of the class `Country`. `all`
 returns an array of such objects:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Country.first.class**
   Country Load (0.2ms)  SELECT  "countries".* FROM "countries"  ORDER BY
@@ -554,7 +541,7 @@ So `Country.first` is a Country which makes sense. But `Country.all` is
 something we haven't had yet. Let's use the console to get a better idea
 of it:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **puts Country.all.to_yaml**
   Country Load (0.4ms)  SELECT "countries".* FROM "countries"
@@ -592,7 +579,7 @@ If `Country.all` returns an array, then we should also be able to use
 xref:iterators[iterators] and xref:iterator-each[each], right? Yes, of course! That is the beauty of it. Here
 is a little experiment with each:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Country.all.each do |country|**
 ?>   **puts country.name**
@@ -609,7 +596,7 @@ Netherlands
 So can we also use `.all.first` as an alternative for `.first`? Yes, but
 it does not make much sense. Have a look for yourself:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> Country.first
   Country Load (0.3ms)  SELECT  "countries".* FROM "countries"  ORDER BY
@@ -628,16 +615,14 @@ it does not make much sense. Have a look for yourself:
 query because ActiveRecord optimizes it.
 
 [[second-third-fourth-and-fifth]]
-second, third, fourth and fifth
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== second, third, fourth and fifth
 
 Since Rails 4.1 ActiveRecord does not only provide the `first` method
 but also `second`, `third`, `fourth` and `fifth`. It's obvious what they
 do.
 
 [[populating-the-database-with-seeds.rb]]
-Populating the Database with seeds.rb
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Populating the Database with seeds.rb
 
 With the file `db/seeds.rb`, the Rails gods have given us a way of
 feeding default values easily and quickly to a fresh installation. This
@@ -660,7 +645,7 @@ side, you should always set up the database from scratch with
 `rake db:setup` in the context of this book and then automatically
 populate it with the file `db/seeds.rb`. Here is what is looks like:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:setup**
 db/development.sqlite3 already exists
@@ -686,8 +671,7 @@ course of this book, this will make it easier for us to set up quick
 example scenarios.
 
 [[its-all-just-ruby-code]]
-It's all just Ruby code
-^^^^^^^^^^^^^^^^^^^^^^^
+=== It's all just Ruby code
 
 The `db/seeds.rb` is a Ruby program. Correspondingly, we can also use
 the following approach as an alternative:
@@ -710,8 +694,7 @@ The result is the same. I am showing you this example to make it clear
 that you can program completely normally within `db/seeds.rb`.
 
 [[generating-seeds.rb-from-existing-data]]
-Generating `seeds.rb` From Existing Data
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Generating `seeds.rb` From Existing Data
 
 Sometimes it can be useful to export the current data pool of a Rails
 application into a `db/seeds.rb`. While writing this book, I encountered
@@ -741,7 +724,7 @@ end
 Then you can call the corresponding rake task with the command
 `rake export:seeds_format`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake export:seeds_format**
 Country.create("name"=>"Germany", "population"=>81831000)
@@ -754,21 +737,20 @@ $
 You can either expand this program so that the output is written
 directly into the `db/seeds.rb` or you can simply use the shell:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake export:seeds_format > db/seeds.rb**
 ----
 
 [[searching-and-finding-with-queries]]
-Searching and Finding with Queries
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Searching and Finding with Queries
 
 The methods `first` and `all` are already quite nice, but usually you
 want to search for something specific with a query.
 
 For describing queries, we create a new Rails project:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new jukebox**
   [...]
@@ -800,7 +782,7 @@ Album.create(name: "The Beatles", release_year: 1968)
 
 Then, set up the new database with `rake db:setup`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:setup**
 db/development.sqlite3 already exists
@@ -816,15 +798,14 @@ $
 ----
 
 [[find]]
-find
-^^^^
+=== find
 
 The simplest case is searching for a record via a primary key (by
 default, the `id` field in the database table). If I know the ID of an
 object (here: a record line), then I can search for the individual
 object or several objects at once via the ID:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -846,7 +827,7 @@ Loading development environment (Rails 4.2.1)
 If you always want to have an array as result, you also always have to
 pass an array as parameter:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.find(5).class**
   Album Load (0.2ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ?
@@ -863,13 +844,12 @@ WARNING: The method `find` generates an exception if the ID you are
          searching for does not have a record in the database. If in doubt, you should use `where` (see xref:where[where]).
 
 [[where]]
-where
-^^^^^
+=== where
 
 With the method `where`, you can search for specific values in the
 database. Let's search for all albums from the year 1966:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -889,7 +869,7 @@ Blonde", release_year: 1966, created_at: "2015-04-16 17:45:34", updated_at:
 
 You can also use where to search for xref:range[ranges]:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(release_year: 1960..1966)**
   Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966)
@@ -911,7 +891,7 @@ created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16 17:45:34">]>
 And you can also specify several search factors simultaneously,
 separated by commas:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(release_year: 1960..1966, id: 1..5)**
   Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE ("albums"."release_year" BETWEEN 1960 AND 1966) AND ("albums"."id" BETWEEN 1 AND 5)
@@ -928,7 +908,7 @@ release_year: 1965, created_at: "2015-04-16 17:45:34", updated_at: "2015-04-16
 
 Or an array of parameters:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(release_year: [1966, 1968])**
   Album Load (0.4ms)  SELECT "albums".* FROM "albums" WHERE "albums"."release_year" IN (1966, 1968)
@@ -946,7 +926,7 @@ The result of `where` is always an array. Even if it only contains one
 hit or if no hit is returned. If you are looking for the first hit, you
 need to combine the method `where` with the method `first`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(release_year: [1966, 1968]).first**
   Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."release_year" IN (1966, 1968)  ORDER BY "albums"."id" ASC LIMIT 1
@@ -959,13 +939,12 @@ $
 ----
 
 [[not]]
-not
-+++
+==== not
 
 The method `not` provides a way to search for the exact oposite of a
 `where` query. Example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -977,8 +956,7 @@ $
 ----
 
 [[sql-queries-with-where]]
-SQL Queries with where
-++++++++++++++++++++++
+==== SQL Queries with where
 
 Sometimes there is no other way and you just have to define and execute
 your own SQL query. In ActiveRecord, there are two different ways of
@@ -992,7 +970,7 @@ If you do not know much about SQL, you can safely skip this section. The
 SQL commands used here are not explained further.
 
 [[sanitized-queries]]
-Sanitized Queries
+===== Sanitized Queries
 
 In this variant, all dynamic search parts are replaced by a question
 mark as placeholder and only listed as parameters after the SQL string.
@@ -1000,7 +978,7 @@ mark as placeholder and only listed as parameters after the SQL string.
 In this example, we are searching for all albums whose name contains the
 string “on”:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1012,7 +990,7 @@ Loading development environment (Rails 4.2.1)
 
 Now the number of albums that were published from 1965 onwards:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where( 'release_year > ?', 1964 ).count**
    (0.2ms)  SELECT COUNT(*) FROM "albums" WHERE (release_year > 1964)
@@ -1023,7 +1001,7 @@ Now the number of albums that were published from 1965 onwards:
 The number of albums that are more recent than 1970 and whose name
 contains the string “on”:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where( 'name like ? AND release_year > ?', '%on%', 1970 ).count
    (0.3ms)  SELECT COUNT(*) FROM "albums" WHERE (name like '%on%' AND
@@ -1035,7 +1013,7 @@ contains the string “on”:
 If the variable `search_string` contains the desired string, you can
 search for it as follows:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **search_string = 'ing'**
 => "ing"
@@ -1047,15 +1025,14 @@ $
 ----
 
 [[dangerous-sql-queries]]
-Dangerous SQL Queries
-+++++++++++++++++++++
+==== Dangerous SQL Queries
 
 If you really know what you are doing, you can of course also define the
 SQL query completely and forego the _sanitizing_ of the query.
 
 Let's count all albums whose name contain the string “on”:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1071,8 +1048,7 @@ and once you have familiarized yourself with the topic SQL injections
 (see http://en.wikipedia.org/wiki/Sql_injection).
 
 [[lazy-loading]]
-Lazy Loading
-++++++++++++
+==== Lazy Loading
 
 Lazy Loading is a mechanism that only carries out a database query if
 the program flow cannot be realised without the result of this query.
@@ -1087,7 +1063,7 @@ and only at the end (when calling the method `all`) the database query
 would really be executed in a production system. With the method
 ActiveRecord methods `to_sql` you can display the current SQL query.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1116,8 +1092,7 @@ developer by actually showing the result but in a non-console
 environment this would would only happen at the very last time.
 
 [[automatic-optimization]]
-Automatic Optimization
-++++++++++++++++++++++
+==== Automatic Optimization
 
 One of the great advantages of _lazy loading_ is the automatic
 optimization of the SQL query through ActiveRecord.
@@ -1126,7 +1101,7 @@ Let's take the sum of all release years of the albums that came out in
 the 70s. Then we sort the albums alphabetically and then calculate the
 sum.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1151,14 +1126,13 @@ NOTE: In case you are asking yourself why the first query took 1.5ms
       and the second 0.3ms: ActiveRecord cached the results of the first SQL request.
 
 [[order-and-reverse_order]]
-`order` and `reverse_order`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== `order` and `reverse_order`
 
 To sort a database query, you can use the method `order`.
 
 Example: all albums from the 60s, sorted by name:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1172,7 +1146,7 @@ Loading development environment (Rails 4.2.1)
 With the method `reverse_order` you can reverse an order previously
 defined via `order`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(release_year: 1960..1969).order(:name).reverse_order**
   Album Load (0.3ms)  SELECT "albums".* FROM "albums" WHERE
@@ -1182,15 +1156,14 @@ defined via `order`:
 ----
 
 [[limit]]
-limit
-^^^^^
+=== limit
 
 The result of any search can be limited to a certain range via the
 method `limit`.
 
 The first 5 albums from the 60s:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(release_year: 1960..1969).limit(5)**
   Album Load (0.3ms)  SELECT  "albums".* FROM "albums" WHERE
@@ -1200,7 +1173,7 @@ The first 5 albums from the 60s:
 
 All albums sorted by name, then the first 5 of those:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.order(:name).limit(5)**
   Album Load (0.4ms)  SELECT  "albums".* FROM "albums"  ORDER BY
@@ -1209,8 +1182,7 @@ All albums sorted by name, then the first 5 of those:
 ----
 
 [[offset]]
-offset
-++++++
+==== offset
 
 With the method `offset`, you can define the starting position of the
 method limit.
@@ -1218,7 +1190,7 @@ method limit.
 First, we return the first two records and then the first two records
 with an offset of 5:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.limit(2)**
   Album Load (1.0ms)  SELECT  "albums".* FROM "albums" LIMIT 2
@@ -1229,15 +1201,14 @@ with an offset of 5:
 ----
 
 [[group]]
-group
-^^^^^
+=== group
 
 With the method `group`, you can return the result of a query in grouped
 form.
 
 Let's return all `albums`, grouped by their `release_year`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1261,8 +1232,7 @@ $
 ----
 
 [[pluck]]
-pluck
-^^^^^
+=== pluck
 
 Normally, ActiveRecord pulls all table columns from the database and
 leaves it up to the programmer to later pick out the components he is
@@ -1270,7 +1240,7 @@ interested in. But in case of large amounts of data, it can be useful
 and above all much quicker to define a specific database field directly
 for the query. You can do this via the method `pluck`.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(release_year: 1960..1969).pluck(:name)**
    (0.1ms)  SELECT "albums"."name" FROM "albums" WHERE
@@ -1288,15 +1258,14 @@ for the query. You can do this via the method `pluck`.
 As a result, `pluck` returns an array.
 
 [[first_or_create-and-first_or_initialize]]
-first_or_create and first_or_initialize
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== first_or_create and first_or_initialize
 
 The methods `first_or_create` and `first_or_initialize` are create ways
 to search for a specific entry in your database or create one if the
 entry doesn't exist already. Both have to be chained to a `where`
 search.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(name: 'Test')**
   Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE "albums"."name" =
@@ -1311,19 +1280,17 @@ search.
 ----
 
 [[calculations]]
-Calculations
-~~~~~~~~~~~~
+== Calculations
 
 [[average]]
-average
-^^^^^^^
+=== average
 
 With the method `average`, you can calculate the average of the values
 in a particular column of the table. Our data material is of course not
 really suited to this. But as an example, let's calculate the average
 release year of all albums and then the same for albums from the 60s:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.average(:release_year)**
    (0.3ms)  SELECT AVG("albums"."release_year") FROM "albums"
@@ -1342,15 +1309,14 @@ release year of all albums and then the same for albums from the 60s:
 ----
 
 [[count]]
-count
-^^^^^
+=== count
 
 The name says it all: the method `count` counts the number of records.
 
 First, we return the number of all albums in the database and then the
 number of albums from the 60s:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.count**
    (0.1ms)  SELECT COUNT(*) FROM "albums"
@@ -1358,15 +1324,14 @@ number of albums from the 60s:
 ----
 
 [[maximum]]
-maximum
-^^^^^^^
+=== maximum
 
 With the method `maximum`, you can output the item with the highest
 value within a query.
 
 Let's look for the highest release year:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.maximum(:release_year)**
    (0.2ms)  SELECT MAX("albums"."release_year") FROM "albums"
@@ -1374,15 +1339,14 @@ Let's look for the highest release year:
 ----
 
 [[minimum]]
-minimum
-^^^^^^^
+=== minimum
 
 With the method `minimum`, you can output the item with the lowest value
 within a query.
 
 Let's find the lowest release year:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.minimum(:release_year)**
    (0.2ms)  SELECT MIN("albums"."release_year") FROM "albums"
@@ -1390,15 +1354,14 @@ Let's find the lowest release year:
 ----
 
 [[sum]]
-sum
-^^^
+=== sum
 
 With the method `sum`, you can calculate the sum of all items in a
 specific column of the database query.
 
 Let's find the sum of all release years:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.sum(:release_year)**
    (0.2ms)  SELECT SUM("albums"."release_year") FROM "albums"
@@ -1406,8 +1369,7 @@ Let's find the sum of all release years:
 ----
 
 [[sql-explain]]
-SQL EXPLAIN
-~~~~~~~~~~~
+== SQL EXPLAIN
 
 Most SQL databases can provide detailled information on a SQL query with
 the command `EXPLAIN`. This does not make much sense for our mini
@@ -1416,7 +1378,7 @@ application, but if you are working with a large database one day, then
 place an index. SQL EXPLAIN can be called with the method `explain` (it
 will be displayed in prettier form if you add a `puts`):
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(release_year: 1960..1969)**
   Album Load (0.2ms)  SELECT "albums".* FROM "albums" WHERE
@@ -1431,8 +1393,7 @@ BETWEEN 1960 AND 1969)
 ----
 
 [[batches]]
-Batches
-~~~~~~~
+== Batches
 
 ActiveRecord stores the results of a query in Memory. With very large
 tables and results that can become a performance issue. To address this
@@ -1441,7 +1402,7 @@ batches with the size of 1,000 (can be configured with the `:batch_size`
 option). Our example Album table is too small to show the effect but the
 method would be used like this:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(release_year: 1960..1969).find_each do |album|**
 ?>   **puts album.name.upcase**
@@ -1460,8 +1421,7 @@ THE BEATLES
 ----
 
 [[editing-a-record]]
-Editing a Record
-~~~~~~~~~~~~~~~~
+== Editing a Record
 
 Adding data is quite nice, but often you want to edit a record. To show
 how that's done I use the album database from the
@@ -1469,8 +1429,7 @@ xref:searching-and-finding-with-queries[section "Searching and Finding
 with Queries"].
 
 [[simple-editing]]
-Simple Editing
-^^^^^^^^^^^^^^
+=== Simple Editing
 
 Simple editing of a record takes place in the following steps:
 
@@ -1481,7 +1440,7 @@ Simple editing of a record takes place in the following steps:
 We are now searching for the album “The Beatles” and changing its name
 to “A Test”:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1502,13 +1461,12 @@ $
 ----
 
 [[changed]]
-changed?
-^^^^^^^^
+=== changed?
 
 If you are not sure if a record has been changed and not yet saved, you
 can check via the method `changed?`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **beatles_album = Album.where(id: 10).first**
   Album Load (0.4ms)  SELECT  "albums".* FROM "albums" WHERE "albums"."id" = ?
@@ -1532,8 +1490,7 @@ can check via the method `changed?`:
 ----
 
 [[update_attributes]]
-update_attributes
-^^^^^^^^^^^^^^^^^
+=== update_attributes
 
 With the method `update_attributes` you can change several attributes of
 an object in one go and then immediately save them automatically.
@@ -1541,7 +1498,7 @@ an object in one go and then immediately save them automatically.
 Let's use this method within the example used in
 xref:simple-editing[the section "Simple Editing"]:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **first_album = Album.first**
   Album Load (0.2ms)  SELECT  "albums".* FROM "albums"  ORDER BY "albums"."id"
@@ -1567,7 +1524,7 @@ xref:simple-editing[the section "Simple Editing"]:
 
 This kind of update can also be chained with a `where` method:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Album.where(name: 'Another Test').first.update_attributes(name: "Sgt.
   Pepper's Lonely Hearts Club Band")**
@@ -1582,8 +1539,7 @@ This kind of update can also be chained with a `where` method:
 ----
 
 [[locking]]
-Locking
-^^^^^^^
+=== Locking
 
 There are many ways of locking a database. By default, Rails uses
 “optimistic locking” of records. To activate locking you need to have an
@@ -1595,7 +1551,7 @@ ActiveRecord::StaleObjectError.
 
 Example setup:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new shop**
   [...]
@@ -1609,7 +1565,7 @@ $
 
 Raising an `ActiveRecord::StaleObjectError`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1662,8 +1618,7 @@ conflict depending on your business logic. Please make sure to add a
 with a WebGUI.
 
 [[has_many-1n-association]]
-has_many – 1:n Association
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+== has_many – 1:n Association
 
 In order to explain `has_many`, let's create a bookshelf application. In
 this database, there is a model with books and a model with authors. As
@@ -1675,7 +1630,7 @@ NOTE: Associations are also sometimes referred to as _relations_ or
 
 First, we create a Rails application:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new bookshelf**
   [...]
@@ -1685,7 +1640,7 @@ $
 
 Now we create the model for the books:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model book title**
   [...]
@@ -1697,7 +1652,7 @@ need an assignment field to the books table. This _foreign key_ is
 always set by default as name of the referenced object (here: `book`)
 with an attached `_id`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model author book_id:integer first_name last_name**
   [...]
@@ -1707,7 +1662,7 @@ $
 Then execute a `rake db:migrate` so that the database tables are
 actually created:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate**
   [...]
@@ -1716,7 +1671,7 @@ $
 
 Let's have a look at this on the _console_:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1759,8 +1714,7 @@ ActiveRecord magic. It will generate a bunch of cool new methods for us
 to link both models.
 
 [[references-modifier]]
-references modifier
-^^^^^^^^^^^^^^^^^^^
+=== references modifier
 
 Instead of creating a `book_id` attribute you can also use the
 `references` modifier with the model generator. By that you'll save a
@@ -1772,7 +1726,7 @@ NOTE: It does not add the `has_many` code.
 
 The above example could be done with this code:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new bookshelf**
   [...]
@@ -1787,19 +1741,17 @@ $
 ----
 
 [[creating-records]]
-Creating Records
-^^^^^^^^^^^^^^^^
+=== Creating Records
 
 In this example, we want to save a record for the book "Homo faber" by
 Max Frisch.
 
 [[manually]]
-Manually
-++++++++
+==== Manually
 
 We drop the database with `rake db:reset`
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:reset**
   [...]
@@ -1810,7 +1762,7 @@ Befor using the magic we'll insert a book with an author manually. For
 that we have to use the book's id in the `book_id` attribute to create
 the author.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1840,14 +1792,13 @@ Entering the `book_id` manually in this way is of course not very
 practical and susceptible to errors. The next section describes a better way.
 
 [[create-1]]
-create
-++++++
+==== create
 
 We can
 use the method `create` of `authors` to add new authors to each `Book`
 object. These automatically get the correct `book_id`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:reset**
   [...]
@@ -1877,7 +1828,7 @@ $
 You could also place the `authors.create()` directly behind the
 `Book.create()`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:reset**
   [...]
@@ -1904,7 +1855,7 @@ $
 As create also accepts an array of hashes as an alternative to a single
 hash, you can also create multiple authors for a book in one go:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:reset**
   [...]
@@ -1938,13 +1889,12 @@ $
 ----
 
 [[build]]
-build
-+++++
+==== build
 
 The method `build` resembles `create`. But the record is not saved. This
 only happens after a `save`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:reset**
   [...]
@@ -1983,7 +1933,7 @@ When using `create` and `build`, you of course have to observe
 logical dependencies, otherwise there will be an error.
 For example, you cannot chain two `build` methods. Example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -1996,8 +1946,7 @@ $
 ====
 
 [[accessing-records]]
-Accessing Records
-^^^^^^^^^^^^^^^^^
+=== Accessing Records
 
 First we need example data. Please populate the file `db/seeds.rb` with
 the following content:
@@ -2030,7 +1979,7 @@ last_name: 'Mann')
 
 Now drop the database and refill it with the `db/seeds.rb`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:reset**
 ----
@@ -2039,7 +1988,7 @@ The convenient feature of the 1:n assignment in ActiveRecord is the
 particularly easy access to the n instances. Let's look at the first
 book and it's authors:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -2063,7 +2012,7 @@ Isn't that cool?! You can access the records simply via the plural form
 of the n model. The result is returned as array. Hm, maybe it also works
 the other way round?
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Author.first.book**
   Author Load (0.3ms)  SELECT  "authors".* FROM "authors"  ORDER BY
@@ -2085,8 +2034,7 @@ NOTE: If there was no author for this book, the result would be an empty
       outputs the value `nil` as `Book`.
 
 [[searching-for-records]]
-Searching For Records
-^^^^^^^^^^^^^^^^^^^^^
+=== Searching For Records
 
 Before we can start searching, we again need defined example data.
 Please fill the file `db/seeds.rb` with the following content:
@@ -2115,14 +2063,14 @@ Book.create(title: 'In einer Familie').authors.create(first_name: 'Heinrich', la
 
 Now drop the database and refill it with the `db/seeds.rb`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:reset**
 ----
 
 And off we go. First we check how many books are in the database:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -2134,7 +2082,7 @@ Loading development environment (Rails 4.2.1)
 
 And how many authors?
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Author.count**
    (0.2ms)  SELECT COUNT(*) FROM "authors"
@@ -2144,13 +2092,12 @@ $
 ----
 
 [[joins]]
-joins
-+++++
+==== joins
 
 To find all books that have at least one author with the surname 'Mann'
 we use a _join_.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -2170,7 +2117,7 @@ can see that the method `joins` executes an `INNER JOIN`.
 Of course, we can also do it the other way round. We could search for
 the author of the book 'Homo faber':
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Author.joins(:book).where(:books => {title: 'Homo faber'})**
   Author Load (0.3ms)  SELECT "authors".* FROM "authors" INNER JOIN "books" ON
@@ -2182,14 +2129,13 @@ last_name: "Frisch", created_at: "2015-04-17 09:13:31", updated_at:
 ----
 
 [[includes]]
-includes
-++++++++
+==== includes
 
 `includes` is very similar to the method `joins` (see xref:joins[joins]). Again, you can use it to search within a 1:n
 association. Let's once more search for all books with an author whose
 surname is 'Mann':
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -2215,8 +2161,7 @@ associated `Authors`. As you can see even in our little example, this
 obviously takes longer (0.2 ms vs. 1.1 ms).
 
 [[joins-vs.-includes]]
-joins vs. includes
-++++++++++++++++++
+==== joins vs. includes
 
 Why would you want to use `includes` at all? Well, if you already know
 before the query that you will later need all author data, then it makes
@@ -2229,15 +2174,14 @@ more data is transported initially. This has to be cached and processed
 by ActiveRecord, which takes longer and requires more resources.
 
 [[delete-and-destroy]]
-delete and destroy
-^^^^^^^^^^^^^^^^^^
+=== delete and destroy
 
 With the methods `destroy`, `destroy_all`, `delete` and `delete_all` you
 can delete records, as described in xref:deletedestroy-a-record["Delete/Destroy a Record"]. In the context of `has_many`, this means
 that you can delete the `Author` records associated with a `Book` in one
 go:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -2272,8 +2216,7 @@ created_at: "2015-04-17 09:13:31", updated_at: "2015-04-17 09:13:31">]
 ----
 
 [[options]]
-Options
-^^^^^^^
+=== Options
 
 I can't comment on all possible options at this point. But I'd like to
 show you the most often used ones. For all others, please refer to the
@@ -2281,8 +2224,7 @@ Ruby on Rails documentation that you can find on the Internet at
 http://rails.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html.
 
 [[belongs_to]]
-belongs_to
-++++++++++
+==== belongs_to
 
 The most important option for `belongs_to` is.
 
@@ -2302,8 +2244,7 @@ end
 ----
 
 [[has_many]]
-has_many
-++++++++
+==== has_many
 
 The most important options for `has_many` are.
 
@@ -2325,7 +2266,7 @@ end
 In the following example, we destroy the first book in the database
 table. All authors of this book are also automatically destroyed:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -2376,8 +2317,7 @@ it in detail in the section xref:many-to-many-nn-association["Many-to-Many
 - n:n Association"].
 
 [[many-to-many-nn-association]]
-Many-to-Many – n:n Association
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Many-to-Many – n:n Association
 
 Up to now, we have always associated a database table directly with
 another table. For many-to-many, we will associate two tables via a
@@ -2388,12 +2328,11 @@ contain several products. This is referred to as many-to-many. Let's
 recreate this scenario with code.
 
 [[preparation]]
-Preparation
-^^^^^^^^^^^
+=== Preparation
 
 Create the shop application:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new shop**
   [...]
@@ -2402,7 +2341,7 @@ $ **cd shop**
 
 A model for products:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model product name 'price:decimal{7,2}'**
   [...]
@@ -2411,7 +2350,7 @@ $
 
 A model for an order:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model order delivery_address**
   [...]
@@ -2420,7 +2359,7 @@ $
 
 And a model for individual items of an order:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model line_item order:references product:references
 quantity:integer**
@@ -2430,7 +2369,7 @@ $
 
 Then, create the database:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate**
   [...]
@@ -2438,8 +2377,7 @@ $
 ----
 
 [[the-association]]
-The Association
-^^^^^^^^^^^^^^^
+=== The Association
 
 An order (`Order`) consists of one or several items (`LineItem`). This
 LineItem consists of the `order_id`, a `product_id` and the number of
@@ -2481,8 +2419,7 @@ end
 ----
 
 [[the-association-works-transparent]]
-The Association Works Transparent
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== The Association Works Transparent
 
 As we implement the associations via `has_many`, most things will
 already be familiar to you from the section xref:has95many-1n-association["has_many - 1:n Association"]. I am going to discuss a few examples. For
@@ -2491,7 +2428,7 @@ Association"].
 
 First we populate our product database with the following values:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -2530,7 +2467,7 @@ updated_at: "2015-04-17 11:46:42">
 
 Now we create a new `Order` object with the name `order`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **order = Order.new(delivery_address: '123 Acme Street, ACME STATE 12345')**
 => #<Order id: nil, delivery_address: "123 Acme Street, ACME STATE 12345",
@@ -2540,7 +2477,7 @@ created_at: nil, updated_at: nil>
 
 Logically, this new order does not yet contain any products:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **order.products.count**
 => 0
@@ -2551,7 +2488,7 @@ As often, there are several ways of adding products to the order. The
 simplest way: as the products are integrated as array, you can simply
 insert them as elements of an array:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **order.products << milk**
 => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name: "Milk
@@ -2564,7 +2501,7 @@ But if the customer wants to buy three liters of milk instead of one
 liter, we need to enter it in the `LineItem` (in the linking element)
 table. ActiveRecord already build an object for us:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **order.line_items**
 => #<ActiveRecord::Associations::CollectionProxy [#<LineItem id: nil,
@@ -2576,7 +2513,7 @@ nil>]>
 But the object is not yet saved in the database. After we do this via
 save, we can change the quantity in the `LineItem` object:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **order.save**
    (0.1ms)  begin transaction
@@ -2602,7 +2539,7 @@ save, we can change the quantity in the `LineItem` object:
 Alternatively, we can also buy butter twice directly by adding a
 `LineItem`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **order.line_items.create(product_id: butter.id, quantity: 2)**
    (0.1ms)  begin transaction
@@ -2621,7 +2558,7 @@ When creating a `line_item` we bypass the `has_many: ... :through ...`
 logic. The database table contains all the correct information but order
 hasn't been updated:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **order.products**
 => #<ActiveRecord::Associations::CollectionProxy [#<Product id: 1, name:
@@ -2631,7 +2568,7 @@ created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">]>
 
 But in the database table, it is of course correct:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Order.first.products**
    Order Load (0.4ms)  SELECT  "orders".* FROM "orders"  ORDER BY
@@ -2650,7 +2587,7 @@ created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">,
 In this specific case, you would need to reload the object from the
 database via the method `reload`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **order.reload**
   Order Load (0.4ms)  SELECT  "orders".* FROM "orders" WHERE
@@ -2672,7 +2609,7 @@ created_at: "2015-04-17 11:46:22", updated_at: "2015-04-17 11:46:22">,
 
 Let's enter a second order with all available products into the system:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **order2 = Order.create(delivery_address: '2, Test Road')**
    (0.2ms)  begin transaction
@@ -2714,7 +2651,7 @@ updated_at: "2015-04-17 11:46:42">]>
 Now we can try out the oposite direction of this many-to-many
 association. Let's search for all orders that contain the first product:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Product.first.orders**
   Product Load (0.1ms)  SELECT  "products".* FROM "products"  ORDER BY
@@ -2733,7 +2670,7 @@ updated_at: "2015-04-17 11:55:08">]>
 Of course, we can also work with a `joins` (see xref:joins["joins"]) and search for all orders that contain the product
 "Milk (1 liter)":
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Order.joins(:products).where(:products => {name: 'Milk (1 liter)'})**
   Order Load (0.4ms)  SELECT "orders".* FROM "orders" INNER JOIN "line_items"
@@ -2747,8 +2684,7 @@ created_at: "2015-04-17 11:55:08", updated_at: "2015-04-17 11:55:08">]>
 ----
 
 [[has_one-11-association]]
-has_one – 1:1 Association
-~~~~~~~~~~~~~~~~~~~~~~~~~
+== has_one – 1:1 Association
 
 Similar to `has_many` (see xref:#has95many-1n-association["has_many - 1:n Association"]), the method `has_one` also creates a
 logical relation between two models. But in contrast to `has_many`, one
@@ -2765,15 +2701,14 @@ xref:has95many-1n-association["has_many - 1:n Association"]. I
 am not going to explain methods like `build` (see xref:build["build"]) again but assume that you already know the basics.
 
 [[preparation-1]]
-Preparation
-^^^^^^^^^^^
+=== Preparation
 
 We use the example from the Rails documentation (see
 http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html)
 and create an application containing employees and offices. Each
 employee has an office. First the application:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new office-space**
   [...]
@@ -2783,7 +2718,7 @@ $
 
 And now the two models:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model employee last_name**
   [...]
@@ -2795,8 +2730,7 @@ $
 ----
 
 [[association]]
-Association
-^^^^^^^^^^^
+=== Association
 
 The association in the file `app/models/employee.rb:`
 
@@ -2819,20 +2753,18 @@ end
 ----
 
 [[options-1]]
-Options
-+++++++
+==== Options
 
 The options of `has_one` are similar to those of `has_many`. So for
 details, please refer to xref:options["Options"] or
 http://api.rubyonrails.org/classes/ActiveRecord/Associations/ClassMethods.html#method-i-has_one.
 
 [[console-examples]]
-Console Examples
-^^^^^^^^^^^^^^^^
+=== Console Examples
 
 Let's start the console and create two employees:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -2857,7 +2789,7 @@ updated_at: "2015-04-17 12:23:49">
 
 Now the first employee gets his own office:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Office.create(location: '2nd floor', employee_id: Employee.first.id)**
   Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY
@@ -2874,7 +2806,7 @@ Now the first employee gets his own office:
 
 Both directions can be accessed the normal way:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Employee.first.office**
   Employee Load (0.4ms)  SELECT  "employees".* FROM "employees"  ORDER BY
@@ -2895,7 +2827,7 @@ Both directions can be accessed the normal way:
 For the second employee, we use the automatically generated method
 `create_office` (with `has_many`, we would use `offices.create` here):
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Employee.last.create_office(location: '1st floor')**
   Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY
@@ -2914,7 +2846,7 @@ For the second employee, we use the automatically generated method
 
 Removing is intuitively done via `destroy`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Employee.first.office.destroy**
   Employee Load (0.3ms)  SELECT  "employees".* FROM "employees"  ORDER BY
@@ -2939,7 +2871,7 @@ Removing is intuitively done via `destroy`:
 If you create a new `Office` for an `Employee` with an existing `Office`
 then you will not get an error message:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
  >> **Employee.last.create_office(location: 'Basement')**
    Employee Load (0.2ms)  SELECT  "employees".* FROM "employees"  ORDER
@@ -2971,7 +2903,7 @@ then you will not get an error message:
 The old `Office` is even still in the database (the `employee_id` was
 automatically set to `nil`):
 
-[subs="quotes"]
+[subs=+quotes]
 ----
  >> **Office.all**
    Office Load (0.2ms)  SELECT "offices".* FROM "offices"
@@ -2985,8 +2917,7 @@ automatically set to `nil`):
 ====
 
 [[has_one-vs.-belongs_to]]
-has_one vs. belongs_to
-^^^^^^^^^^^^^^^^^^^^^^
+=== has_one vs. belongs_to
 
 Both `has_one` and `belongs_to` offer the option of representing a 1:1
 relationship. The difference in practice is in the programmer's personal
@@ -2995,8 +2926,7 @@ tends to be used very rarely and depends on the degree of normalization
 of the data schema.
 
 [[polymorphic-associations]]
-Polymorphic Associations
-~~~~~~~~~~~~~~~~~~~~~~~~
+== Polymorphic Associations
 
 Already the word "polymorphic" will probably make you tense up. What can
 it mean? Here is what the website
@@ -3010,7 +2940,7 @@ and a model for bicycles (`Bike`). To describe a car or bike, we use a
 model to tag it (`Tag`). A car and a bike can have any number of `tags`.
 The application:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new example**
   [...]
@@ -3020,7 +2950,7 @@ $
 
 Now the three required models:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model Car name**
   [...]
@@ -3080,7 +3010,7 @@ TIP: The suffix “_able_” in the name “_taggable_” is commonly used in
 
 Let's go into the _console_ and create a car and a bike:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3104,7 +3034,7 @@ updated_at: "2015-04-17 13:39:55">
 
 Now we define for each a tag with the color of the corresponding object:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **beetle.tags.create(name: 'blue')**
    (0.1ms)  begin transaction
@@ -3128,7 +3058,7 @@ created_at: "2015-04-17 13:41:17", updated_at: "2015-04-17 13:41:17">
 
 For the `beetle`, we add another `Tag`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **beetle.tags.create(name: 'Automatic')**
    (0.1ms)  begin transaction
@@ -3143,7 +3073,7 @@ created_at: "2015-04-17 13:41:51", updated_at: "2015-04-17 13:41:51">
 
 Let's have a look at all Tag items:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Tag.all**
   Tag Load (0.3ms)  SELECT "tags".* FROM "tags"
@@ -3158,7 +3088,7 @@ taggable_type: "Car", created_at: "2015-04-17 13:41:51", updated_at:
 
 And now all tags of the beetle:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **beetle.tags**
   Tag Load (0.3ms)  SELECT "tags".* FROM "tags" WHERE "tags"."taggable_id" = ?
@@ -3173,7 +3103,7 @@ updated_at: "2015-04-17 13:41:51">]>
 
 Of course you can also check which object the last Tag belongs to:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Tag.last.taggable**
   Tag Load (0.3ms)  SELECT  "tags".* FROM "tags"  ORDER BY "tags"."id" DESC
@@ -3191,15 +3121,13 @@ database structure. In this example, we could also have defined a model
 association makes more sense in this case.
 
 [[options-2]]
-Options
-^^^^^^^
+=== Options
 
 Polymorphic associations can be configured with the same options as a
 normal xref:#has95many-1n-association[has_many association].
 
 [[deletedestroy-a-record]]
-Delete/Destroy a Record
-~~~~~~~~~~~~~~~~~~~~~~~
+== Delete/Destroy a Record
 
 To remove a database record, you can use the methods `destroy` and
 `delete`. It's quite easy to confuse these two terms, but they are
@@ -3207,7 +3135,7 @@ different and after a while you get used to it.
 
 As an example, we use the following Rails application:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new bookshelf**
   [...]
@@ -3238,8 +3166,7 @@ end
 ----
 
 [[destroy]]
-destroy
-^^^^^^^
+=== destroy
 
 With `destroy` you can remove a record and any existing dependencies are
 also taken into account (see for example `:dependent => :destroy` in
@@ -3249,7 +3176,7 @@ does more for you.
 
 Let's create a record and then destroy it again:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3280,7 +3207,7 @@ updated_at: "2015-04-17 13:49:58">
 As we are using the option `dependent: :destroy` in the Book model, we
 can also automatically remove all authors:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Book.create(title: 'Homo faber').authors.create(first_name: 'Max',
    last_name: 'Frisch')**
@@ -3323,7 +3250,7 @@ it is no longer in the database, but still present in the program, yet
 it can no longer be modified there. It is read-only. To check, you can
 use the method `frozen?`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **book = Book.create(title: 'Homo faber')**
    (0.2ms)  begin transaction
@@ -3356,7 +3283,7 @@ its data is still present in the running Ruby program. So could we then
 revive the entire record? The answer is yes, but it will then be a new
 record:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Book.create(title: book.title)**
    (0.1ms)  begin transaction
@@ -3370,8 +3297,7 @@ updated_at: "2015-04-17 13:52:51">
 ----
 
 [[delete]]
-delete
-^^^^^^
+=== delete
 
 With `delete` you can remove a record directly from the database. Any
 dependencies to other records in the _model_ are not taken into account.
@@ -3381,7 +3307,7 @@ nothing else.
 Let's create a book with one author and then remove the book with
 `delete`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails db:reset**
   [...]
@@ -3421,8 +3347,7 @@ xref:destroy["destroy"]). The record is already
 removed from the database, but the object itself is still there.
 
 [[transactions]]
-Transactions
-~~~~~~~~~~~~
+== Transactions
 
 In the world of databases, the term transaction refers to a block of SQL
 statements that must be executed together and without interruption. If
@@ -3459,8 +3384,7 @@ WARNING: Transactions are not natively supported by all databases. In that
          security of the transaction.
 
 [[scopes]]
-Scopes
-~~~~~~
+== Scopes
 
 When programming Rails applications, it is sometimes clearer and simpler
 to define frequent searches as separate methods. In Rails speak, these
@@ -3468,12 +3392,11 @@ are referred to as _NamedScope_. These NamedScopes can be chained, just
 like other methods.
 
 [[preparation-2]]
-Preparation
-^^^^^^^^^^^
+=== Preparation
 
 We are building our own little online shop:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new shop**
   [...]
@@ -3509,7 +3432,7 @@ price: 17.49, expiration_date: Date.today + 1.year)
 
 Now drop the database and repopulate it with the `db/seeds.rb`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:reset**
   [...]
@@ -3517,13 +3440,12 @@ $
 ----
 
 [[defining-a-scope]]
-Defining a Scope
-^^^^^^^^^^^^^^^^
+=== Defining a Scope
 
 If we want to count products that are in stock in our online shop, then
 we can use the following query each time:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3546,7 +3468,7 @@ end
 
 And then use it:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3571,7 +3493,7 @@ end
 Now we can chain both named scopes to output all cheap products that are
 in stock:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3587,8 +3509,7 @@ Loading development environment (Rails 4.2.1)
 ----
 
 [[passing-in-arguments]]
-Passing in Arguments
-^^^^^^^^^^^^^^^^^^^^
+=== Passing in Arguments
 
 If you need a NamedScope that can also process parameters, then that is
 no problem either. The following example outputs products that are
@@ -3605,7 +3526,7 @@ end
 
 Now we can count all products that cost less than 50 cent:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3616,8 +3537,7 @@ Loading development environment (Rails 4.2.1)
 ----
 
 [[creating-new-records-with-scopes]]
-Creating New Records with Scopes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Creating New Records with Scopes
 
 Let's use the following `app/models/product.rb`:
 
@@ -3633,7 +3553,7 @@ With this NamedScope we can not only find all products that are in
 stock, but also create new products that contain the value `true` in the
 field `in_stock`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3648,8 +3568,7 @@ expiration_date: nil, created_at: nil, updated_at: nil>
 This works with the method `build` (see xref:build["build"]) and `create` (see xref:create["create"]).
 
 [[validation]]
-Validation
-~~~~~~~~~~
+== Validation
 
 Non-valid records are frequently a source of errors in programs. With
 `validates`, Rails offers a quick and easy way of validating them. That
@@ -3657,12 +3576,11 @@ way you can be sure that only meaningful records will find their way
 into your database.
 
 [[preparation-3]]
-Preparation
-^^^^^^^^^^^
+=== Preparation
 
 Let's create a new application for this chapter:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new shop**
   [...]
@@ -3676,8 +3594,7 @@ $
 ----
 
 [[the-basic-idea]]
-The Basic Idea
-^^^^^^^^^^^^^^
+=== The Basic Idea
 
 For each model, there is a matching model file in the directory
 `app/models/`. In this Ruby code, we can not only define database
@@ -3687,7 +3604,7 @@ programmer knows where to find it.
 Without any validation, we can create an empty record in a model without
 a problem:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3830,7 +3747,7 @@ end
 
 Now we try again to create an empty record in the console:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3851,7 +3768,7 @@ saved. So validating happens before saving.
 Can we access the errors? Yes, via the method `errors` or with
 `errors.messages` we can look at the errors that occurred:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **product.errors**
 => #<ActiveModel::Errors:0x007ff515a71680 @base=#<Product id: nil, name: nil,
@@ -3868,7 +3785,7 @@ This error message was defined for a human and English-speaking user.
 Only once we assign a value to the attributes `name` and `price`, we can
 save the object:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **product.name = 'Milk (1 liter)'**
 => "Milk (1 liter)"
@@ -3886,13 +3803,12 @@ save the object:
 ----
 
 [[valid]]
-`valid?`
-++++++++
+==== `valid?`
 
 The method `valid?` indicates in boolean form if an object is valid. So
 you can check the validity already before you save:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **product = Product.new**
 => #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil,
@@ -3903,14 +3819,13 @@ expiration_date: nil, created_at: nil, updated_at: nil>
 ----
 
 [[save-validate-false]]
-save( validate: false )
-+++++++++++++++++++++++
+==== save( validate: false )
 
 As so often in life, you can find a way around everything. If you pass
 the parameter `:validate => false` to the method `save`, the data of
 `Validation` is saved:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **product = Product.new**
 => #<Product id: nil, name: nil, price: nil, weight: nil, in_stock: nil,
@@ -3936,8 +3851,7 @@ WARNING: I assume that you understand the problems involved here.
          Otherwise you might as well do without the whole validation process.
 
 [[presence]]
-presence
-^^^^^^^^
+=== presence
 
 In our model `product` there are a few fields that must be filled in in
 any case. We can achieve this via `presence`.
@@ -3957,7 +3871,7 @@ end
 If we try to create an empty user record with this, we get lots of
 validation errors:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -3973,7 +3887,7 @@ expiration_date: nil, created_at: nil, updated_at: nil>
 
 Only once we have entered all the data, the record can be saved:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **product.name = 'Milk (1 liter)'**
 => "Milk (1 liter)"
@@ -3992,8 +3906,7 @@ $
 ----
 
 [[length]]
-length
-^^^^^^
+=== length
 
 With `length` you can limit the length of a specific attribute. It's
 easiest to explain using an example. Let us limit the maximum length of
@@ -4015,7 +3928,7 @@ end
 If we now try to save a Product with a name that consists in one letter,
 we get an error message:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -4031,8 +3944,7 @@ expiration_date: nil, created_at: nil, updated_at: nil>
 ----
 
 [[options-3]]
-Options
-+++++++
+==== Options
 
 `length` can be called with the following options.
 
@@ -4132,8 +4044,7 @@ validates :content,
 ----
 
 [[numericality]]
-numericality
-^^^^^^^^^^^^
+=== numericality
 
 With `numericality` you can check if an attribute is a number. It's
 easier to explain if we use an example.
@@ -4157,7 +4068,7 @@ end
 If we now use a `weight` that consists of letters or contains letters
 instead of numbers, we will get an error message:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -4176,8 +4087,7 @@ TIP: You can use `numericality` to define the content as number even
      if an attribute is saved as string in the database.
 
 [[options-4]]
-Options
-+++++++
+==== Options
 
 `numericality` can be called with the following options.
 
@@ -4274,8 +4184,7 @@ validates :weight,
 ----
 
 [[uniqueness]]
-uniqueness
-^^^^^^^^^^
+=== uniqueness
 
 With uniqueness you can define that the value of this attribute must be
 unique in the database. If you want a product in the database to have a
@@ -4294,7 +4203,7 @@ end
 If we now try to create a new `Product` with a `name` that already
 exists, then we get an error message:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -4325,8 +4234,7 @@ WARNING: The validation via `uniqueness` is no absolute guarantee that
          of book aimed at beginners (this phenomenon is extremely rare).
 
 [[options-5]]
-Options
-+++++++
+==== Options
 
 `uniqueness` can be called with the following options.
 
@@ -4359,8 +4267,7 @@ validates :name,
 ----
 
 [[inclusion]]
-inclusion
-^^^^^^^^^
+=== inclusion
 
 With `inclusion` you can define from which values the content of this
 attribute can be created. For our example, we can demonstrate it using
@@ -4382,7 +4289,7 @@ In our data model, a `Product` must be either `true` or `false` for
 `in_stock` (there must not be a nil). If we enter a different value than
 `true` or `false`, a validation error is returned:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -4402,8 +4309,7 @@ TIP: Always remember the power of Ruby! For example, you can generate the
      the validation is not defined statically.
 
 [[options-6]]
-Options
-+++++++
+==== Options
 
 `inclusion` can be called with the following option.
 
@@ -4424,8 +4330,7 @@ NOTE: For all error messages, please note the chapter
       xref:internationalization[Internationalization].
 
 [[exclusion]]
-exclusion
-^^^^^^^^^
+=== exclusion
 
 `exclusion` is the inversion of xref:inclusion[inclusion]. You can define from which values the content of this
 attribute must not be created.
@@ -4447,8 +4352,7 @@ TIP: Always remember the power of Ruby! For example, you can generate the
      validation does not have to be defined statically.
 
 [[options-7]]
-Options
-+++++++
+==== Options
 
 `exclusion` can be called with the following option.
 
@@ -4468,8 +4372,7 @@ NOTE: For all error messages, please note the chapter
       xref:internationalization[Internationalization].
 
 [[format]]
-format
-^^^^^^
+=== format
 
 With `format` you can define via a regular expression (see
 http://en.wikipedia.org/wiki/Regular_expression) how the content of an
@@ -4490,8 +4393,7 @@ WARNING: It should be obvious that the e-mail address validation shown
          address.
 
 [[options-8]]
-Options
-+++++++
+==== Options
 
 `validates_format_of` can be called with the following options:
 
@@ -4510,14 +4412,12 @@ NOTE: For all error messages, please note the chapter
       xref:internationalization[Internationalization].
 
 [[general-validation-options]]
-General Validation Options
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== General Validation Options
 
 There are some options that can be used for all validations.
 
 [[allow_nil]]
-`allow_nil`
-+++++++++++
+==== `allow_nil`
 
 Allows the value `nil`. Example:
 
@@ -4529,8 +4429,7 @@ validates :email,
 ----
 
 [[allow_blank]]
-allow_blank
-+++++++++++
+==== allow_blank
 
 As `allow_nil`, but additionally with an empty string. Example:
 
@@ -4557,8 +4456,7 @@ validates :email,
 ----
 
 [[if-and-unless]]
-if and unless
-+++++++++++++
+==== if and unless
 
 `if` or `unless` call the specified method and only execute the
 validation if the result of the method is true:
@@ -4589,20 +4487,18 @@ validates :name,
 ----
 
 [[writing-custom-validations]]
-Writing Custom Validations
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Writing Custom Validations
 
 Now and then, you want to do a validation where you need custom program
 logic. For such cases, you can define custom validations.
 
 [[defining-validations-with-your-own-methods]]
-Defining Validations with Your Own Methods
-++++++++++++++++++++++++++++++++++++++++++
+==== Defining Validations with Your Own Methods
 
 Let's assume you are a big shot hotel mogul and need a reservation
 system.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new my_hotel**
   [...]
@@ -4646,7 +4542,7 @@ object.
 
 Let's test the validation in the console:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -4674,16 +4570,14 @@ $
 ----
 
 [[further-documentation]]
-Further Documentation
-^^^^^^^^^^^^^^^^^^^^^
+=== Further Documentation
 
 The topic validations is described very well in the official Rails
 documentation at
 http://guides.rubyonrails.org/active_record_validations.html.
 
 [[migrations]]
-Migrations
-~~~~~~~~~~
+== Migrations
 
 SQL database tables are generated in Rails with _migrations_ and they
 should also be changed with _migrations_. If you create a model with
@@ -4692,7 +4586,7 @@ created in the directory `db/migrate/`. I am going to show you the
 principle using the example of a shop application. Let's create one
 first:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new shop**
   [...]
@@ -4702,7 +4596,7 @@ $
 
 Then we generate a Product model:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model product name 'price:decimal{7,2}' weight:integer
   in_stock:boolean expiration_date:date**
@@ -4741,7 +4635,7 @@ rollback. The migration files have embedded the current time in the file
 name and are processed in chronological order during a migration (in
 other words, when you call `rake db:migrate`).
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate**
 == 20150417184823 CreateProducts: migrating ===================================
@@ -4755,7 +4649,7 @@ Only those migrations that have not been executed yet are processed. If
 we call `rake db:migrate` again, nothing happens, because the
 corresponding migration has already been executed:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate**
 $
@@ -4764,7 +4658,7 @@ $
 But if we manually delete the database with `rm` and then call
 `rake db:migrate` again, the migration is repeated:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rm db/development.sqlite3**
 $ **rake db:migrate**
@@ -4780,7 +4674,7 @@ some products, but also the height. So we need another database field.
 There is an easy to remember syntax for this,
 `rails generate migration add_*`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate migration addHeightToProduct height:integer**
       invoke  active_record
@@ -4804,7 +4698,7 @@ end
 
 With `rake db:migrate` we can start in the new migration:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate**
 == 20150417185307 AddHeightToProduct: migrating ===============================
@@ -4817,7 +4711,7 @@ $
 In the _console_ we can look at the new field. It was added after the
 field `updated_at`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -4835,7 +4729,7 @@ IMPORTANT: Please note that you need to add the new field in `attr_accessible`
 What if you want to look at the previous state of things? No problem.
 You can easily go back to the previous version with `rake db:rollback`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:rollback**
 == 20150417185307 AddHeightToProduct: reverting ===============================
@@ -4848,7 +4742,7 @@ $
 Each migration has its own version number. You can find out the version
 number of the current status via `rake db:version`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:version**
 Current version: 20150417184823
@@ -4861,7 +4755,7 @@ IMPORTANT: Please note that all version numbers and timestamps only apply
 
 You will find the corresponding version in the directory `db/migrate`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ls db/migrate/**
 20150417184823_create_products.rb
@@ -4875,7 +4769,7 @@ zero represents the version zero, in other words the start.
 
 Let's try it out:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate VERSION=0**
 == 20150417184823 CreateProducts: reverting ===================================
@@ -4889,8 +4783,7 @@ $
 The table was deleted with all data. We are back to square one.
 
 [[which-database-is-used]]
-Which Database is Used?
-^^^^^^^^^^^^^^^^^^^^^^^
+=== Which Database is Used?
 
 The database table is created through the migration. As you can see, the
 table names automatically get the plural of the _model_s (`Person` vs.
@@ -4939,7 +4832,7 @@ switch to "big" databases such as MySQL or PostgreSQL.
 To satisfy your curiosity, we have a quick look at the database with the
 command line tool `sqlite3`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **sqlite3 db/development.sqlite3**
 SQLite version 3.8.5 2014-08-15 22:37:57
@@ -4952,7 +4845,7 @@ $
 
 Nothing in it. Of course not, as we have not yet run the migration:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate**
 == 20150417184823 CreateProducts: migrating ===================================
@@ -4983,8 +4876,7 @@ migrations. This table is created during the first migration carried out
 by Rails, if it does not yet exist.
 
 [[creating-index]]
-Creating Index
-^^^^^^^^^^^^^^
+=== Creating Index
 
 I assume that you know what a database index is. If not, you will find a
 brief introduction at http://en.wikipedia.org/wiki/Database_index. In
@@ -4993,7 +4885,7 @@ brief: you can use it to quickly search for a specific table column.
 In our production database, we should index the field `name` in the
 `products` table. We create a new migration for that purpose:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate migration create_index**
       invoke  active_record
@@ -5021,7 +4913,7 @@ end
 
 With `rake db:migrate` we create the index:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate**
 ==  CreateIndex: migrating ====================================================
@@ -5050,7 +4942,7 @@ You can also create an index directly when you generate the model. In
 our case (an index for the attribute `name`) the command would look like
 this:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate model product name:string:index**
 $ **cat db/migrate/20150417191435_create_products.rb**
@@ -5069,8 +4961,7 @@ $
 ====
 
 [[automatically-added-fields-id-created_at-and-updated_at]]
-Automatically Added Fields (`id`, `created_at` and `updated_at`)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Automatically Added Fields (`id`, `created_at` and `updated_at`)
 
 Rails kindly adds the following fields automatically in the default
 migration:
@@ -5096,8 +4987,7 @@ sense?". But after a while you will learn to appreciate these automatic
 fields. Omitting them would usually be false economy.
 
 [[further-documentation-1]]
-Further Documentation
-^^^^^^^^^^^^^^^^^^^^^
+=== Further Documentation
 
 The following webpages provide excellent further information on the
 topic migration:
@@ -5112,8 +5002,7 @@ you are trying to understand the basics.
 * http://www.dizzy.co.uk/ruby_on_rails/cheatsheets/rails-migrations
 
 [[callbacks]]
-Callbacks
-~~~~~~~~~
+== Callbacks
 
 Callbacks are defined programming hooks in the life of an ActiveRecord
 object. You can find a list of all callbacks at
@@ -5147,7 +5036,7 @@ to lower case via the method `downcase`.
 
 The Rails application:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new shop**
   [...]
@@ -5186,7 +5075,7 @@ end
 
 Let's see in the console if it really works as we want it to:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -5214,8 +5103,7 @@ an example for defining a default value for a new object via an
 `after_initialize` callback.
 
 [[default-values]]
-Default Values
-~~~~~~~~~~~~~~
+== Default Values
 
 If you need specific default values for an ActiveRecord object, you can
 easily implement this with the `after_initialize` callback. This method
@@ -5225,7 +5113,7 @@ can enter 1 directly as default value when creating a new record.
 
 Let's set up a quick example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new shop**
   [...]
@@ -5256,7 +5144,7 @@ end
 And now we check in the console if a new order object automatically
 contains the quantity 1:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)

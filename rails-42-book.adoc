@@ -1,41 +1,20 @@
 = Rails 4.2 for Autodidacts
 Stefan Wintermeyer
 v4.2.1, 2015-11-12
-:icons: font
-:iconsdir: /usr/local/etc/asciidoc/images/icons
 :doctype: book
 :producer: Stefan Wintermeyer
 :keywords: Ruby on Rails, Rails, Ruby, Framework, MVC
 :copyright: Stefan Wintermeyer
-:imagesdir: /Users/stefan/Github/rails-4.2-book/images
-:front-cover-image: images/cover.png
+:imagesdir: images
+:front-cover-image: image:cover.png[Front Cover,314,499]
+:icons: font
+:toc:
+:source-highlighter: pygments
+:pdf-page-size: A4
+ifndef::ebook-format[:leveloffset: 1]
 
-[[preface]]
-Preface
--------
-
-Thank you for buying the second edition of my 3rd Ruby on Rails book.
-I wrote this book for autodidacts who learn best by following clean examples.
-I don’t like the idea of coding one big single application throughout a book
-but prefer stand-alone examples. So you can skip a couple of pages or even
-chapters without losing context.
-
-Don’t let people fool you into believing that Ruby on Rails is easy to
-learn. It is not! It is probably the best and most effective framework
-to develop web applications but it is hard to understand in the
-beginning. The worst mistake of all is to not learn Ruby before diving
-into Ruby on Rails. To avoid it this book starts with the basics of Ruby.
-You will not become a Ruby guru after reading it but you’ll
-understand the basic ideas and that is important.
-
-I’m always thankful for feedback by e-mail
-(stefan.wintermeyer@amooma.de) or Twitter
-(https://twitter.com/wintermeyer). And any good rating on Amazon helps
-paving the road to a Rails 5.0 version of this book.
-
-Have fun with Ruby on Rails!
-
-Stefan Wintermeyer
+[preface]
+include::preface.adoc[]
 
 include::chapter01-installing.adoc[]
 

@@ -1,10 +1,8 @@
 [[ruby-basics]]
-Ruby Basics
------------
+= Ruby Basics
 
 [[introduction]]
-Introduction
-~~~~~~~~~~~~
+== Introduction
 
 This book requires basic knowledge of HTML, plus the reader - you, in
 other words - should also have a basic understanding of programming.
@@ -29,7 +27,7 @@ the book "The Ruby Programming Language" by David Flanagan and https://en.wikipe
 
 The command `ruby -v` will print the current running Ruby version:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ruby -v**
 ruby 2.2.1p85 (2015-02-26 revision 49769) [x86_64-darwin14]
@@ -40,8 +38,7 @@ NOTE: The beginning of this chapter is going to be a bit boring.
       Bear with me. It's worth it.
 
 [[hello-world]]
-Hello World
-~~~~~~~~~~~
+== Hello World
 
 Ruby is a scripting language. So it is not compiled and then executed,
 but read by an interpreter and then processed line by line.
@@ -58,7 +55,7 @@ Use your favorite editor to open a new file with the filename
 `hello-world.rb` and insert the above line into it. You can then execute
 this Ruby program in the command line as follows:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ruby hello-world.rb**
 Hello World!
@@ -75,8 +72,7 @@ Indenting code is also not necessary. But it does make it much easier to
 read for human beings!
 
 [[puts-and-print]]
-puts and print
-^^^^^^^^^^^^^^
+=== puts and print
 
 If you go looking for examples on Ruby on the Internet, you will find
 two typical ways of printing text on the screen:
@@ -100,7 +96,7 @@ puts 'zzz'
 
 On the screen, you will see this:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ruby hello-world.rb**
 Hello World!
@@ -110,8 +106,7 @@ Hello World!zzz
 ----
 
 [[comments]]
-Comments
-^^^^^^^^
+=== Comments
 
 A comment in a Ruby program starts with a `#`-sign and ends with a
 newline. As an example, I can add a comment to the `hello-world.rb`
@@ -152,10 +147,8 @@ puts
 puts '1#2#3#4#5#6#'  # Comment on this
 ----
 
-
 [[help-via-ri]]
-Help via ri
-^^^^^^^^^^^
+=== Help via ri
 
 When programming, you do not always have a Ruby handbook available.
 Fortunately, the Ruby developers thought of this and provided a built-in
@@ -167,7 +160,7 @@ help feature, if we are only just getting started with Ruby? So I am
 going to jump ahead a little and show you how you can search for
 information on the class String:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri String**
   [...]
@@ -178,7 +171,7 @@ If we are looking for information on a specific method (chicken-egg!),
 then we can also use `ri`. Let's take `gsub` as an example. This is a
 method for replacing parts of a String (that is useful now and again).
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri String.size**
 = String.size
@@ -206,7 +199,7 @@ entering `irb` on the shell and ends if you enter `exit`.
 
 An example is worth a thousand words:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> puts 'Hello World!'
@@ -224,8 +217,7 @@ In this chapter, we develop many examples within irb. It is so
 wonderfully quick and easy.
 
 [[comments-in-irb]]
-Comments in irb
-^^^^^^^^^^^^^^^
+=== Comments in irb
 
 Having comments within `irb` would obviously rarely make sense because
 code developed in `irb` is more or less code for the bin. But within
@@ -235,8 +227,7 @@ insert them into the `irb` without any problems, or you can simply omit
 them.
 
 [[ruby-is-object-oriented]]
-Ruby is Object-Oriented
-~~~~~~~~~~~~~~~~~~~~~~~
+== Ruby is Object-Oriented
 
 Ruby only knows objects. Everything is an object (sounds almost like
 Zen). Every object is an instance of a class. You can find out the class
@@ -261,8 +252,7 @@ will gradually get clearer.
 ====
 
 [[methods]]
-Methods
-^^^^^^^
+=== Methods
 
 In other programming languages, the terms you would use for Ruby methods
 would be: functions, procedures, subroutines and of course methods.
@@ -285,7 +275,7 @@ this book.
 So let's assume that we use the following code sequence repeatedly (for
 whatever reason):
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **puts 'Hello World!'**
@@ -308,7 +298,7 @@ this can all be done in one go.
 
 IMPORTANT: Names of methods are always written in lower case.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **def three_times**
@@ -329,7 +319,7 @@ When defining a method, you can define required parameters and use them
 within the method. This enables us to create a method to which we pass a
 string as parameter and we can then output it three times.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **def three_times(value)**
 >>   **puts value**
@@ -347,7 +337,7 @@ Hello World!
 
 Incidentally, you can omit the brackets when calling the method.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **three_times 'Hello World!'**
 Hello World!
@@ -374,7 +364,7 @@ what makes you happy.
 If you do not specify a parameter with the above method, you will get
 the error message: `wrong number of arguments (0 for 1)`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **three_times**
 ArgumentError: wrong number of arguments (0 for 1)
@@ -388,7 +378,7 @@ $
 You can give the variable `value` a default value and then you can also
 call the method without parameter:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **def three_times(value = 'blue')**
@@ -411,8 +401,7 @@ blue
 ----
 
 [[classes]]
-Classes
-^^^^^^^
+=== Classes
 
 For now you can think of a class as a collection of methods. The name of
 a class always starts with an upper case letter. Let's assume that the
@@ -432,7 +421,7 @@ end
 
 Let's play it through in `irb`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class This_and_that**
@@ -448,7 +437,7 @@ $ **irb**
 
 Now we try to call the method `three_times`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **This_and_that.three_times**
 NoMethodError: undefined method `three_times' for This_and_that:Class
@@ -462,7 +451,7 @@ and not an instance. As we are working with instance methods, it only
 works if we have first created a new object (a new instance) of the
 class `This_and_that` with the class method new:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **abc = This_and_that.new**
 => #<This_and_that:0x007fc6f306bd70>
@@ -480,8 +469,7 @@ detail in xref:class-methods-and-instance-methods[the section called
 "Class Methods and Instance Methods"]. Another chicken and egg problem.
 
 [[private-methods]]
-Private Methods
-+++++++++++++++
+==== Private Methods
 
 Quite often it makes sense to only call a method within its own class or
 own instance. Such methods are referred to as private methods (as
@@ -490,7 +478,7 @@ opposed to public methods), and they are listed below the keyword
 
 irb example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class Example**
@@ -517,8 +505,7 @@ $
 ----
 
 [[method-initialize]]
-Method initialize()
-+++++++++++++++++++
+==== Method initialize()
 
 If a new instance is created (by calling the method new), the method
 that is processed first and automatically is the method `initialize`.
@@ -527,7 +514,7 @@ explicitly under `private`.
 
 irb example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class Room**
@@ -549,7 +536,7 @@ initialize is processed automatically.
 The method new accepts the parameters specified for the method
 initialize:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class Example**
@@ -566,14 +553,13 @@ $
 ----
 
 [[return]]
-return
-++++++
+==== return
 
 puts is nice to demonstrate an example in this book but normally you
 need a way to return the result of something. The `return` statement can
 be used for that:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **def area_of_a_circle(radius)**
@@ -590,7 +576,7 @@ $ **irb**
 But it wouldn't be Ruby if you couldn't do it shorter. You can simply
 skip return:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **def area_of_a_circle(radius)**
@@ -607,7 +593,7 @@ $ **irb**
 You can actually even skip the last line because Ruby returns the value
 of the last expression as a default:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **def area_of_a_circle(radius)**
@@ -624,8 +610,7 @@ $ **irb**
 don't have to use it in case you feel more comfortable with out.
 
 [[inheritance]]
-Inheritance
-+++++++++++
+==== Inheritance
 
 A class can inherit from another class. When defining the class, the
 parent class must be added with a `<` (smaller than) sign:
@@ -645,7 +630,7 @@ inherit the class `Abc` and add a new method `d`. The new instances
 show that `example2` has access to the methods a, b, c and d but
 `example1` only to `a`, `b` and `c`.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class Abc**
@@ -694,8 +679,7 @@ you were trying to use.
 ====
 
 [[class-methods-and-instance-methods]]
-Class Methods and Instance Methods
-++++++++++++++++++++++++++++++++++
+==== Class Methods and Instance Methods
 
 There are two important kinds of methods: class methods and instance
 methods.
@@ -708,7 +692,7 @@ instance. So you cannot apply the method `new` to an instance.
 
 Let's first try to call an instance method as class method:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class Knowledge**
@@ -726,7 +710,7 @@ NameError: uninitialized constant Knowlegde
 So that does not work. Well, then let's create a new instance of the
 class and try again:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **example = Knowledge.new**
 => #<Knowledge:0x007fce04039bf0>
@@ -741,7 +725,7 @@ Rails gurus would now whisk you away into the depths of the source code
 and pick out examples from the ActiveRecord. I will spare you this and
 show an abstract example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class Knowledge**
@@ -757,7 +741,7 @@ $ **irb**
 
 And the proof to the contrary:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **example = Knowledge.new**
 => #<Knowledge:0x007ffda3050980>
@@ -806,7 +790,7 @@ Of course you can use the same method name for a class and an instance
 method. Obviously that doesn't make code easier to understand. Here is
 an example with `pi` as a class and an instance method:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class Knowledge**
@@ -829,13 +813,13 @@ $
 ----
 
 [[list-of-all-instance-methods]]
-List of All Instance Methods
+==== List of All Instance Methods
 
 You can read out all defined methods for a class with the method
 `instance_methods`. We try it out with the class `Knowledge` (first we
 create it once again in the irb):
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class Knowledge**
@@ -864,7 +848,7 @@ But that is much more than we have defined! Why? It's because Ruby gives
 every new class a basic set of methods by default. If we only want to
 list the methods that we have defined, then we can do it like this:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **Knowledge.instance_methods(false)**
 => [:pi]
@@ -873,15 +857,13 @@ $
 ----
 
 [[variables]]
-Variables
-~~~~~~~~~
+== Variables
 
 You already know that everything in Ruby is an object. So a variable
 must also be an object.
 
 [[naming-conventions]]
-Naming Conventions
-^^^^^^^^^^^^^^^^^^
+=== Naming Conventions
 
 Normal variables are written in lower case. Constants start with an
 upper case letter.
@@ -898,13 +880,12 @@ who probably do not have those characters directly available on their
 keyboards, it is better to stick to pure ASCII.
 
 [[strings]]
-Strings
-^^^^^^^
+=== Strings
 
 Let's experiment a little bit in the `irb`. The method `.class` tells us
 which class we are dealing with.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = 'First test'**
@@ -917,7 +898,7 @@ That was easy. As you can see, Ruby “automagically” creates an object of
 the class `String`. We could also do this by explicitly calling the
 method `new`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **b = String.new('Second test')**
 => "Second test"
@@ -928,7 +909,7 @@ method `new`:
 If we call `String.new` without a parameter, this also creates an object
 of the class `String`. But it is an empty String:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **c = String.new**
 => ""
@@ -939,8 +920,7 @@ $
 ----
 
 [[single-and-double-quotations-marks]]
-Single and Double Quotations Marks
-++++++++++++++++++++++++++++++++++
+==== Single and Double Quotations Marks
 
 Strings can be defined either in single quotes or double quotes.
 
@@ -954,7 +934,7 @@ inserted in the corresponding place in the string.
 
 Example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = 'blue'**
@@ -971,19 +951,17 @@ If the result of the expression is not a string, Ruby tries to apply the
 method `to_s` in order to convert the value of the object into a string.
 
 [[integers]]
-Integers
-^^^^^^^^
+=== Integers
 
 [[fixnum-and-bignum]]
-Fixnum and Bignum
-+++++++++++++++++
+==== Fixnum and Bignum
 
 `Fixnum` and `Bignum` are `Integer` classes. A `Fixnum` is an `Integer`
 that can be saved in a `Word`. If a `Fixnum` gets bigger, it
 automatically becomes a `Bignum`. Here is an example where a becomes
 larger and by that becomes a `Bignum`.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **20.class**
@@ -1005,13 +983,12 @@ $
 ----
 
 [[floats]]
-Floats
-++++++
+==== Floats
 
 `Float` is a class for real numbers (“floating point numbers”). The
 decimal separator is a point.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = 20.424**
@@ -1025,13 +1002,12 @@ $
 ----
 
 [[simple-calculations]]
-Simple Calculations
-+++++++++++++++++++
+==== Simple Calculations
 
 Calculating with integers and floats is so easy that you can describe
 everything with just a few lines of code in the `irb`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = 10**
@@ -1063,13 +1039,12 @@ $
 ----
 
 [[boolean-values-and-nil]]
-Boolean Values and nil
-^^^^^^^^^^^^^^^^^^^^^^
+=== Boolean Values and nil
 
 For boolean values (`true` and `false`) and for `nil` (no value) there
 are separate classes:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **true.class**
@@ -1088,8 +1063,7 @@ the term derives from “_not in list_” from the legacy of the programming
 language Lisp (the name is an acronym of _List Processing_).
 
 [[scope-of-variables]]
-Scope of Variables
-^^^^^^^^^^^^^^^^^^
+=== Scope of Variables
 
 Variables have a different scope (or “reach”) within the Ruby
 application and therefore also within a Ruby on Rails application.
@@ -1098,8 +1072,7 @@ IMPORTANT: You need to keep this scope in mind while programming.
            Otherwise you can end up with odd effects.
 
 [[local-variables-aaa-or-_aaa]]
-Local Variables (`aaa` or `_aaa`)
-+++++++++++++++++++++++++++++++++
+==== Local Variables (`aaa` or `_aaa`)
 
 Local variables either start with a lower case letter or an underscore
 (`_`). Their scope is limited to the current environment (for example
@@ -1107,7 +1080,7 @@ the current method). The following example defines two methods which use
 the same local variable radius. Because they are local they don't
 interact with each other:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **def area(radius)**
@@ -1127,13 +1100,12 @@ $
 ----
 
 [[global-variables-aaa]]
-Global Variables (`$aaa`)
-+++++++++++++++++++++++++
+==== Global Variables (`$aaa`)
 
 A global variable starts with a `$`-sign and is accessible in the entire
 programm. Example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **$value = 10**
@@ -1160,8 +1132,7 @@ $
 Global variables are used very rarely!
 
 [[instance-variables-aaa]]
-Instance Variables (`@aaa`)
-+++++++++++++++++++++++++++
+==== Instance Variables (`@aaa`)
 
 Instance variables (“*A*ttributes”, hence the `@`) only apply within a
 class, but everywhere in it – a mini version of global variables, so to
@@ -1195,7 +1166,7 @@ puts my_wall.color
 
 If you start this program, the following output will appear:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ruby color.rb**
 white
@@ -1211,16 +1182,14 @@ With the method `color` we can access the value of `@color` outside of
 the instance. This kind of method is called a setter method.
 
 [[methods-once-again]]
-Methods Once Again
-~~~~~~~~~~~~~~~~~~
+== Methods Once Again
 
 In order to keep the amount of chicken and egg problems in this chapter
 at a manageable level, we need to go back to the topic Methods and
 combine what we have learned so far.
 
 [[getters-and-setters]]
-Getters and Setters
-^^^^^^^^^^^^^^^^^^^
+=== Getters and Setters
 
 As instance variables Rubyinstance variables (“attributes”) only exist
 within the relevant instance, you always need to write a “getter” method
@@ -1255,7 +1224,7 @@ puts "W: #{kitchen.windows}"
 
 The execution of the program:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ruby room.rb**
 D: 1
@@ -1327,7 +1296,7 @@ puts "W: #{kitchen.windows}"
 
 The corresponding output is this:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ruby room.rb**
 D: 1
@@ -1386,8 +1355,7 @@ puts "W: #{kitchen.windows}"
 ----
 
 [[built-in-methods-for-string]]
-Built-In Methods for String
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Built-In Methods for String
 
 Most classes already come with a bundle of very useful methods. These
 methods are always written after the relevant object, separated by a
@@ -1395,7 +1363,7 @@ point.
 
 Here are a few examples for methods of the class `String`.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = 'A dog'**
@@ -1417,7 +1385,7 @@ $
 With `instance_methods(false)` you can get a list of the build in
 methods:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **String.instance_methods(false)**
@@ -1441,7 +1409,7 @@ $
 If you are not sure what one of these methods does you can use `ri` to
 look it up:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri String.size**
 = String.size
@@ -1456,14 +1424,13 @@ Returns the character length of str.
 ----
 
 [[method-chaining]]
-Method Chaining
-^^^^^^^^^^^^^^^
+=== Method Chaining
 
 You may not think of it straight away, but once you have got used to
 working with Ruby, then it makes perfect sense (and is perfectly
 logical) to chain different methods.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = 'A dog'**
@@ -1475,14 +1442,13 @@ $
 ----
 
 [[converting-from-one-to-the-other-casting]]
-Converting from One to the Other: Casting
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Converting from One to the Other: Casting
 
 There is a whole range of useful instance methods for converting
 (“casting”) objects from one class to another. First, let's use the
 method `.to_s` to convert a `Fixnum` to a `String`.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = 10**
@@ -1503,7 +1469,7 @@ NOTE: Incidentally, that is exactly what `puts` does if you use `puts`
 
 Now we use the method `.to_i` to change a `Float` to a `Fixnum`.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **c = 10.0**
@@ -1519,8 +1485,7 @@ $
 ----
 
 [[method-to_s-for-your-own-classes]]
-Method `to_s` for Your Own Classes
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Method `to_s` for Your Own Classes
 
 You should always integrate a method `to_s` for your own custom classes,
 even if it is just for the sake of easier debugging. Then you can simply
@@ -1529,7 +1494,7 @@ an object via the method `to_s`).
 
 Here is an example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **class Person**
@@ -1552,13 +1517,12 @@ $
 ----
 
 [[is-a-method]]
-Is `+` a Method?
-^^^^^^^^^^^^^^^^
+=== Is `+` a Method?
 
 Why is there also a plus symbol in the list of methods for String? Let's
 find out by looking it up in `ri`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri -T String.+**
 String.+
@@ -1577,7 +1541,7 @@ concatenated to str.
 
 hmmm ... Let's see what it says for `Fixnum`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri -T Fixnum.+**
 Fixnum.+
@@ -1596,7 +1560,7 @@ Let's have a go and play around with this in `irb`. So we should be able
 to add the `+` to an object, just as any other method, separated by a dot
 and add the second number in brackets as parameter:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **10 + 10**
@@ -1616,8 +1580,7 @@ value as parameter. Really we should put this value in brackets, but
 thanks to Ruby's well thought-out syntax this is not necessary.
 
 [[can-i-overwrite-the-method]]
-Can I Overwrite the Method `+`?
-++++++++++++++++++++++++++++++++
+==== Can I Overwrite the Method `+`?
 
 Yes, you can overwrite any method. Logically, this does not make much
 sense for methods such as `+`, unless you want to drive your fellow
@@ -1627,7 +1590,7 @@ will believe me.
 The aim is overwriting the method `+` for `Fixnum`. We want the result
 of every addition to be the number 42.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **10 + 10**
@@ -1649,8 +1612,7 @@ the class `Fixnum`, and after that we do the calculation again. But this
 time, with different results.
 
 [[if-condition]]
-if-Condition
-~~~~~~~~~~~~
+== if-Condition
 
 An abstract `if`-condition looks like this:
 
@@ -1693,7 +1655,7 @@ IMPORTANT: The `==` is used to compare two values.
 
 You can try an _expression_ really well in `irb`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = 10**
@@ -1705,8 +1667,7 @@ $
 ----
 
 [[shorthand]]
-Shorthand
-^^^^^^^^^
+=== Shorthand
 
 A frequently used shorthand notation of an `if`-condition can be found
 in the following code:
@@ -1727,8 +1688,7 @@ puts 'a is 10' if a == 10
 ----
 
 [[else]]
-else
-^^^^
+=== else
 
 You can probably imagine how this works, but for the sake of
 completeness, here is a little example:
@@ -1745,8 +1705,7 @@ end
 ----
 
 [[elsif]]
-elsif
-^^^^^
+=== elsif
 
 Again, most programmers will know what this is all about. Example:
 
@@ -1762,15 +1721,13 @@ end
 ----
 
 [[loops]]
-Loops
-~~~~~
+== Loops
 
 There are different ways of implementing loops in Ruby. The iterator
 variation is used particularly often in the Rails environment.
 
 [[while-and-until]]
-while and until
-^^^^^^^^^^^^^^^
+=== while and until
 
 An abstract while loop looks like this:
 
@@ -1796,7 +1753,7 @@ end
 
 Here is a practical `irb` example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **i = 0**
@@ -1824,7 +1781,7 @@ ends
 
 Again, here is the corresponding `irb` example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **i = 5**
@@ -1844,8 +1801,7 @@ $
 ----
 
 [[blocks-and-iterators]]
-Blocks and Iterators
-^^^^^^^^^^^^^^^^^^^^
+=== Blocks and Iterators
 
 “Block” and “iterator” are some of the favorite words of many Ruby
 programmers. Now I am going to show you why.
@@ -1869,15 +1825,14 @@ end
 ----
 
 [[iterators]]
-Iterators
-+++++++++
+==== Iterators
 
 Iterators are just a specific type of method. As you probably know, the
 word “_iterate_” means to repeat something. For example, the class
 Fixnum has the iterator times() Rubytimes. Let's see what help `ri`
 offers us:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri -T Fixnum.times**
 Fixnum.times
@@ -1907,7 +1862,7 @@ produces:
 
 And it also gives a nice example that we are going to try out in irb:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **5.times do |i|**
@@ -1925,7 +1880,7 @@ $
 
 There is also a single-line notation for small blocks:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **5.times { |i| puts i }**
@@ -1942,7 +1897,7 @@ $
 By the way, an iterator does not necessarily have to pass a variable to
 the block:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **5.times { puts 'example' }**
@@ -1957,20 +1912,18 @@ $
 ----
 
 [[blocks]]
-Blocks
-++++++
+==== Blocks
 
 A block is the code that is triggered by an iterator. In the block, you
 have access to the local variable(s) passed by the iterator.
 
 [[method-upto]]
-Method upto
-+++++++++++
+==== Method upto
 
 Apart from `times` there is also the method `upto`, for easily
 implementing a loop. `ri` offers a nice example for this, too:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri -T Fixnum.upto**
 Fixnum.upto
@@ -1997,19 +1950,17 @@ produces:
 ----
 
 [[arrays-and-hashes]]
-Arrays and Hashes
-~~~~~~~~~~~~~~~~~
+== Arrays and Hashes
 
 As in many programming languages, _arrays_ and _hashes_ are popular
 structures in Ruby for storing data.
 
 [[arrays]]
-Arrays
-^^^^^^
+=== Arrays
 
 An array is a list of objects. Let's play around in `irb:`
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = [1,2,3,4,5]**
@@ -2024,7 +1975,7 @@ That is simple and easy to understand.
 
 Let's see if it also works with strings in the array:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = ['Test', 'Banana', 'blue']**
@@ -2046,7 +1997,7 @@ that will work, too, because the array stores objects and it does not
 matter which kind of objects they are (i.e. `String`, `Fixnum`, `Float`,
 ...). But a little test can't hurt:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = [1, 2.2, 'House', nil]**
@@ -2067,7 +2018,7 @@ $
 
 Next, let's have a look at what the `ri` help page says for `Array`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri -T Array**
 Array < Object
@@ -2102,7 +2053,7 @@ As you can see, arrays can also be created via the method `new` (like
 any class). Individual new elements can then be added at the end of an
 array via the method `<<`. Here is the corresponding example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = Array.new**
@@ -2116,13 +2067,12 @@ $
 ----
 
 [[iterator-each]]
-Iterator `each`
-+++++++++++++++
+==== Iterator `each`
 
 You can work your way through an array piece by piece via the method
 `each`. Example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **cart = ['eggs', 'butter']**
@@ -2140,7 +2090,7 @@ $
 Once more, `ri` provides help and an example in case you forget how to
 use each:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri -T Array.each**
 Array.each
@@ -2164,13 +2114,12 @@ produces:
 ----
 
 [[hashes]]
-Hashes
-^^^^^^
+=== Hashes
 
 A _Hash_ is a list of _key/value pairs_. Here is an example with
 strings as keys:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **prices = { 'egg' => 0.1, 'butter' => 0.99 }**
@@ -2188,14 +2137,13 @@ but - as with arrays - also classes that you define yourself (see
 xref:arrays[the section called "Arrays"]).
 
 [[symbols]]
-Symbols
-+++++++
+==== Symbols
 
 _Symbols_ are a strange concept and difficult to explain. But they are
 very useful and used frequently, amongst others with hashes. Normally,
 variables always create new objects:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **a = 'Example 1'**
@@ -2220,7 +2168,7 @@ A symbol is defined by a colon before the name and cannot store any
 values itself, but it always has the same object ID, so it is very well
 suited to be a _key_:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **:a.class**
@@ -2237,7 +2185,7 @@ then the symbol `:white` three times in a row. For `"white"`, a new
 object is created each time. For the symbol `:white`, only the first
 time:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **'white'.object_id**
@@ -2258,7 +2206,7 @@ $
 
 Using symbols as key for hashes is much more memory efficient:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **colors = { black: '#000000', white: '#FFFFFF' }**
@@ -2275,13 +2223,12 @@ about symbols, go to the help page about the class Symbol via
 `ri Symbol`.
 
 [[iterator-each-1]]
-Iterator each
-+++++++++++++
+==== Iterator each
 
 With the method `each` you can work your way through a `Hash` step by
 step. Example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **colors = {black: '#000000', white: '#FFFFFF' }**
@@ -2299,7 +2246,7 @@ $
 Again, `ri` offers help and an example, in case you cannot remember one
 day how to use each:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **ri -T Hash.each**
 Hash.each
@@ -2326,19 +2273,17 @@ produces:
 ----
 
 [[miscellaneous]]
-Miscellaneous
-~~~~~~~~~~~~~
+== Miscellaneous
 
 [[range]]
-Range
-^^^^^
+=== Range
 
 The class Range represents an interval. The start and end points of the
 interval are defined enclosed in normal brackets and separated by two
 dots in between them. Here is an example in which we use a range like an
 iterator with each:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **irb**
 >> **(0..3)**
@@ -2358,7 +2303,7 @@ $ **irb**
 
 Via the method `to_a` you can generate an array from a `Range`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **(0..3).to_a**
 => [0, 1, 2, 3]
@@ -2370,7 +2315,7 @@ that the objects can be compared via `<=>` and use the method `succ` for
 counting on to the next value. So you can also use `Range` to represent
 letters:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **('a'..'h').to_a**
 => ["a", "b", "c", "d", "e", "f", "g", "h"]
@@ -2381,7 +2326,7 @@ As alternative notation, you may sometimes come across `Range.new()`. In
 this case, the start and end points are not separated by two dots, but
 by a comma. This is what it looks like:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 >> **(0..3) == Range.new(0,3)**
 => true

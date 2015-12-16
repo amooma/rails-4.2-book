@@ -1,10 +1,8 @@
 [[cookies-and-sessions]]
-Cookies and Sessions
---------------------
+= Cookies and Sessions
 
 [[cookies]]
-Cookies
-~~~~~~~
+== Cookies
 
 With a cookie, you can store information on the web browser’s system, in
 form of strings as key-value pairs that the web server has previously
@@ -34,7 +32,7 @@ To demonstrate how cookies work, we are going to build a Rails
 application that places a cookie on a page, reads it out on another page
 and displays the content, and the cookie is deleted on a third page.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new cookie_jar**
   [...]
@@ -89,15 +87,13 @@ Start the Rails server with `rails server` and go to the URL
 http://localhost:3000/home/show_cookies in your browser. You will not
 see any values.
 
-image:screenshots/chapter08/show_cookies_empty.jpg[Show Cookies
-empty,title="Show Cookies empty"]
+image::screenshots/chapter08/show_cookies_empty.png[Show Cookies empty,title="Show Cookies empty"]
 
 Now go to the URL http://localhost:3000/home/set_cookies and then back
 to http://localhost:3000/home/show_cookies. Now you will see the values
 that we have set in the method `set_cookies`.
 
-image:screenshots/chapter08/show_cookies_set.jpg[Show Cookies
-set,title="Show Cookies set"]
+image::screenshots/chapter08/show_cookies_set.png[Show Cookies set,title="Show Cookies set"]
 
 By requesting the page http://localhost:3000/home/delete_cookies you can
 delete the cookies again.
@@ -111,8 +107,7 @@ WARNING: The content of a normally cookie in the browser is easy to read and to
          shopping baskets in an unsigned cookie, otherwise the user could change the prices in this shopping basket himself.
 
 [[permanent-cookies]]
-Permanent Cookies
-^^^^^^^^^^^^^^^^^
+=== Permanent Cookies
 
 Cookies are normally set to give the application a way of recognizing
 users when they visit again later. Between these visits to the website,
@@ -149,8 +144,7 @@ IMPORTANT: "permanent" here does not really mean permanent. You cannot set a
            20 years. This is practically the same as permanent.
 
 [[signed-cookies]]
-Signed Cookies
-^^^^^^^^^^^^^^
+=== Signed Cookies
 
 With normally placed cookies, you have no option on the application side
 to find out if the user of the application has changed the cookie. This
@@ -201,8 +195,7 @@ set the cookie. The name of the cookie can still be read by the user,
 but not the value.
 
 [[sessions]]
-Sessions
-~~~~~~~~
+== Sessions
 
 As HTTP is a stateless protocol, we encounter special problems when
 developing applications. An individual web page has no connection to the
@@ -222,8 +215,7 @@ as with cookies, but also hashes and arrays. So you can for example use
 it to conveniently implement a shopping cart in an online shop.
 
 [[breadcrumbs-via-session]]
-Breadcrumbs via Session
-^^^^^^^^^^^^^^^^^^^^^^^
+=== Breadcrumbs via Session
 
 As an example, we create an application with a controller and three
 views. When a view is visited, the previously visited views are
@@ -231,7 +223,7 @@ displayed in a little list.
 
 The basic application:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new breadcrumbs**
   [...]
@@ -322,12 +314,10 @@ the pages that you have visited before. Of course, this only works on
 the second page, because you do not yet have a history on the first page
 you visit.
 
-image:screenshots/chapter08/breadcrumbs_session_beispiel.jpg[Breadcrumbs
-session example,title="Breadcrumbs session example"]
+image::screenshots/chapter08/breadcrumbs_session_beispiel.png[Breadcrumbs session example,title="Breadcrumbs session example"]
 
 [[reset_session]]
-reset_session
-^^^^^^^^^^^^^
+=== reset_session
 
 Occasionally, there are situations where you want to reset a session (in
 other words, delete the current session and start again with a new,
@@ -335,7 +325,7 @@ fresh session). For example, if you log out of a web application, the
 session will be reset. This is easily done and we can quickly integrate
 it into our breadcrumb application:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate controller Home reset**
         skip  app/controllers/home_controller.rb
@@ -407,8 +397,7 @@ IMPORTANT: It is not just important to invoke `reset_session`, but you need to a
            breadcrumbs would still appear in the view..
 
 [[saving-sessions-in-the-database]]
-Saving Sessions in the Database
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Saving Sessions in the Database
 
 Saving the entire session data in a cookie on the user’s browser is not
 always the best solution. Amongst others, the limit of 4 kB can pose a
@@ -429,7 +418,7 @@ gem 'activerecord-session_store', github: 'rails/activerecord-session_store'
 
 After that we have to run `bundle install`
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **bundle install**
 Fetching git://github.com/rails/activerecord-session_store.git
@@ -450,7 +439,7 @@ After that we have to run
 `rails generate active_record:session_migration` and `rake db:migrate`
 to create the needed table in the database.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $  **rails generate active_record:session_migration**
       create  db/migrate/20150428183919_add_sessions_table.rb

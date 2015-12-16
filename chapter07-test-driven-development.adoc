@@ -1,10 +1,8 @@
 [[tests]]
-Tests
------
+= Tests
 
 [[introduction]]
-Introduction
-~~~~~~~~~~~~
+== Introduction
 
 I have been programming for 30 years and most of the time I have managed
 quite well without test-driven development (TDD). I am not going to be
@@ -38,12 +36,11 @@ http://guides.rubyonrails.org/testing.html.
 NOTE: TDD is just like driving a car. The only way to learn it is by doing it.
 
 [[example-for-a-user-in-a-web-shop]]
-Example for a User in a Web Shop
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Example for a User in a Web Shop
 
 Let’s start with a user scaffold in an imaginary web shop:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new webshop**
   [...]
@@ -75,7 +72,7 @@ The complete test suite of a Rails project is processed with the command
 `rake test`. Let’s have a go and see what a test produces at this stage
 of development:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake test**
 Run options: --seed 30780
@@ -112,7 +109,7 @@ end
 
 Then we execute `rake test` again:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake test**
 Run options: --seed 149
@@ -188,7 +185,7 @@ two:
 
 Now, a `rake test` completes without any errors again:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake test**
 Run options: --seed 3341
@@ -224,7 +221,7 @@ two:
 To be on the safe side, let’s do another `rake     test` after making
 our changes (you really can’t do that often enough):
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake test**
 
@@ -243,13 +240,12 @@ IMPORTANT: All fixtures are loaded into the database when a test is started. You
            `uniqueness` in your validation.
 
 [[functional-tests]]
-Functional Tests
-^^^^^^^^^^^^^^^^
+=== Functional Tests
 
 Let’s take a closer look at the point where the original errors
 occurred:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
   1) Failure:
 UsersControllerTest#test_should_create_user
@@ -423,8 +419,7 @@ TIP: With `rake test:functionals` you can also run just the functional tests
      in the directory `test/functional/`.
 
 [[unit-tests]]
-Unit Tests
-^^^^^^^^^^
+=== Unit Tests
 
 For testing the validations that we have entered in
 `app/models/user.rb`, units tests are more suitable. Unlike the
@@ -451,7 +446,7 @@ end
 By default, scaffold only writes a commented-out dummy test. That is why
 `rake test:units` runs through without any content:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake test:units**
 Run options: --seed 26990
@@ -516,7 +511,7 @@ is valid (it should not).
 
 So a `rake test:units` then completes immediately:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake test:units**
 Run options: --seed 43319
@@ -553,7 +548,7 @@ end
 
 Then once more a `rake test:units`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake test:units**
 Run options: --seed 11674
@@ -568,8 +563,7 @@ Finished in 0.048212s, 41.4834 runs/s, 62.2252 assertions/s.
 ----
 
 [[fixtures]]
-Fixtures
-~~~~~~~~
+== Fixtures
 
 With _fixtures_ you can generate example data for tests. The default
 format for this is YAML. The files for this can be found in the
@@ -582,8 +576,7 @@ Examples for alternative formats (e.g. CSV) can be found at
 http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html[api.rubyonrails.org/classes/ActiveRecord/Fixtures.html].
 
 [[static-fixtures]]
-Static Fixtures
-^^^^^^^^^^^^^^^
+=== Static Fixtures
 
 The simplest variant for fixtures is static data. The fixture for `User`
 used in xref:example-for-a-user-in-a-web-shop["Example for a
@@ -604,8 +597,7 @@ two:
 You simple write the data in YAML format into the corresponding file.
 
 [[fixtures-with-erb]]
-Fixtures with ERB
-^^^^^^^^^^^^^^^^^
+=== Fixtures with ERB
 
 Static YAML fixtures are sometimes too unintelligent. In these cases,
 you can work with ERB.
@@ -629,8 +621,7 @@ two:
 ----
 
 [[integration-tests]]
-Integration Tests
-~~~~~~~~~~~~~~~~~
+== Integration Tests
 
 Integration tests are tests that work like functional tests but can go
 over several controllers and additionally analyze the content of a
@@ -644,7 +635,7 @@ integration tests. You can either do this manually in the directory
 `test/integration/` or more comfortably with
 `rails generate integration_test`. So let’s create an integration test:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate integration_test invalid_new_user_workflow**
       invoke  test_unitrtd
@@ -683,7 +674,7 @@ test. This method is only available within an integration test.
 All integration tests can be executed with `rake test:integration`.
 Let’s have a go:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake test:integration**
 Run options: --seed 47618
@@ -705,13 +696,12 @@ run through and you don’t have to try it out manually in the browser as
 well.
 
 [[rake-stats]]
-rake stats
-~~~~~~~~~~
+== rake stats
 
 rake stats With `rake stats` you get an overview of your Rails project.
 For our example, it looks like this:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake stats**
 +-------------------+-------+-------+---------+---------+-----+-------+
@@ -742,8 +732,7 @@ principal objective. Logically, this does not say anything about the
 quality of tests.
 
 [[more-on-testing]]
-More on Testing
-~~~~~~~~~~~~~~~
+== More on Testing
 
 The most important link on the topic testing is surely the URL
 http://guides.rubyonrails.org/testing.html. There you will also find
