@@ -1,6 +1,6 @@
 = Rails 4.2 for Autodidacts
 Stefan Wintermeyer
-v4.2.2, 2015-17-12
+v4.2.2, 2015-12-17
 :doctype: book
 :producer: Stefan Wintermeyer
 :keywords: Ruby on Rails, Rails, Ruby, Framework, MVC
