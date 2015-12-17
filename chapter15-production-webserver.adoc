@@ -1,15 +1,13 @@
 [[web-server-in-production-mode]]
-Web Server in Production Mode
------------------------------
+= Web Server in Production Mode
 
 [[introduction]]
-Introduction
-~~~~~~~~~~~~
+== Introduction
 
 Until now we were working with the development system. Let’s have
 another close look at the output of that development system:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails server**
 => Booting WEBrick
@@ -51,8 +49,7 @@ WARNING: If you have never set up a Nginx or Apache webserver by yourself before
          running but without understanding how things work.
 
 [[debian-8.2]]
-Debian 8.2
-~~~~~~~~~~
+== Debian 8.2
 
 We build our production web server on a minimal Debian 8.0 system. To
 carry out this installation, you need to have root rights on the web
@@ -68,12 +65,11 @@ TIP: VMware or any other virtual PC system is a great playground to get a
      feeling how this works.
 
 [[buildsystem]]
-Buildsystem
-^^^^^^^^^^^
+=== Buildsystem
 
 First, we install a few debian packages we are going to need.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **apt-get -y install gawk libgdbm-dev pkg-config libffi-dev build-essential openssl libreadline6 libreadline6-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf libc6-dev ncurses-dev automake libtool bison subversion python**
 [...]
@@ -81,15 +77,14 @@ root@debian:~#
 ----
 
 [[node.js]]
-Node.js
-^^^^^^^
+=== Node.js
 
 To make the most of the asset pipeline, we install Node.js. Please go to
 the homepage of Node.js (http://nodejs.org/), search for the current
 stable release and adapt the version numbers in the commands listed here
 accordingly.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# cd /usr/src
 root@debian:/usr/src# wget http://nodejs.org/dist/v4.2.2/node-v4.2.2.tar.gz
@@ -107,12 +102,11 @@ root@debian:~#
 ----
 
 [[nginx]]
-nginx
-^^^^^
+=== nginx
 
 Nginx will be our web server to the outside world.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **apt-get -y install nginx**
 [...]
@@ -120,13 +114,12 @@ root@debian:~#
 ----
 
 [[user-deployer]]
-User Deployer
-^^^^^^^^^^^^^
+=== User Deployer
 
 Our Rails project is going to run within a Ruby and Rails installed via
 RVM in the user space. So we create a new user with the name `deployer`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **adduser deployer**
 Adding user `deployer' ...
@@ -149,12 +142,11 @@ root@debian:~#
 ----
 
 [[setting-up-rails-environment-for-user-deployer]]
-Setting up Rails Environment for User Deployer
-++++++++++++++++++++++++++++++++++++++++++++++
+==== Setting up Rails Environment for User Deployer
 
 With `su - deployer` we’ll become the user deployer:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **su - deployer**
 deployer@debian:~$
@@ -163,7 +155,7 @@ deployer@debian:~$
 As user `deployer`, please carry out the steps for installing Ruby 2.2.1
 and Rails 4.2.4 via RVM.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 deployer@debian:~$ **curl -L https://get.rvm.io | bash -s stable --rails**
 [...]
@@ -174,7 +166,7 @@ deployer@debian:~$
 To be able to start Unicorn with the RVM environment from within an
 `Init.d` script, we now need to generate a corresponding wrapper:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 deployer@debian:~$ **gem install unicorn**
  [...]
@@ -186,22 +178,20 @@ root@debian:~#
 ----
 
 [[database]]
-Database
-^^^^^^^^
+=== Database
 
 Usually, you want to use a "big" database in a production system, such
 as PostgreSQL or MySQL. So here is how to install a MySQL database on
 this system and what you need to adapt in the Rails project.
 
 [[mysql-installation]]
-MySQL Installation
-++++++++++++++++++
+==== MySQL Installation
 
 Next, we install the database MySQL. You will be asked for a database
 password. Please remember this password. Later, `root` can use it to log
 in to the database.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **apt-get -y install mysql-server libmysql-ruby libmysqlclient-dev**
 [...]
@@ -209,13 +199,12 @@ root@debian:~#
 ----
 
 [[creating-database-with-rights]]
-Creating Database with Rights
-+++++++++++++++++++++++++++++
+==== Creating Database with Rights
 
 In the MySQL database, we need to create the database `blog` with access
 rights for the user `deployer`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 deployer@debian:~$ **mysql -u root -p**
 Enter password:
@@ -249,14 +238,13 @@ IMPORTANT: Please DO CHANGE THE PASSWORD! Otherwise it will be the same password
            for everybody who reads this book which would be a security risk.
 
 [[memcache]]
-Memcache
-^^^^^^^^
+=== Memcache
 
 If you are working with a cache server (highly recommended), you of
 course have to install the appropriate software. For memcached
 (http://memcached.org/) you would enter this:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **apt-get -y install memcached**
 [...]
@@ -264,13 +252,12 @@ root@debian:~#
 ----
 
 [[setting-up-a-new-rails-project]]
-Setting Up a New Rails Project
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Setting Up a New Rails Project
 
 To keep this guide as simple as possible, we create a simple blog in the
 homedirectory of the user `deployer`.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **su - deployer**
 deployer@debian:~$ **rails new blog**
@@ -284,8 +271,7 @@ deployer@debian:~/blog$
 ----
 
 [[adapting-gemfile]]
-Adapting Gemfile
-^^^^^^^^^^^^^^^^
+=== Adapting Gemfile
 
 Please add the following content into the file `Gemfile`:
 
@@ -300,7 +286,7 @@ end
 
 Then install all gems with `bundle install`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 deployer@debian:~/blog$ **bundle install**
 [...]
@@ -319,8 +305,7 @@ end
 ----
 
 [[production-database-configuration]]
-Production Database Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Production Database Configuration
 
 In the file `config/database.yml` you need to enter the database
 configuration for the MySQL database for the production system. Please
@@ -363,8 +348,7 @@ production:
 IMPORTANT: Again: Please change the password!
 
 [[unicorn-configuration]]
-Unicorn Configuration
-^^^^^^^^^^^^^^^^^^^^^
+=== Unicorn Configuration
 
 For the Unicorn configuration, we use the file
 https://raw.github.com/defunkt/unicorn/master/examples/unicorn.conf.rb
@@ -480,12 +464,11 @@ end
 ----
 
 [[rake-dbmigration]]
-rake db:migration
-^^^^^^^^^^^^^^^^^
+=== rake db:migration
 
 We still need to create the database:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 deployer@debian:~/blog$ **rake db:migrate RAILS_ENV=production**
 [...]
@@ -496,13 +479,12 @@ IMPORTANT: Please ensure that the `rake db:migrate` concludes with a
            `RAILS_ENV=production`. This is to migrate the production database.
 
 [[rake-assetsprecompile]]
-rake assets:precompile
-^^^^^^^^^^^^^^^^^^^^^^
+=== rake assets:precompile
 
 `rake assets:precompile` ensures that all assets in the asset pipeline
 are made available for the production environment (see ?).
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 deployer@debian:~/blog$ **rake assets:precompile**
 [...]
@@ -510,12 +492,11 @@ deployer@debian:~/blog$
 ----
 
 [[unicorn-init-script]]
-Unicorn Init Script
-^^^^^^^^^^^^^^^^^^^
+=== Unicorn Init Script
 
 Now you need to continue working as user `root`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 deployer@debian:~/blog$ **exit**
 logout
@@ -572,7 +553,7 @@ esac
 
 You still have to activate the init script and start Unicorn:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **chmod +x /etc/init.d/unicorn_blog**
 root@debian:~# **update-rc.d -f unicorn_blog defaults**
@@ -585,8 +566,7 @@ Your Rails project is now accessible via the IP address of the web
 server.
 
 [[nginx-configuration]]
-nginx Configuration
-^^^^^^^^^^^^^^^^^^^
+=== nginx Configuration
 
 For the Rails project, we add a new configuration file
 `/etc/nginx/sites-available/blog.conf` with the following content:
@@ -632,7 +612,7 @@ directory to have it loaded by Nginx. The default file can be deleted.
 After that we restart Nginx and are all set. You can access the Rails
 application through the IP address of this server.
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **ln -s /etc/nginx/sites-available/blog /etc/nginx/sites-enabled/**
 root@debian:~# **rm /etc/nginx/sites-enabled/default**
@@ -642,15 +622,14 @@ root@debian:~#
 ----
 
 [[loading-updated-versions-of-the-rails-project]]
-Loading Updated Versions of the Rails Project
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Loading Updated Versions of the Rails Project
 
 If you want to activate Updates to the Rails project, you need to copy
 them into the directory `/home/deployer/blog` and log in as user
 `deployer` to run `rake assets:precompile` (see
 xref:asset-pipeline["Asset Pipeline"]).
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 deployer@debian:~/blog$ **rake assets:precompile**
 [...]
@@ -660,7 +639,7 @@ deployer@debian:~/blog$
 If you bring in new migrations, you of course also need to do a
 `rake db:migrate RAILS_ENV=production`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 deployer@debian:~/blog$ **rake db:migrate RAILS_ENV=production**
 [...]
@@ -669,7 +648,7 @@ deployer@debian:~/blog$
 
 Then you need to restart Unicorn as user `root`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 root@debian:~# **/etc/init.d/unicorn_blog restart**
 Starting unicorn...
@@ -677,12 +656,10 @@ root@debian:~#
 ----
 
 [[misc]]
-Misc
-~~~~
+== Misc
 
 [[alternative-setups]]
-Alternative Setups
-^^^^^^^^^^^^^^^^^^
+=== Alternative Setups
 
 The RVM, unicorn and Nginx way is fast and makes it possible to setup
 different Ruby versions on one server. But many admins prefer an easier
@@ -691,8 +668,7 @@ at https://www.phusionpassenger.com for more information about
 Passenger. It is a very good and reliable solution.
 
 [[what-else-there-is-to-do]]
-What Else There Is To Do
-^^^^^^^^^^^^^^^^^^^^^^^^
+=== What Else There Is To Do
 
 Please always consider the following points - every admin has to decide
 these for him- or herself and implement them accordingly:
@@ -704,8 +680,7 @@ these for him- or herself and implement them accordingly:
 available.
 
 [[and-co.]]
-404 and Co.
-^^^^^^^^^^^
+=== 404 and Co.
 
 Finally, please look into the `public` directory in your Rails project
 and adapt the HTML pages saved there to your own requirements.
@@ -719,8 +694,7 @@ You will find a list of HTTP error codes at
 http://en.wikipedia.org/wiki/List_of_HTTP_status_codes
 
 [[multiple-rails-servers-on-one-system]]
-Multiple Rails Servers on One System
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Multiple Rails Servers on One System
 
 You can runs several Rails servers on one system without any problems.
 You need to set up a separate Unicorn for each Rails server. You can
@@ -728,8 +702,7 @@ then distribute to it from nginx. With nginx you can also define on
 which IP address a Rails server is accessible from the outside.
 
 [[cloud-platform-as-service-provider]]
-Cloud Platform as Service Provider
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Cloud Platform as Service Provider
 
 If you do not have a web server available on the internet or want to
 deploy to a PaaS (Platform as a Service) system right from the start,

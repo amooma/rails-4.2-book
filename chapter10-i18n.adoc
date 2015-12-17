@@ -1,10 +1,8 @@
 [[internationalization]]
-Internationalization
---------------------
+= Internationalization
 
 [[introduction]]
-Introduction
-~~~~~~~~~~~~
+== Introduction
 
 If you are in the lucky situation of only creating web pages in English,
 then you can skip this chapter completely. For you, everything is set up
@@ -74,8 +72,7 @@ $
 You see it is not just about translating some views.
 
 [[i18n.t]]
-I18n.t
-^^^^^^
+=== I18n.t
 
 With `I18n.t` you can retrieve previously defined translations. The
 translations are saved by default in YAML format in the directory
@@ -215,8 +212,7 @@ Application in Only One Language: German"] does make some things easier
 and that’s why we are going to use it for this application as well.
 
 [[using-i18n.t-in-the-view]]
-Using I18n.t in the View
-++++++++++++++++++++++++
+==== Using I18n.t in the View
 
 In the view, you can use `I18n.t` as follows:
 
@@ -237,8 +233,7 @@ I18n.t('views.are_you_sure'), method: :delete %>
 ----
 
 [[localized-views]]
-Localized Views
-^^^^^^^^^^^^^^^
+=== Localized Views
 
 In Rails, there is a useful option of saving several variations of a
 view as "localized views", each of which represents a different
@@ -276,8 +271,7 @@ configured Rails project, this will be English. You can configure it in
 the file `config/application.rb`.
 
 [[a-rails-application-in-only-one-language-german]]
-A Rails Application in Only One Language: German
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== A Rails Application in Only One Language: German
 
 In a Rails application aimed only at German users, it is unfortunately
 not enough to just translate all the views into German. The approach is
@@ -639,8 +633,7 @@ course also integrate the German text directly if the application is
 purely in German.
 
 [[paths-in-german]]
-Paths in German
-^^^^^^^^^^^^^^^
+=== Paths in German
 
 Our bibliography is completely in German, but the URLs are still in
 English. If we want to make all books available at the URL
@@ -679,8 +672,7 @@ The brilliant thing with Rails routes is that you do not need to do
 anything else. The rest is managed transparently by the routing engine.
 
 [[multilingual-rails-application]]
-Multilingual Rails Application
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Multilingual Rails Application
 
 The approach for multilingual Rails applications is very similar to the
 monoligual, all-German Rails application described in the section
@@ -690,8 +682,7 @@ language files for all required languages and tell the Rails application
 which language it should currently use. We do this via `I18n.locale`.
 
 [[using-i18n.locale-for-defining-the-default-language]]
-Using I18n.locale for Defining the Default Language
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Using I18n.locale for Defining the Default Language
 
 Of course, a Rails application has to know in which language a web page
 should be represented. `I18n.locale` saves the current language and can
@@ -745,8 +736,7 @@ If we start the Rails server with `rails server` and go to
 http://localhost:3000/ in the browser, then we see the following web
 page:
 
-image:screenshots/chapter10/i18n_ganze_seite_page_index.jpg[I18n
-ganze seite page index,title="I18n ganze seite page index"]
+image::screenshots/chapter10/i18n_ganze_seite_page_index.png[I18n ganze seite page index,title="I18n ganze seite page index"]
 
 As you can see, the default is set to "en" for English. Stop the Rails
 server with CTRL-C and change the setting for the default language to
@@ -762,8 +752,7 @@ If you then start the Rails server and again go to
 http://localhost:3000/ in the web browser, you will see the following
 web page:
 
-image:screenshots/chapter10/i18n_ganze_seite_page_index_default_locale_de.jpg[I18n
-ganze seite page index default locale
+image::screenshots/chapter10/i18n_ganze_seite_page_index_default_locale_de.png[I18n ganze seite page index default locale
 de,title="I18n ganze seite page index default locale de"]
 
 The web page has not changed, but as output of `<%= I18n.locale %>` you
@@ -805,8 +794,7 @@ following content:
 ----
 
 [[setting-i18n.locale-via-url-path-prefix]]
-Setting I18n.locale via URL Path Prefix
-+++++++++++++++++++++++++++++++++++++++
+==== Setting I18n.locale via URL Path Prefix
 
 The more stylish way of setting the language is to add it as prefix to
 the URL. This enables search engines to manage different language
@@ -860,13 +848,11 @@ config.i18n.available_locales = [:en, :de]
 To test it, start Rails with `rails server` and go to the URL
 http://localhost:3000/de.
 
-image:screenshots/chapter10/i18n_path_prefix_de_root.jpg[I18n
-root de,title="I18n root de"]
+image::screenshots/chapter10/i18n_path_prefix_de_root.png[I18n root de,title="I18n root de"]
 
 Of course we can also go to http://localhost:3000/de/page/index:
 
-image:screenshots/chapter10/i18n_path_prefix_de_page_index.jpg[I18n
-de page index,title="I18n de page index"]
+image::screenshots/chapter10/i18n_path_prefix_de_page_index.png[I18n de page index,title="I18n de page index"]
 
 If we go to http://localhost:3000/en and
 http://localhost:3000/en/page/index we get the English version of each
@@ -946,12 +932,10 @@ link. This can be achieved as follows for all views in the file
 
 The navigation is then displayed at the top of the page.
 
-image:screenshots/chapter10/I18n_locale_url_prefix_navigation.jpg[I18n
-url prefix,title="I18n url prefix"]
+image::screenshots/chapter10/i18n_locale_url_prefix_navigation.png[I18n url prefix,title="I18n url prefix"]
 
 [[setting-i18n.locale-via-accept-language-http-header-of-browser]]
-Setting I18n.locale via Accept Language HTTP Header of Browser
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+==== Setting I18n.locale via Accept Language HTTP Header of Browser
 
 When a user goes to your web page for the first time, you ideally want
 to immediately display the web page in the correct language for that
@@ -1014,8 +998,7 @@ https://www.ruby-toolbox.com/categories/i18n#http_accept_language to
 find them.
 
 [[saving-i18n.locale-in-a-session]]
-Saving I18n.locale in a Session
-+++++++++++++++++++++++++++++++
+==== Saving I18n.locale in a Session
 
 Often you want to save the value of `I18n.locale` in a xref:sessions[session].
 
@@ -1122,12 +1105,10 @@ link. This can be achieved as follows for all views in the file
 
 The navigation is then displayed at the top of the page.
 
-image:screenshots/chapter10/I18n_locale_url_prefix_navigation.jpg[I18n
-locale navigation,title="I18n locale navigation"]
+image::screenshots/chapter10/i18n_locale_url_prefix_navigation_2.png[I18n locale navigation,title="I18n locale navigation"]
 
 [[setting-i18n.locale-via-domain-extension]]
-Setting I18n.locale via Domain Extension
-++++++++++++++++++++++++++++++++++++++++
+==== Setting I18n.locale via Domain Extension
 
 If you have several domains with the extensions typical for the
 corresponding languages, you can of course also use these extensions to
@@ -1181,8 +1162,7 @@ versions.
 ====
 
 [[which-approach-is-the-best]]
-Which Approach is the Best?
-+++++++++++++++++++++++++++
+==== Which Approach is the Best?
 
 I believe that a combination of the approaches described above will lead
 to the best result. When I first visit a web page I am happy if I find
@@ -1196,8 +1176,7 @@ the option of easily using all variations and even enables you to
 combine them together.
 
 [[multilingual-scaffolds]]
-Multilingual Scaffolds
-^^^^^^^^^^^^^^^^^^^^^^
+=== Multilingual Scaffolds
 
 As an example, we use a mini webshop in which we translate a product
 scaffold. The aim is to make the application available in German and
@@ -1318,21 +1297,18 @@ $ **rails server**
 
 If we go to http://localhost:3000 we see the normal English page.
 
-image:screenshots/chapter10/i18n_webshop_base_version.jpg[I18n
-basis version,title="I18n basis version"]
+image::screenshots/chapter10/i18n_webshop_base_version.png[I18n basis version,title="I18n basis version"]
 
 If we click the option German, nothing changes on the page, apart from
 the language navigation right at the top.
 
-image:screenshots/chapter10/i18n_webshop_base_version_de.jpg[I18n
-basis version de,title="I18n basis version de"]
+image::screenshots/chapter10/i18n_webshop_base_version_de.png[I18n basis version de,title="I18n basis version de"]
 
 Now we still need to find a way of translating the individual elements
 of this page appropriately and as generically as possible.
 
 [[text-blocks-in-yaml-format]]
-Text Blocks in YAML Format
-++++++++++++++++++++++++++
+==== Text Blocks in YAML Format
 
 Now we need to define the individual text blocks for `I18n.t`. The
 corresponding directories still have to be created first:
@@ -1361,7 +1337,7 @@ config.i18n.default_locale = :en
 ----
 
 [[german]]
-German
+===== German
 
 Please create the file `config/locales/models/product/de.yml` with the
 following content.
@@ -1430,7 +1406,7 @@ generic phrases for German that we need for a normal Rails application
 editor to have a look in there to get an impression.
 
 [[english]]
-English
+===== English
 
 As most things are already present in the system for English, we just
 need to insert a few values for the scaffold views in the file
@@ -1461,13 +1437,12 @@ en:
 ----
 
 [[equipping-views-with-i18n.t]]
-Equipping Views with I18n.t
-+++++++++++++++++++++++++++
+==== Equipping Views with I18n.t
 
 Please edit the listed view files as specified.
 
 [[form.html.erb]]
-_form.html.erb
+===== _form.html.erb
 
 In the file `app/views/products/_form.html.erb` we need to change the
 display of the validation errors in the top section to `I18n.t`. The
@@ -1510,7 +1485,7 @@ names of form errors are automatically read in from
 ----
 
 [[edit.html.erb]]
-edit.html.erb
+===== edit.html.erb
 
 In the file `app/views/products/edit.html.erb` we need to integrate the
 heading and the links at the bottom of the page with I18n.t:
@@ -1527,7 +1502,7 @@ heading and the links at the bottom of the page with I18n.t:
 ----
 
 [[index.html.erb]]
-index.html.erb
+===== index.html.erb
 
 In the file `app/views/products/index.html.erb` we need to change
 practically every line. In the table header I use
@@ -1575,7 +1550,7 @@ defined currency at this point as well.
 ----
 
 [[new.html.erb]]
-new.html.erb
+===== new.html.erb
 
 In the `app/views/products/new.html.erb` we need to adapt the heading
 and the link:
@@ -1591,7 +1566,7 @@ and the link:
 ----
 
 [[show.html.erb]]
-show.html.erb
+===== show.html.erb
 
 In the `app/views/products/show.html.erb` we again use
 `human_attribute_name()` for the attributes. Plus the links need to be
@@ -1623,8 +1598,7 @@ translated with `I18n.t`. As with the index view, we again use
 ----
 
 [[translating-flash-messages-in-the-controller]]
-Translating Flash Messages in the Controller
-++++++++++++++++++++++++++++++++++++++++++++
+==== Translating Flash Messages in the Controller
 
 Finally, we need to translate the two flash messages in the
 `app/controllers/products_controller.rb` for creating (create) and
@@ -1718,15 +1692,13 @@ end
 ----
 
 [[the-result]]
-The Result
-++++++++++
+==== The Result
 
 Now you can use the scaffold products both in German and in English. You
 can switch the language via the link at the top of the page.
 
 [[further-information]]
-Further Information
-~~~~~~~~~~~~~~~~~~~
+== Further Information
 
 The best source of information on this topic can be found in the Rails
 documentation at http://guides.rubyonrails.org/i18n.html. This also

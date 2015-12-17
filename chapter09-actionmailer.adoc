@@ -1,6 +1,5 @@
 [[action-mailer]]
-Action Mailer
--------------
+= Action Mailer
 
 Even if we mainly use Ruby on Rails to generate web pages, it sometimes
 is useful to be able to send an e-mail.
@@ -9,7 +8,7 @@ So let’s go and build an example with minimal user management for a web
 shop that automatically sends an e-mail to the user when a new user is
 created:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new webshop**
   [...]
@@ -42,7 +41,7 @@ There is a generator with the name `mailer` that creates the files
 required for mailing. First, we have a look at the output of the
 `rails generate mailer`, without passing any further arguments:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate mailer**
 Usage:
@@ -64,7 +63,7 @@ $
 That is just what we are expecting. So let’s now create the mailer
 notification:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate mailer Notification**
       create  app/mailers/notification.rb
@@ -144,7 +143,7 @@ end
 
 Let’s create a new User in the console:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails console**
 Loading development environment (Rails 4.2.1)
@@ -196,15 +195,13 @@ the log. In production mode it would be send to the configured SMTP
 gateway.
 
 [[configuring-the-e-mail-server]]
-Configuring the E-Mail Server
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== Configuring the E-Mail Server
 
 Rails can use a local sendmail or an external SMTP server for delivering
 the e-mails.
 
 [[sending-via-local-sendmail]]
-Sending via Local Sendmail
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Sending via Local Sendmail
 
 If you want to send the e-mails in the traditional way via local
 `sendmail`, then you need to insert the following lines into your
@@ -221,8 +218,7 @@ config.action_mailer.raise_delivery_errors = true
 ----
 
 [[sending-via-direct-smtp]]
-Sending via Direct SMTP
-^^^^^^^^^^^^^^^^^^^^^^^
+=== Sending via Direct SMTP
 
 If you want to send the e-mail directly via a SMTP server (for example
 Google Mail), then you need to insert the following lines into your
@@ -248,8 +244,7 @@ Of course you need to adapt the values for `:domain`, `:user_name` and
 `:password` in accordance with your configuration.
 
 [[custom-x-header]]
-Custom X-Header
-~~~~~~~~~~~~~~~
+== Custom X-Header
 
 If you feel the urge to integrate an additional X-header then this is no
 problem. Here is an example for expanding the file
@@ -292,8 +287,7 @@ Have a great day!
 ----
 
 [[html-e-mails]]
-HTML E-Mails
-~~~~~~~~~~~~
+== HTML E-Mails
 
 Creating HTML e-mails is really easy. Please create the file
 `app/views/user_mailer/new_account.html.erb` with the following content:
@@ -387,8 +381,7 @@ Rails has automatically generated an e-mail in the MIME format
 `html.erb` and `text.erb`.
 
 [[attachments]]
-Attachments
-~~~~~~~~~~~
+== Attachments
 
 E-mail attachments are also defined in the controller.
 
@@ -409,8 +402,7 @@ end
 ----
 
 [[inline-attachments]]
-Inline Attachments
-^^^^^^^^^^^^^^^^^^
+=== Inline Attachments
 
 For _inline attachments_ in HTML e-mails, you need to use the method
 inline when calling `attachments`. In our example controller
@@ -454,8 +446,7 @@ In the HTML e-mail, you can access the hash `attachments[]` via
 ----
 
 [[further-information]]
-Further Information
-~~~~~~~~~~~~~~~~~~~
+== Further Information
 
 The Rails online documentation has a very extensive entry on
 ActionMailer at http://guides.rubyonrails.org/action_mailer_basics.html.

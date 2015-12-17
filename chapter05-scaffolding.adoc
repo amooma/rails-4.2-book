@@ -1,10 +1,8 @@
 [[scaffolding-and-rest]]
-Scaffolding and REST
---------------------
+= Scaffolding and REST
 
 [[introduction]]
-Introduction
-~~~~~~~~~~~~
+== Introduction
 
 Scaffolding means purely and simply that a basic _scaffold_ for an
 application is created via a generator. This scaffold not only contains
@@ -37,13 +35,12 @@ NOTE: This chapter is an introduction to scaffolding, not an encyclopedia that
       beginners started. The same applies to REST.
 
 [[generating-a-scaffold]]
-Generating a Scaffold
-~~~~~~~~~~~~~~~~~~~~~
+== Generating a Scaffold
 
 Let’s first use scaffolding to create a list of products for an online
 shop. First, we need to create a new Rails application:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new shop**
   [...]
@@ -53,7 +50,7 @@ $
 
 Let’s look at the scaffolding options:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate scaffold**
 Usage:
@@ -73,7 +70,7 @@ I’ll keep it short: for our current state of knowledge, we can use
 `rails generate scaffold` just like `rails generate model`. Let’s now create the scaffold for the
 products:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails generate scaffold product name 'price:decimal{7,2}'**
       invoke  active_record
@@ -114,7 +111,7 @@ $
 As you can see, `rails generate scaffold` has already created the model.
 So we can directly call `rake db:migrate`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:migrate**
 == 20150418150127 CreateProducts: migrating ===================================
@@ -138,14 +135,13 @@ Product.create(name: 'Marble cake', price: 3)
 
 Populate with the example data:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:seed**
 ----
 
 [[the-routes]]
-The Routes
-^^^^^^^^^^
+=== The Routes
 
 `rails generate scaffold` has created a route (more on this later in the chapter
 xref:routes["Routes"]), a controller and
@@ -159,7 +155,7 @@ Without diving too deeply into the topic routes, let’s just have a quick
 look at the available routes for our example. You need to run
 `rake routes`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake routes**
       Prefix Verb   URI Pattern                  Controller#Action
@@ -179,8 +175,7 @@ application. All routes invoke actions (in other words, methods) in the
 `ProductsController`.
 
 [[the-controller]]
-The Controller
-^^^^^^^^^^^^^^
+=== The Controller
 
 Now it’s about time we had a look at the file
 `app/controllers/products_controller.rb`. Scaffold automatically creates
@@ -276,8 +271,7 @@ end
 Let us take a moment and go through this controller.
 
 [[set_product]]
-set_product
-+++++++++++
+==== set_product
 
 A `before_action` calls a private method to set an instance variable
 `@product` for the actions :show, :edit, :update and :destroy. That DRYs
@@ -298,8 +292,7 @@ private
 ----
 
 [[index]]
-index
-+++++
+==== index
 
 The `index` method sets the instance variable `@products`. It contains
 the result of `Product.all`.
@@ -314,8 +307,7 @@ end
 ----
 
 [[show]]
-show
-++++
+==== show
 
 The `show` method doesn’t do anything. `set_product` `before_action`
 already set the instance variable `@product`. So there is not more to
@@ -345,8 +337,7 @@ end
 ----
 
 [[edit]]
-edit
-++++
+==== edit
 
 The `edit` method doesn’t do anything. the `set_product` `before_action`
 already set the instance variable `@product`. So there is not more to
@@ -360,8 +351,7 @@ end
 ----
 
 [[create]]
-create
-++++++
+==== create
 
 The `create` method uses `Product.new` to create a new instance of
 Product and stores it in `@product`. The private method `product_params`
@@ -400,8 +390,7 @@ end
 ----
 
 [[update]]
-update
-++++++
+==== update
 
 The `update` method tries to update @product with the `product_params`.
 The private method `product_params` is used to filter the trusted
@@ -437,8 +426,7 @@ end
 ----
 
 [[destroy]]
-destroy
-+++++++
+==== destroy
 
 The `destroy` method destroys `@product` and redirects an html request
 to the `index` action.
@@ -458,12 +446,11 @@ end
 ----
 
 [[the-views]]
-The Views
-^^^^^^^^^
+=== The Views
 
 Now we start the Rails web server:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails server**
 => Booting WEBrick
@@ -479,26 +466,22 @@ Now a little drum roll ... dramatic suspense ... launch the web browser and go
 to the URL http://localhost:3000/products. You can see the list of
 products as simple web page.
 
-image:screenshots/chapter05/products_index.jpg[products
-index,title="Products index"]
+image::screenshots/chapter05/products_index.png[products index,title="Products index"]
 
 If you now click the link _New Product_, you will see an input form
 for a new record:
 
-image:screenshots/chapter05/product_new.jpg[product
-new,title="Products new"]
+image::screenshots/chapter05/product_new.png[product new,title="Products new"]
 
 Use your browser’s Back button to go back and click on the _Show_ link
 in the first line. You will then see the following page:
 
-image:screenshots/chapter05/product_show_1.jpg[product
-show,title="Products show"]
+image::screenshots/chapter05/product_show_1.png[product show,title="Products show"]
 
 If you now click _Edit_, you will see the editing view for this
 record:
 
-image:screenshots/chapter05/product_edit_1.jpg[product
-edit,title="Products edit"]
+image::screenshots/chapter05/product_edit_1.png[product edit,title="Products edit"]
 
 And if you click _Destroy_ on the Index page, you can delete a record
 after confirming the message that pops up. Isn’t that cool?! Within less
@@ -507,13 +490,12 @@ than 10 minutes, you have written a Web application that allows you to
 CRUD. That is the scaffolding magic. You can save a lot of time.
 
 [[where-are-the-views]]
-Where Are the Views?
-++++++++++++++++++++
+==== Where Are the Views?
 
 You can probably guess, but let’s have a look at the directory
 `app/views/products` anyway:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **find app/views/products/**
 app/views/products/
@@ -577,8 +559,7 @@ You are now an old hand when it comes to ERB, so you’ll be able to read
 and understand the code without any problems.
 
 [[link_to]]
-link_to
-+++++++
+==== link_to
 
 In the views generated by the scaffold generator, you first came across
 the helper `link_to`. This creates `<a hre ...>` links. You can of
@@ -587,7 +568,7 @@ for linrks within a Rails project, `link_to` is more practical, because
 you can use the names of the routes as a target. The code becomes much
 easier to read. In the above example, there are the following routes:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake routes**
       Prefix Verb   URI Pattern                  Controller#Action
@@ -672,8 +653,7 @@ the first product.
 |=======================================================================
 
 [[form_for]]
-form_for
-++++++++
+==== form_for
 
 In the partial used by `new` and `edit`,
 `app/views/products/_form.html.erb`, you will find the following code
@@ -754,12 +734,10 @@ end
 When ever somebody wants to save a product which doesn’t have a name
 Rails will show this Flash Error:
 
-image:screenshots/chapter05/product_error_flash.jpg[product error
-flash,title="Products error flash"]
+image::screenshots/chapter05/product_error_flash.png[product error flash,title="Products error flash"]
 
 [[access-via-json]]
-Access via JSON
-+++++++++++++++
+==== Access via JSON
 
 By default, Rails’ scaffolding generates not just access via HTML for
 human users, but also a direct interface for machines. The same methods
@@ -819,8 +797,7 @@ You can use your browser to fetch the JSON output. Just open
 http://localhost:3000/products.json and view the result. I installed a
 JSON view extension in my Chrome browser to get a nicer format.
 
-image:screenshots/chapter05/products_index_json.jpg[products
-index json,title="Products index json"]
+image::screenshots/chapter05/products_index_json.png[products index json,title="Products index json"]
 
 If you do not want the JSON output, you need to delete the
 `json.jbuilder` files.
@@ -851,8 +828,7 @@ end
 ----
 
 [[when-should-you-use-scaffolding]]
-When Should You Use Scaffolding?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+== When Should You Use Scaffolding?
 
 You should never use scaffolding just for the sake of it. There are
 Rails developers who never use scaffolding and always build everything
@@ -860,8 +836,7 @@ manually. I find scaffolding quite useful for quickly getting into a new
 project. But it is always just the beginning.
 
 [[example-for-a-minimal-project]]
-Example for a Minimal Project
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Example for a Minimal Project
 
 Let’s assume we need a web page quickly with which we can list products
 and represent them individually. But we do not require an editing or
@@ -869,7 +844,7 @@ deleting function. In that case, a large part of the code created via
 scaffold would be useless and have to be deleted. Let’s try it out as
 follows:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new read-only-shop**
   [...]
@@ -894,7 +869,7 @@ Product.create(name: 'Marble cake', price: 3)
 
 And populate it with this data:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake db:seed**
 $
@@ -903,7 +878,7 @@ $
 As we only need `index` and `show`, we should delete the not required
 views:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rm app/views/products/_form.html.erb**
 $ **rm app/views/products/new.html.erb**
@@ -913,7 +888,7 @@ $
 
 The `json.jbuilder` views are not needed either:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rm app/views/products/*.json.jbuilder**
 $
@@ -952,7 +927,7 @@ end
 A `rake routes` shows us that really only `index` and `show` are routed
 now:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake routes**
   Prefix Verb URI Pattern             Controller#Action
@@ -963,12 +938,11 @@ products GET  /products(.:format)     products#index
 If we now start the server `rails server` and go to the URL
 http://localhost:3000/products, we get an error message.
 
-image:screenshots/chapter05/products_routes_error.jpg[products
-index json,title="Products index json"]
+image::screenshots/chapter05/products_routes_error.png[products index json,title="Products index json"]
 
 The same message will be displayed in the log:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails server**
 => Booting WEBrick
@@ -1058,8 +1032,7 @@ Now our application is finished. Start the Rails server with
 `rails server` and open the URL http://localhost:3000/products in the
 browser.
 
-image:screenshots/chapter05/read-only-products-index.jpg[read
-only products index,title="ReadOnlyProducts index"]
+image::screenshots/chapter05/read-only-products-index.png[read only products index,title="ReadOnlyProducts index"]
 
 NOTE: In this example, I am not commenting on the required changes in the
       tests, as this is not an exercise for test driven development but meant
@@ -1067,8 +1040,7 @@ NOTE: In this example, I am not commenting on the required changes in the
       quickly be able to adapt the tests.
 
 [[conclusion]]
-Conclusion
-^^^^^^^^^^
+=== Conclusion
 
 Have a go and try it out. Try working with scaffolds one time and
 without them the next. Then you will soon get a feel for whether it fits

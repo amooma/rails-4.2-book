@@ -1,10 +1,8 @@
 [[bundler-and-gems]]
-Bundler and Gems
-----------------
+= Bundler and Gems
 
 [[gems]]
-Gems
-~~~~
+== Gems
 
 Gems constitute the package management in the world of Ruby. If a Ruby
 developer wants to offer a specific feature or a certain program or
@@ -15,8 +13,7 @@ introduction chapter. The important thing for our purposes is that for
 example Rails in itself is also available as gem.
 
 [[bundler]]
-Bundler
-~~~~~~~
+== Bundler
 
 In a Rails project, different gems are used and a developer can also add further gems. Bundler helps the
 developer to install all these gems in the right version and to take
@@ -25,7 +22,7 @@ developer had to always call a `bundle install` after a `rails new`.
 Now, this is done automatically within `rails new`. In the output you
 can see which gems are installed by `bundle install`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new webshop**
 [...]
@@ -176,13 +173,12 @@ Thanks to this mechanism you can use and develop several Rails projects
 with different gem version numbers in parallel.
 
 [[bundle-update]]
-bundle update
-^^^^^^^^^^^^^
+=== bundle update
 
 With `bundle update` you can update gems to new versions. As an example,
 I have a Rails project with the Rails version 4.2.1:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails -v**
 Rails 4.2.1
@@ -204,7 +200,7 @@ gem 'rails', '4.2.1'
 
 And also in the `Gemfile.lock`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **grep 'rails' Gemfile.lock**
       rails-dom-testing (~> 1.0, >= 1.0.5)
@@ -258,7 +254,7 @@ After this change, you can use `bundle update rails` to install the new
 Rails version (required dependencies are automatically taken into
 account by Bundler):
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **bundle update rails**
   [...]
@@ -271,14 +267,13 @@ IMPORTANT: After every gem update, you should first run `rake test` to make sure
            that a new gem version does not add any unwanted side effects.
 
 [[bundle-outdated]]
-bundle outdated
-^^^^^^^^^^^^^^^
+=== bundle outdated
 
 If you want to know which of the gems used by your Rails project are now
 available in a new version, you can do this via the command
 `bundle outdated`. Example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **bundle outdated**
 Fetching gem metadata from https://rubygems.org/..........
@@ -290,15 +285,14 @@ Outdated gems included in the bundle:
 ----
 
 [[bundle-exec]]
-bundle exec
-^^^^^^^^^^^
+=== bundle exec
 
 `bundle exec` is probably one of the commands Rails developers hate the
 most. It is required whenever a program such as `rake` is used in a
 Rails project and is present in a different version than the rest of the
 system. The resulting error message is always easy to implement:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 You have already activated rake 0.10, but your Gemfile requires rake 0.9.2.2.
 Using bundle exec may solve this.
@@ -307,20 +301,19 @@ Using bundle exec may solve this.
 In this case, it helps to invoke the command with a preceding
 `bundle exec`:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **bundle exec rake db:migrate**
 ----
 
 [[binstubs]]
-binstubs
-++++++++
+==== binstubs
 
 In some environments, using `bundle exec` is too complicated. In that
 case, you can install programs with the correct version via
 `bundle install --binstubs` in the directory bin:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **bundle install --binstubs**
 Using rake 10.4.2
@@ -333,7 +326,7 @@ Use `bundle show [gemname]` to see where a bundled gem is installed.
 
 Afterwards, you can always use these programs. Example:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **bin/rake db:migrate**
 ==  CreateUsers: migrating ====================================================
@@ -345,8 +338,7 @@ $
 ----
 
 [[further-information-on-bundler]]
-Further Information on Bundler
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Further Information on Bundler
 
 The topic Bundler is far more complex than can be described here. If you
 want to find out more on Bundler, please visit the following websites to

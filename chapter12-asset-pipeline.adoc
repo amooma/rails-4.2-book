@@ -1,6 +1,5 @@
 [[asset-pipeline]]
-Asset Pipeline
---------------
+= Asset Pipeline
 
 The asset pipeline offers the Rails developer the opportunity of
 delivering CSS, JavaScript and image files to the browser more optimally
@@ -16,7 +15,7 @@ later as automatically compressed CSS and JavaScript files.
 
 As an example we use once more our web shop with a product scaffold:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rails new webshop**
   [...]
@@ -30,7 +29,7 @@ $
 
 In the directory `app/assets` you will then find the following files:
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 app/assets
 ├── images
@@ -49,16 +48,14 @@ manifest files. They automatically include the other files in the
 relevant directory.
 
 [[manifest-files]]
-Manifest Files
-~~~~~~~~~~~~~~
+== Manifest Files
 
 In `app/assets/javascripts` and `app/assets/stylesheets` there are
 always manifest files that contain instructions to the asset pipeline.
 They define everything that is to be integrated.
 
 [[application.js]]
-application.js
-^^^^^^^^^^^^^^
+=== application.js
 
 The file `app/assets/javascripts/application.js` has the following
 content:
@@ -98,8 +95,7 @@ The not yet optimized result can be viewed in the development
 environment at the URL http://localhost:3000/assets/application.js.
 
 [[application.css]]
-application.css
-^^^^^^^^^^^^^^^
+=== application.css
 
 The file `app/assets/stylesheets/application.css` has the following
 content:
@@ -134,14 +130,13 @@ With the command `require_tree .` all files in this directory are
 automatically integrated.
 
 [[rake-assetsprecompile]]
-rake assets:precompile
-^^^^^^^^^^^^^^^^^^^^^^
+=== rake assets:precompile
 
 When using the asset pipeline, you need to remember that you have to
 precompile the assets before starting the Rails server in the production
 environment. This happens via the command `rake assets:precompile:`
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 $ **rake assets:precompile**
 I, [2015-05-01T12:08:50.495102 #54978]  INFO -- : Writing
@@ -161,7 +156,7 @@ ActionView::Template::Error (application.css isn't precompiled)
 The files created by `rake assets:precompile` appear in the directory
 `public/assets`
 
-[subs="quotes"]
+[subs=+quotes]
 ----
 public/assets/
 ├── application-12b3c7dd74d2e9df37e7cbb1efa76a6d.css
@@ -189,8 +184,7 @@ overhead for loading a file is time-consuming.
 ====
 
 [[the-fingerprint]]
-The Fingerprint
-^^^^^^^^^^^^^^^
+=== The Fingerprint
 
 The fingerprint in the file name consists of a hash sum generated from
 the content of the relevant file. This fingerprint ensures optimal
@@ -198,8 +192,7 @@ caching and prevents an old cache being used if any changes are made to
 the content. A simple but very effective method.
 
 [[coding-links-to-an-asset]]
-Coding Links to an Asset
-~~~~~~~~~~~~~~~~~~~~~~~~
+== Coding Links to an Asset
 
 All files below the directory `app/assets` are delivered in normal form
 by the Rails server. For example, you can go to the URL
@@ -214,8 +207,7 @@ But you should never enter these files as hard-wired in a view. To make
 the most of the asset pipeline, you must use the helpers described here.
 
 [[coding-link-to-an-image]]
-Coding Link to an Image
-^^^^^^^^^^^^^^^^^^^^^^^
+=== Coding Link to an Image
 
 You can retrieve an image via the helper `image_tag`. This is what it
 would look like in the view for the file `app/assets/images/rails.png`:
@@ -241,8 +233,7 @@ file with fingerprint:
 ----
 
 [[coding-link-to-a-javascript-file]]
-Coding Link to a JavaScript File
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Coding Link to a JavaScript File
 
 You can use the helper `javascript_include_tag` to retrieve a JavaScript
 file compiled by the asset pipeline. This is what it would look like in
@@ -275,8 +266,7 @@ media="all" rel="stylesheet" type="text/css" />
 ----
 
 [[coding-link-to-a-css-file]]
-Coding Link to a CSS File
-^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Coding Link to a CSS File
 
 A stylesheet compiled by the asset pipeline can be retrieved via the
 helper `stylesheet_link_tag`. In the view, it would look like this for
@@ -307,8 +297,7 @@ type="text/javascript"></script>
 ----
 
 [[defaults-in-the-application.html.erb]]
-Defaults in the application.html.erb
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+=== Defaults in the application.html.erb
 
 Incidentally, the file `app/views/layouts/application.html.erb` that the
 scaffold generator creates by default already contains the coding links
