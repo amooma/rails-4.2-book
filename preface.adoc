@@ -1,8 +1,8 @@
 [[preface]]
 = Preface
 
-Thank you for buying the second edition of my 3rd Ruby on Rails book.
-I wrote this book for autodidacts who learn best by following clean examples.
+Thank you for buying the 4.2 edition of my Ruby on Rails book.
+I wrote it for autodidacts who learn best by following clean examples.
 I don’t like the idea of coding one big single application throughout a book
 but prefer stand-alone examples. So you can skip a couple of pages or even
 chapters without losing context.
